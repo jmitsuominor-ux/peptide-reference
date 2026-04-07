@@ -1975,26 +1975,40 @@ function renderQuickDose() {
             <div class="mini-tier mid"><span class="mini-tier-label">MID</span><span class="mini-tier-val">${p.mid}</span></div>
             <div class="mini-tier hi"><span class="mini-tier-label">HIGH</span><span class="mini-tier-val">${p.hi}</span></div>
           </div>
-          <div style="margin-top:10px; font-size:12px; color:var(--text3); cursor:pointer; text-decoration:underline; text-underline-offset:2px;"
-               onclick="event.stopPropagation(); switchToBrowse('${name}')">
+          <button onclick="event.stopPropagation(); goToProfile(this.dataset.name)" data-name="${name}"
+            style="margin-top:10px; display:block; width:100%; background:rgba(61,220,132,0.08); border:1px solid rgba(61,220,132,0.2); color:var(--accent); border-radius:8px; padding:9px 14px; font-size:12px; font-family:inherit; cursor:pointer; text-align:left; letter-spacing:0.01em;">
             View full profile →
-          </div>
+          </button>
         </div>
       </div>
     `;
   }).join('');
 }
 
-function switchToBrowse(peptideName) {
+function goToProfile(peptideName) {
+  // Switch nav tab
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('[data-page="browse"]').classList.add('active');
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-browse').classList.add('active');
+  // Hide all pages properly
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  // Show browse page
+  const bp = document.getElementById('page-browse');
+  bp.classList.add('active');
+  bp.style.display = 'block';
+  // Show detail, hide others
   document.getElementById('catView').style.display = 'none';
   document.getElementById('listView').style.display = 'none';
   document.getElementById('detailView').style.display = 'block';
   document.getElementById('detailTitle').textContent = peptideName;
   showDetail(peptideName);
+  window.scrollTo(0,0);
+}
+
+function switchToBrowse(peptideName) {
+  goToProfile(peptideName);
 }
 
 // ════════════════════════════════════════════════════════════════

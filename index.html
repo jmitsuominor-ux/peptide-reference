@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Peptide Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111816;
+    --surface2: #172019;
+    --border: #1e2e25;
+    --border2: #243328;
+    --accent: #3ddc84;
+    --accent2: #2bb36a;
+    --accent-dim: rgba(61,220,132,0.12);
+    --accent-glow: rgba(61,220,132,0.06);
+    --text: #e8f0eb;
+    --text2: #9db8a4;
+    --text3: #5a7a63;
+    --lo: #3ddc84;
+    --lo-bg: rgba(61,220,132,0.08);
+    --mid: #60b4ff;
+    --mid-bg: rgba(96,180,255,0.08);
+    --hi: #ff6b6b;
+    --hi-bg: rgba(255,107,107,0.08);
+    --warn: #ffb347;
+    --warn-bg: rgba(255,179,71,0.08);
+    --r: 12px;
+    --r-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overscroll-behavior: none;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,15,13,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .topbar-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    color: var(--accent); letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .search-wrap {
+    flex: 1;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 10px; top: 50%;
+    transform: translateY(-50%);
+    width: 15px; height: 15px;
+    color: var(--text3); pointer-events: none;
+  }
+  #searchInput {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 8px; color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; padding: 8px 10px 8px 32px;
+    outline: none; transition: border-color 0.2s;
+  }
+  #searchInput:focus { border-color: var(--accent); }
+  #searchInput::placeholder { color: var(--text3); }
+
+  /* ── NAV TABS ── */
+  .nav {
+    display: flex; gap: 4px;
+    padding: 10px 16px 0;
+    overflow-x: auto; scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 8px 14px; border-radius: var(--r-sm) var(--r-sm) 0 0;
+    font-size: 13px; font-weight: 500; white-space: nowrap;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--text3); background: transparent;
+    border: 1px solid transparent; border-bottom: none;
+  }
+  .nav-tab.active {
+    color: var(--accent); background: var(--surface);
+    border-color: var(--border);
+  }
+  .nav-tab:hover:not(.active) { color: var(--text2); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 16px; }
+  .page.active { display: block; }
+
+  /* ── CATEGORY GRID ── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .cat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--cat-color, var(--accent));
+    opacity: 0.7;
+  }
+  .cat-card:active { transform: scale(0.97); }
+  .cat-icon { font-size: 22px; margin-bottom: 6px; }
+  .cat-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .cat-count { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+  /* ── PEPTIDE LIST ── */
+  .list-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 0 14px;
+  }
+  .back-btn {
+    width: 32px; height: 32px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .back-btn:active { transform: scale(0.92); }
+  .back-btn svg { width: 16px; height: 16px; color: var(--text2); }
+  .list-title { font-size: 16px; font-weight: 600; }
+
+  .peptide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .peptide-card:active { transform: scale(0.98); }
+  .peptide-card-left { flex: 1; min-width: 0; }
+  .peptide-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .peptide-tagline { font-size: 12px; color: var(--text3); }
+  .peptide-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    background: var(--accent-dim); color: var(--accent);
+    border-radius: 4px; padding: 2px 6px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .chevron { color: var(--text3); width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ── DETAIL VIEW ── */
+  .detail-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .detail-name {
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .detail-category {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    background: var(--accent-dim); color: var(--accent);
+    border-radius: 4px; padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 10px;
+  }
+  .detail-tagline {
+    font-size: 13px; color: var(--text2); line-height: 1.5;
+  }
+
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .section-header:active { background: var(--surface2); }
+  .section-header-left {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-icon { font-size: 16px; }
+  .section-title { font-size: 14px; font-weight: 600; }
+  .section-chevron {
+    width: 18px; height: 18px; color: var(--text3);
+    transition: transform 0.25s;
+  }
+  .section-chevron.open { transform: rotate(180deg); }
+  .section-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .section-body.open { display: block; }
+
+  /* ── DOSE TIERS ── */
+  .dose-tiers { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .dose-tier {
+    border-radius: 8px; padding: 12px;
+    border: 1px solid;
+  }
+  .dose-tier.lo { background: var(--lo-bg); border-color: rgba(61,220,132,0.2); }
+  .dose-tier.mid { background: var(--mid-bg); border-color: rgba(96,180,255,0.2); }
+  .dose-tier.hi { background: var(--hi-bg); border-color: rgba(255,107,107,0.2); }
+  .dose-tier-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 4px;
+  }
+  .dose-tier.lo .dose-tier-label { color: var(--lo); }
+  .dose-tier.mid .dose-tier-label { color: var(--mid); }
+  .dose-tier.hi .dose-tier-label { color: var(--hi); }
+  .dose-tier-amount { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .dose-tier.lo .dose-tier-amount { color: var(--lo); }
+  .dose-tier.mid .dose-tier-amount { color: var(--mid); }
+  .dose-tier.hi .dose-tier-amount { color: var(--hi); }
+  .dose-tier-desc { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+  .info-row {
+    display: flex; gap: 8px; margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .info-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px; color: var(--text2);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .info-chip span { color: var(--text3); font-size: 11px; }
+
+  /* ── BENEFITS LIST ── */
+  .benefit-item {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--text2); line-height: 1.4;
+  }
+  .benefit-item:last-child { border-bottom: none; }
+  .benefit-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0; margin-top: 5px;
+  }
+
+  /* ── SIDE EFFECTS ── */
+  .side-effect-item {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--text2); line-height: 1.4;
+  }
+  .side-effect-item:last-child { border-bottom: none; }
+  .severity-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+  }
+  .severity-dot.low { background: var(--lo); }
+  .severity-dot.med { background: var(--warn); }
+  .severity-dot.high { background: var(--hi); }
+
+  /* ── STACKS PAGE ── */
+  .stack-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .stack-header {
+    padding: 16px;
+    cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  }
+  .stack-name {
+    font-size: 15px; font-weight: 700; margin-bottom: 4px;
+  }
+  .stack-goal { font-size: 12px; color: var(--text3); line-height: 1.4; }
+  .stack-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+  .stack-body.open { display: block; }
+  .stack-peptide {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-peptide:last-child { border-bottom: none; }
+  .stack-peptide-name {
+    font-size: 13px; font-weight: 600; margin-bottom: 6px;
+    color: var(--accent);
+  }
+  .stack-peptide-schedule {
+    font-size: 11px; color: var(--text3); margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+  .mini-tiers { display: flex; flex-direction: column; gap: 5px; }
+  .mini-tier {
+    display: flex; gap: 6px; align-items: baseline;
+    font-size: 12px;
+  }
+  .mini-tier-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+    font-family: 'DM Mono', monospace; flex-shrink: 0; width: 28px;
+  }
+  .mini-tier.lo .mini-tier-label { color: var(--lo); }
+  .mini-tier.mid .mini-tier-label { color: var(--mid); }
+  .mini-tier.hi .mini-tier-label { color: var(--hi); }
+  .mini-tier-val { color: var(--text2); line-height: 1.3; }
+
+  .stack-note {
+    margin: 0 16px 14px;
+    background: var(--warn-bg);
+    border: 1px solid rgba(255,179,71,0.2);
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 12px; color: var(--text2); line-height: 1.5;
+  }
+  .stack-note strong { color: var(--warn); }
+
+  /* ── COMPATIBILITY ── */
+  .compat-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .compat-row {
+    display: flex; gap: 8px; align-items: flex-start;
+    font-size: 12px; line-height: 1.4;
+  }
+  .compat-indicator {
+    width: 18px; height: 18px; border-radius: 4px;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; margin-top: 1px;
+  }
+  .compat-indicator.ok { background: var(--lo-bg); color: var(--lo); }
+  .compat-indicator.warn { background: var(--warn-bg); color: var(--warn); }
+  .compat-indicator.no { background: var(--hi-bg); color: var(--hi); }
+
+  /* ── EVIDENCE BADGE ── */
+  .evidence-bar {
+    display: flex; gap: 4px; margin-top: 8px;
+  }
+  .evidence-pip {
+    height: 4px; flex: 1; border-radius: 2px;
+    background: var(--border2);
+  }
+  .evidence-pip.filled { background: var(--accent); }
+  .evidence-label {
+    font-size: 11px; color: var(--text3); margin-top: 5px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── SEARCH RESULTS ── */
+  #searchResults { padding: 16px; display: none; }
+  #searchResults.active { display: block; }
+  .search-result {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .search-result:active { transform: scale(0.98); }
+  .sr-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .sr-match { font-size: 12px; color: var(--text3); }
+  .sr-match em { color: var(--accent); font-style: normal; font-weight: 500; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin: 16px;
+    background: rgba(255,107,107,0.06);
+    border: 1px solid rgba(255,107,107,0.15);
+    border-radius: var(--r);
+    padding: 12px 14px;
+    font-size: 11px; color: var(--text3); line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--hi); }
+
+  /* ── SCROLL TOP ── */
+  .scroll-top {
+    position: fixed; bottom: 20px; right: 16px;
+    width: 40px; height: 40px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 50%; display: none; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 50;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: all 0.2s;
+  }
+  .scroll-top.visible { display: flex; }
+  .scroll-top svg { width: 16px; height: 16px; color: var(--text2); }
+
+  .tag { display: inline-block; }
+  .mt { margin-top: 10px; }
+  .mt8 { margin-top: 8px; }
+
+  /* ── MECHANISM TEXT ── */
+  .mechanism-text {
+    font-size: 13px; color: var(--text2); line-height: 1.6;
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-top: 10px; }
+  .tl-item {
+    display: flex; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-time {
+    font-family: 'DM Mono', monospace;
+    color: var(--accent); font-size: 11px;
+    flex-shrink: 0; width: 60px;
+    padding-top: 2px;
+  }
+  .tl-text { color: var(--text2); line-height: 1.4; }
+
+  /* animate in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .peptide-card, .cat-card, .stack-card { animation: fadeUp 0.25s ease both; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">PEPTIDE REF</div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="search" id="searchInput" placeholder="Search peptides…" autocomplete="off">
+  </div>
+</div>
+
+<!-- SEARCH RESULTS -->
+<div id="searchResults"></div>
+
+<!-- MAIN NAV -->
+<div class="nav" id="mainNav">
+  <div class="nav-tab active" data-page="browse">Browse</div>
+  <div class="nav-tab" data-page="stacks">Stacks</div>
+  <div class="nav-tab" data-page="dosing">Quick Dose</div>
+</div>
+
+<!-- BROWSE PAGE -->
+<div class="page active" id="page-browse">
+  <div id="catView">
+    <div style="padding: 14px 0 10px;">
+      <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Peptide Library</div>
+      <div style="font-size: 13px; color: var(--text3);">Tap a category to explore</div>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+    <div class="disclaimer">
+      <strong>Research Reference Only.</strong> All information is for educational purposes. These compounds are not FDA-approved for most uses listed. Consult a qualified healthcare provider before use. Not medical advice.
+    </div>
+  </div>
+  <div id="listView" style="display:none">
+    <div class="list-header">
+      <div class="back-btn" id="backToCategories">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </div>
+      <div class="list-title" id="listTitle"></div>
+    </div>
+    <div id="peptideList"></div>
+  </div>
+  <div id="detailView" style="display:none">
+    <div class="list-header">
+      <div class="back-btn" id="backToList">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </div>
+      <div class="list-title" id="detailTitle"></div>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- STACKS PAGE -->
+<div class="page" id="page-stacks">
+  <div style="padding: 14px 0 10px;">
+    <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Stack Protocols</div>
+    <div style="font-size: 13px; color: var(--text3);">Tap a stack for full per-peptide dosing</div>
+  </div>
+  <div id="stacksList"></div>
+</div>
+
+<!-- QUICK DOSE PAGE -->
+<div class="page" id="page-dosing">
+  <div style="padding: 14px 0 10px;">
+    <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Quick Dose Reference</div>
+    <div style="font-size: 13px; color: var(--text3);">All peptides at a glance</div>
+  </div>
+  <div id="quickDoseList"></div>
+</div>
+
+<div class="scroll-top" id="scrollTop">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════════════
+const CATEGORIES = [
+  { id:'weight', name:'Weight Loss', icon:'⚖️', color:'#3ddc84', peptides:['Tirzepatide','Semaglutide','Retarutide','Cagrilintide','Lipo-C','AOD9604','HGH Fragment','5-amino-1mq'] },
+  { id:'healing', name:'Healing & Recovery', icon:'🔧', color:'#60b4ff', peptides:['BPC-157','TB-500','KPV','LL37','GHK-Cu'] },
+  { id:'gh', name:'Growth Hormone', icon:'📈', color:'#b39dff', peptides:['CJC-1295 (no DAC)','CJC-1295 (with DAC)','Ipamorelin','Sermorelin','Tesamorelin','HGH 191AA','HGH Fragment'] },
+  { id:'antiaging', name:'Anti-Aging', icon:'✨', color:'#ffb347', peptides:['GHK-Cu','Epithalon','NAD+','Thymosin Alpha-1','Snap-8','L-Glutathione','Melatonin'] },
+  { id:'mito', name:'Mitochondrial', icon:'⚡', color:'#ff6b9d', peptides:['NAD+','SS-31','MOTS-c','5-amino-1mq','SLU-PP-332'] },
+  { id:'muscle', name:'Muscle & IGF', icon:'💪', color:'#ff6b6b', peptides:['IGF-1 LR3','IGF DES','HGH 191AA','HCG'] },
+  { id:'neuro', name:'Cognitive', icon:'🧠', color:'#4ecdc4', peptides:['Semax','Selank','DSIP','Melatonin','NAD+'] },
+  { id:'immune', name:'Immune', icon:'🛡️', color:'#ffd93d', peptides:['Thymosin Alpha-1','VIP','KPV','LL37','Epithalon'] },
+  { id:'hormonal', name:'Hormonal', icon:'⚗️', color:'#a8e6cf', peptides:['HCG','PT-141','Melanotan I','Melanotan II','KissPeptin-10'] },
+  { id:'recon', name:'Reconstitution', icon:'💧', color:'#74b9ff', peptides:['BAC Water','Acetic Acid Water'] },
+];
+
+const PEPTIDES = {
+  'Tirzepatide': {
+    category: 'Weight Loss / Metabolic',
+    tagline: 'Dual GIP + GLP-1 agonist for weight loss and metabolic health',
+    mechanism: 'Activates both GIP and GLP-1 receptors simultaneously — slows gastric emptying, suppresses appetite, enhances insulin secretion, and reduces glucagon. The dual mechanism is why it outperforms single GLP-1 agents.',
+    benefits: ['15–22% average body weight loss in clinical trials (SURMOUNT-1)', 'Superior blood sugar control vs semaglutide (SURPASS trials)', 'Reduced visceral/abdominal fat', 'Improved cardiovascular risk markers', 'Decreased inflammation markers'],
+    sideEffects: [
+      { text: 'Nausea (17–22% of patients, usually dose-dependent)', severity: 'med' },
+      { text: 'Diarrhea (13–16%)', severity: 'low' },
+      { text: 'Vomiting (6–10%)', severity: 'med' },
+      { text: 'Constipation', severity: 'low' },
+      { text: 'Decreased appetite', severity: 'low' },
+      { text: 'Injection site reactions', severity: 'low' },
+      { text: 'Pancreatitis (rare)', severity: 'high' },
+      { text: 'Thyroid C-cell risk (theoretical, based on rodent data)', severity: 'high' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Appetite suppression begins; possible GI adjustment period' },
+      { time: 'Wk 4–8', text: 'Noticeable weight reduction begins' },
+      { time: 'Wk 12–16', text: 'Meaningful weight loss 5–10%+' },
+      { time: 'Wk 20+', text: 'Peak results; 15–22% total weight loss at full maintenance dose' },
+    ],
+    schedule: 'Once weekly SubQ injection, any time of day',
+    cycle: '20+ weeks minimum',
+    lo: '2.5 mg/wk → 5 mg/wk maintenance',
+    mid: '2.5→5→7.5→10 mg/wk (4 wks per step)',
+    hi: '2.5→5→7.5→10→12.5→15 mg/wk (max dose)',
+    pairsWith: ['Cagrilintide (CagriSema combo)', 'NAD+', 'Lipo-C', 'GHK-Cu'],
+    avoid: ['Semaglutide (same receptor pathway — do not combine)', 'Retarutide'],
+    evidence: 4,
+    evidenceNote: 'Multiple Phase 3 RCTs (SURMOUNT 1–5), FDA approved for T2D and obesity',
+  },
+  'Semaglutide': {
+    category: 'Weight Loss / Metabolic',
+    tagline: 'GLP-1 receptor agonist — gold standard weight loss peptide',
+    mechanism: 'Selectively activates GLP-1 receptors to reduce appetite, slow gastric emptying, and improve insulin secretion. The most studied weight loss peptide with robust clinical trial data.',
+    benefits: ['15–17% average body weight loss (STEP trials)', 'FDA-approved for both T2D (Ozempic) and obesity (Wegovy)', 'Significant cardiovascular risk reduction (SELECT trial)', 'Blood sugar stabilization', 'Reduced liver fat (NASH benefit emerging)'],
+    sideEffects: [
+      { text: 'Nausea (very common, 74–84% report some GI effect)', severity: 'med' },
+      { text: 'Diarrhea', severity: 'low' },
+      { text: 'Vomiting', severity: 'med' },
+      { text: 'Gallbladder disease / gallstones (significantly elevated risk vs placebo)', severity: 'high' },
+      { text: 'Constipation', severity: 'low' },
+      { text: 'Pancreatitis (rare)', severity: 'high' },
+      { text: 'Muscle mass loss (without resistance training)', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Appetite reduction begins' },
+      { time: 'Wk 8', text: 'Noticeable weight loss' },
+      { time: 'Wk 16–20', text: 'Substantial weight reduction' },
+      { time: 'Wk 68', text: '~15% body weight loss at max dose in STEP-1 trial' },
+    ],
+    schedule: 'Once weekly SubQ injection',
+    cycle: '20+ weeks',
+    lo: '0.25 mg/wk → 0.5 mg/wk maintenance',
+    mid: '0.25→0.5→1.0→2.4 mg/wk (4 wks each step)',
+    hi: 'Rapid titration to 2.4 mg/wk over 8 wks',
+    pairsWith: ['Cagrilintide (CagriSema)', 'NAD+', 'Lipo-C'],
+    avoid: ['Tirzepatide', 'Retarutide (all GLP-1 class — never combine)'],
+    evidence: 5,
+    evidenceNote: 'Extensive Phase 3 trials, FDA approved, multiple cardiovascular outcome trials',
+  },
+  'BPC-157': {
+    category: 'Healing / Recovery',
+    tagline: 'Gastric peptide with potent tissue repair and anti-inflammatory effects',
+    mechanism: 'Promotes angiogenesis via VEGFR2/Akt-eNOS pathway, stimulates fibroblast activity, reduces inflammatory cytokines, and enhances growth hormone receptor expression. Works locally at injection site for injuries.',
+    benefits: ['Accelerated tendon and ligament healing (animal models)', 'Gut healing and leaky gut repair', 'Muscle injury recovery', 'Reduced inflammation', 'Neuroprotective effects', 'Joint pain relief (7/12 patients in human knee study reported >6 months relief)'],
+    sideEffects: [
+      { text: 'Mild injection site irritation (most common)', severity: 'low' },
+      { text: 'Nausea at higher doses (rare)', severity: 'low' },
+      { text: 'Theoretical tumor promotion concern (angiogenesis mechanism) — unconfirmed in humans', severity: 'med' },
+      { text: 'Unknown long-term effects — human data very limited (3 small studies total)', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Days 1–7', text: 'Pain reduction at injury site often noted' },
+      { time: 'Wk 2–4', text: 'Measurable tissue repair acceleration' },
+      { time: 'Wk 4–8', text: 'Significant functional improvement in injuries' },
+      { time: 'Wk 8–12', text: 'Full cycle benefit; cycling off recommended' },
+    ],
+    schedule: 'Daily SubQ near injury site or abdomen',
+    cycle: '8–12 weeks, then cycle off',
+    lo: '250 mcg/day (1x AM)',
+    mid: '500 mcg/day (1x AM)',
+    hi: '500 mcg 2x/day (AM + PM)',
+    pairsWith: ['TB-500 (Wolverine Stack)', 'GHK-Cu (GLOW Stack)', 'KPV'],
+    avoid: ['Do not mix in same syringe as TB-500'],
+    evidence: 2,
+    evidenceNote: 'Strong preclinical data (35+ animal studies); only 3 small human pilot studies as of 2025. FDA classifies as Category 2 bulk substance.',
+  },
+  'TB-500': {
+    category: 'Healing / Recovery',
+    tagline: 'Thymosin Beta-4 fragment for systemic tissue repair',
+    mechanism: 'Promotes actin regulation, cell migration, angiogenesis, and tissue regeneration system-wide. Unlike BPC-157 which works locally, TB-500 provides broad systemic healing. Reduces scar tissue formation.',
+    benefits: ['Systemic tissue repair (vs BPC-157 local action)', 'Inflammation reduction throughout body', 'Improved flexibility and range of motion', 'Cardiac protection', 'Wound healing acceleration', 'Muscle fiber regeneration'],
+    sideEffects: [
+      { text: 'Injection site redness/irritation', severity: 'low' },
+      { text: 'Mild fatigue during early use (rare)', severity: 'low' },
+      { text: 'Headache (occasional)', severity: 'low' },
+      { text: 'Theoretical concern: systemic peptide acting on multiple tissues — long-term unknown', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Systemic anti-inflammatory effect begins' },
+      { time: 'Wk 3–5', text: 'Flexibility improvements often noticed' },
+      { time: 'Wk 4–6', text: 'Tissue repair acceleration measurable' },
+      { time: 'Wk 8–10', text: 'Full cycle completion recommended' },
+    ],
+    schedule: 'Once weekly SubQ injection',
+    cycle: '10–12 weeks',
+    lo: '2 mg/wk',
+    mid: '5 mg/wk',
+    hi: '5 mg 2x/wk (loading wks 1–4), then 5 mg/wk',
+    pairsWith: ['BPC-157 (Wolverine Stack)', 'GHK-Cu', 'KPV'],
+    avoid: ['Do not mix in same syringe as BPC-157'],
+    evidence: 2,
+    evidenceNote: 'Limited human data; robust animal studies. WADA prohibited. Not FDA approved.',
+  },
+  'GHK-Cu': {
+    category: 'Anti-Aging / Regenerative',
+    tagline: 'Copper tripeptide — skin regeneration, collagen, anti-aging',
+    mechanism: 'Activates collagen synthesis, promotes angiogenesis, powerful antioxidant and anti-inflammatory. Resets genes toward a more youthful expression pattern. Works both subcutaneously and topically.',
+    benefits: ['Skin tightening and wrinkle reduction', 'Collagen and elastin production', 'Hair growth stimulation', 'Wound healing acceleration', 'Anti-inflammatory systemically', 'Neuroprotective effects', 'Antioxidant action'],
+    sideEffects: [
+      { text: 'Injection site redness (common, usually brief)', severity: 'low' },
+      { text: 'Temporary skin darkening near injection site (copper effect)', severity: 'low' },
+      { text: 'Very well tolerated overall — one of the safest peptides', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Skin texture improvements begin' },
+      { time: 'Wk 4–6', text: 'Collagen remodeling underway' },
+      { time: 'Wk 8–12', text: 'Visible skin tightening and anti-aging effects' },
+      { time: 'Month 4+', text: 'Continued collagen improvement with ongoing use' },
+    ],
+    schedule: 'Daily SubQ injection or topical application',
+    cycle: '12 weeks',
+    lo: '1 mg/day',
+    mid: '2 mg/day',
+    hi: '3–5 mg/day',
+    pairsWith: ['BPC-157', 'TB-500', 'KPV (KLOW stack)', 'L-Glutathione'],
+    avoid: ['None known — very well tolerated'],
+    evidence: 3,
+    evidenceNote: 'Solid human topical data; injectable protocols based on animal and clinical experience',
+  },
+  'CJC-1295 (no DAC)': {
+    category: 'Growth Hormone',
+    tagline: 'GHRH analog for pulsatile GH release — preferred GH peptide',
+    mechanism: 'Modified GHRH analog that stimulates pulsatile GH release from pituitary while preserving natural feedback loops. Short half-life (30 min) maintains physiological GH pulsatility. Best paired with Ipamorelin.',
+    benefits: ['Increased lean muscle mass', 'Fat loss (lipolysis stimulation)', 'Improved sleep quality and depth', 'Faster recovery from training', 'Anti-aging effects via GH/IGF-1 axis', 'Improved skin quality', 'Enhanced energy'],
+    sideEffects: [
+      { text: 'Water retention (common at start)', severity: 'low' },
+      { text: 'Mild joint aches (water retention effect)', severity: 'low' },
+      { text: 'Carpal tunnel symptoms if IGF-1 runs high', severity: 'med' },
+      { text: 'Headache at start', severity: 'low' },
+      { text: 'Numbness/tingling (dose-related)', severity: 'med' },
+      { text: 'Blood glucose elevation (GH is insulin antagonist)', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Better sleep quality, possible water retention' },
+      { time: 'Wk 4–6', text: 'Energy and recovery improvements' },
+      { time: 'Wk 8–12', text: 'Body composition changes visible' },
+      { time: 'Wk 12+', text: 'Peak body comp, anti-aging effects building' },
+    ],
+    schedule: 'Daily SubQ before bed on empty stomach (5 on / 2 off optional)',
+    cycle: '12–16 weeks on / 4 wks off',
+    lo: '100 mcg/day before bed',
+    mid: '200 mcg/day before bed',
+    hi: '300 mcg/day before bed',
+    pairsWith: ['Ipamorelin (classic GH stack)', 'Sermorelin', 'DSIP', 'BPC-157'],
+    avoid: ['Exogenous HGH (redundant/competing)', 'Insulin without medical supervision'],
+    evidence: 3,
+    evidenceNote: 'Phase 1 human data confirms GH elevation. Body comp claims based on clinical use and IGF-1 elevation data.',
+  },
+  'Ipamorelin': {
+    category: 'Growth Hormone',
+    tagline: 'Cleanest GH secretagogue — selective pulse without cortisol spike',
+    mechanism: 'Pentapeptide that mimics ghrelin to bind GHS-R1a receptor, triggering a clean GH pulse. Uniquely selective — unlike older GHRPs (GHRP-2, GHRP-6), it does NOT increase cortisol, prolactin, or ACTH. Peaks at ~40 min post-injection.',
+    benefits: ['Selective GH pulse without stress hormone elevation', 'Lean muscle preservation and growth', 'Fat loss via lipolysis', 'Deep sleep improvement', 'Recovery acceleration', 'Anti-aging effects', 'No hunger increase (unlike GHRP-6)'],
+    sideEffects: [
+      { text: 'Water retention (mild, usually temporary)', severity: 'low' },
+      { text: 'Facial flushing (brief, post-injection)', severity: 'low' },
+      { text: 'Mild headache initially', severity: 'low' },
+      { text: 'Blood glucose fluctuation at higher doses', severity: 'med' },
+      { text: 'Overall: one of the best-tolerated GH peptides', severity: 'low' },
+    ],
+    timeline: [
+      { time: '40 min', text: 'GH pulse peaks post-injection' },
+      { time: 'Wk 1–3', text: 'Sleep quality improvements' },
+      { time: 'Wk 4–8', text: 'Recovery and energy improvements' },
+      { time: 'Wk 8–12', text: 'Body composition changes, anti-aging effects' },
+    ],
+    schedule: 'Daily SubQ before bed on empty stomach',
+    cycle: '12 weeks on / 4 wks off',
+    lo: '100 mcg/day before bed',
+    mid: '200 mcg/day before bed',
+    hi: '300 mcg 2x/day (bed + AM)',
+    pairsWith: ['CJC-1295 no DAC (classic stack)', 'Sermorelin', 'DSIP'],
+    avoid: ['Exogenous HGH (redundant)', 'Avoid within 2 hrs of eating (insulin blunts GH pulse)'],
+    evidence: 3,
+    evidenceNote: 'Clinical pharmacology data confirms selective GH pulse. Body comp based on GH/IGF-1 elevation studies.',
+  },
+  'NAD+': {
+    category: 'Longevity / Energy',
+    tagline: 'Master coenzyme for cellular energy and DNA repair',
+    mechanism: 'Nicotinamide adenine dinucleotide — essential coenzyme in all living cells for mitochondrial electron transport chain, ATP production, and sirtuin activation. NAD+ declines ~50% by age 60. Replenishment activates longevity pathways.',
+    benefits: ['Cellular energy (ATP) optimization', 'Mitochondrial function restoration', 'DNA repair activation via PARP enzymes', 'Sirtuin longevity pathway activation', 'Cognitive clarity and focus', 'Addiction support (reduces withdrawal)', 'Anti-aging at cellular level'],
+    sideEffects: [
+      { text: 'Flushing and warmth (common at start, especially IV)', severity: 'med' },
+      { text: 'Fatigue initially as mitochondria adapt', severity: 'low' },
+      { text: 'Nausea at high doses', severity: 'low' },
+      { text: 'Headache during early use', severity: 'low' },
+      { text: 'Very safe long-term profile', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Days 1–7', text: 'Energy and clarity often felt quickly' },
+      { time: 'Wk 2–4', text: 'Sustained energy improvement' },
+      { time: 'Wk 6–10', text: 'Metabolic and anti-aging effects accumulate' },
+    ],
+    schedule: 'Daily SubQ injection (AM preferred) or IV infusion',
+    cycle: '10 weeks on / 2 wks off',
+    lo: '100 mg/day',
+    mid: '500 mg/day',
+    hi: '1,000 mg/day',
+    pairsWith: ['SS-31', 'MOTS-c', '5-amino-1mq', 'Virtually all peptides'],
+    avoid: ['None known — pairs with everything'],
+    evidence: 3,
+    evidenceNote: 'Strong mechanistic and animal data. Growing human clinical trial base for IV NAD+.',
+  },
+  'Sermorelin': {
+    category: 'Growth Hormone',
+    tagline: 'Original GHRH analog — physiological GH stimulation',
+    mechanism: 'Synthetic analog of endogenous GHRH (1-29 fragment). Preserves natural somatostatin feedback preventing supraphysiological IGF-1. Shorter half-life (10–20 min) than CJC-1295 means more natural pulsatility.',
+    benefits: ['Natural pulsatile GH stimulation', 'Preserved negative feedback (safer than exogenous HGH)', 'Improved sleep quality', 'Lean muscle support', 'Fat metabolism', 'Anti-aging effects', 'No suppression of natural GH axis'],
+    sideEffects: [
+      { text: 'Flushing (common at injection)', severity: 'low' },
+      { text: 'Headache', severity: 'low' },
+      { text: 'Hypothyroidism reported in ~6.5% in some studies', severity: 'med' },
+      { text: 'Water retention (mild)', severity: 'low' },
+      { text: 'Drowsiness when injected before bed', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Sleep improvement common early' },
+      { time: 'Wk 4–6', text: 'Energy and recovery improvements' },
+      { time: 'Wk 8–12', text: 'Body composition changes' },
+    ],
+    schedule: 'Daily SubQ 30–60 min before bed on empty stomach',
+    cycle: '12 weeks on / 4 wks off',
+    lo: '200 mcg/night',
+    mid: '300 mcg/night',
+    hi: '500 mcg/night',
+    pairsWith: ['Ipamorelin (synergistic GH pulse)', 'DSIP', 'CJC-1295'],
+    avoid: ['Exogenous HGH (competing pathways)'],
+    evidence: 3,
+    evidenceNote: 'FDA approved for pediatric GH deficiency (discontinued 2008, manufacturing). Solid adult clinical use data.',
+  },
+  'Epithalon': {
+    category: 'Anti-Aging / Longevity',
+    tagline: 'Telomerase activator — longevity at the cellular level',
+    mechanism: 'Tetrapeptide (Ala-Glu-Asp-Gly) that activates telomerase enzyme to lengthen telomeres, the protective caps on chromosomes that shorten with each cell division. Also regulates pineal gland melatonin production.',
+    benefits: ['Telomere elongation (cellular anti-aging)', 'Improved sleep via melatonin regulation', 'Antioxidant protection', 'Cancer risk reduction (telomere integrity)', 'Immune system normalization', 'Lifespan extension in animal models'],
+    sideEffects: [
+      { text: 'Very well tolerated — no significant side effects reported', severity: 'low' },
+      { text: 'Brief injection site reactions (mild)', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Cycle 1', text: 'Sleep improvement often first cycle' },
+      { time: '3–6 months', text: 'Telomere effects building with repeated cycles' },
+      { time: 'Long-term', text: 'Cumulative anti-aging benefit with 2–4 cycles/year' },
+    ],
+    schedule: 'Daily SubQ for short burst cycles (10–20 days), 2–4x per year ONLY',
+    cycle: '10–20 day bursts, not continuous',
+    lo: '5 mg/day × 10 days',
+    mid: '10 mg/day × 10 days',
+    hi: '10 mg/day × 20 days',
+    pairsWith: ['Thymosin Alpha-1', 'DSIP', 'NAD+', 'Melatonin'],
+    avoid: ['Continuous use — must cycle; receptor adaptation occurs'],
+    evidence: 2,
+    evidenceNote: 'Russian research base. Animal telomere data solid. Limited human RCT data.',
+  },
+  'Thymosin Alpha-1': {
+    category: 'Immune',
+    tagline: 'Most potent immune-modulating peptide available',
+    mechanism: 'Thymic peptide that activates T-cells, NK cells, and dendritic cells. Modulates both innate and adaptive immunity. FDA-approved as Zadaxin in 35+ countries for hepatitis and immune deficiency.',
+    benefits: ['Enhanced antiviral immune response', 'T-cell and NK cell activation', 'Anti-cancer immune surveillance', 'Autoimmune regulation (bidirectional)', 'Chronic infection support', 'Long COVID and post-viral syndrome', 'Anti-aging via thymic restoration'],
+    sideEffects: [
+      { text: 'Injection site reactions (mild, transient)', severity: 'low' },
+      { text: 'Flu-like symptoms first 1–2 doses (immune activation)', severity: 'low' },
+      { text: 'Fatigue initially', severity: 'low' },
+      { text: 'Generally very well tolerated in clinical use', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Immune activation — may feel flu-like briefly' },
+      { time: 'Wk 2–4', text: 'Energy and resilience improvements' },
+      { time: 'Wk 6–10', text: 'Full immunomodulation effect' },
+    ],
+    schedule: 'SubQ injection 2x per week',
+    cycle: '10–12 weeks',
+    lo: '0.5 mg 2x/wk',
+    mid: '1.0 mg 2x/wk',
+    hi: '1.6 mg 2x/wk',
+    pairsWith: ['Epithalon', 'BPC-157', 'NAD+', 'VIP'],
+    avoid: ['Active autoimmune flares without medical supervision'],
+    evidence: 4,
+    evidenceNote: 'FDA-approved (Zadaxin) in 35+ countries for HBV, HCV, immune deficiency. Substantial human trial data.',
+  },
+  'PT-141': {
+    category: 'Sexual Function',
+    tagline: 'Brain-based sexual arousal peptide — works for both sexes',
+    mechanism: 'Melanocortin-4 receptor agonist acting centrally in the brain (hypothalamus). Unlike PDE5 inhibitors (Viagra), PT-141 works on desire and arousal at the neural level — effective even when Viagra fails.',
+    benefits: ['Increased sexual desire and arousal in both men and women', 'Effective for psychological ED (where Viagra/Cialis fail)', 'Female sexual dysfunction treatment', 'Spontaneous erections in men within 4 hrs', 'Central mechanism — not cardiovascular'],
+    sideEffects: [
+      { text: 'Nausea (common, especially at higher doses)', severity: 'med' },
+      { text: 'Flushing', severity: 'low' },
+      { text: 'Headache', severity: 'low' },
+      { text: 'Increased blood pressure (transient)', severity: 'med' },
+      { text: 'Spontaneous erections at inconvenient times', severity: 'low' },
+      { text: 'Yawning (common, benign melanocortin effect)', severity: 'low' },
+    ],
+    timeline: [
+      { time: '45 min', text: 'Effects begin' },
+      { time: '2–4 hrs', text: 'Peak effect window' },
+      { time: '6–12 hrs', text: 'Duration of effect' },
+    ],
+    schedule: 'SubQ as needed, 45 min before activity — empty stomach',
+    cycle: 'Max 2x per week',
+    lo: '0.5 mg as needed',
+    mid: '1 mg as needed',
+    hi: '2 mg as needed',
+    pairsWith: ['Melanotan II (enhanced effect)'],
+    avoid: ['More than 2x/week', 'Cardiovascular disease without medical clearance'],
+    evidence: 3,
+    evidenceNote: 'Approved in EU as Vyleesi for female hypoactive sexual desire disorder.',
+  },
+  'SS-31': {
+    category: 'Mitochondrial',
+    tagline: 'Mitochondria-targeted antioxidant for cellular protection',
+    mechanism: 'Concentrates in the inner mitochondrial membrane at cristae, reducing oxidative stress at the source. Prevents mitochondrial permeability transition — a key trigger of cell death.',
+    benefits: ['Mitochondrial protection and repair', 'Improved cellular energy production', 'Cardiac protection', 'Anti-aging at mitochondrial level', 'Exercise performance and recovery', 'Kidney protection', 'Neurodegenerative disease support'],
+    sideEffects: [
+      { text: 'Injection site reactions (mild)', severity: 'low' },
+      { text: 'Very well tolerated in clinical studies', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Energy and exercise recovery improvement' },
+      { time: 'Wk 6–10', text: 'Mitochondrial function optimization' },
+    ],
+    schedule: 'Daily SubQ injection (AM preferred)',
+    cycle: '10 weeks',
+    lo: '1 mg/day',
+    mid: '5 mg/day',
+    hi: '10 mg/day',
+    pairsWith: ['NAD+', 'MOTS-c', '5-amino-1mq'],
+    avoid: ['None known'],
+    evidence: 3,
+    evidenceNote: 'Phase 2 human trials for heart failure and kidney disease. Strong mechanistic data.',
+  },
+  'KPV': {
+    category: 'Anti-Inflammatory',
+    tagline: 'Alpha-MSH fragment for GI and systemic inflammation',
+    mechanism: 'C-terminal tripeptide of alpha-MSH that potently inhibits NF-kB inflammatory pathway. Particularly effective at mucosal surfaces (gut lining). Oral bioavailability due to resistance to GI degradation.',
+    benefits: ['IBD, Crohn\'s, ulcerative colitis relief', 'Leaky gut healing', 'Wound healing', 'Skin inflammation (topical)', 'Immune modulation', 'Anti-inflammatory throughout GI tract'],
+    sideEffects: [
+      { text: 'Extremely well tolerated — minimal side effects', severity: 'low' },
+      { text: 'Injection site reactions (mild, brief)', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'GI inflammation reduction begins' },
+      { time: 'Wk 3–6', text: 'Mucosal healing progresses' },
+      { time: 'Wk 6–8', text: 'Full anti-inflammatory effect' },
+    ],
+    schedule: 'Daily SubQ or oral',
+    cycle: '8 weeks',
+    lo: '500 mcg/day',
+    mid: '1 mg/day',
+    hi: '2 mg/day',
+    pairsWith: ['BPC-157', 'TB-500', 'GHK-Cu (KLOW stack)', 'VIP'],
+    avoid: ['None known'],
+    evidence: 2,
+    evidenceNote: 'Animal and in vitro data strong. Human clinical trials limited but promising.',
+  },
+  'Semax': {
+    category: 'Cognitive',
+    tagline: 'Russian nootropic peptide for focus and neuroprotection',
+    mechanism: 'ACTH(4-7) analog that elevates BDNF and NGF, modulates dopamine/serotonin systems, and protects neurons. Widely used in Russia for stroke rehabilitation. Improves hippocampal neuroplasticity.',
+    benefits: ['Enhanced focus and cognitive performance', 'Memory consolidation', 'Neuroprotection (stroke, TBI)', 'Mood elevation', 'Neuroplasticity improvement', 'Anxiety reduction at lower doses'],
+    sideEffects: [
+      { text: 'Irritability at high doses', severity: 'med' },
+      { text: 'Fatigue post-cycle (BDNF reset)', severity: 'low' },
+      { text: 'Headache occasionally', severity: 'low' },
+      { text: 'Intranasal: nasal irritation', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Days 1–7', text: 'Cognitive enhancement often immediate' },
+      { time: 'Wk 2–4', text: 'Neuroprotective effects building' },
+      { time: 'Wk 4–6', text: 'Full neuroplasticity benefit' },
+    ],
+    schedule: 'Daily SubQ or intranasal',
+    cycle: '6 weeks on / 2 wks off',
+    lo: '200 mcg/day',
+    mid: '600 mcg/day',
+    hi: '1 mg/day',
+    pairsWith: ['Selank (cognitive stack)', 'BPC-157', 'NAD+'],
+    avoid: ['High doses in anxiety-prone individuals (can worsen)'],
+    evidence: 3,
+    evidenceNote: 'FDA-approved in Russia for stroke and nootropic use. Limited Western RCT data.',
+  },
+  'Selank': {
+    category: 'Cognitive',
+    tagline: 'Anxiolytic nootropic without sedation or dependence',
+    mechanism: 'Tuftsin analog that modulates GABA-A receptors and enkephalin metabolism, elevates BDNF, and reduces anxiety without sedation or tolerance. Clean anxiolytic mechanism unlike benzodiazepines.',
+    benefits: ['Anxiety reduction without sedation', 'No dependency or withdrawal', 'BDNF elevation', 'Cognitive function under stress', 'Mood stabilization', 'Immune modulation (tuftsin origin)'],
+    sideEffects: [
+      { text: 'Very well tolerated — minimal side effects', severity: 'low' },
+      { text: 'Mild sedation at very high doses', severity: 'low' },
+      { text: 'Intranasal: mild nasal irritation', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Days 1–3', text: 'Anxiolytic effect often rapid' },
+      { time: 'Wk 2–4', text: 'Mood stabilization and BDNF effects' },
+      { time: 'Wk 4–6', text: 'Full benefit' },
+    ],
+    schedule: 'Daily SubQ or intranasal',
+    cycle: '6 weeks on / 2 wks off',
+    lo: '250 mcg/day',
+    mid: '500 mcg/day',
+    hi: '1 mg/day',
+    pairsWith: ['Semax (cognitive stack)', 'DSIP', 'NAD+'],
+    avoid: ['High-dose benzodiazepines (additive sedation possible)'],
+    evidence: 2,
+    evidenceNote: 'Approved in Russia. Limited English-language RCT data available.',
+  },
+  'HCG': {
+    category: 'Hormonal',
+    tagline: 'LH mimicry for testosterone and fertility support',
+    mechanism: 'Mimics luteinizing hormone (LH) to stimulate Leydig cells in testes to produce testosterone. Essential during or after TRT to preserve testicular function and fertility.',
+    benefits: ['Testosterone production stimulation', 'Testicular atrophy prevention during TRT', 'Fertility preservation', 'PCT support post-cycle', 'Libido support'],
+    sideEffects: [
+      { text: 'Gynecomastia risk (elevates estradiol via aromatization)', severity: 'med' },
+      { text: 'Water retention', severity: 'low' },
+      { text: 'Mood swings (estrogen fluctuation)', severity: 'med' },
+      { text: 'Desensitization with prolonged high-dose use', severity: 'med' },
+      { text: 'Injection site pain (IM)', severity: 'low' },
+    ],
+    timeline: [
+      { time: '24–48 hrs', text: 'Testosterone response begins' },
+      { time: 'Wk 2–4', text: 'Full testosterone/fertility support' },
+    ],
+    schedule: 'SubQ or IM 3x per week',
+    cycle: '8 weeks',
+    lo: '500 IU every other day',
+    mid: '1,000–1,500 IU 3x/wk',
+    hi: '2,000 IU 3x/wk',
+    pairsWith: ['KissPeptin-10 (upstream HPG support)', 'PCT protocols'],
+    avoid: ['Estrogen-sensitive conditions without aromatase inhibitor'],
+    evidence: 5,
+    evidenceNote: 'FDA approved. Extensive clinical data for fertility, hypogonadism, PCT.',
+  },
+  'Melanotan II': {
+    category: 'Hormonal / Tanning',
+    tagline: 'Tanning + sexual arousal via melanocortin receptors',
+    mechanism: 'Non-selective melanocortin receptor agonist — activates MC1R (tanning), MC3R, and MC4R (sexual arousal). Dual effect makes it popular but also increases side effect profile vs Melanotan I.',
+    benefits: ['Skin tanning without UV exposure', 'Increased libido and sexual arousal', 'Spontaneous erections (men)', 'Female arousal enhancement', 'Appetite suppression (MC3R/MC4R effect)'],
+    sideEffects: [
+      { text: 'Nausea (very common at start — dose low)', severity: 'med' },
+      { text: 'Flushing', severity: 'low' },
+      { text: 'Spontaneous erections', severity: 'low' },
+      { text: 'Yawning', severity: 'low' },
+      { text: 'Mole/freckle darkening (monitor changes)', severity: 'med' },
+      { text: 'Blood pressure increase', severity: 'med' },
+      { text: 'Theoretical melanoma risk (stimulates melanocytes) — unconfirmed', severity: 'med' },
+    ],
+    timeline: [
+      { time: '30 min', text: 'Arousal effects begin' },
+      { time: 'Wk 1–2', text: 'Tan development with minimal UV' },
+    ],
+    schedule: 'Daily SubQ loading, then EOD maintenance',
+    cycle: '8 weeks',
+    lo: '250 mcg/day loading → 250 mcg 3x/wk',
+    mid: '500 mcg/day loading → 500 mcg EOD',
+    hi: '1 mg/day loading → 500 mcg EOD',
+    pairsWith: ['PT-141 (synergistic arousal)'],
+    avoid: ['High doses without titration', 'Personal or family history of melanoma'],
+    evidence: 2,
+    evidenceNote: 'Not FDA approved. Animal and limited human data on tanning. PT-141 (bremelanotide) derived from MT-II is FDA approved.',
+  },
+  'DSIP': {
+    category: 'Cognitive / Sleep',
+    tagline: 'Delta sleep-inducing peptide for deep sleep and recovery',
+    mechanism: 'Promotes slow-wave (delta) sleep by modulating hypothalamic-pituitary axis. Reduces cortisol, supports stress adaptation, and enhances GH release during sleep.',
+    benefits: ['Deeper slow-wave sleep', 'Cortisol reduction', 'Stress resilience', 'Enhanced overnight GH pulse', 'Anxiety reduction', 'Opiate withdrawal support'],
+    sideEffects: [
+      { text: 'Drowsiness (expected — take before bed)', severity: 'low' },
+      { text: 'Headache occasionally', severity: 'low' },
+      { text: 'Very well tolerated overall', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Night 1–3', text: 'Sleep improvement often rapid' },
+      { time: 'Wk 2–4', text: 'Cortisol normalization' },
+      { time: 'Wk 4–6', text: 'Full sleep architecture optimization' },
+    ],
+    schedule: 'Daily SubQ 30 min before bed',
+    cycle: '6–8 weeks',
+    lo: '100 mcg/night',
+    mid: '200 mcg/night',
+    hi: '300 mcg/night',
+    pairsWith: ['Sermorelin + Ipamorelin (sleep stack)', 'Epithalon', 'Melatonin'],
+    avoid: ['Operating heavy machinery if used during the day'],
+    evidence: 2,
+    evidenceNote: 'Russian research origin. EEG sleep data in humans. Limited Western RCT data.',
+  },
+  'L-Glutathione': {
+    category: 'Anti-Aging / Detox',
+    tagline: 'Master antioxidant — detox, immune, skin brightening',
+    mechanism: 'Tripeptide that directly neutralizes reactive oxygen species and supports Phase II liver detoxification. Regenerates vitamins C and E. Declines with age and oxidative stress.',
+    benefits: ['Heavy metal and toxin chelation', 'Immune system support', 'Skin brightening and lightening', 'Anti-aging at cellular level', 'Liver protection', 'Athletic recovery (reduces oxidative damage)'],
+    sideEffects: [
+      { text: 'Very well tolerated — minimal adverse effects', severity: 'low' },
+      { text: 'Skin lightening (may be undesired)', severity: 'low' },
+      { text: 'Nausea at high IV doses (rare)', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Energy and detox improvement' },
+      { time: 'Wk 4–6', text: 'Skin brightening visible' },
+      { time: 'Wk 8–10', text: 'Full antioxidant and anti-aging effect' },
+    ],
+    schedule: 'SubQ 2–3x/week or IV infusion',
+    cycle: '10 weeks',
+    lo: '500 mg 2x/wk',
+    mid: '1,000 mg 2–3x/wk',
+    hi: '1,500 mg 3x/wk',
+    pairsWith: ['NAD+', 'GHK-Cu', 'Vitamin C (enhances efficacy significantly)'],
+    avoid: ['Chemotherapy (antioxidant interference — consult oncologist)'],
+    evidence: 3,
+    evidenceNote: 'Well established in clinical medicine. IV form widely used. Injectable SubQ protocol based on clinical experience.',
+  },
+  'MOTS-c': {
+    category: 'Mitochondrial',
+    tagline: 'Mitochondria-derived exercise mimetic peptide',
+    mechanism: 'Encoded in mitochondrial genome — activates AMPK pathway and GLUT4 translocation, mimicking effects of aerobic exercise at cellular level. Improves insulin sensitivity and metabolic flexibility.',
+    benefits: ['Exercise mimetic effects', 'Improved insulin sensitivity', 'Metabolic rate increase', 'Fat oxidation', 'Longevity pathway activation', 'Anti-obesity effects'],
+    sideEffects: [
+      { text: 'Injection site reactions (mild)', severity: 'low' },
+      { text: 'Very limited human data — side effect profile not fully characterized', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Metabolic improvements begin' },
+      { time: 'Wk 6–10', text: 'Exercise performance and body comp changes' },
+    ],
+    schedule: 'Daily SubQ injection (AM preferred)',
+    cycle: '10 weeks',
+    lo: '5 mg/day',
+    mid: '10 mg/day',
+    hi: '15 mg/day',
+    pairsWith: ['SS-31', 'NAD+', '5-amino-1mq'],
+    avoid: ['None established'],
+    evidence: 2,
+    evidenceNote: 'Promising animal and early human data. Active research area (2020–2025).',
+  },
+  'Retarutide': {
+    category: 'Weight Loss / Metabolic',
+    tagline: 'Triple GIP + GLP-1 + glucagon agonist — most powerful weight loss peptide in trials',
+    mechanism: 'First triple-receptor agonist: activates GLP-1 (appetite suppression), GIP (insulin/fat metabolism), and glucagon (energy expenditure) simultaneously. The glucagon component uniquely increases caloric burn on top of appetite reduction, making it more potent than dual agonists.',
+    benefits: ['24.2% average body weight loss at highest dose in Phase 2 trial (48 weeks) — highest ever recorded for a pharmaceutical', 'Superior glycemic control vs dulaglutide in T2D trial', 'Over 80% relative reduction in liver fat (NAFLD/NASH) at 8–12mg', 'Hepatic steatosis resolved in 85%+ of NAFLD participants', 'Improvements in blood pressure, lipids, and cardiometabolic markers', 'No weight loss plateau observed through 48 weeks at high doses'],
+    sideEffects: [
+      { text: 'Nausea (most common, dose-dependent, peaks during titration)', severity: 'med' },
+      { text: 'Vomiting', severity: 'med' },
+      { text: 'Diarrhea', severity: 'low' },
+      { text: 'Constipation', severity: 'low' },
+      { text: 'Decreased appetite (expected effect)', severity: 'low' },
+      { text: 'Injection site reactions', severity: 'low' },
+      { text: 'Gallbladder disease (class effect of GLP-1 agents)', severity: 'high' },
+      { text: 'Not yet FDA approved — Phase 3 trials ongoing through 2025', severity: 'high' },
+    ],
+    timeline: [
+      { time: 'Wk 1–4', text: 'Appetite suppression begins; GI adjustment period' },
+      { time: 'Wk 4–12', text: 'Accelerating weight loss; body adapting to triple mechanism' },
+      { time: 'Wk 12–24', text: 'Significant weight reduction (often 10–15%)' },
+      { time: 'Wk 24–48', text: 'Continued loss without plateau — up to 24% total at max dose' },
+    ],
+    schedule: 'Once weekly SubQ injection',
+    cycle: '20+ weeks minimum',
+    lo: '2 mg/wk → 4 mg/wk maintenance',
+    mid: '2→4→6→8 mg/wk (4 wks each step)',
+    hi: '2→4→6→8→10→12 mg/wk (max dose)',
+    pairsWith: ['NAD+', 'GHK-Cu', 'AOD9604 (adjunct lipolysis)'],
+    avoid: ['Semaglutide', 'Tirzepatide (never combine GLP-1 class agents)'],
+    evidence: 3,
+    evidenceNote: 'Phase 2 NEJM RCT (338 participants, 48 wks). Phase 3 trials ongoing. Not yet FDA approved.',
+  },
+  'Cagrilintide': {
+    category: 'Weight Loss / Appetite',
+    tagline: 'Long-acting amylin analog — adds 5–8% extra weight loss on top of GLP-1',
+    mechanism: 'Amylin analog that activates amylin receptors in the hypothalamus and brainstem to reduce food intake, slow gastric emptying, and suppress glucagon — through a completely different pathway than GLP-1. Combined with semaglutide (CagriSema), it produced 25%+ weight loss in Phase 3.',
+    benefits: ['Additional 5–8% weight loss stacked on GLP-1 therapy', 'CagriSema (sema + cagri) showed 25.1% weight loss in Phase 3 REDEFINE trial', 'Different mechanism than GLP-1 — genuine additive effect not redundancy', 'Improved satiety and reduced meal frequency', 'Better weight loss than semaglutide alone at matched doses'],
+    sideEffects: [
+      { text: 'Nausea (additive with semaglutide in combo)', severity: 'med' },
+      { text: 'Injection site reactions (more common than GLP-1 alone)', severity: 'low' },
+      { text: 'GI effects amplified when combined with GLP-1', severity: 'med' },
+      { text: 'Not FDA approved as standalone (CagriSema combo in review)', severity: 'high' },
+    ],
+    timeline: [
+      { time: 'Wk 1–4', text: 'Satiety enhancement noticeable early' },
+      { time: 'Wk 8+', text: 'Additive weight loss on top of GLP-1 becomes measurable' },
+      { time: 'Wk 20+', text: 'Full CagriSema effect — 25%+ weight loss at max doses' },
+    ],
+    schedule: 'Once weekly SubQ (separate site from semaglutide)',
+    cycle: '20+ weeks',
+    lo: '0.16 mg/wk → 0.3 mg/wk maintenance',
+    mid: '0.16→0.3→0.6→1.2 mg/wk (4 wks each)',
+    hi: '2.4 mg/wk (full CagriSema Phase 3 dose)',
+    pairsWith: ['Semaglutide (CagriSema — proven Phase 3 combo)', 'Tirzepatide'],
+    avoid: ['Never combine semaglutide + tirzepatide in same stack'],
+    evidence: 4,
+    evidenceNote: 'Phase 3 REDEFINE trial data. CagriSema (Novo Nordisk) FDA submission expected 2025.',
+  },
+  'Lipo-C': {
+    category: 'Fat Loss Support',
+    tagline: 'Lipotropic injection blend — fat mobilization and liver support',
+    mechanism: 'Combination of lipotropic agents (methionine, inositol, choline) plus B12. Supports fat transport out of liver, enhances fatty acid oxidation, and provides energy support. Works through metabolic cofactor replenishment rather than hormonal signaling.',
+    benefits: ['Enhanced fat mobilization from liver', 'Energy boost and fatigue reduction (B12 component)', 'Liver support and detoxification', 'Complements GLP-1 therapy by addressing a different fat loss pathway', 'Improved mood and metabolism support'],
+    sideEffects: [
+      { text: 'Injection site soreness (IM injection)', severity: 'low' },
+      { text: 'Urine odor changes (methionine metabolism)', severity: 'low' },
+      { text: 'Nausea at higher doses (rare)', severity: 'low' },
+      { text: 'Allergic reactions in rare cases', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Energy improvement often quick with B12' },
+      { time: 'Wk 4–8', text: 'Fat mobilization support building' },
+    ],
+    schedule: 'IM or SubQ injection 1–3x per week',
+    cycle: '10 weeks',
+    lo: '0.5 ml 1x/wk',
+    mid: '1 ml 2x/wk',
+    hi: '1 ml 3x/wk',
+    pairsWith: ['Semaglutide', 'Tirzepatide', 'NAD+'],
+    avoid: ['Allergy to any lipotropic components'],
+    evidence: 2,
+    evidenceNote: 'Long clinical use history. Limited rigorous RCT data specifically for SubQ lipo-C blends.',
+  },
+  'AOD9604': {
+    category: 'Fat Loss',
+    tagline: 'HGH C-terminal fragment — pure lipolysis, no IGF-1 effects',
+    mechanism: 'Synthetic 16 amino acid fragment of HGH (residues 176–191) that retains the fat-burning portion of growth hormone while eliminating anabolic and diabetogenic effects. Upregulates beta-3 adrenergic receptors to enhance lipolysis. Does NOT raise IGF-1 or blood glucose — confirmed across 6 clinical trials.',
+    benefits: ['Pure lipolysis stimulation without GH side effects', 'No effect on IGF-1 levels (confirmed in 6 human trials)', 'No negative impact on blood sugar or insulin sensitivity', 'FDA GRAS status (Generally Recognized As Safe) for food use', 'Potential cartilage repair benefit (emerging research)', 'Good safety profile — indistinguishable from placebo in tolerability'],
+    sideEffects: [
+      { text: 'Injection site reactions (mild, transient)', severity: 'low' },
+      { text: 'Headache (occasional)', severity: 'low' },
+      { text: 'Modest clinical effect — ~1.8kg extra loss vs placebo in 12-wk trial', severity: 'low' },
+      { text: 'WADA prohibited in competitive sports (S0 category)', severity: 'high' },
+      { text: 'Development halted by manufacturer in 2007 due to insufficient fat loss in trials', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Lipolytic effect begins' },
+      { time: 'Wk 8–12', text: 'Modest fat loss contribution' },
+    ],
+    schedule: 'Daily SubQ on empty stomach (AM preferred)',
+    cycle: '12 weeks',
+    lo: '250 mcg/day',
+    mid: '500 mcg/day',
+    hi: '500 mcg 2x/day (AM + pre-workout)',
+    pairsWith: ['HGH Fragment 176-191', 'GLP-1 peptides', '5-amino-1mq', 'CJC-1295 + Ipamorelin'],
+    avoid: ['Competitive athletes (WADA banned)'],
+    evidence: 3,
+    evidenceNote: '6 human clinical trials (~900 subjects). GRAS status. Development discontinued by Metabolic Pharmaceuticals 2007.',
+  },
+  'HGH Fragment': {
+    category: 'Fat Loss',
+    tagline: 'Isolated fat-burning fragment of HGH — pure lipolysis without growth effects',
+    mechanism: 'Fragment 176-191 of human growth hormone isolates only the lipolytic (fat-burning) region. Increases fat oxidation and thermogenesis via beta-3 adrenergic pathway without activating the GH receptor, so no anabolic, diabetogenic, or IGF-1 effects occur.',
+    benefits: ['Pure targeted fat loss without growth hormone side effects', 'No IGF-1 elevation', 'No blood sugar disruption', 'Increased thermogenesis in adipose tissue', 'Body fat reduction without muscle loss', 'Better safety profile than full HGH for fat loss goals'],
+    sideEffects: [
+      { text: 'Mild injection site reactions', severity: 'low' },
+      { text: 'Transient blood glucose lowering (generally mild)', severity: 'low' },
+      { text: 'Headache (occasional)', severity: 'low' },
+      { text: 'Very well tolerated in clinical trials', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Fat oxidation increase detectable' },
+      { time: 'Wk 8–12', text: 'Visible fat loss at consistent use with diet/exercise' },
+    ],
+    schedule: 'Daily SubQ 2–3x on empty stomach',
+    cycle: '12 weeks',
+    lo: '250 mcg 2x/day',
+    mid: '500 mcg 2x/day',
+    hi: '500 mcg 3x/day',
+    pairsWith: ['AOD9604 (synergistic fat loss)', 'CJC-1295 + Ipamorelin', 'GLP-1 peptides'],
+    avoid: ['Eating within 30 min of injection (insulin blunts effect)'],
+    evidence: 3,
+    evidenceNote: 'Multiple clinical trials. GRAS status for food use. Not FDA approved as drug.',
+  },
+  'Tesamorelin': {
+    category: 'Growth Hormone / Fat Loss',
+    tagline: 'Only FDA-approved GHRH peptide — visceral fat specialist',
+    mechanism: 'Stabilized GHRH analog that stimulates pulsatile GH release from the pituitary. Unlike exogenous HGH, preserves natural GH feedback. Uniquely studied and approved for visceral/abdominal fat reduction. Elevates both GH and IGF-1.',
+    benefits: ['FDA-approved for HIV-associated lipodystrophy (visceral fat)', '15–17% visceral fat reduction in 26 weeks (clinical trial)', 'Improved body composition', 'Cognitive improvement (emerging data — reduces brain amyloid)', 'Superior to other GHRH analogs for visceral fat specifically', 'Preserved natural GH pulsatility vs exogenous HGH'],
+    sideEffects: [
+      { text: 'Injection site reactions (common)', severity: 'low' },
+      { text: 'Fluid retention / edema', severity: 'med' },
+      { text: 'Joint aches (IGF-1 elevation effect)', severity: 'med' },
+      { text: 'Glucose intolerance at high doses (GH insulin antagonism)', severity: 'med' },
+      { text: 'Carpal tunnel symptoms at elevated IGF-1', severity: 'med' },
+      { text: 'Nausea, headache', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'GH and IGF-1 elevation measurable' },
+      { time: 'Wk 8–12', text: 'Visible visceral fat reduction beginning' },
+      { time: 'Wk 26', text: '~15% visceral fat reduction at standard dose in trials' },
+    ],
+    schedule: 'Daily SubQ injection',
+    cycle: '16–24 weeks',
+    lo: '1 mg/day',
+    mid: '2 mg/day',
+    hi: '2 mg/day extended (24-wk cycle)',
+    pairsWith: ['Ipamorelin (complementary GH pulse)', 'GHK-Cu'],
+    avoid: ['Active malignancy', 'Diabetes without glucose monitoring', 'Pregnancy'],
+    evidence: 5,
+    evidenceNote: 'FDA approved (Egrifta) for HIV lipodystrophy. Extensive Phase 3 clinical trial data.',
+  },
+  'HGH 191AA': {
+    category: 'Growth Hormone',
+    tagline: 'Recombinant human growth hormone — the full molecule',
+    mechanism: 'Synthetic 191 amino acid human growth hormone identical to endogenous GH. Directly binds GH receptors throughout body, stimulating IGF-1 production in liver. Bypasses hypothalamic-pituitary regulation — unlike GH secretagogues. Exogenous source means no feedback modulation.',
+    benefits: ['Increased lean muscle mass and strength', 'Significant fat loss (especially visceral)', 'Improved recovery from injury and training', 'Skin quality and anti-aging effects', 'Bone density improvement', 'Enhanced energy and sense of wellbeing'],
+    sideEffects: [
+      { text: 'Water retention / edema (very common)', severity: 'med' },
+      { text: 'Joint pain and carpal tunnel (IGF-1 elevation)', severity: 'med' },
+      { text: 'Insulin resistance / blood glucose elevation', severity: 'high' },
+      { text: 'Acromegaly risk at excessive doses (enlarged bones/organs)', severity: 'high' },
+      { text: 'Suppresses natural GH axis with prolonged use', severity: 'high' },
+      { text: 'Potential increased cancer risk with long-term elevated IGF-1 (theoretical)', severity: 'high' },
+      { text: 'Headaches, nausea, fatigue initially', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'IGF-1 rises, possible water retention' },
+      { time: 'Wk 4–8', text: 'Recovery and energy improvements' },
+      { time: 'Wk 12–16', text: 'Body composition changes visible' },
+      { time: 'Wk 16–24', text: 'Peak body composition benefit' },
+    ],
+    schedule: 'Daily SubQ injection (AM or split AM/PM)',
+    cycle: '16–24 weeks',
+    lo: '1–2 IU/day',
+    mid: '2–4 IU/day',
+    hi: '4–6 IU/day (split AM/PM)',
+    pairsWith: ['IGF-1 LR3 (advanced body comp)', 'BPC-157 (injury prevention)'],
+    avoid: ['Active diabetes', 'History of cancer', 'Acromegaly', 'Without bloodwork monitoring'],
+    evidence: 5,
+    evidenceNote: 'FDA approved for specific medical indications. Extensive clinical use. Off-label use well-documented.',
+  },
+  'IGF-1 LR3': {
+    category: 'Muscle Growth',
+    tagline: 'Most anabolic peptide — muscle hyperplasia and nutrient partitioning',
+    mechanism: 'Long-acting IGF-1 analog (half-life 20–30 hrs vs 15 min for native IGF-1). Activates IGF-1 receptor to stimulate muscle cell proliferation (hyperplasia — new cells, not just growth). Also dramatically improves nutrient partitioning — calories go to muscle not fat.',
+    benefits: ['Muscle cell hyperplasia (new muscle fibers)', 'Superior nutrient partitioning', 'Accelerated recovery', 'Fat loss via improved insulin sensitivity', 'Full-body anabolic effect', 'Connective tissue support'],
+    sideEffects: [
+      { text: 'Hypoglycemia — blood sugar drops post-injection (serious risk)', severity: 'high' },
+      { text: 'Must eat carbohydrates within 30 min of injection', severity: 'high' },
+      { text: 'Jaw / facial bone growth at high doses (acromegaly-like)', severity: 'high' },
+      { text: 'Organ growth with prolonged high doses', severity: 'high' },
+      { text: 'Receptor desensitization — max 5–6 week cycle', severity: 'med' },
+      { text: 'Headaches, fatigue', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1', text: 'Nutrient partitioning effect immediate — muscles fill out fast' },
+      { time: 'Wk 2–4', text: 'Hyperplasia occurring (new muscle cells)' },
+      { time: 'Wk 5–6', text: 'Max cycle — stop and allow receptor recovery' },
+    ],
+    schedule: 'Daily SubQ or IM post-workout ONLY — eat carbs within 30 min',
+    cycle: '5 weeks MAX — desensitization occurs',
+    lo: '20–40 mcg/day post-workout',
+    mid: '50–80 mcg/day post-workout',
+    hi: '80–100 mcg/day post-workout',
+    pairsWith: ['HGH 191AA (advanced stack)', 'BPC-157'],
+    avoid: ['Diabetics', 'Without carbohydrate source at hand', 'Prolonged use beyond 6 weeks'],
+    evidence: 3,
+    evidenceNote: 'Significant preclinical and bodybuilding community data. Limited RCT in healthy humans.',
+  },
+  'IGF DES': {
+    category: 'Muscle Growth',
+    tagline: 'Site-specific IGF — inject directly into target muscle for localized growth',
+    mechanism: 'Truncated des(1-3)IGF-1 with 10x shorter half-life than LR3 (~20-30 min). Extremely localized effect when injected intramuscularly — very little systemic spread. Creates intense localized anabolic response in target tissue.',
+    benefits: ['Site-specific muscle hypertrophy', 'Lagging muscle group targeting', 'Rapid localized nutrient uptake at injection site', 'Less systemic hypoglycemia risk than LR3 (localized action)'],
+    sideEffects: [
+      { text: 'Local hypoglycemia at injection site (must eat post-injection)', severity: 'high' },
+      { text: 'Injection site pain (IM injection)', severity: 'med' },
+      { text: 'Inconsistent results without precise IM technique', severity: 'med' },
+      { text: 'Receptor desensitization if overused', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Localized pump and fullness in target muscle' },
+      { time: 'Wk 3–5', text: 'Structural muscle changes in target site' },
+    ],
+    schedule: 'Daily IM into target muscle only (NOT SubQ for this peptide)',
+    cycle: '5 weeks MAX',
+    lo: '25 mcg/day into target muscle',
+    mid: '50 mcg/day into target muscle',
+    hi: '75–100 mcg/day into target muscle',
+    pairsWith: ['IGF-1 LR3 (complementary systemic + local)', 'HGH 191AA'],
+    avoid: ['SubQ injection (loses localized effect)', 'Without food plan post-injection'],
+    evidence: 2,
+    evidenceNote: 'Animal and in vitro data strong. Limited direct human RCT data. Widely used in bodybuilding community.',
+  },
+  'SLU-PP-332': {
+    category: 'Metabolic / Performance',
+    tagline: 'Exercise mimetic — activates same cellular pathways as endurance training',
+    mechanism: 'Potent ERR alpha/gamma agonist (estrogen-related receptor) that activates the same transcriptional programs induced by aerobic exercise. Drives mitochondrial biogenesis, increases fatty acid oxidation, and improves endurance capacity at the cellular level without physical activity.',
+    benefits: ['Mitochondrial biogenesis (more mitochondria per cell)', 'Improved fat oxidation and metabolic flexibility', 'Endurance capacity increase without exercise', 'Potential therapeutic for metabolic disease and limited mobility', 'Activates AMPK and PGC-1α pathways (same as cardio)', 'Anti-obesity metabolic effects'],
+    sideEffects: [
+      { text: 'Very limited human data — side effects not fully characterized', severity: 'med' },
+      { text: 'Injection site reactions (mild)', severity: 'low' },
+      { text: 'Emerging compound — caution advised', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Mitochondrial adaptation begins' },
+      { time: 'Wk 6–10', text: 'Endurance and metabolic improvements measurable' },
+    ],
+    schedule: 'Daily SubQ or oral',
+    cycle: '10 weeks',
+    lo: '5 mg/day',
+    mid: '10 mg/day',
+    hi: '15–20 mg/day',
+    pairsWith: ['MOTS-c', 'SS-31', 'NAD+', '5-amino-1mq'],
+    avoid: ['None established — proceed cautiously given limited human data'],
+    evidence: 1,
+    evidenceNote: 'Primarily animal model data (2023–2025). Very early stage. No human RCTs published.',
+  },
+  'LL37': {
+    category: 'Antimicrobial / Immune',
+    tagline: 'Human cathelicidin — natural antimicrobial and immune defense peptide',
+    mechanism: 'Only cathelicidin antimicrobial peptide in humans. Disrupts bacterial membranes (including MRSA and biofilm-protected bacteria), modulates immune response, stimulates angiogenesis, and promotes wound healing. Naturally produced by neutrophils, epithelial cells, and macrophages.',
+    benefits: ['Broad-spectrum antibacterial including MRSA and antibiotic-resistant strains', 'Biofilm disruption', 'Wound healing acceleration', 'Anti-inflammatory immune modulation', 'Skin infection treatment (topical and SubQ)', 'Antiviral properties (influenza, HIV, HSV)'],
+    sideEffects: [
+      { text: 'Injection site pain and redness (common)', severity: 'low' },
+      { text: 'Systemic inflammation if overdosed (pro-inflammatory at high doses)', severity: 'med' },
+      { text: 'Limited human SubQ injection trial data', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Days 1–3', text: 'Antimicrobial activity immediate at site' },
+      { time: 'Wk 2–4', text: 'Wound healing acceleration' },
+      { time: 'Wk 4–8', text: 'Immune modulation and tissue repair' },
+    ],
+    schedule: 'SubQ injection or topical to wound/infection site 2–3x per week',
+    cycle: '8 weeks',
+    lo: '100 mcg 2x/wk',
+    mid: '500 mcg 2–3x/wk',
+    hi: '1 mg 3x/wk',
+    pairsWith: ['BPC-157', 'Thymosin Alpha-1', 'KPV'],
+    avoid: ['Sepsis or systemic infection without medical supervision (paradoxical pro-inflammatory risk)'],
+    evidence: 3,
+    evidenceNote: 'Solid preclinical and topical human data. Injectable protocols based on clinical practice. Phase 2 trials for wound healing.',
+  },
+  'VIP': {
+    category: 'Immune / Pulmonary',
+    tagline: 'Vasoactive intestinal peptide — pulmonary, immune, and CIRS protocols',
+    mechanism: 'Neuropeptide with widespread effects: potent vasodilation, anti-inflammatory via cAMP pathway, regulates circadian rhythm, modulates both innate and adaptive immunity, and is a primary treatment in CIRS (Chronic Inflammatory Response Syndrome / mold illness) protocols.',
+    benefits: ['Pulmonary function improvement', 'CIRS / mold illness primary treatment', 'Vasodilation and blood pressure reduction', 'Immune balance (anti-inflammatory)', 'GI motility improvement', 'Neuroprotection', 'Potential treatment for pulmonary hypertension'],
+    sideEffects: [
+      { text: 'Flushing and warmth (vasodilation — common)', severity: 'low' },
+      { text: 'Headache', severity: 'low' },
+      { text: 'Dizziness (blood pressure drop)', severity: 'med' },
+      { text: 'Nausea at higher doses', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Pulmonary and vascular improvements begin' },
+      { time: 'Wk 4–8', text: 'Immune rebalancing and CIRS improvement' },
+    ],
+    schedule: 'Daily SubQ or intranasal (intranasal preferred for CIRS)',
+    cycle: '8 weeks',
+    lo: '50 mcg/day',
+    mid: '100–200 mcg/day',
+    hi: '250–400 mcg/day',
+    pairsWith: ['Thymosin Alpha-1', 'BPC-157', 'KPV'],
+    avoid: ['Low blood pressure (hypotension risk)', 'Without CIRS labs if treating mold illness'],
+    evidence: 3,
+    evidenceNote: 'Phase 2 clinical trial data for pulmonary arterial hypertension. CIRS protocol based on Dr. Shoemaker clinical work.',
+  },
+  'KissPeptin-10': {
+    category: 'Hormonal',
+    tagline: 'Upstream testosterone stimulant — activates the HPG axis naturally',
+    mechanism: 'Kisspeptin-10 binds KISS1R receptors in hypothalamus to trigger GnRH pulse release, which drives LH and FSH secretion, which stimulates testosterone production. Acts upstream of HCG — directly restores the hormonal cascade rather than mimicking LH.',
+    benefits: ['Natural testosterone production restoration', 'LH/FSH pulse restoration', 'Fertility support in both sexes', 'Libido improvement', 'HPG axis reactivation after suppression', 'Potential alternative to HCG for testosterone support'],
+    sideEffects: [
+      { text: 'Mild injection site reactions', severity: 'low' },
+      { text: 'LH surge can temporarily alter estrogen levels', severity: 'med' },
+      { text: 'Limited long-term human data', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Hrs 1–4', text: 'LH pulse triggered within hours of injection' },
+      { time: 'Wk 2–4', text: 'Testosterone improvement measurable' },
+      { time: 'Wk 6–8', text: 'Full HPG axis restoration effect' },
+    ],
+    schedule: 'Daily SubQ injection',
+    cycle: '8 weeks',
+    lo: '50 mcg/day',
+    mid: '100–200 mcg/day',
+    hi: '250–500 mcg/day',
+    pairsWith: ['HCG (complementary — different levels of HPG axis)', 'Sermorelin'],
+    avoid: ['Hormone-sensitive cancers', 'Combined with exogenous testosterone without medical supervision'],
+    evidence: 3,
+    evidenceNote: 'Human Phase 2 trials for hypogonadism and fertility. Growing clinical data 2020–2025.',
+  },
+  'Snap-8': {
+    category: 'Anti-Aging / Cosmetic',
+    tagline: 'Injectable Botox alternative — reduces expression lines at nerve level',
+    mechanism: 'Octapeptide that blocks the SNARE protein complex involved in acetylcholine release at neuromuscular junctions. Reduces muscle contraction intensity in facial muscles, preventing and softening expression lines. Same mechanism as botulinum toxin but with peptide safety profile.',
+    benefits: ['Reduction in expression lines depth (forehead, crow\'s feet, frown)', 'Smoothing of skin surface', 'Non-toxic Botox-like mechanism', 'Topical and injectable application options', 'Gradual reversible effect (vs permanent Botox complications)'],
+    sideEffects: [
+      { text: 'Very well tolerated topically and via SubQ', severity: 'low' },
+      { text: 'Injection site redness (brief)', severity: 'low' },
+      { text: 'Effects less dramatic than actual Botox', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'Subtle expression line softening begins' },
+      { time: 'Wk 6–10', text: 'Measurable reduction in line depth with consistent use' },
+    ],
+    schedule: 'SubQ or topical 2–3x per week to target area',
+    cycle: '10 weeks',
+    lo: '2 mg 2x/wk',
+    mid: '5 mg 2x/wk',
+    hi: '10 mg 3x/wk',
+    pairsWith: ['GHK-Cu (collagen + anti-wrinkle combo)', 'L-Glutathione'],
+    avoid: ['None known — very safe profile'],
+    evidence: 2,
+    evidenceNote: 'In vitro and cosmetic trial data. Limited large-scale injectable human RCTs.',
+  },
+  'Melatonin': {
+    category: 'Sleep / Anti-Aging',
+    tagline: 'Pineal hormone — sleep, circadian rhythm, and powerful antioxidant',
+    mechanism: 'Primary circadian timing hormone produced by pineal gland. Signals darkness/sleep onset to hypothalamus, scavenges free radicals directly, protects mitochondria, and has emerging anti-cancer properties. Injectable form bypasses oral degradation for full bioavailability.',
+    benefits: ['Rapid sleep onset improvement', 'Sleep quality and depth (more REM and deep sleep)', 'Circadian rhythm repair (jet lag, shift work)', 'Powerful antioxidant at mitochondrial level', 'Anti-cancer immune properties', 'Neuroprotection', 'Anti-aging via mitochondrial protection'],
+    sideEffects: [
+      { text: 'Morning grogginess if dosed too high (very common at high oral doses — much less with low injectable dose)', severity: 'low' },
+      { text: 'Vivid dreams', severity: 'low' },
+      { text: 'Headache', severity: 'low' },
+      { text: 'Hormonal disruption with very high doses (theoretical)', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Night 1', text: 'Sleep improvement often from first dose' },
+      { time: 'Wk 1–2', text: 'Circadian normalization' },
+      { time: 'Wk 4+', text: 'Cumulative antioxidant and anti-aging effects' },
+    ],
+    schedule: 'Daily SubQ 30 min before bed',
+    cycle: 'Ongoing as needed',
+    lo: '0.5 mg/night',
+    mid: '0.8 mg/night',
+    hi: '1 mg/night',
+    pairsWith: ['DSIP', 'Epithalon', 'Sermorelin + Ipamorelin (sleep stack)'],
+    avoid: ['Autoimmune conditions (melatonin can stimulate immune activity)', 'Morning use (circadian disruption)'],
+    evidence: 4,
+    evidenceNote: 'Extensive human data for oral melatonin. Injectable protocols based on clinical use — lower doses than oral equivalent.',
+  },
+  'Melanotan I': {
+    category: 'Tanning / Skin',
+    tagline: 'Pure tanning peptide — melanin stimulation without sexual side effects',
+    mechanism: 'Selective MC1R (melanocortin-1 receptor) agonist. Stimulates melanin production in melanocytes for tanning without activating MC4R (sexual arousal) or MC3R. Safer tanning profile than Melanotan II. Being developed as actual drug for polymorphous light eruption.',
+    benefits: ['Skin tanning with minimal UV exposure required', 'Photoprotection (UV damage reduction)', 'Even skin pigmentation', 'No sexual side effects (unlike MT-II)', 'Potential treatment for light-sensitive conditions', 'Lower nausea profile than MT-II'],
+    sideEffects: [
+      { text: 'Nausea (less common than MT-II, dose-dependent)', severity: 'low' },
+      { text: 'Flushing', severity: 'low' },
+      { text: 'Freckle/mole darkening (monitor for changes)', severity: 'med' },
+      { text: 'Fatigue during loading', severity: 'low' },
+      { text: 'Theoretical melanoma risk (stimulates melanocytes) — unconfirmed in humans', severity: 'med' },
+    ],
+    timeline: [
+      { time: 'Wk 1–2', text: 'Tan development with minimal UV' },
+      { time: 'Wk 3–4', text: 'Full tan achieved at loading dose' },
+    ],
+    schedule: 'Daily SubQ (loading), then 3x/wk or EOD (maintenance)',
+    cycle: '8 weeks',
+    lo: '250 mcg/day loading → 250 mcg 3x/wk maint.',
+    mid: '500 mcg/day loading → 500 mcg 3x/wk maint.',
+    hi: '1 mg/day loading → 500 mcg EOD maint.',
+    pairsWith: ['PT-141 if libido effect also desired (separate peptide)'],
+    avoid: ['Personal or family history of melanoma', 'Unmonitored moles'],
+    evidence: 3,
+    evidenceNote: 'Phase 2 trials for polymorphous light eruption (Clinuvel). Not FDA approved for tanning.',
+  },
+  '5-amino-1mq': {
+    category: 'Metabolic / Longevity',
+    tagline: 'NNMT inhibitor — elevates NAD+ and reduces fat cell expansion',
+    mechanism: 'Blocks Nicotinamide N-methyltransferase (NNMT), the enzyme that degrades NAD+. By inhibiting NNMT, cellular NAD+ levels rise, AMPK activates, and fat cell differentiation is suppressed. Synergistic with NAD+ supplementation because it prevents NAD+ from being broken down.',
+    benefits: ['NAD+ level elevation via NNMT inhibition', 'Fat cell expansion suppression', 'Improved insulin sensitivity', 'Metabolic rate increase', 'Synergistic fat loss with GLP-1 peptides', 'Muscle mass preservation during weight loss', 'Anti-aging via NAD+ pathway'],
+    sideEffects: [
+      { text: 'Very limited human data — emerging compound', severity: 'med' },
+      { text: 'Injection site reactions (mild)', severity: 'low' },
+      { text: 'Potential GI effects at high doses (rare)', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Wk 2–4', text: 'NAD+ elevation and metabolic shift beginning' },
+      { time: 'Wk 6–10', text: 'Fat loss and energy improvement measurable' },
+    ],
+    schedule: 'Daily SubQ or oral',
+    cycle: '10 weeks',
+    lo: '25 mg/day',
+    mid: '50 mg/day',
+    hi: '100 mg/day',
+    pairsWith: ['NAD+', 'SS-31', 'MOTS-c', 'GLP-1 peptides', 'AOD9604'],
+    avoid: ['None established — proceed cautiously (limited human data)'],
+    evidence: 2,
+    evidenceNote: 'Animal model data strong (2020–2024). Early human clinical use. No published human RCTs yet.',
+  },
+  'CJC-1295 (with DAC)': {
+    category: 'Growth Hormone',
+    tagline: 'Long-acting GHRH analog — once weekly dosing via albumin binding',
+    mechanism: 'CJC-1295 with Drug Affinity Complex (DAC) modification binds to albumin in blood, extending half-life from 30 minutes to 6–8 days. Provides sustained (non-pulsatile) GH elevation. More convenient dosing but less physiological pulsatility than the no-DAC version.',
+    benefits: ['Once-weekly injection convenience', 'Sustained GH and IGF-1 elevation', 'Lean muscle support', 'Fat loss', 'Anti-aging effects', 'Improved recovery'],
+    sideEffects: [
+      { text: 'Water retention (more pronounced than no-DAC due to sustained elevation)', severity: 'med' },
+      { text: 'Joint aches', severity: 'low' },
+      { text: 'Numbness/tingling (carpal tunnel risk at high IGF-1)', severity: 'med' },
+      { text: 'Blood glucose elevation (less physiological regulation than no-DAC)', severity: 'med' },
+      { text: 'Less natural GH pulsatility vs no-DAC version', severity: 'low' },
+    ],
+    timeline: [
+      { time: 'Days 2–4', text: 'GH and IGF-1 elevation peaks (2–4x baseline for 6+ days)' },
+      { time: 'Wk 4–8', text: 'Body composition changes beginning' },
+      { time: 'Wk 8–12', text: 'Full body comp benefit' },
+    ],
+    schedule: 'Once weekly SubQ injection',
+    cycle: '12 weeks on / 4 wks off',
+    lo: '1 mg once/wk',
+    mid: '2 mg once/wk',
+    hi: '2 mg once/wk extended 16-wk cycle',
+    pairsWith: ['Ipamorelin (adds GH pulse on top of sustained elevation)'],
+    avoid: ['Exogenous HGH (competing/redundant)', 'Prefer no-DAC version for more natural pulsatility'],
+    evidence: 3,
+    evidenceNote: 'Phase 1/2 human data published (Teichman et al. 2006 — 2–10x GH elevation for 6+ days).',
+  },
+  'Acetic Acid Water': {
+    category: 'Reconstitution',
+    tagline: 'Acidic reconstitution solvent for peptides requiring low pH',
+    mechanism: 'Dilute acetic acid (0.6% typically) dissolves peptides that are poorly soluble at neutral pH. After reconstitution, dilute the concentrated solution with BAC water before injection to bring pH closer to physiological range.',
+    benefits: ['Enables reconstitution of acid-requiring peptides', 'Proper dissolution prevents degradation', 'Essential for IGF-1 LR3 and IGF DES'],
+    sideEffects: [
+      { text: 'Injection site sting if not diluted properly', severity: 'med' },
+      { text: 'Always dilute reconstituted solution with BAC water before injecting', severity: 'high' },
+    ],
+    timeline: [{ time: 'Always', text: 'Dilute with BAC water after reconstitution before injection' }],
+    schedule: 'Add 2ml to lyophilized vial, then dilute further with BAC water',
+    cycle: 'N/A',
+    lo: '2 ml per vial',
+    mid: '2 ml per vial',
+    hi: '2 ml per vial',
+    pairsWith: ['IGF-1 LR3', 'IGF DES', 'Any peptide that does not dissolve in BAC water'],
+    avoid: ['Direct injection of undiluted acetic acid reconstituted peptide — always dilute first'],
+    evidence: 5,
+    evidenceNote: 'Standard pharmaceutical practice for acid-soluble peptides.',
+  },
+  'BAC Water': {
+    category: 'Reconstitution',
+    tagline: 'Bacteriostatic water — essential for peptide reconstitution',
+    mechanism: '0.9% benzyl alcohol in sterile water. The benzyl alcohol acts as a bacteriostatic agent preventing bacterial growth, allowing multi-dose use of reconstituted peptides.',
+    benefits: ['Allows multi-use reconstituted vials (28+ days refrigerated)', 'Prevents bacterial contamination', 'Isotonic solution for comfortable injection', 'Stable peptide solution when refrigerated'],
+    sideEffects: [
+      { text: 'None when used correctly', severity: 'low' },
+      { text: 'Do NOT use benzyl alcohol in newborns (gasping syndrome)', severity: 'high' },
+    ],
+    timeline: [{ time: 'Always', text: 'Use 2ml per peptide vial for reconstitution' }],
+    schedule: 'Add 2ml to lyophilized peptide vial',
+    cycle: 'N/A',
+    lo: '2 ml per vial',
+    mid: '2 ml per vial',
+    hi: '2 ml per vial',
+    pairsWith: ['All lyophilized peptides'],
+    avoid: ['Acetic acid water is better for certain peptides (IGF-1 LR3, IGF DES)'],
+    evidence: 5,
+    evidenceNote: 'Standard pharmaceutical practice',
+  },
+};
+
+// ════════════════════════════════════════════════════════════════
+// STACKS DATA
+// ════════════════════════════════════════════════════════════════
+const STACKS = [
+  {
+    name: 'WOLVERINE STACK',
+    emoji: '🐺',
+    goal: 'Injury recovery • Tissue repair • Pain reduction',
+    color: '#0E7C7B',
+    note: 'Inject each separately — never mix in same syringe. BPC-157 works locally at injury site; TB-500 works systemically throughout body.',
+    peptides: [
+      { name:'BPC-157', schedule:'Daily SubQ near injury or abdomen', lo:'250 mcg/day', mid:'500 mcg/day', hi:'500 mcg 2x/day' },
+      { name:'TB-500', schedule:'Once weekly SubQ', lo:'2 mg/wk', mid:'5 mg/wk', hi:'5 mg 2x/wk (loading), then 5 mg/wk' },
+    ]
+  },
+  {
+    name: 'GLOW STACK',
+    emoji: '✨',
+    goal: 'Anti-aging • Skin & collagen • Comprehensive regeneration',
+    color: '#5B2D8E',
+    note: 'GLOW = GHK-Cu + BPC-157 + TB-500. All injected separately. GHK-Cu can also be applied topically.',
+    peptides: [
+      { name:'GHK-Cu', schedule:'Daily SubQ or topical', lo:'1 mg/day', mid:'2 mg/day', hi:'3–5 mg/day' },
+      { name:'BPC-157', schedule:'Daily SubQ', lo:'250 mcg/day', mid:'500 mcg/day', hi:'500 mcg 2x/day' },
+      { name:'TB-500', schedule:'Once weekly SubQ', lo:'2 mg/wk', mid:'5 mg/wk', hi:'5 mg 2x/wk then 5 mg/wk' },
+    ]
+  },
+  {
+    name: 'KLOW STACK',
+    emoji: '💎',
+    goal: 'Ultimate healing • Immune modulation • Gut repair • Chronic inflammation',
+    color: '#004D40',
+    note: 'KLOW = GLOW + KPV. KPV adds mucosal healing and NF-kB anti-inflammatory action. All injected separately.',
+    peptides: [
+      { name:'GHK-Cu', schedule:'Daily SubQ', lo:'1 mg/day', mid:'2 mg/day', hi:'3–5 mg/day' },
+      { name:'BPC-157', schedule:'Daily SubQ', lo:'250 mcg/day', mid:'500 mcg/day', hi:'500 mcg 2x/day' },
+      { name:'TB-500', schedule:'Once weekly SubQ', lo:'2 mg/wk', mid:'5 mg/wk', hi:'5 mg 2x/wk then 5 mg/wk' },
+      { name:'KPV', schedule:'Daily SubQ or oral', lo:'500 mcg/day', mid:'1 mg/day', hi:'2 mg/day' },
+    ]
+  },
+  {
+    name: 'GH STACK (Classic)',
+    emoji: '📈',
+    goal: 'GH optimization • Lean muscle • Fat loss • Sleep quality • Anti-aging',
+    color: '#1A6B9A',
+    note: 'Inject 2–3 hrs after last meal before bed. Can be drawn into same syringe. GH pulse aligns with natural slow-wave sleep GH release.',
+    peptides: [
+      { name:'CJC-1295 (no DAC)', schedule:'Daily SubQ before bed, empty stomach', lo:'100 mcg/day', mid:'200 mcg/day', hi:'300 mcg/day' },
+      { name:'Ipamorelin', schedule:'Daily SubQ before bed (same injection as CJC)', lo:'100 mcg/day', mid:'200 mcg/day', hi:'300 mcg/day' },
+    ]
+  },
+  {
+    name: 'SLEEP STACK',
+    emoji: '😴',
+    goal: 'Deep sleep • Overnight GH pulse • Cortisol reduction • Recovery',
+    color: '#37474F',
+    note: 'All before bed, empty stomach. Sermorelin + Ipamorelin can share syringe. DSIP separate. Injectable melatonin is 5–10x more potent than oral — start at the low dose.',
+    peptides: [
+      { name:'Sermorelin', schedule:'Daily SubQ 30–60 min before bed', lo:'200 mcg/night', mid:'300 mcg/night', hi:'500 mcg/night' },
+      { name:'Ipamorelin', schedule:'Same injection as Sermorelin', lo:'100 mcg/night', mid:'200 mcg/night', hi:'300 mcg/night' },
+      { name:'DSIP', schedule:'Daily SubQ before bed (separate)', lo:'100 mcg/night', mid:'200 mcg/night', hi:'300 mcg/night' },
+      { name:'Melatonin', schedule:'Daily SubQ 30 min before bed', lo:'0.5 mg/night', mid:'0.8 mg/night', hi:'1 mg/night' },
+    ]
+  },
+  {
+    name: 'CAGRISA STACK',
+    emoji: '⚡',
+    goal: 'Maximum weight loss — dual GLP-1 + amylin pathway',
+    color: '#2E7D32',
+    note: 'Phase 3 trial data shows 25%+ weight loss. Titrate each independently. GI side effects additive — go slow. NEVER combine semaglutide + tirzepatide.',
+    peptides: [
+      { name:'Semaglutide', schedule:'Once weekly SubQ, same day each week', lo:'0.25 mg/wk → 0.5 mg maint.', mid:'0.25→0.5→1.0→2.4 mg/wk (4 wks each)', hi:'2.4 mg/wk (rapid titration 8 wks)' },
+      { name:'Cagrilintide', schedule:'Once weekly SubQ (different site from sema)', lo:'0.16 mg/wk → 0.3 mg maint.', mid:'0.16→0.3→0.6→1.2 mg/wk (4 wks each)', hi:'2.4 mg/wk full CagriSema dose' },
+    ]
+  },
+  {
+    name: 'NAD+ LONGEVITY STACK',
+    emoji: '🔋',
+    goal: 'Mitochondrial health • Cellular energy • Metabolic optimization • Anti-aging',
+    color: '#4A148C',
+    note: 'All AM dosing preferred. NAD+ may cause flushing — start at low dose. These 4 hit mitochondria from 4 completely different angles for comprehensive coverage.',
+    peptides: [
+      { name:'NAD+', schedule:'Daily SubQ AM or IV', lo:'100 mg/day', mid:'500 mg/day', hi:'1,000 mg/day' },
+      { name:'SS-31', schedule:'Daily SubQ AM', lo:'1 mg/day', mid:'5 mg/day', hi:'10 mg/day' },
+      { name:'MOTS-c', schedule:'Daily SubQ AM', lo:'5 mg/day', mid:'10 mg/day', hi:'15 mg/day' },
+      { name:'5-amino-1mq', schedule:'Daily SubQ or oral', lo:'25 mg/day', mid:'50 mg/day', hi:'100 mg/day' },
+    ]
+  },
+  {
+    name: 'IMMUNE STACK',
+    emoji: '🛡️',
+    goal: 'Immune modulation • Longevity • Anti-aging • Autoimmune support',
+    color: '#BF360C',
+    note: 'Thymosin Alpha-1 is the core — strongest immunomodulator available. Epithalon in short bursts only (telomere/longevity). BPC-157 adds systemic anti-inflammatory base.',
+    peptides: [
+      { name:'Thymosin Alpha-1', schedule:'SubQ 2x per week', lo:'0.5 mg 2x/wk', mid:'1.0 mg 2x/wk', hi:'1.6 mg 2x/wk' },
+      { name:'Epithalon', schedule:'Daily SubQ for 10–20 day burst only', lo:'5 mg/day × 10 days', mid:'10 mg/day × 10 days', hi:'10 mg/day × 20 days' },
+      { name:'BPC-157', schedule:'Daily SubQ', lo:'250 mcg/day', mid:'500 mcg/day', hi:'500 mcg 2x/day' },
+    ]
+  },
+  {
+    name: 'FAT LOSS STACK',
+    emoji: '🔥',
+    goal: 'Aggressive fat loss • Lipolysis • Metabolic acceleration • Muscle preservation',
+    color: '#E65100',
+    note: 'GLP-1 handles appetite; AOD9604 + HGH Frag handle lipolysis; 5-amino-1mq elevates NAD+ and metabolic rate. Powerful combination — monitor bloodwork.',
+    peptides: [
+      { name:'Tirzepatide or Semaglutide', schedule:'Once weekly SubQ', lo:'Tirze 2.5 mg or Sema 0.25 mg/wk', mid:'Tirze 5–10 mg or Sema 1–2.4 mg/wk', hi:'Tirze 10–15 mg or Sema 2.4 mg/wk max' },
+      { name:'AOD9604', schedule:'Daily SubQ AM on empty stomach', lo:'250 mcg/day', mid:'500 mcg/day', hi:'500 mcg 2x/day' },
+      { name:'HGH Fragment 176-191', schedule:'Daily SubQ 2x on empty stomach', lo:'250 mcg 2x/day', mid:'500 mcg 2x/day', hi:'500 mcg 3x/day' },
+      { name:'5-amino-1mq', schedule:'Daily SubQ or oral', lo:'25 mg/day', mid:'50 mg/day', hi:'100 mg/day' },
+    ]
+  },
+];
+
+// ════════════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ════════════════════════════════════════════════════════════════
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map((cat, i) => `
+    <div class="cat-card" style="--cat-color:${cat.color}; animation-delay:${i*0.04}s"
+         onclick="showList('${cat.id}')">
+      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-count">${cat.peptides.length} peptides</div>
+    </div>
+  `).join('');
+}
+
+function showList(catId) {
+  const cat = CATEGORIES.find(c => c.id === catId);
+  document.getElementById('catView').style.display = 'none';
+  const lv = document.getElementById('listView');
+  lv.style.display = 'block';
+  document.getElementById('listTitle').textContent = cat.name;
+  lv.dataset.catId = catId;
+
+  const list = document.getElementById('peptideList');
+  list.innerHTML = cat.peptides.map((name, i) => {
+    const p = PEPTIDES[name];
+    return `
+      <div class="peptide-card" style="animation-delay:${i*0.05}s" onclick="showDetail('${name}')">
+        <div class="peptide-card-left">
+          <div class="peptide-name">${name}</div>
+          <div class="peptide-tagline">${p ? p.tagline : 'Research peptide'}</div>
+        </div>
+        ${p ? `<div class="peptide-badge">${p.category.split(' / ')[0]}</div>` : ''}
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    `;
+  }).join('');
+}
+
+function showDetail(name) {
+  const p = PEPTIDES[name];
+  if (!p) return;
+  document.getElementById('listView').style.display = 'none';
+  const dv = document.getElementById('detailView');
+  dv.style.display = 'block';
+  document.getElementById('detailTitle').textContent = name;
+  dv.dataset.peptide = name;
+
+  const pips = Array.from({length:5},(_,i) => `<div class="evidence-pip${i < p.evidence ? ' filled':''}"></div>`).join('');
+  const evidenceLabels = ['','Anecdotal','Preclinical','Early Human','Phase 3','FDA Approved'];
+
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-name">${name}</div>
+      <div class="detail-category">${p.category}</div>
+      <div class="detail-tagline">${p.tagline}</div>
+    </div>
+
+    <!-- QUICK DOSE SUMMARY -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-header-left">
+          <span class="section-icon">💊</span>
+          <span class="section-title">Dosing Schedule</span>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body open">
+        <div class="info-row">
+          <div class="info-chip"><span>Schedule</span> ${p.schedule}</div>
+          <div class="info-chip"><span>Cycle</span> ${p.cycle}</div>
+        </div>
+        <div class="dose-tiers">
+          <div class="dose-tier lo">
+            <div class="dose-tier-label">🟢 LOW — CONSERVATIVE</div>
+            <div class="dose-tier-amount">${p.lo}</div>
+            <div class="dose-tier-desc">Starting dose — assess tolerance before increasing</div>
+          </div>
+          <div class="dose-tier mid">
+            <div class="dose-tier-label">🔵 MID — STANDARD</div>
+            <div class="dose-tier-amount">${p.mid}</div>
+            <div class="dose-tier-desc">Standard maintenance protocol for most users</div>
+          </div>
+          <div class="dose-tier hi">
+            <div class="dose-tier-label">🔴 HIGH — PERFORMANCE</div>
+            <div class="dose-tier-amount">${p.hi}</div>
+            <div class="dose-tier-desc">Upper range — experienced users only, monitor closely</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-header-left">
+          <span class="section-icon">✅</span>
+          <span class="section-title">Benefits & Effects</span>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        ${p.benefits.map(b => `<div class="benefit-item"><div class="benefit-dot"></div>${b}</div>`).join('')}
+        ${p.timeline ? `
+        <div style="margin-top:12px; font-size:12px; font-weight:600; color:var(--text3); letter-spacing:0.05em; font-family:'DM Mono',monospace;">EXPECTED TIMELINE</div>
+        <div class="timeline">${p.timeline.map(t => `<div class="tl-item"><div class="tl-time">${t.time}</div><div class="tl-text">${t.text}</div></div>`).join('')}</div>
+        ` : ''}
+      </div>
+    </div>
+
+    <!-- MECHANISM -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-header-left">
+          <span class="section-icon">🔬</span>
+          <span class="section-title">Mechanism of Action</span>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="mechanism-text">${p.mechanism}</div>
+        <div style="margin-top:12px;">
+          <div style="font-size:11px; color:var(--text3); font-family:'DM Mono',monospace; margin-bottom:5px;">EVIDENCE QUALITY</div>
+          <div class="evidence-bar">${pips}</div>
+          <div class="evidence-label">${evidenceLabels[p.evidence]} — ${p.evidenceNote}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDE EFFECTS -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-header-left">
+          <span class="section-icon">⚠️</span>
+          <span class="section-title">Side Effects & Risks</span>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div style="display:flex; gap:12px; margin-top:8px; margin-bottom:10px; font-size:11px; color:var(--text3);">
+          <span style="display:flex;gap:4px;align-items:center;"><span class="severity-dot low" style="display:inline-block"></span>Mild</span>
+          <span style="display:flex;gap:4px;align-items:center;"><span class="severity-dot med" style="display:inline-block"></span>Moderate</span>
+          <span style="display:flex;gap:4px;align-items:center;"><span class="severity-dot high" style="display:inline-block"></span>Serious</span>
+        </div>
+        ${p.sideEffects.map(se => `<div class="side-effect-item"><div class="severity-dot ${se.severity}"></div>${se.text}</div>`).join('')}
+      </div>
+    </div>
+
+    <!-- PAIRINGS -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-header-left">
+          <span class="section-icon">🔗</span>
+          <span class="section-title">Pairings & Compatibility</span>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="compat-grid">
+          ${p.pairsWith.map(pair => `
+            <div class="compat-row">
+              <div class="compat-indicator ok">✓</div>
+              <div style="color:var(--text2)">${pair}</div>
+            </div>
+          `).join('')}
+          ${p.avoid.map(av => `
+            <div class="compat-row">
+              <div class="compat-indicator no">✗</div>
+              <div style="color:var(--text2)">${av}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Research reference only.</strong> Not medical advice. All compounds listed are for research purposes. Consult a qualified healthcare provider before use.
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+function renderStacks() {
+  document.getElementById('stacksList').innerHTML = STACKS.map((stack, si) => `
+    <div class="stack-card" style="animation-delay:${si*0.06}s">
+      <div class="stack-header" onclick="toggleStack(this)" style="border-left:3px solid ${stack.color}">
+        <div>
+          <div class="stack-name">${stack.emoji} ${stack.name}</div>
+          <div class="stack-goal">${stack.goal}</div>
+        </div>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="stack-body">
+        ${stack.peptides.map(p => `
+          <div class="stack-peptide">
+            <div class="stack-peptide-name">${p.name}</div>
+            <div class="stack-peptide-schedule">${p.schedule}</div>
+            <div class="mini-tiers">
+              <div class="mini-tier lo"><span class="mini-tier-label">LOW</span><span class="mini-tier-val">${p.lo}</span></div>
+              <div class="mini-tier mid"><span class="mini-tier-label">MID</span><span class="mini-tier-val">${p.mid}</span></div>
+              <div class="mini-tier hi"><span class="mini-tier-label">HIGH</span><span class="mini-tier-val">${p.hi}</span></div>
+            </div>
+          </div>
+        `).join('')}
+        <div class="stack-note"><strong>⚠️ Note:</strong> ${stack.note}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleStack(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.section-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function renderQuickDose() {
+  const names = Object.keys(PEPTIDES).filter(n => n !== 'BAC Water');
+  document.getElementById('quickDoseList').innerHTML = names.map(name => {
+    const p = PEPTIDES[name];
+    return `
+      <div class="section-card" style="margin-bottom:8px;">
+        <div class="section-header" onclick="toggleSection(this)">
+          <div class="section-header-left">
+            <span class="section-title" style="font-size:13px">${name}</span>
+          </div>
+          <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="section-body">
+          <div style="font-size:11px; color:var(--text3); font-family:'DM Mono',monospace; margin-top:6px; margin-bottom:6px;">
+            ${p.schedule} • ${p.cycle}
+          </div>
+          <div class="mini-tiers">
+            <div class="mini-tier lo"><span class="mini-tier-label">LOW</span><span class="mini-tier-val">${p.lo}</span></div>
+            <div class="mini-tier mid"><span class="mini-tier-label">MID</span><span class="mini-tier-val">${p.mid}</span></div>
+            <div class="mini-tier hi"><span class="mini-tier-label">HIGH</span><span class="mini-tier-val">${p.hi}</span></div>
+          </div>
+          <div style="margin-top:10px; font-size:12px; color:var(--text3); cursor:pointer; text-decoration:underline; text-underline-offset:2px;"
+               onclick="event.stopPropagation(); switchToBrowse('${name}')">
+            View full profile →
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function switchToBrowse(peptideName) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-page="browse"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-browse').classList.add('active');
+  document.getElementById('catView').style.display = 'none';
+  document.getElementById('listView').style.display = 'none';
+  document.getElementById('detailView').style.display = 'block';
+  document.getElementById('detailTitle').textContent = peptideName;
+  showDetail(peptideName);
+}
+
+// ════════════════════════════════════════════════════════════════
+// SEARCH
+// ════════════════════════════════════════════════════════════════
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  const sr = document.getElementById('searchResults');
+  const nav = document.getElementById('mainNav');
+
+  if (!q) {
+    sr.style.display = 'none';
+    sr.classList.remove('active');
+    nav.style.display = 'flex';
+    document.querySelectorAll('.page').forEach(p => {
+      p.style.display = p.classList.contains('active') ? 'block' : 'none';
+    });
+    return;
+  }
+
+  nav.style.display = 'none';
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  sr.style.display = 'block';
+
+  const results = [];
+  Object.entries(PEPTIDES).forEach(([name, p]) => {
+    const searchStr = `${name} ${p.tagline} ${p.category} ${p.mechanism} ${p.benefits.join(' ')}`.toLowerCase();
+    if (searchStr.includes(q)) {
+      const matchField = name.toLowerCase().includes(q) ? `<em>${name}</em>` :
+        p.tagline.toLowerCase().includes(q) ? `"${p.tagline.substring(0,60)}..."` :
+        `Category: ${p.category}`;
+      results.push({ name, matchField });
+    }
+  });
+
+  STACKS.forEach(stack => {
+    if (stack.name.toLowerCase().includes(q) || stack.goal.toLowerCase().includes(q)) {
+      results.push({ name: stack.name, matchField: `Stack: ${stack.goal}`, isStack: true });
+    }
+  });
+
+  sr.innerHTML = results.length ? results.map(r => `
+    <div class="search-result" onclick="${r.isStack ? `switchToStacks()` : `switchToBrowse('${r.name}')`}">
+      <div class="sr-name">${r.name}</div>
+      <div class="sr-match">${r.matchField}</div>
+    </div>
+  `).join('') : `<div style="padding:20px; text-align:center; color:var(--text3);">No results for "${q}"</div>`;
+});
+
+function switchToStacks() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('mainNav').style.display = 'flex';
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-page="stacks"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(p => {
+    p.style.display = 'none'; p.classList.remove('active');
+  });
+  document.getElementById('page-stacks').style.display = 'block';
+  document.getElementById('page-stacks').classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════════════════
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const pageId = 'page-' + this.dataset.page;
+    document.querySelectorAll('.page').forEach(p => {
+      p.style.display = 'none'; p.classList.remove('active');
+    });
+    document.getElementById(pageId).style.display = 'block';
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+
+// BACK BUTTONS
+document.getElementById('backToCategories').addEventListener('click', () => {
+  document.getElementById('listView').style.display = 'none';
+  document.getElementById('catView').style.display = 'block';
+  window.scrollTo(0,0);
+});
+
+document.getElementById('backToList').addEventListener('click', () => {
+  document.getElementById('detailView').style.display = 'none';
+  const lv = document.getElementById('listView');
+  if (lv.dataset.catId) {
+    lv.style.display = 'block';
+  } else {
+    document.getElementById('catView').style.display = 'block';
+  }
+  window.scrollTo(0,0);
+});
+
+// SCROLL TOP
+window.addEventListener('scroll', () => {
+  const st = document.getElementById('scrollTop');
+  st.classList.toggle('visible', window.scrollY > 300);
+});
+document.getElementById('scrollTop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+renderCategories();
+renderStacks();
+renderQuickDose();
+</script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +52,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 #searchInput{background:transparent;border:none;outline:none;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:13px;width:100%;}
 #searchInput::placeholder{color:#7a94b8;}
 .theme-btn{width:32px;height:32px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0;transition:all 0.15s;}
+.lang-btn{width:36px;height:32px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:600;color:#fff;flex-shrink:0;transition:all 0.15s;letter-spacing:0.03em;}
+.lang-btn.es-active{background:rgba(23,86,169,0.4);border-color:var(--blue);}
 .nav{background:var(--white);border-bottom:1px solid var(--border);display:flex;padding:0 14px;overflow-x:auto;scrollbar-width:none;position:relative;z-index:1;}
 .nav::-webkit-scrollbar{display:none;}
 .nav-tab{padding:13px 16px 11px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;letter-spacing:0.01em;}
@@ -267,34 +270,35 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="logo-mark">Rx</div>
     <div>
       <div class="logo-text">PEPTIDEREF</div>
-      <div class="logo-sub">Clinical Reference</div>
+      <div class="logo-sub" data-i18n="logo_sub">Clinical Reference</div>
     </div>
   </div>
   <div class="search-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="search" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" autocomplete="off">
+    <input type="search" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" data-i18n-placeholder="search_placeholder" autocomplete="off">
   </div>
+  <div class="lang-btn" id="langBtn">EN</div>
   <div class="theme-btn" id="themeBtn">☀️</div>
 </div>
 
 <div id="searchResults"></div>
 
 <div class="nav" id="mainNav">
-  <div class="nav-tab active" data-page="browse">Browse</div>
-  <div class="nav-tab" data-page="stacks">Stacks</div>
-  <div class="nav-tab" data-page="az">A–Z Index</div>
-  <div class="nav-tab" data-page="calc">Calculator</div>
+  <div class="nav-tab active" data-page="browse" data-i18n="nav_browse">Browse</div>
+  <div class="nav-tab" data-page="stacks" data-i18n="nav_stacks">Stacks</div>
+  <div class="nav-tab" data-page="az" data-i18n="nav_az">A–Z Index</div>
+  <div class="nav-tab" data-page="calc" data-i18n="nav_calc">Calculator</div>
 </div>
 
 <!-- BROWSE PAGE -->
 <div class="page active" id="page-browse">
   <div id="catView">
     <div class="clin-header">
-      <div><div class="ch-title">Peptide Compound Library</div><div class="ch-sub">125 compounds · 15 therapeutic stacks · Research reference only</div></div>
+      <div><div class="ch-title" data-i18n="browse_title">Peptide Compound Library</div><div class="ch-sub">125 compounds · 15 therapeutic stacks · Research reference only</div></div>
       <div class="ch-badge">REF v2.1</div>
     </div>
     <div class="cat-grid" id="catGrid"></div>
-    <div class="disclaimer"><strong>Research Reference Only.</strong> All information is for educational purposes. These compounds are not approved for most uses listed. Consult a qualified healthcare provider before use. Not medical advice.</div>
+    <div class="disclaimer" data-i18n="disclaimer"><strong>Research Reference Only.</strong> All information is for educational purposes. These compounds are not approved for most uses listed. Consult a qualified healthcare provider before use. Not medical advice.</div>
   </div>
   <div id="listView" style="display:none">
     <div class="list-header">
@@ -317,13 +321,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="page" id="page-stacks">
   <div id="stacksListView">
     <div class="clin-header">
-      <div><div class="ch-title">Therapeutic Stack Protocols</div><div class="ch-sub">Per-peptide dosing at 3 tiers · Tap any stack for full detail</div></div>
+      <div><div class="ch-title" data-i18n="stacks_title">Therapeutic Stack Protocols</div><div class="ch-sub" data-i18n="stacks_sub">Per-peptide dosing at 3 tiers · Tap any stack for full detail</div></div>
       <div class="ch-badge">15 STACKS</div>
     </div>
     <div class="dose-legend" style="margin-bottom:12px;">
-      <div class="dl-item"><span class="dl-label lo">LOW</span><div class="dl-desc">Conservative. New users or first cycle.</div></div>
-      <div class="dl-item"><span class="dl-label mid">STANDARD</span><div class="dl-desc">Most users' maintenance dose.</div></div>
-      <div class="dl-item"><span class="dl-label hi">HIGH</span><div class="dl-desc">Upper range, experienced only.</div></div>
+      <div class="dl-item"><span class="dl-label lo" data-i18n="dose_low">LOW</span><div class="dl-desc" data-i18n="dose_low_desc">Conservative. New users or first cycle.</div></div>
+      <div class="dl-item"><span class="dl-label mid" data-i18n="dose_mid">STANDARD</span><div class="dl-desc" data-i18n="dose_mid_desc">Most users's maintenance dose.</div></div>
+      <div class="dl-item"><span class="dl-label hi" data-i18n="dose_hi">HIGH</span><div class="dl-desc" data-i18n="dose_hi_desc">Upper range, experienced only.</div></div>
     </div>
     <div id="stacksList"></div>
   </div>
@@ -339,24 +343,24 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <!-- AZ INDEX PAGE — single legend only -->
 <div class="page" id="page-az">
   <div class="clin-header">
-    <div><div class="ch-title">A–Z Compound Index</div><div class="ch-sub">All 100 peptides — tap any for full profile</div></div>
+    <div><div class="ch-title" data-i18n="az_title">A–Z Compound Index</div><div class="ch-sub">All 100 peptides — tap any for full profile</div></div>
     <div class="ch-badge">125 COMPOUNDS</div>
   </div>
   <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:10px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">EVIDENCE RATING KEY</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;" data-i18n="ev_key">EVIDENCE RATING KEY</div>
     <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text2);">
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9734;&#9734;&#9734;&#9734;</span> Anecdotal / Community use only</div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9734;&#9734;&#9734;</span> Preclinical / Animal studies</div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9734;&#9734;</span> Early human data / Phase 1–2</div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9734;</span> Phase 3 clinical trial data</div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> FDA approved indication</div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9734;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_1">Anecdotal / Community use only</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_2">Preclinical / Animal studies</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9734;&#9734;</span> <span data-i18n="ev_3">Early human data / Phase 1–2</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <span data-i18n="ev_4">Phase 3 clinical trial data</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span data-i18n="ev_5">FDA approved indication</span></div>
     </div>
   </div>
   <div class="az-wrap">
     <div class="az-main">
       <div class="az-search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="search" id="azSearch" placeholder="Filter compounds…" autocomplete="off">
+        <input type="search" id="azSearch" placeholder="Filter compounds…" data-i18n-placeholder="az_filter" autocomplete="off">
       </div>
       <div id="azList"></div>
     </div>
@@ -367,25 +371,25 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <!-- CALCULATOR PAGE -->
 <div class="page" id="page-calc">
   <div class="clin-header">
-    <div><div class="ch-title">Reconstitution Calculator</div><div class="ch-sub">How many units to draw on an insulin syringe</div></div>
+    <div><div class="ch-title" data-i18n="calc_title">Reconstitution Calculator</div><div class="ch-sub" data-i18n="calc_sub">How many units to draw on an insulin syringe</div></div>
     <div class="ch-badge">CALCULATOR</div>
   </div>
   <div class="calc-tabs">
-    <div class="calc-tab active" onclick="switchCalcTab('recon', this)">Reconstitution</div>
-    <div class="calc-tab" onclick="switchCalcTab('vials', this)">Vial Count</div>
+    <div class="calc-tab active" onclick="switchCalcTab('recon', this)" data-i18n="calc_tab_recon">Reconstitution</div>
+    <div class="calc-tab" onclick="switchCalcTab('vials', this)" data-i18n="calc_tab_vials">Vial Count</div>
   </div>
   <div id="calc-recon">
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon blue">⚗️</div>Step 1 — Your Vial</div>
+      <div class="calc-section-title"><div class="sh-icon blue">⚗️</div><span data-i18n="calc_step1">Step 1 — Your Vial</span></div>
       <div class="calc-field">
-        <label class="calc-label">Vial Size <span>(mg in the vial)</span></label>
+        <label class="calc-label"><span data-i18n="calc_vial_size_label">Vial Size</span> <span data-i18n="calc_vial_size_hint">(mg in the vial)</span></label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="vialMg" placeholder="e.g. 5" min="0.1" step="0.1">
           <span class="calc-unit">mg</span>
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">BAC Water Added <span>(ml)</span></label>
+        <label class="calc-label"><span data-i18n="calc_bac_label">BAC Water Added</span> <span>(ml)</span></label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="bacWater" placeholder="e.g. 2" min="0.1" step="0.1" value="2">
           <span class="calc-unit">ml</span>
@@ -393,9 +397,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon teal">💉</div>Step 2 — Your Dose</div>
+      <div class="calc-section-title"><div class="sh-icon teal">💉</div><span data-i18n="calc_step2">Step 2 — Your Dose</span></div>
       <div class="calc-field">
-        <label class="calc-label">Desired Dose <span>(what you want to inject)</span></label>
+        <label class="calc-label"><span data-i18n="calc_dose_label">Desired Dose</span> <span data-i18n="calc_dose_hint">(what you want to inject)</span></label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="desiredDose" placeholder="e.g. 250" min="1">
           <select class="calc-select" id="doseUnit" style="flex:0;min-width:70px;padding-right:28px;">
@@ -406,48 +410,48 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">Syringe Type</label>
+        <label class="calc-label" data-i18n="calc_syringe_label">Syringe Type</label>
         <select class="calc-select" id="syringeType">
           <option value="100">100 unit / 1ml insulin syringe</option>
           <option value="50">50 unit / 0.5ml insulin syringe</option>
           <option value="30">30 unit / 0.3ml insulin syringe</option>
         </select>
       </div>
-      <button class="calc-btn" onclick="calculateRecon()">Calculate Draw Volume →</button>
+      <button class="calc-btn" onclick="calculateRecon()" data-i18n="calc_btn_recon">Calculate Draw Volume →</button>
       <div class="calc-error" id="reconError"></div>
       <div class="calc-result" id="reconResult">
-        <div class="calc-result-label">Draw to this line on your syringe</div>
+        <div class="calc-result-label" data-i18n="calc_result_label">Draw to this line on your syringe</div>
         <div class="calc-result-main" id="reconUnits">— units</div>
         <div class="calc-result-sub" id="reconMl">— ml</div>
         <div class="syringe-visual">
-          <div class="syringe-label">SYRINGE FILL LEVEL</div>
+          <div class="syringe-label" data-i18n="calc_fill_label">SYRINGE FILL LEVEL</div>
           <div class="syringe-track"><div class="syringe-fill" id="syringeFill" style="width:0%"></div></div>
           <div class="syringe-markers" id="syringeMarkers"></div>
         </div>
         <div class="calc-result-grid">
-          <div class="calc-result-item"><div class="calc-result-item-label">Concentration</div><div class="calc-result-item-value" id="reconConc">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">Dose per Unit</div><div class="calc-result-item-value" id="reconPerUnit">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">Doses per Vial</div><div class="calc-result-item-value" id="reconDoses">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">Syringe Capacity</div><div class="calc-result-item-value" id="reconSyringe">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_conc">Concentration</div><div class="calc-result-item-value" id="reconConc">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_per_unit">Dose per Unit</div><div class="calc-result-item-value" id="reconPerUnit">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_doses">Doses per Vial</div><div class="calc-result-item-value" id="reconDoses">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_syringe_cap">Syringe Capacity</div><div class="calc-result-item-value" id="reconSyringe">—</div></div>
         </div>
       </div>
     </div>
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon blue">📖</div>How Reconstitution Works</div>
-      <div class="calc-explainer">
-        <div class="step"><div class="step-num">1</div><div>Your peptide vial contains <strong>lyophilized (freeze-dried) powder</strong> — e.g. 5mg of BPC-157.</div></div>
-        <div class="step"><div class="step-num">2</div><div>You add <strong>BAC water</strong> to dissolve it. Adding 2ml to a 5mg vial = <strong>2,500 mcg per ml</strong>.</div></div>
-        <div class="step"><div class="step-num">3</div><div>A 100-unit insulin syringe holds <strong>1ml total</strong> — 100 units = 1ml = 2,500 mcg in this example.</div></div>
-        <div class="step"><div class="step-num">4</div><div>To inject 250 mcg: 250 ÷ 2,500 × 100 = <strong>10 units on the syringe</strong>.</div></div>
-        <div class="step"><div class="step-num">5</div><div><strong>Always inject slowly</strong> into SubQ fat. Rotate sites. Keep reconstituted vials refrigerated.</div></div>
+      <div class="calc-section-title"><div class="sh-icon blue">📖</div><span data-i18n="calc_how">How Reconstitution Works</span></div>
+      <div class="calc-explainer" id="reconExplainer">
+        <div class="step"><div class="step-num">1</div><div data-i18n="calc_exp_1">Your peptide vial contains <strong>lyophilized (freeze-dried) powder</strong> — e.g. 5mg of BPC-157.</div></div>
+        <div class="step"><div class="step-num">2</div><div data-i18n="calc_exp_2">You add <strong>BAC water</strong> to dissolve it. Adding 2ml to a 5mg vial = <strong>2,500 mcg per ml</strong>.</div></div>
+        <div class="step"><div class="step-num">3</div><div data-i18n="calc_exp_3">A 100-unit insulin syringe holds <strong>1ml total</strong> — 100 units = 1ml = 2,500 mcg in this example.</div></div>
+        <div class="step"><div class="step-num">4</div><div data-i18n="calc_exp_4">To inject 250 mcg: 250 ÷ 2,500 × 100 = <strong>10 units on the syringe</strong>.</div></div>
+        <div class="step"><div class="step-num">5</div><div data-i18n="calc_exp_5"><strong>Always inject slowly</strong> into SubQ fat. Rotate sites. Keep reconstituted vials refrigerated.</div></div>
       </div>
     </div>
   </div>
   <div id="calc-vials" style="display:none">
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon amber">📦</div>How Many Vials Do I Need?</div>
+      <div class="calc-section-title"><div class="sh-icon amber">📦</div><span data-i18n="calc_vials_title">How Many Vials Do I Need?</span></div>
       <div class="calc-field">
-        <label class="calc-label">Dose per Injection <span>(your planned dose)</span></label>
+        <label class="calc-label"><span data-i18n="calc_dose_inj">Dose per Injection</span> <span data-i18n="calc_dose_inj_hint">(your planned dose)</span></label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="vialDose" placeholder="e.g. 500" min="1">
           <select class="calc-select" id="vialDoseUnit" style="flex:0;min-width:70px;padding-right:28px;">
@@ -457,59 +461,59 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">Injections per Day</label>
+        <label class="calc-label" data-i18n="calc_inj_day">Injections per Day</label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="injectionsPerDay" placeholder="e.g. 1" min="1" max="10" value="1">
           <span class="calc-unit">× /day</span>
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">Days per Week</label>
+        <label class="calc-label" data-i18n="calc_days_wk">Days per Week</label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="daysPerWeek" placeholder="e.g. 7" min="1" max="7" value="7">
           <span class="calc-unit">days</span>
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">Cycle Length</label>
+        <label class="calc-label" data-i18n="calc_cycle">Cycle Length</label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="cycleWeeks" placeholder="e.g. 10" min="1">
           <span class="calc-unit">weeks</span>
         </div>
       </div>
       <div class="calc-field">
-        <label class="calc-label">Vial Size <span>(mg per vial you're buying)</span></label>
+        <label class="calc-label"><span data-i18n="calc_vial_buy">Vial Size</span> <span data-i18n="calc_vial_buy_hint">(mg per vial you're buying)</span></label>
         <div class="calc-input-row">
           <input type="number" class="calc-input" id="vialSize" placeholder="e.g. 5" min="0.1" step="0.1">
           <span class="calc-unit">mg</span>
         </div>
       </div>
-      <button class="calc-btn" onclick="calculateVials()">Calculate Vials Needed →</button>
+      <button class="calc-btn" onclick="calculateVials()" data-i18n="calc_btn_vials">Calculate Vials Needed →</button>
       <div class="calc-error" id="vialError"></div>
       <div class="calc-result" id="vialResult">
-        <div class="calc-result-label">Vials needed for full cycle</div>
+        <div class="calc-result-label" data-i18n="calc_vials_result_label">Vials needed for full cycle</div>
         <div class="calc-result-main" id="vialCount">— vials</div>
         <div class="calc-result-sub" id="vialSub">—</div>
         <div class="calc-result-grid">
-          <div class="calc-result-item"><div class="calc-result-item-label">Total Doses</div><div class="calc-result-item-value" id="totalDoses">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">Total mg Needed</div><div class="calc-result-item-value" id="totalMg">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">mg Per Week</div><div class="calc-result-item-value" id="mgPerWeek">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label">Leftover in Last Vial</div><div class="calc-result-item-value" id="vialLeftover">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_total_doses">Total Doses</div><div class="calc-result-item-value" id="totalDoses">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_total_mg">Total mg Needed</div><div class="calc-result-item-value" id="totalMg">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_mg_wk">mg Per Week</div><div class="calc-result-item-value" id="mgPerWeek">—</div></div>
+          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_leftover">Leftover in Last Vial</div><div class="calc-result-item-value" id="vialLeftover">—</div></div>
         </div>
       </div>
     </div>
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon blue">📖</div>How to Use This</div>
-      <div class="calc-explainer">
-        <div class="step"><div class="step-num">1</div><div>Enter your planned <strong>dose per injection</strong> — e.g. 500 mcg of BPC-157.</div></div>
-        <div class="step"><div class="step-num">2</div><div>Enter how many times per day and days per week you inject.</div></div>
-        <div class="step"><div class="step-num">3</div><div>Enter your <strong>cycle length</strong> in weeks — e.g. 10 weeks.</div></div>
-        <div class="step"><div class="step-num">4</div><div>Enter the <strong>vial size</strong> you plan to buy — e.g. 5mg vials. Rounds up to whole vials.</div></div>
-        <div class="step"><div class="step-num">5</div><div>Always buy <strong>1 extra vial</strong> as a buffer for waste.</div></div>
+      <div class="calc-section-title"><div class="sh-icon blue">📖</div><span data-i18n="calc_how_vials">How to Use This</span></div>
+      <div class="calc-explainer" id="vialExplainer">
+        <div class="step"><div class="step-num">1</div><div data-i18n="calc_vexp_1">Enter your planned <strong>dose per injection</strong> — e.g. 500 mcg of BPC-157.</div></div>
+        <div class="step"><div class="step-num">2</div><div data-i18n="calc_vexp_2">Enter how many times per day and days per week you inject.</div></div>
+        <div class="step"><div class="step-num">3</div><div data-i18n="calc_vexp_3">Enter your <strong>cycle length</strong> in weeks — e.g. 10 weeks.</div></div>
+        <div class="step"><div class="step-num">4</div><div data-i18n="calc_vexp_4">Enter the <strong>vial size</strong> you plan to buy — e.g. 5mg vials. Rounds up to whole vials.</div></div>
+        <div class="step"><div class="step-num">5</div><div data-i18n="calc_vexp_5">Always buy <strong>1 extra vial</strong> as a buffer for waste.</div></div>
       </div>
     </div>
   </div>
-  <div class="disclaimer" style="margin-top:4px;">
+  <div class="disclaimer" style="margin-top:4px;" data-i18n="disclaimer_calc">
     <strong>Research Reference Only</strong><br>
     This calculator is a mathematical tool only. Always verify calculations independently and consult a licensed healthcare provider before use.
   </div>
@@ -519,6 +523,885 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
 </div>
 <script>
+// ═══════════════════════════════════════════════════════
+// TRANSLATIONS
+// ═══════════════════════════════════════════════════════
+let currentLang = 'en';
+
+const TRANSLATIONS = {
+  en: {
+    // Topbar
+    logo_sub: 'Clinical Reference',
+    search_placeholder: 'Search compounds, mechanisms, stacks…',
+    // Nav
+    nav_browse: 'Browse',
+    nav_stacks: 'Stacks',
+    nav_az: 'A–Z Index',
+    nav_calc: 'Calculator',
+    // Browse page
+    browse_title: 'Peptide Compound Library',
+    browse_sub: '52 compounds · 13 therapeutic stacks · Research reference only',
+    disclaimer: '<strong>Research Reference Only.</strong> All information is for educational purposes. These compounds are not approved for most uses listed. Consult a qualified healthcare provider before use. Not medical advice.',
+    // Stacks page
+    stacks_title: 'Therapeutic Stack Protocols',
+    stacks_sub: 'Per-peptide dosing at 3 tiers · Tap any stack for full detail',
+    stacks_badge: '13 STACKS',
+    // Dose legend
+    dose_low: 'LOW',
+    dose_low_desc: 'Conservative. New users or first cycle.',
+    dose_mid: 'STANDARD',
+    dose_mid_desc: 'Most users\' maintenance dose.',
+    dose_hi: 'HIGH',
+    dose_hi_desc: 'Upper range, experienced only.',
+    // AZ page
+    az_title: 'A–Z Compound Index',
+    az_sub: 'All 52 peptides — tap any for full profile',
+    az_badge: '52 COMPOUNDS',
+    az_filter: 'Filter compounds…',
+    ev_key: 'EVIDENCE RATING KEY',
+    ev_1: 'Anecdotal / Community use only',
+    ev_2: 'Preclinical / Animal studies',
+    ev_3: 'Early human data / Phase 1–2',
+    ev_4: 'Phase 3 clinical trial data',
+    ev_5: 'FDA approved indication',
+    // Calculator
+    calc_title: 'Reconstitution Calculator',
+    calc_sub: 'How many units to draw on an insulin syringe',
+    calc_tab_recon: 'Reconstitution',
+    calc_tab_vials: 'Vial Count',
+    calc_badge: 'CALCULATOR',
+    // Detail sections
+    sec_dosing: 'Dosing Protocol',
+    sec_benefits: 'Clinical Benefits',
+    sec_mechanism: 'Mechanism of Action',
+    sec_adverse: 'Adverse Effects & Safety',
+    sec_compat: 'Pairings & Compatibility',
+    sec_studies: 'Studies & Evidence',
+    sec_timeline: 'Expected Timeline',
+    // Dose tiers
+    tier_lo: '🟢 LOW',
+    tier_mid: '🔵 STANDARD',
+    tier_hi: '🔴 HIGH',
+    tier_lo_who: 'First cycle / sensitive',
+    tier_mid_who: 'Standard maintenance',
+    tier_hi_who: 'Experienced users',
+    // Dose legend inline
+    dose_legend_lo_desc: 'Conservative. New users.',
+    dose_legend_mid_desc: 'Maintenance dose.',
+    dose_legend_hi_desc: 'Experienced users only.',
+    // Labels
+    label_schedule: 'ROUTE / SCHEDULE',
+    label_cycle: 'CYCLE LENGTH',
+    label_ev_quality: 'Evidence Quality',
+    label_profiles: 'Individual Profiles',
+    label_combined_se: 'Combined Stack Side Effects',
+    label_why_together: 'Why These Peptides Together',
+    // Severity badges
+    sev_mild: 'MILD',
+    sev_mod: 'MOD',
+    sev_serious: 'SERIOUS',
+    sev_minor: 'Minor, usually transient',
+    sev_monitor: 'Monitor closely',
+    sev_medical: 'Medical attention',
+    // Evidence labels
+    ev_label_1: 'Anecdotal Only',
+    ev_label_2: 'Preclinical / Animal',
+    ev_label_3: 'Early Human Data',
+    ev_label_4: 'Phase 3 / Clinical',
+    ev_label_5: 'FDA Approved',
+    // Stack detail
+    stack_peptides_badge: 'Peptides',
+    stack_research_badge: 'Research Protocol',
+    stack_benefits_title: 'Stack Benefits',
+    stack_dosing_title: 'Per-Peptide Dosing',
+    stack_note_prefix: '⚠ Important:',
+    // Profile link
+    profile_link: '→ profile',
+    // Calc fields
+    calc_step1: 'Step 1 — Your Vial',
+    calc_step2: 'Step 2 — Your Dose',
+    calc_how: 'How Reconstitution Works',
+    calc_vial_size_label: 'Vial Size',
+    calc_vial_size_hint: '(mg in the vial)',
+    calc_bac_label: 'BAC Water Added',
+    calc_dose_label: 'Desired Dose',
+    calc_dose_hint: '(what you want to inject)',
+    calc_syringe_label: 'Syringe Type',
+    calc_btn_recon: 'Calculate Draw Volume →',
+    calc_btn_vials: 'Calculate Vials Needed →',
+    calc_result_label: 'Draw to this line on your syringe',
+    calc_conc: 'Concentration',
+    calc_per_unit: 'Dose per Unit',
+    calc_doses: 'Doses per Vial',
+    calc_syringe_cap: 'Syringe Capacity',
+    calc_fill_label: 'SYRINGE FILL LEVEL',
+    calc_vials_title: 'How Many Vials Do I Need?',
+    calc_dose_inj: 'Dose per Injection',
+    calc_dose_inj_hint: '(your planned dose)',
+    calc_inj_day: 'Injections per Day',
+    calc_days_wk: 'Days per Week',
+    calc_cycle: 'Cycle Length',
+    calc_vial_buy: 'Vial Size',
+    calc_vial_buy_hint: '(mg per vial you\'re buying)',
+    calc_vials_result_label: 'Vials needed for full cycle',
+    calc_total_doses: 'Total Doses',
+    calc_total_mg: 'Total mg Needed',
+    calc_mg_wk: 'mg Per Week',
+    calc_leftover: 'Leftover in Last Vial',
+    calc_how_vials: 'How to Use This',
+    // Disclaimer calc
+    disclaimer_calc: '<strong>Research Reference Only</strong><br>This calculator is a mathematical tool only. Always verify calculations independently and consult a licensed healthcare provider before use.',
+    // Extra calc strings
+    calc_exact_fit: 'None — exact fit',
+    calc_draw_to: 'draw to the',
+    calc_unit_line: 'unit line',
+    no_results_for: 'No results for',
+    no_results_az: 'No results',
+    // Calc explainer steps EN
+    calc_exp_1: 'Your peptide vial contains <strong>lyophilized (freeze-dried) powder</strong> — e.g. 5mg of BPC-157.',
+    calc_exp_2: 'You add <strong>BAC water</strong> to dissolve it. Adding 2ml to a 5mg vial = <strong>2,500 mcg per ml</strong>.',
+    calc_exp_3: 'A 100-unit insulin syringe holds <strong>1ml total</strong> — 100 units = 1ml = 2,500 mcg in this example.',
+    calc_exp_4: 'To inject 250 mcg: 250 ÷ 2,500 × 100 = <strong>10 units on the syringe</strong>.',
+    calc_exp_5: '<strong>Always inject slowly</strong> into SubQ fat. Rotate sites. Keep reconstituted vials refrigerated.',
+    calc_vexp_1: 'Enter your planned <strong>dose per injection</strong> — e.g. 500 mcg of BPC-157.',
+    calc_vexp_2: 'Enter how many times per day and days per week you inject.',
+    calc_vexp_3: 'Enter your <strong>cycle length</strong> in weeks — e.g. 10 weeks.',
+    calc_vexp_4: 'Enter the <strong>vial size</strong> you plan to buy — e.g. 5mg vials. Rounds up to whole vials.',
+    calc_vexp_5: 'Always buy <strong>1 extra vial</strong> as a buffer for waste.',
+    // Category names
+    cat_weight: 'Weight Loss', cat_healing: 'Healing & Recovery', cat_gh: 'Growth Hormone',
+    cat_antiaging: 'Anti-Aging', cat_mito: 'Mitochondrial', cat_muscle: 'Muscle & IGF',
+    cat_neuro: 'Cognitive', cat_immune: 'Immune', cat_hormonal: 'Hormonal', cat_recon: 'Reconstitution',
+    compounds_label: 'compounds',
+    read_study: 'Read full study →',
+    no_studies: 'No linked publications yet.',
+    research_note: 'Research reference only. Not medical advice. Consult a qualified healthcare provider.',
+    stack_research_note: 'Research reference only. Stack protocols based on community and clinical use patterns. Not medical advice. Consult a qualified healthcare provider.',
+  },
+
+  es: {
+    logo_sub: 'Referencia Clínica',
+    search_placeholder: 'Buscar compuestos, mecanismos, stacks…',
+    nav_browse: 'Explorar', nav_stacks: 'Stacks', nav_az: 'Índice A–Z', nav_calc: 'Calculadora',
+    browse_title: 'Biblioteca de Compuestos de Péptidos',
+    browse_sub: '52 compuestos · 13 stacks terapéuticos · Solo referencia de investigación',
+    disclaimer: '<strong>Solo Referencia de Investigación.</strong> Toda la información es con fines educativos. Consulte a un proveedor de salud calificado antes de usar. No es consejo médico.',
+    stacks_title: 'Protocolos de Stacks Terapéuticos',
+    stacks_sub: 'Dosificación por péptido en 3 niveles · Toca cualquier stack para más detalle',
+    stacks_badge: '13 STACKS',
+    dose_low: 'BAJO', dose_low_desc: 'Conservador. Usuarios nuevos o primer ciclo.',
+    dose_mid: 'ESTÁNDAR', dose_mid_desc: 'Dosis de mantenimiento para la mayoría.',
+    dose_hi: 'ALTO', dose_hi_desc: 'Rango superior, solo usuarios experimentados.',
+    az_title: 'Índice A–Z de Compuestos', az_sub: 'Los 52 péptidos — toca cualquiera para ver el perfil completo',
+    az_badge: '52 COMPUESTOS', az_filter: 'Filtrar compuestos…',
+    ev_key: 'CLAVE DE EVIDENCIA CIENTÍFICA',
+    ev_1: 'Anecdótico / Solo uso comunitario', ev_2: 'Preclínico / Estudios en animales',
+    ev_3: 'Datos humanos tempranos / Fase 1–2', ev_4: 'Datos de ensayo clínico Fase 3',
+    ev_5: 'Indicación aprobada por FDA',
+    calc_title: 'Calculadora de Reconstitución', calc_sub: 'Cuántas unidades marcar en tu jeringa de insulina',
+    calc_tab_recon: 'Reconstitución', calc_tab_vials: 'Conteo de Viales', calc_badge: 'CALCULADORA',
+    sec_dosing: 'Protocolo de Dosificación', sec_benefits: 'Beneficios Clínicos',
+    sec_mechanism: 'Mecanismo de Acción', sec_adverse: 'Efectos Adversos y Seguridad',
+    sec_compat: 'Combinaciones y Compatibilidad', sec_studies: 'Estudios y Evidencia',
+    sec_timeline: 'Cronología Esperada',
+    tier_lo: '🟢 BAJO', tier_mid: '🔵 ESTÁNDAR', tier_hi: '🔴 ALTO',
+    tier_lo_who: 'Primer ciclo / sensibles', tier_mid_who: 'Mantenimiento estándar', tier_hi_who: 'Solo usuarios experimentados',
+    dose_legend_lo_desc: 'Conservador. Usuarios nuevos.', dose_legend_mid_desc: 'Dosis de mantenimiento.', dose_legend_hi_desc: 'Solo usuarios experimentados.',
+    label_schedule: 'RUTA / HORARIO', label_cycle: 'DURACIÓN DEL CICLO',
+    label_ev_quality: 'Calidad de Evidencia', label_profiles: 'Perfiles Individuales',
+    label_combined_se: 'Efectos Secundarios del Stack Combinado', label_why_together: 'Por Qué Estos Péptidos Juntos',
+    sev_mild: 'LEVE', sev_mod: 'MOD', sev_serious: 'GRAVE',
+    sev_minor: 'Menor, generalmente transitorio', sev_monitor: 'Monitorear de cerca', sev_medical: 'Atención médica',
+    ev_label_1: 'Solo Anecdótico', ev_label_2: 'Preclínico / Animal', ev_label_3: 'Datos Humanos Tempranos', ev_label_4: 'Fase 3 / Clínico', ev_label_5: 'Aprobado por FDA',
+    stack_peptides_badge: 'Péptidos', stack_research_badge: 'Protocolo de Investigación',
+    stack_benefits_title: 'Beneficios del Stack', stack_dosing_title: 'Dosificación por Péptido', stack_note_prefix: '⚠ Importante:',
+    profile_link: '→ perfil',
+    calc_step1: 'Paso 1 — Tu Vial', calc_step2: 'Paso 2 — Tu Dosis', calc_how: 'Cómo Funciona la Reconstitución',
+    calc_vial_size_label: 'Tamaño del Vial', calc_vial_size_hint: '(mg en el vial)',
+    calc_bac_label: 'Agua BAC Agregada', calc_dose_label: 'Dosis Deseada', calc_dose_hint: '(lo que quieres inyectar)',
+    calc_syringe_label: 'Tipo de Jeringa', calc_btn_recon: 'Calcular Volumen →', calc_btn_vials: 'Calcular Viales Necesarios →',
+    calc_result_label: 'Marca esta línea en tu jeringa', calc_fill_label: 'NIVEL DE LLENADO DE JERINGA',
+    calc_conc: 'Concentración', calc_per_unit: 'Dosis por Unidad', calc_doses: 'Dosis por Vial', calc_syringe_cap: 'Capacidad de la Jeringa',
+    calc_vials_title: '¿Cuántos Viales Necesito?', calc_dose_inj: 'Dosis por Inyección', calc_dose_inj_hint: '(tu dosis planificada)',
+    calc_inj_day: 'Inyecciones por Día', calc_days_wk: 'Días por Semana', calc_cycle: 'Duración del Ciclo',
+    calc_vial_buy: 'Tamaño del Vial', calc_vial_buy_hint: '(mg por vial que vas a comprar)',
+    calc_vials_result_label: 'Viales necesarios para el ciclo completo',
+    calc_total_doses: 'Total de Dosis', calc_total_mg: 'Total de mg Necesarios', calc_mg_wk: 'mg Por Semana', calc_leftover: 'Sobrante en el Último Vial',
+    calc_how_vials: 'Cómo Usar Esto',
+    disclaimer_calc: '<strong>Solo Referencia de Investigación</strong><br>Esta calculadora es solo una herramienta matemática. Consulta a un proveedor de salud con licencia antes de usar.',
+    cat_weight: 'Pérdida de Peso', cat_healing: 'Sanación y Recuperación', cat_gh: 'Hormona de Crecimiento',
+    cat_antiaging: 'Antienvejecimiento', cat_mito: 'Mitocondrial', cat_muscle: 'Músculo e IGF',
+    cat_neuro: 'Cognitivo', cat_immune: 'Inmune', cat_hormonal: 'Hormonal', cat_recon: 'Reconstitución',
+    compounds_label: 'compuestos',
+    read_study: 'Leer estudio completo →', no_studies: 'Aún no hay publicaciones enlazadas.',
+    research_note: 'Solo referencia de investigación. No es consejo médico. Consulta a un proveedor de salud calificado.',
+    stack_research_note: 'Solo referencia de investigación. Los protocolos se basan en patrones de uso clínico y comunitario. No es consejo médico.',
+    calc_exact_fit: 'Ninguno — ajuste exacto', calc_draw_to: 'marcar en la línea', calc_unit_line: 'de la jeringa',
+    no_results_for: 'Sin resultados para', no_results_az: 'Sin resultados',
+    calc_exp_1: 'Tu vial contiene <strong>polvo liofilizado</strong> — por ejemplo, 5mg de BPC-157.',
+    calc_exp_2: 'Agregas <strong>agua BAC</strong> para disolverlo. 2ml en un vial de 5mg = <strong>2,500 mcg por ml</strong>.',
+    calc_exp_3: 'Una jeringa de 100 unidades contiene <strong>1ml total</strong> — 100 unidades = 1ml = 2,500 mcg.',
+    calc_exp_4: 'Para inyectar 250 mcg: 250 ÷ 2,500 × 100 = <strong>10 unidades en la jeringa</strong>.',
+    calc_exp_5: '<strong>Siempre inyectar lentamente</strong> en grasa SubQ. Rotar sitios. Mantener viales refrigerados.',
+    calc_vexp_1: 'Ingresa tu <strong>dosis por inyección</strong> — por ejemplo, 500 mcg de BPC-157.',
+    calc_vexp_2: 'Ingresa cuántas veces al día y días por semana inyectas.',
+    calc_vexp_3: 'Ingresa tu <strong>duración del ciclo</strong> en semanas — por ejemplo, 10 semanas.',
+    calc_vexp_4: 'Ingresa el <strong>tamaño del vial</strong> que planeas comprar. Redondea hacia arriba a viales enteros.',
+    calc_vexp_5: 'Siempre compra <strong>1 vial extra</strong> como buffer para desperdicios.',
+  },
+};
+const CAT_I18N_KEYS = {
+  weight:'cat_weight', healing:'cat_healing', gh:'cat_gh', antiaging:'cat_antiaging',
+  mito:'cat_mito', muscle:'cat_muscle', neuro:'cat_neuro', immune:'cat_immune',
+  hormonal:'cat_hormonal', recon:'cat_recon'
+};
+
+function t(key){ return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || (TRANSLATIONS.en && TRANSLATIONS.en[key]) || key; }
+
+function applyTranslations(){
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    const val = t(key);
+    if(val) el.innerHTML = val;
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    const val = t(key);
+    if(val) el.placeholder = val;
+  });
+  const btn = document.getElementById('langBtn');
+  if(btn){
+    btn.textContent = currentLang === 'en' ? 'ES' : 'EN';
+    btn.classList.toggle('es-active', currentLang === 'es');
+  }
+  document.documentElement.lang = currentLang;
+  renderCategories();
+  renderStacks();
+  renderAZ();
+}
+
+function toggleLang(){
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  applyTranslations();
+  if(document.getElementById('detailView').style.display !== 'none'){
+    const name = document.getElementById('detailTitle').textContent;
+    if(name) showDetail(name);
+  }
+  if(document.getElementById('stackDetailView').style.display !== 'none'){
+    if(window._originStackIdx !== undefined) showStackDetail(window._originStackIdx);
+  }
+}
+
+
+
+// ═══════════════════════════════════════════════════════
+// PEPTIDE TRANSLATIONS — SPANISH
+// ═══════════════════════════════════════════════════════
+const PEPTIDE_ES = {
+  'Tirzepatide': {
+    tagline: 'Agonista dual GIP + GLP-1 — el medicamento aprobado más potente para pérdida de peso',
+    mechanism: 'Activa simultáneamente los receptores GIP y GLP-1. Ralentiza el vaciado gástrico, suprime el apetito, mejora la secreción de insulina y reduce el glucagón. El mecanismo dual supera a los agentes GLP-1 únicos en un 35% en pérdida de peso en ensayos comparativos.',
+    benefits: ['Pérdida promedio del 15–22% del peso corporal (ensayo SURMOUNT-1)','Superior a semaglutida en comparación directa SURPASS-2','Reduce preferentemente la grasa visceral y abdominal','Mejora HbA1c, presión arterial y triglicéridos'],
+    sideEffects: [{text:'Náuseas (17–22%) — más común, dependiente de la dosis',severity:'med'},{text:'Diarrea (13–16%)',severity:'low'},{text:'Vómito (6–10%)',severity:'med'},{text:'Pancreatitis (rara)',severity:'high'},{text:'Tumores de células C tiroideas en roedores — significado clínico en humanos incierto',severity:'high'}],
+    timeline: [{time:'Sem 1–2',text:'Comienza la supresión del apetito'},{time:'Sem 4–8',text:'Reducción de peso notable'},{time:'Sem 20+',text:'Resultados máximos 15–22% de pérdida de peso'}],
+    schedule: 'Inyección SubQ una vez por semana',
+    cycle: 'Mínimo 20+ semanas',
+  },
+  'Semaglutide': {
+    tagline: 'Agonista GLP-1 — estándar de oro para pérdida de peso con beneficio cardiovascular',
+    mechanism: 'Activa selectivamente los receptores GLP-1 para reducir el apetito, ralentizar el vaciado gástrico y mejorar la secreción de insulina. El péptido para pérdida de peso más estudiado.',
+    benefits: ['Pérdida promedio del 15–17% del peso (ensayo STEP-1)','21% de reducción en eventos cardiovasculares mayores (SELECT)','Aprobado por FDA para diabetes tipo 2 y obesidad','Reducción significativa de HbA1c'],
+    sideEffects: [{text:'Náuseas — muy comunes (74–84%)',severity:'med'},{text:'Enfermedad de la vesícula biliar / cálculos (riesgo 2.6x)',severity:'high'},{text:'Vómito y diarrea',severity:'med'},{text:'Pérdida de masa muscular sin entrenamiento de resistencia',severity:'med'},{text:'Pancreatitis (rara)',severity:'high'}],
+    timeline: [{time:'Sem 1–2',text:'Comienza la reducción del apetito'},{time:'Sem 68',text:'~15% de pérdida de peso a 2.4mg'}],
+    schedule: 'Inyección SubQ una vez por semana',
+    cycle: 'Mínimo 20+ semanas',
+  },
+  'BPC-157': {
+    tagline: 'Pentadecapéptido gástrico — reparación de tejidos, sanación intestinal, antiinflamatorio',
+    mechanism: 'Promueve la angiogénesis vía VEGFR2/Akt-eNOS. Estimula la actividad de fibroblastos, reduce citocinas proinflamatorias y mejora la expresión del receptor de hormona de crecimiento.',
+    benefits: ['Cicatrización acelerada de tendones y ligamentos','Sanación intestinal y reparación del intestino permeable','Reducción de la inflamación sistémica','Alivio del dolor articular','Efectos neuroprotectores en modelos animales'],
+    sideEffects: [{text:'Irritación leve en el sitio de inyección',severity:'low'},{text:'Náuseas a dosis muy altas (raro)',severity:'low'},{text:'Preocupación teórica de promoción tumoral — no confirmada en humanos',severity:'med'},{text:'Datos humanos muy limitados',severity:'med'}],
+    timeline: [{time:'Días 1–7',text:'Reducción del dolor frecuentemente notada'},{time:'Sem 4–8',text:'Mejora funcional significativa'},{time:'Sem 8–12',text:'Beneficio completo del ciclo'}],
+    schedule: 'SubQ diario cerca del sitio de lesión o abdomen',
+    cycle: '8–12 semanas, luego descanso',
+  },
+  'TB-500': {
+    tagline: 'Fragmento de Timosina Beta-4 — reparación sistémica de tejidos y flexibilidad',
+    mechanism: 'Promueve la regulación de actina, migración celular y angiogénesis. A diferencia de BPC-157 que actúa localmente, TB-500 proporciona sanación sistémica amplia.',
+    benefits: ['Reparación sistémica de tejidos','Reducción de inflamación en todo el cuerpo','Mejora de flexibilidad y rango de movimiento','Protección cardíaca (modelos animales)','Aceleración de cicatrización de heridas'],
+    sideEffects: [{text:'Enrojecimiento en sitio de inyección',severity:'low'},{text:'Fatiga leve (raro)',severity:'low'},{text:'Dolor de cabeza (ocasional)',severity:'low'},{text:'Datos limitados de seguridad humana a largo plazo',severity:'med'}],
+    timeline: [{time:'Sem 1–2',text:'Comienza el efecto antiinflamatorio sistémico'},{time:'Sem 3–5',text:'Mejoras en flexibilidad'},{time:'Sem 8–10',text:'Completar ciclo'}],
+    schedule: 'SubQ una vez por semana',
+    cycle: '10–12 semanas',
+  },
+  'GHK-Cu': {
+    tagline: 'Tripéptido de cobre — piel, colágeno, antienvejecimiento, cicatrización',
+    mechanism: 'Activa genes de síntesis de colágeno, promueve la angiogénesis y es un poderoso antioxidante. Restablece la expresión genética hacia un patrón más juvenil.',
+    benefits: ['Firmeza de piel y reducción de arrugas','Estimulación de colágeno y elastina','Activación del crecimiento capilar','Aceleración de cicatrización','Efectos antiinflamatorios'],
+    sideEffects: [{text:'Enrojecimiento en sitio de inyección (común, breve)',severity:'low'},{text:'Oscurecimiento temporal de piel cerca del sitio',severity:'low'}],
+    timeline: [{time:'Sem 2–4',text:'Mejoras en textura de piel'},{time:'Sem 8–12',text:'Firmeza de piel visible'}],
+    schedule: 'SubQ diario o aplicación tópica',
+    cycle: '12 semanas',
+  },
+  'CJC-1295 (no DAC)': {
+    tagline: 'Análogo de GHRH — péptido GH preferido por su pulsatilidad natural',
+    mechanism: 'Análogo modificado de GHRH que estimula la liberación pulsátil de GH preservando los mecanismos de retroalimentación hipotalámica naturales. La vida media corta (~30 min) mantiene la pulsatilidad fisiológica.',
+    benefits: ['Aumento de masa muscular magra','Pérdida de grasa vía lipólisis','Mejora de la calidad del sueño','Recuperación más rápida','Efectos antienvejecimiento vía eje GH/IGF-1'],
+    sideEffects: [{text:'Retención de agua (común al inicio)',severity:'low'},{text:'Dolores articulares leves',severity:'low'},{text:'Síndrome del túnel carpiano con IGF-1 elevado',severity:'med'},{text:'Elevación de glucosa en sangre',severity:'med'}],
+    timeline: [{time:'Sem 1–2',text:'Mejor sueño, posible retención de agua'},{time:'Sem 8–12',text:'Cambios en composición corporal'}],
+    schedule: 'SubQ diario antes de dormir con estómago vacío',
+    cycle: '12–16 semanas / 4 sem de descanso',
+  },
+  'CJC-1295 (with DAC)': {
+    tagline: 'Análogo GHRH de acción prolongada — dosificación semanal vía unión a albúmina',
+    mechanism: 'La modificación DAC une CJC-1295 a la albúmina extendiendo la vida media a 6–8 días. Proporciona elevación sostenida (no pulsátil) de GH con dosificación conveniente una vez por semana.',
+    benefits: ['Inyección conveniente una vez por semana','Elevación sostenida de GH e IGF-1','Soporte de masa muscular magra','Pérdida de grasa','Efectos antienvejecimiento'],
+    sideEffects: [{text:'Retención de agua (más pronunciada que sin DAC)',severity:'med'},{text:'Dolores articulares',severity:'low'},{text:'Riesgo de túnel carpiano',severity:'med'},{text:'Elevación de glucosa',severity:'med'}],
+    timeline: [{time:'Días 2–4',text:'Pico de GH/IGF-1 por 6+ días'},{time:'Sem 8–12',text:'Beneficio completo en composición corporal'}],
+    schedule: 'SubQ una vez por semana',
+    cycle: '12 semanas / 4 sem de descanso',
+  },
+  'Ipamorelin': {
+    tagline: 'Secretagogo de GH más limpio — pulso selectivo, sin pico de cortisol',
+    mechanism: 'Pentapéptido que imita la ghrelina uniéndose a GHS-R1a. Únicamente selectivo — NO eleva cortisol, prolactina ni ACTH. Alcanza su pico ~40 min post-inyección.',
+    benefits: ['Pulso de GH limpio sin hormonas del estrés','Preservación y crecimiento de masa muscular magra','Pérdida de grasa','Mejora del sueño profundo','Aceleración de recuperación'],
+    sideEffects: [{text:'Retención de agua (leve)',severity:'low'},{text:'Rubor facial breve post-inyección',severity:'low'},{text:'Dolor de cabeza leve inicialmente',severity:'low'},{text:'Fluctuación de glucosa a dosis altas',severity:'med'}],
+    timeline: [{time:'40 min',text:'Pico del pulso de GH'},{time:'Sem 1–3',text:'Mejoras en calidad del sueño'},{time:'Sem 8–12',text:'Cambios en composición corporal'}],
+    schedule: 'SubQ diario antes de dormir con estómago vacío',
+    cycle: '12 semanas / 4 sem de descanso',
+  },
+  'GHRP-2': {
+    tagline: 'Potente secretagogo de GH — más fuerte que ipamorelin, efectos secundarios manejables',
+    mechanism: 'Hexapéptido sintético que activa GHS-R1a para una liberación robusta de GH. Más potente que GHRP-6 con menos estimulación del apetito, pero eleva más el cortisol que ipamorelin.',
+    benefits: ['Potente pulso de GH','Mejora de composición corporal','Pérdida de grasa','Aceleración de recuperación','Mejora de calidad del sueño'],
+    sideEffects: [{text:'Elevación de cortisol (regresa al nivel basal en 2–3 hrs)',severity:'med'},{text:'Elevación de prolactina',severity:'med'},{text:'Retención de agua',severity:'low'},{text:'Estimulación del apetito (menos que GHRP-6)',severity:'low'}],
+    timeline: [{time:'30 min',text:'Pico del pulso de GH; cortisol eleva transitoriamente'},{time:'Sem 8–12',text:'Beneficio completo en composición corporal'}],
+    schedule: 'SubQ diario 1–2x con estómago vacío',
+    cycle: '12 semanas / 4 sem de descanso',
+  },
+  'GHRP-6': {
+    tagline: 'Péptido GH original — liberación potente con estimulación significativa del apetito',
+    mechanism: 'Primer GHRP sintético desarrollado. Activa el receptor de ghrelina para una robusta liberación de GH más una fuerte estimulación del apetito. Eleva más cortisol y prolactina que los GHRPs modernos.',
+    benefits: ['Potente pulso de GH','Estimulación significativa del apetito (útil para volumen)','Soporte de recuperación','Bien estudiado históricamente'],
+    sideEffects: [{text:'Fuerte pico de hambre 20–30 min post-inyección',severity:'med'},{text:'Elevación de cortisol y prolactina',severity:'med'},{text:'Desensibilización con uso crónico',severity:'med'}],
+    timeline: [{time:'20–30 min',text:'Pico intenso de apetito; GH en su punto máximo'},{time:'Sem 8–12',text:'Beneficio completo del ciclo'}],
+    schedule: 'SubQ diario 1–3x con estómago vacío',
+    cycle: '8–12 semanas',
+  },
+  'Hexarelin': {
+    tagline: 'GHRP más potente — el mayor pulso de GH, se desensibiliza rápido',
+    mechanism: 'Miembro más potente de la clase GHRP. Activa GHS-R1a para la mayor liberación aguda de GH, además de propiedades cardioprotectoras únicas vía receptor CD36.',
+    benefits: ['El mayor pulso de GH de cualquier GHRP','Efectos cardioprotectores vía CD36 (único)','Uso regenerativo post-lesión o cirugía'],
+    sideEffects: [{text:'La mayor elevación de cortisol de todos los GHRPs',severity:'high'},{text:'Elevación significativa de prolactina',severity:'high'},{text:'Rápida desensibilización del receptor — máx 4–6 semanas',severity:'high'}],
+    timeline: [{time:'30 min',text:'Pico del pulso de GH más fuerte'},{time:'Sem 4–6',text:'Ciclo terminado — recuperación del receptor requiere 4 sem'}],
+    schedule: 'SubQ diario 1–2x — solo ciclos cortos',
+    cycle: 'MÁXIMO 4–6 semanas',
+  },
+  'MK-677': {
+    tagline: 'Secretagogo de GH oral — única opción no inyectable. Elevación de 24 hrs',
+    mechanism: 'Mimético de ghrelina no peptídico con biodisponibilidad oral. Activa GHS-R1a para una elevación sostenida de 24 horas de GH e IGF-1 con una sola dosis oral diaria.',
+    benefits: ['Único secretagogo de GH activo por vía oral','Elevación sostenida de GH e IGF-1 durante 24 horas','Aumento de masa magra y densidad ósea','Mejora de calidad del sueño','Sin inyecciones requeridas'],
+    sideEffects: [{text:'Estimulación significativa del apetito',severity:'med'},{text:'Retención de agua e hinchazón',severity:'med'},{text:'Elevación de glucosa / resistencia a la insulina a largo plazo',severity:'high'},{text:'Letargo y somnolencia aumentada',severity:'low'}],
+    timeline: [{time:'Días 1–7',text:'Aumento del apetito y cambios en el sueño'},{time:'Sem 8–16',text:'Aumento de masa magra'}],
+    schedule: 'Dosis oral diaria, preferiblemente antes de dormir',
+    cycle: '12–24 semanas',
+  },
+  'NAD+': {
+    tagline: 'Coenzima maestra — energía celular, reparación de ADN, activación de sirtuinas',
+    mechanism: 'Coenzima esencial para la producción mitocondrial de ATP. Activa sirtuinas (proteínas de longevidad) y enzimas PARP para reparación de ADN. El NAD+ disminuye ~50% a los 60 años.',
+    benefits: ['Optimización de energía celular ATP','Restauración de función mitocondrial','Reparación de ADN vía activación de PARP','Activación de sirtuinas de longevidad','Claridad cognitiva y enfoque'],
+    sideEffects: [{text:'Sofocos y calor (muy comunes al inicio)',severity:'med'},{text:'Fatiga inicial mientras las mitocondrias se adaptan',severity:'low'},{text:'Náuseas a dosis altas',severity:'low'}],
+    timeline: [{time:'Días 1–7',text:'Energía y claridad a menudo inmediatas'},{time:'Sem 6–10',text:'Efectos metabólicos y antienvejecimiento acumulados'}],
+    schedule: 'SubQ diario (preferiblemente AM) o infusión IV',
+    cycle: '10 semanas / 2 sem de descanso',
+  },
+  'Sermorelin': {
+    tagline: 'Análogo GHRH original — estimulación fisiológica de GH, aprobado por FDA',
+    mechanism: 'Análogo sintético GHRH(1-29) que preserva la retroalimentación natural de somatostatina. La vida media corta (10–20 min) crea pulsatilidad natural. Único análogo GHRH aprobado por FDA.',
+    benefits: ['Estimulación pulsátil natural de GH','Retroalimentación negativa preservada (más seguro que HGH)','Mejora de calidad del sueño','Soporte de masa muscular magra','Sin supresión del eje hormonal'],
+    sideEffects: [{text:'Rubor (común al inyectar)',severity:'low'},{text:'Dolor de cabeza',severity:'low'},{text:'Hipotiroidismo reportado en ~6.5% en algunos estudios',severity:'med'},{text:'Retención de agua (leve)',severity:'low'}],
+    timeline: [{time:'Sem 1–2',text:'Mejora del sueño común'},{time:'Sem 8–12',text:'Cambios en composición corporal'}],
+    schedule: 'SubQ diario 30–60 min antes de dormir con estómago vacío',
+    cycle: '12 semanas / 4 sem de descanso',
+  },
+  'Epithalon': {
+    tagline: 'Activador de telomerasa — antienvejecimiento a nivel cromosómico',
+    mechanism: 'Tetrapéptido que activa la enzima telomerasa para alargar los telómeros. También regula la producción de melatonina en la glándula pineal. Se usa en ciclos cortos de ráfaga.',
+    benefits: ['Alargamiento de telómeros','Mejora del sueño vía regulación de melatonina','Protección antioxidante','Reducción potencial del riesgo de cáncer','Normalización del sistema inmune'],
+    sideEffects: [{text:'Muy bien tolerado — mínimos efectos secundarios',severity:'low'},{text:'Reacciones breves en sitio de inyección',severity:'low'}],
+    timeline: [{time:'Ciclo 1',text:'Mejora del sueño frecuentemente desde el primer ciclo'},{time:'3–6 meses',text:'Efectos en telómeros con ciclos repetidos'}],
+    schedule: 'SubQ diario — SOLO ciclos cortos de ráfaga',
+    cycle: 'Ráfagas de 10–20 días, 2–4x por año',
+  },
+  'Thymosin Alpha-1': {
+    tagline: 'Péptido inmunomodulador más potente — activa células T, NK y dendríticas',
+    mechanism: 'Péptido tímico que activa células T, NK y dendríticas. Modula bidireccionalmente la inmunidad innata y adaptativa. Aprobado por FDA en 35+ países.',
+    benefits: ['Respuesta inmune antiviral mejorada','Activación de células T y NK','Vigilancia inmune anticáncer','Regulación autoinmune (bidireccional)','Soporte para COVID largo y síndromes post-virales'],
+    sideEffects: [{text:'Reacciones en sitio de inyección (leves, transitorias)',severity:'low'},{text:'Síntomas gripales las primeras 1–2 dosis',severity:'low'}],
+    timeline: [{time:'Sem 1–2',text:'Activación inmune'},{time:'Sem 6–10',text:'Efecto inmunomodulador completo'}],
+    schedule: 'SubQ 2x por semana',
+    cycle: '10–12 semanas',
+  },
+  'PT-141': {
+    tagline: 'Excitación sexual a nivel cerebral — funciona en ambos sexos, incluso cuando el Viagra falla',
+    mechanism: 'Agonista del receptor de melanocortina-4 que actúa centralmente en el hipotálamo en los circuitos de excitación sexual. A diferencia de los inhibidores de PDE5 que son vasculares, PT-141 actúa a nivel neural.',
+    benefits: ['Mayor deseo y excitación sexual en ambos sexos','Efectivo para DE psicógena','Tratamiento de disfunción sexual femenina','Erecciones espontáneas en hombres'],
+    sideEffects: [{text:'Náuseas (comunes — comenzar con dosis baja)',severity:'med'},{text:'Rubor',severity:'low'},{text:'Dolor de cabeza',severity:'low'},{text:'Aumento transitorio de presión arterial',severity:'med'},{text:'Bostezos (efecto melanocortina común)',severity:'low'}],
+    timeline: [{time:'45 min',text:'Comienzan los efectos'},{time:'2–4 hrs',text:'Ventana de efecto máximo'}],
+    schedule: 'SubQ según necesidad, 45 min antes — estómago vacío',
+    cycle: 'Máx 2x por semana',
+  },
+  'SS-31': {
+    tagline: 'Antioxidante dirigido a mitocondrias — cardioprotección y energía celular',
+    mechanism: 'Se concentra en la membrana mitocondrial interna en las crestas, reduciendo el estrés oxidativo en la fuente. Previene la transición de permeabilidad mitocondrial.',
+    benefits: ['Protección y reparación mitocondrial','Mejora de energía celular','Protección cardíaca (datos de ensayo Fase 2)','Antienvejecimiento a nivel mitocondrial','Protección renal'],
+    sideEffects: [{text:'Reacciones en sitio de inyección (leves)',severity:'low'},{text:'Muy bien tolerado en estudios clínicos',severity:'low'}],
+    timeline: [{time:'Sem 2–4',text:'Mejora de energía y recuperación'},{time:'Sem 6–10',text:'Optimización de función mitocondrial'}],
+    schedule: 'SubQ diario (preferiblemente AM)',
+    cycle: '10 semanas',
+  },
+  'KPV': {
+    tagline: 'Tripéptido alfa-MSH — antiinflamatorio GI, sanación intestinal, inmunomodulación',
+    mechanism: 'Tripéptido C-terminal de alfa-MSH que inhibe potentemente NF-kB. Altamente efectivo en superficies mucosas. Biodisponibilidad oral por resistencia a proteasas GI.',
+    benefits: ['Alivio de EII, Crohn, colitis ulcerativa','Sanación del intestino permeable','Aceleración de cicatrización de heridas','Antiinflamatorio en todo el tracto GI'],
+    sideEffects: [{text:'Extremadamente bien tolerado',severity:'low'},{text:'Reacciones leves en sitio de inyección',severity:'low'}],
+    timeline: [{time:'Sem 1–2',text:'Reducción de inflamación GI'},{time:'Sem 6–8',text:'Efecto antiinflamatorio completo'}],
+    schedule: 'SubQ diario u oral',
+    cycle: '8 semanas',
+  },
+  'Semax': {
+    tagline: 'Nootrópico ruso — enfoque, neuroprotección, elevación de BDNF',
+    mechanism: 'Análogo de ACTH(4-7) que aumenta la expresión de BDNF y NGF. Modula los sistemas de dopamina/serotonina. Aprobado en Rusia para rehabilitación de accidentes cerebrovasculares.',
+    benefits: ['Mejora del enfoque y rendimiento cognitivo','Consolidación de memoria','Neuroprotección','Elevación del estado de ánimo','Mejora de neuroplasticidad'],
+    sideEffects: [{text:'Irritabilidad a dosis altas',severity:'med'},{text:'Fatiga post-ciclo',severity:'low'},{text:'Irritación nasal con uso intranasal',severity:'low'}],
+    timeline: [{time:'Días 1–7',text:'Mejora cognitiva frecuentemente inmediata'},{time:'Sem 4–6',text:'Beneficio completo de neuroplasticidad'}],
+    schedule: 'SubQ diario o intranasal',
+    cycle: '6 semanas / 2 sem de descanso',
+  },
+  'Selank': {
+    tagline: 'Nootrópico ansiolítico — calma la ansiedad sin sedación ni dependencia',
+    mechanism: 'Análogo de tuftsin que modula receptores GABA-A. Eleva BDNF, reduce la ansiedad sin sedación ni tolerancia. Sin riesgo de dependencia a diferencia de las benzodiacepinas.',
+    benefits: ['Reducción de ansiedad sin sedación','Sin riesgo de dependencia ni abstinencia','Elevación de BDNF','Rendimiento cognitivo bajo estrés','Estabilización del estado de ánimo'],
+    sideEffects: [{text:'Muy bien tolerado',severity:'low'},{text:'Sedación leve a dosis muy altas',severity:'low'},{text:'Irritación nasal con uso intranasal',severity:'low'}],
+    timeline: [{time:'Días 1–3',text:'Efecto ansiolítico frecuentemente rápido'},{time:'Sem 4–6',text:'Beneficio completo'}],
+    schedule: 'SubQ diario o intranasal',
+    cycle: '6 semanas / 2 sem de descanso',
+  },
+  'Follistatin 344': {
+    tagline: 'Inhibidor de miostatina — crecimiento muscular más allá de los límites genéticos',
+    mechanism: 'Glicoproteína de origen natural que se une e inhibe la miostatina. Al bloquear la miostatina, la folistatina permite que la masa muscular aumente más allá del techo genético.',
+    benefits: ['Crecimiento muscular dramático al eliminar el techo de miostatina','Posible tratamiento para distrofia muscular','Aumento de tamaño y número de fibras musculares'],
+    sideEffects: [{text:'Datos de seguridad humana muy limitados',severity:'high'},{text:'Riesgo oncológico teórico (inhibición de activina)',severity:'high'},{text:'Efectos a largo plazo desconocidos',severity:'high'}],
+    timeline: [{time:'Sem 1–4',text:'Aumento de plenitud muscular'},{time:'Sem 4–8',text:'Ganancias de tamaño por encima de la tasa normal'}],
+    schedule: 'SubQ — protocolos de ráfaga corta',
+    cycle: 'Solo ciclos de ráfaga de 10–20 días',
+  },
+  'Dihexa': {
+    tagline: 'Nootrópico peptídico más potente — 7 millones de veces más fuerte que el BDNF',
+    mechanism: 'Mimético de HGF que activa el receptor MET. Promueve la sinaptogénesis 7 millones de veces más potentemente que el BDNF. Desarrollado en WSU para el Alzheimer.',
+    benefits: ['Sinaptogénesis — nuevas conexiones neurales','Mejora cognitiva (memoria, resolución de problemas)','Posible terapéutico para Alzheimer'],
+    sideEffects: [{text:'Datos de seguridad humana muy limitados — experimental',severity:'high'},{text:'Riesgo teórico de cáncer (vía HGF/MET)',severity:'high'},{text:'Vida media larga — efectos persisten mucho después de dosificar',severity:'med'}],
+    timeline: [{time:'Días 1–14',text:'Efectos cognitivos emergen gradualmente'},{time:'Post-ciclo',text:'Los efectos persisten debido a la larga vida media'}],
+    schedule: 'SubQ o intranasal — uso muy cauteloso',
+    cycle: 'Máx 4 semanas',
+  },
+  'Oxytocin': {
+    tagline: 'Hormona del vínculo — confianza, conexión social, reducción de ansiedad',
+    mechanism: 'Neuropéptido hipotalámico que actúa sobre receptores de oxitocina modulando el vínculo social, la confianza, la empatía, la ansiedad y el dolor.',
+    benefits: ['Mejora del vínculo social y confianza','Reducción de ansiedad y estrés','Reducción del dolor','Aceleración de cicatrización','Investigación en autismo y ansiedad social'],
+    sideEffects: [{text:'Náuseas (uso intranasal)',severity:'low'},{text:'Dolor de cabeza',severity:'low'},{text:'Contracciones uterinas — EVITAR EN EMBARAZO',severity:'high'},{text:'Ansiedad paradójica en algunos individuos',severity:'med'}],
+    timeline: [{time:'Minutos',text:'Efectos conductuales comienzan (intranasal)'},{time:'Sem 2–4',text:'Beneficio prosocial acumulado'}],
+    schedule: 'Spray intranasal o SubQ según necesidad',
+    cycle: '6–8 semanas o según necesidad',
+  },
+  'Melanotan I': {
+    tagline: 'Péptido de bronceado puro — estimulación de melanina sin efectos sexuales',
+    mechanism: 'Agonista selectivo MC1R que estimula la producción de melanina sin activar MC4R (excitación sexual).',
+    benefits: ['Bronceado sin daño UV','Fotoprotección','Pigmentación uniforme de la piel','Sin efectos sexuales a diferencia de MT-II'],
+    sideEffects: [{text:'Náuseas (menos que MT-II)',severity:'low'},{text:'Rubor',severity:'low'},{text:'Oscurecimiento de pecas/lunares — monitorear',severity:'med'}],
+    timeline: [{time:'Sem 1–2',text:'Desarrollo del bronceado con mínima UV'}],
+    schedule: 'SubQ diario en carga luego EOD mantenimiento',
+    cycle: '8 semanas',
+  },
+  'Melanotan II': {
+    tagline: 'Bronceado + excitación sexual — agonista dual de melanocortina',
+    mechanism: 'Agonista no selectivo de melanocortina que activa MC1R (bronceado), MC3R y MC4R (excitación sexual).',
+    benefits: ['Bronceado con mínima UV','Mayor libido y excitación sexual','Erecciones espontáneas (hombres)','Supresión del apetito'],
+    sideEffects: [{text:'Náuseas (muy comunes — dosificar bajo y titular)',severity:'med'},{text:'Rubor',severity:'low'},{text:'Oscurecimiento de lunares — monitorear',severity:'med'},{text:'Aumento transitorio de presión arterial',severity:'med'}],
+    timeline: [{time:'30 min',text:'Comienzan los efectos de excitación'},{time:'Sem 1–2',text:'Desarrollo del bronceado'}],
+    schedule: 'SubQ diario en carga luego EOD mantenimiento',
+    cycle: '8 semanas',
+  },
+  'HCG': {
+    tagline: 'Mimético de LH — soporte de testosterona y fertilidad',
+    mechanism: 'Imita la hormona luteinizante (LH) para estimular las células de Leydig a producir testosterona.',
+    benefits: ['Estimulación de producción de testosterona','Prevención de atrofia testicular durante TRT','Preservación de fertilidad','Soporte de PCT'],
+    sideEffects: [{text:'Riesgo de ginecomastia (eleva estradiol)',severity:'med'},{text:'Retención de agua',severity:'low'},{text:'Desensibilización con uso prolongado a dosis altas',severity:'med'}],
+    timeline: [{time:'24–48 hrs',text:'Comienza la respuesta de testosterona'},{time:'Sem 2–4',text:'Soporte completo de fertilidad/testosterona'}],
+    schedule: 'SubQ o IM 3x por semana',
+    cycle: '8 semanas',
+  },
+  'Tesamorelin': {
+    tagline: 'Análogo GHRH aprobado por FDA — especialista en grasa visceral',
+    mechanism: 'Análogo estabilizado de GHRH que estimula la liberación pulsátil de GH. Único péptido GHRH aprobado por FDA. Especialmente efectivo para grasa visceral/abdominal.',
+    benefits: ['Aprobado por FDA para reducción de grasa visceral','Reducción del 15–17% de grasa visceral en 26 semanas','Mejora de composición corporal','Beneficio cognitivo emergente'],
+    sideEffects: [{text:'Retención de líquidos / edema',severity:'med'},{text:'Dolores articulares',severity:'med'},{text:'Intolerancia a la glucosa a dosis altas',severity:'med'}],
+    timeline: [{time:'Sem 8–12',text:'Reducción visible de grasa visceral'},{time:'Sem 26',text:'~15% de reducción de grasa visceral'}],
+    schedule: 'SubQ diario',
+    cycle: '16–24 semanas',
+  },
+  'DSIP': {
+    tagline: 'Péptido inductor del sueño delta — sueño profundo y reducción de cortisol',
+    mechanism: 'Promueve el sueño de ondas lentas delta modulando el eje hipotálamo-hipofisario. Reduce el cortisol y apoya la adaptación al estrés.',
+    benefits: ['Sueño de ondas lentas más profundo','Reducción de cortisol','Resiliencia al estrés','Mejor pulso nocturno de GH','Reducción de ansiedad'],
+    sideEffects: [{text:'Somnolencia (tomar antes de dormir)',severity:'low'},{text:'Dolor de cabeza ocasionalmente',severity:'low'}],
+    timeline: [{time:'Noche 1–3',text:'Mejora del sueño frecuentemente rápida'},{time:'Sem 4–6',text:'Optimización completa de arquitectura del sueño'}],
+    schedule: 'SubQ diario 30 min antes de dormir',
+    cycle: '6–8 semanas',
+  },
+  'VIP': {
+    tagline: 'Péptido intestinal vasoactivo — pulmonar, inmune, CIRS, antiinflamatorio',
+    mechanism: 'Neuropéptido con potente vasodilatación, antiinflamatorio vía vía cAMP. Tratamiento principal en CIRS según el protocolo Shoemaker.',
+    benefits: ['Mejora de función pulmonar','Tratamiento de CIRS/enfermedad por moho','Vasodilatación y reducción de presión arterial','Mejora de motilidad GI'],
+    sideEffects: [{text:'Rubor (vasodilatación)',severity:'low'},{text:'Dolor de cabeza',severity:'low'},{text:'Mareos (caída de presión arterial)',severity:'med'}],
+    timeline: [{time:'Sem 1–2',text:'Mejoras pulmonares y vasculares'},{time:'Sem 4–8',text:'Reequilibrio inmune'}],
+    schedule: 'SubQ diario o intranasal',
+    cycle: '8 semanas',
+  },
+  'Melatonin': {
+    tagline: 'Hormona pineal — sueño, ritmo circadiano, antioxidante mitocondrial',
+    mechanism: 'Hormona primaria de temporización circadiana. Elimina radicales libres, protege las mitocondrias. La forma inyectable evita la degradación oral — 5–10x más potente.',
+    benefits: ['Mejora rápida del inicio del sueño','Mejora de la calidad del sueño profundo','Reparación del ritmo circadiano','Poderoso antioxidante mitocondrial','Neuroprotección'],
+    sideEffects: [{text:'Somnolencia matutina si la dosis es demasiado alta',severity:'low'},{text:'Sueños vívidos',severity:'low'},{text:'Efectos hormonales a dosis muy altas (teórico)',severity:'med'}],
+    timeline: [{time:'Noche 1',text:'Mejora del sueño desde la primera dosis'},{time:'Sem 4+',text:'Efectos antioxidantes acumulados'}],
+    schedule: 'SubQ diario 30 min antes de dormir',
+    cycle: 'Continuo según necesidad',
+  },
+  'HGH 191AA': {
+    tagline: 'Hormona de crecimiento humana recombinante — la molécula completa de 191 aminoácidos',
+    mechanism: 'HGH sintética de 191 aminoácidos idéntica a la GH endógena. Se une directamente a los receptores de GH estimulando IGF-1. Evita la regulación hipotálamo-hipofisaria.',
+    benefits: ['Aumento de masa muscular magra','Pérdida significativa de grasa','Mejora de recuperación','Calidad de piel y antienvejecimiento','Mejora de densidad ósea'],
+    sideEffects: [{text:'Retención de agua / edema (muy común)',severity:'med'},{text:'Dolor articular y túnel carpiano',severity:'med'},{text:'Resistencia a la insulina',severity:'high'},{text:'Riesgo de acromegalia a dosis excesivas',severity:'high'},{text:'Suprime el eje natural de GH a largo plazo',severity:'high'}],
+    timeline: [{time:'Sem 1–2',text:'IGF-1 aumenta; posible retención de agua'},{time:'Sem 12–24',text:'Beneficio máximo en composición corporal'}],
+    schedule: 'SubQ diario AM o dividido AM/PM',
+    cycle: '16–24 semanas',
+  },
+  'HGH Fragment': {
+    tagline: 'HGH 176-191 — quema de grasa pura sin efectos de crecimiento',
+    mechanism: 'Fragmento de 16 aminoácidos C-terminal de HGH que retiene actividad lipolítica sin activar receptores de GH. Sin elevación de IGF-1, sin efecto en glucosa. Estado GRAS de FDA.',
+    benefits: ['Lipólisis pura y dirigida','Sin elevación de IGF-1','Sin impacto en glucosa en sangre','Estado GRAS de FDA'],
+    sideEffects: [{text:'Reacciones leves en sitio de inyección',severity:'low'},{text:'Leve reducción transitoria de glucosa',severity:'low'}],
+    timeline: [{time:'Sem 8–12',text:'Modesta contribución a la pérdida de grasa'}],
+    schedule: 'SubQ diario 2–3x con estómago vacío',
+    cycle: '12 semanas',
+  },
+  'IGF-1 LR3': {
+    tagline: 'El péptido más anabólico — hiperplasia muscular y partición de nutrientes',
+    mechanism: 'Análogo de IGF-1 de acción prolongada (vida media 20–30 hrs). Activa el receptor IGF-1 para la proliferación de células musculares (hiperplasia). Mejora dramáticamente la partición de nutrientes.',
+    benefits: ['Hiperplasia de células musculares (nuevas fibras)','Partición superior de nutrientes','Recuperación acelerada','Efecto anabólico en todo el cuerpo'],
+    sideEffects: [{text:'Hipoglucemia — OBLIGATORIO comer carbohidratos en 30 min',severity:'high'},{text:'Crecimiento de mandíbula/hueso facial a dosis altas',severity:'high'},{text:'Crecimiento de órganos con uso prolongado',severity:'high'},{text:'Ciclos máx de 6 semanas por desensibilización',severity:'med'}],
+    timeline: [{time:'Sem 1',text:'Efecto de partición de nutrientes inmediato'},{time:'Sem 5–6',text:'Ciclo MÁXIMO — detener, permitir recuperación del receptor'}],
+    schedule: 'SubQ o IM diario post-entrenamiento — comer carbohidratos en 30 min',
+    cycle: 'MÁXIMO 5–6 semanas',
+  },
+  'Retarutide': {
+    tagline: 'Agonista triple GIP+GLP-1+glucagón — el compuesto para pérdida de peso más potente en ensayos',
+    mechanism: 'Agonista de triple receptor: GLP-1 (apetito), GIP (insulina/grasa), glucagón (gasto energético). La Fase 2 mostró 24.2% de pérdida de peso — el más alto jamás registrado para un agente farmacéutico.',
+    benefits: ['24.2% de pérdida de peso promedio (Fase 2, 48 semanas)','Sin meseta de pérdida de peso a las 48 semanas','Reducción de grasa hepática >80%','Mejoras en todos los marcadores cardiometabólicos'],
+    sideEffects: [{text:'Náuseas (dependiente de dosis)',severity:'med'},{text:'Vómito',severity:'med'},{text:'No aprobado por FDA — ensayos Fase 3 en curso',severity:'high'}],
+    timeline: [{time:'Sem 24–48',text:'Hasta 24% de pérdida de peso total — sin meseta'}],
+    schedule: 'Inyección SubQ una vez por semana',
+    cycle: 'Mínimo 20+ semanas',
+  },
+  'Cagrilintide': {
+    tagline: 'Análogo de amilina — añade 5–8% extra de pérdida de peso encima del GLP-1',
+    mechanism: 'Análogo de amilina de acción prolongada que activa receptores de amilina en el hipotálamo a través de una vía completamente diferente al GLP-1.',
+    benefits: ['5–8% adicional de pérdida de peso sobre GLP-1','CagriSema mostró 25.1% en Fase 3','Efecto genuinamente aditivo — mecanismo diferente'],
+    sideEffects: [{text:'Náuseas (aditivas con semaglutida)',severity:'med'},{text:'Reacciones en sitio de inyección',severity:'low'},{text:'Efectos GI amplificados en combinación',severity:'med'}],
+    timeline: [{time:'Sem 20+',text:'Efecto completo CagriSema 25%+ a dosis máximas'}],
+    schedule: 'SubQ una vez por semana (sitio diferente a sema)',
+    cycle: 'Mínimo 20+ semanas',
+  },
+  'AOD9604': {
+    tagline: 'Fragmento C-terminal de HGH — lipólisis pura, sin IGF-1, GRAS de FDA',
+    mechanism: 'Fragmento de 16 AA de HGH que retiene actividad lipolítica sin activación del receptor de GH. Sin elevación de IGF-1 confirmada en 6 ensayos clínicos humanos.',
+    benefits: ['Lipólisis pura sin efectos secundarios de GH','Sin elevación de IGF-1','Estado GRAS de FDA','Complemento seguro a terapia GLP-1'],
+    sideEffects: [{text:'Reacciones en sitio de inyección (leves)',severity:'low'},{text:'Prohibido por WADA',severity:'high'}],
+    timeline: [{time:'Sem 8–12',text:'Modesta contribución a la pérdida de grasa'}],
+    schedule: 'SubQ diario con estómago vacío (preferiblemente AM)',
+    cycle: '12 semanas',
+  },
+  'L-Glutathione': {
+    tagline: 'Antioxidante maestro — desintoxicación, inmune, antienvejecimiento, aclaramiento de piel',
+    mechanism: 'Tripéptido que neutraliza directamente las especies reactivas de oxígeno. Apoya la desintoxicación hepática de Fase II. La forma inyectable es muy superior a la oral.',
+    benefits: ['Quelación de metales pesados y toxinas','Soporte inmune','Aclaramiento de piel','Protección hepática','Recuperación atlética'],
+    sideEffects: [{text:'Muy bien tolerado',severity:'low'},{text:'Aclaramiento de piel (puede no ser deseado)',severity:'low'}],
+    timeline: [{time:'Sem 4–6',text:'Aclaramiento de piel visible'},{time:'Sem 8–10',text:'Efecto antioxidante completo'}],
+    schedule: 'SubQ 2–3x/semana o infusión IV',
+    cycle: '10 semanas',
+  },
+  'MOTS-c': {
+    tagline: 'Mimético de ejercicio derivado de mitocondrias — activación de AMPK, sensibilidad a insulina',
+    mechanism: 'Codificado en el genoma mitocondrial — activa AMPK y translocación de GLUT4, imitando el ejercicio aeróbico a nivel celular.',
+    benefits: ['Efectos miméticos del ejercicio','Mejora de sensibilidad a la insulina','Aumento de tasa metabólica','Oxidación de grasa','Activación de vías de longevidad'],
+    sideEffects: [{text:'Reacciones en sitio de inyección (leves)',severity:'low'},{text:'Datos humanos muy limitados',severity:'med'}],
+    timeline: [{time:'Sem 6–10',text:'Mejoras en rendimiento de ejercicio y composición corporal'}],
+    schedule: 'SubQ diario (preferiblemente AM)',
+    cycle: '10 semanas',
+  },
+  '5-amino-1mq': {
+    tagline: 'Inhibidor de NNMT — eleva NAD+ y suprime la expansión de células grasas',
+    mechanism: 'Bloquea la enzima NNMT que degrada el NAD+. Al inhibir NNMT, el NAD+ celular aumenta, AMPK se activa y la diferenciación de células grasas se suprime.',
+    benefits: ['Elevación de NAD+ vía inhibición de NNMT','Supresión de expansión de células grasas','Mejora de sensibilidad a la insulina','Aumento de tasa metabólica','Preservación muscular durante pérdida de peso'],
+    sideEffects: [{text:'Datos humanos muy limitados',severity:'med'},{text:'Reacciones leves en sitio de inyección',severity:'low'}],
+    timeline: [{time:'Sem 6–10',text:'Pérdida de grasa y mejora de energía'}],
+    schedule: 'SubQ diario u oral',
+    cycle: '10 semanas',
+  },
+  'SLU-PP-332': {
+    tagline: 'Agonista ERR — mimético de ejercicio que activa vías de resistencia',
+    mechanism: 'Potente agonista ERR alfa/gamma que activa los mismos programas transcripcionales que el ejercicio aeróbico. Impulsa la biogénesis mitocondrial y la oxidación de ácidos grasos.',
+    benefits: ['Biogénesis mitocondrial','Mejora de oxidación de grasa','Aumento de capacidad de resistencia','Activa las mismas vías que 1 hora de cardio'],
+    sideEffects: [{text:'Datos humanos muy limitados',severity:'med'},{text:'Reacciones en sitio de inyección',severity:'low'}],
+    timeline: [{time:'Sem 6–10',text:'Mejoras de resistencia y metabólicas'}],
+    schedule: 'SubQ diario u oral',
+    cycle: '10 semanas',
+  },
+  'Lipo-C': {
+    tagline: 'Mezcla de inyección lipotrófica — movilización de grasa y soporte hepático',
+    mechanism: 'Combinación de metionina, inositol, colina (MIC) más B12. Apoya el transporte de grasa desde el hígado y mejora la oxidación de ácidos grasos.',
+    benefits: ['Movilización mejorada de grasa desde el hígado','Impulso de energía y reducción de fatiga (B12)','Soporte y desintoxicación hepática','Complementa la terapia GLP-1'],
+    sideEffects: [{text:'Dolor en sitio de inyección',severity:'low'},{text:'Olor en orina (metabolismo de metionina)',severity:'low'}],
+    timeline: [{time:'Sem 1–2',text:'Mejora de energía (efecto B12)'}],
+    schedule: 'IM o SubQ 1–3x por semana',
+    cycle: '10 semanas',
+  },
+  'KissPeptin-10': {
+    tagline: 'Testosterona desde arriba — activa el eje HPG a nivel hipotalámico',
+    mechanism: 'Se une a receptores KISS1R en el hipotálamo desencadenando el pulso de GnRH, impulsando LH/FSH y testosterona. Actúa antes que HCG en el eje.',
+    benefits: ['Restauración natural de producción de testosterona','Restauración del pulso de LH/FSH','Soporte de fertilidad en ambos sexos','Reactivación del eje HPG tras supresión'],
+    sideEffects: [{text:'Reacciones leves en sitio de inyección',severity:'low'},{text:'El pico de LH puede alterar temporalmente el estrógeno',severity:'med'},{text:'Datos humanos a largo plazo limitados',severity:'med'}],
+    timeline: [{time:'Hrs 1–4',text:'Pulso de LH desencadenado'},{time:'Sem 6–8',text:'Restauración completa del eje HPG'}],
+    schedule: 'SubQ diario',
+    cycle: '8 semanas',
+  },
+  'Snap-8': {
+    tagline: 'Octapéptido similar al Botox — reduce líneas de expresión a nivel nervioso',
+    mechanism: 'Octapéptido que bloquea el complejo SNARE para reducir la liberación de acetilcolina en uniones neuromusculares. Reduce la intensidad de contracción muscular suavizando líneas de expresión.',
+    benefits: ['Reducción de profundidad de líneas de expresión','Suavizado de la superficie de la piel','Mecanismo no tóxico similar al Botox','Efecto gradual y reversible'],
+    sideEffects: [{text:'Muy bien tolerado',severity:'low'},{text:'Menos dramático que el Botox real',severity:'low'}],
+    timeline: [{time:'Sem 6–10',text:'Reducción medible en profundidad de líneas'}],
+    schedule: 'SubQ o tópico 2–3x por semana',
+    cycle: '10 semanas',
+  },
+  'LL37': {
+    tagline: 'Catelicidina humana — antimicrobiano incluyendo MRSA, disrupción de biofilm',
+    mechanism: 'Único péptido antimicrobiano catelicidina en humanos. Altera las membranas bacterianas incluyendo MRSA y bacterias protegidas en biofilm.',
+    benefits: ['Antimicrobiano de amplio espectro incluyendo MRSA','Disrupción de biofilm','Aceleración de cicatrización','Propiedades antivirales (influenza, VIH, VHS)'],
+    sideEffects: [{text:'Dolor y enrojecimiento en sitio de inyección',severity:'low'},{text:'Inflamación sistémica en sobredosis',severity:'med'}],
+    timeline: [{time:'Días 1–3',text:'Actividad antimicrobiana en el sitio'},{time:'Sem 4–8',text:'Inmunomodulación y reparación de tejidos'}],
+    schedule: 'SubQ o tópico 2–3x por semana',
+    cycle: '8 semanas',
+  },
+  'IGF DES': {
+    tagline: 'IGF específico del sitio — inyectar en el músculo objetivo para crecimiento localizado',
+    mechanism: 'des(1-3)IGF-1 truncado con vida media 10x más corta que LR3 (~20-30 min). Efecto extremadamente localizado — respuesta anabólica intensa solo en el tejido objetivo.',
+    benefits: ['Hipertrofia muscular específica del sitio','Dirigido a grupos musculares rezagados','Menor hipoglucemia sistémica que LR3'],
+    sideEffects: [{text:'Hipoglucemia local — obligatorio comer post-inyección',severity:'high'},{text:'Dolor en sitio de inyección IM',severity:'med'}],
+    timeline: [{time:'Sem 1–2',text:'Plenitud y bombeo localizados'},{time:'Sem 3–5',text:'Cambios estructurales musculares en sitio objetivo'}],
+    schedule: 'IM diario SOLO en músculo objetivo — comer después',
+    cycle: 'MÁXIMO 5 semanas',
+  },
+  'MGF': {
+    tagline: 'Factor de Crecimiento Mecánico — reparación muscular local tras ejercicio/lesión',
+    mechanism: 'Variante de empalme de IGF-1 liberada en el músculo tras sobrecarga mecánica. Activa células satélite (células madre musculares) para proliferar y fusionarse con fibras dañadas.',
+    benefits: ['Activación de células satélite para reparación','Recuperación post-ejercicio y post-lesión','Sinérgico con IGF-1 LR3 (mecanismos diferentes)'],
+    sideEffects: [{text:'Datos de inyección humana muy limitados',severity:'med'},{text:'Reacciones en sitio de inyección',severity:'low'}],
+    timeline: [{time:'Sem 2–4',text:'Aceleración de reparación muscular'},{time:'Sem 4–6',text:'Mejoras de fuerza y tamaño'}],
+    schedule: 'SubQ o IM post-entrenamiento cerca del músculo',
+    cycle: '6 semanas',
+  },
+  'Fortigel': {
+    tagline: 'Péptido de colágeno más estudiado clínicamente — salud del cartílago y las articulaciones',
+    mechanism: 'Péptido de colágeno bioactivo específico que estimula los condrocitos — células responsables del metabolismo del cartílago. Más de 20 estudios clínicos en 30 años.',
+    benefits: ['Mejora de movilidad articular y reducción de malestar','Estimulación del metabolismo del cartílago','Aumento de masa de cartílago confirmado por MRI a 48 semanas','Ralentiza la degradación del cartílago'],
+    sideEffects: [{text:'Extremadamente bien tolerado en 30 años de ensayos',severity:'low'},{text:'Malestar GI leve a dosis altas (raro)',severity:'low'},{text:'Derivado bovino — no apto para veganos o alergia a res',severity:'low'}],
+    timeline: [{time:'Mes 3',text:'Mejora clínicamente medible'},{time:'Mes 6+',text:'Beneficio máximo para el cartílago'}],
+    schedule: 'Oral diario disuelto en agua',
+    cycle: 'Continuo — mínimo 3 meses',
+  },
+  'Tendoforte': {
+    tagline: 'Péptido de colágeno para tendones y ligamentos — soporte de Aquiles y tobillo',
+    mechanism: 'Péptido de colágeno bioactivo específico que estimula fibroblastos — células de matrix de tendones y ligamentos. Estimula biosíntesis de colágeno tipo 1 y proteoglicanos.',
+    benefits: ['12/18 pacientes con tendinopatía crónica de Aquiles volvieron a correr en 3 meses','Aumento del 11% en área transversal del tendón de Aquiles vs 4.7% placebo','Mejora de estabilidad del tobillo','Efectivo para tendinopatía crónica no responsiva a terapia tradicional'],
+    sideEffects: [{text:'Extremadamente bien tolerado en todos los ensayos',severity:'low'},{text:'Derivado bovino — no apto para veganos o alergia a res',severity:'low'}],
+    timeline: [{time:'Mes 3',text:'Regreso a la actividad; mejora funcional'},{time:'Mes 6',text:'Cambios estructurales en tendón medibles por ultrasonido'}],
+    schedule: 'Oral diario disuelto en agua antes del ejercicio',
+    cycle: 'Mínimo 3 meses',
+  },
+  'BAC Water': {
+    tagline: 'Agua bacteriostática — esencial para la reconstitución de péptidos',
+    mechanism: 'Alcohol bencílico al 0.9% en agua estéril. Previene el crecimiento bacteriano permitiendo el uso multidosis durante 28+ días refrigerado.',
+    benefits: ['Viales de uso múltiple (28+ días refrigerado)','Previene la contaminación','Isotónico para inyección cómoda'],
+    sideEffects: [{text:'Ninguno cuando se usa correctamente',severity:'low'},{text:'NO usar en recién nacidos (síndrome de jadeo por alcohol bencílico)',severity:'high'}],
+    timeline: [{time:'Siempre',text:'Usar 2ml por vial de péptido para reconstitución'}],
+    schedule: 'Agregar 2ml al vial liofilizado de péptido',
+    cycle: 'N/A',
+  },
+  'Acetic Acid Water': {
+    tagline: 'Solvente de reconstitución ácido para péptidos sensibles al pH',
+    mechanism: 'Ácido acético diluido que disuelve péptidos que requieren pH bajo. Después de la reconstitución, diluir con agua BAC antes de inyectar.',
+    benefits: ['Reconstitución de IGF-1 LR3, IGF DES','La disolución correcta previene la degradación'],
+    sideEffects: [{text:'Ardor en sitio de inyección si no se diluye — siempre diluir primero',severity:'med'},{text:'Nunca inyectar solución de ácido acético sin diluir',severity:'high'}],
+    timeline: [{time:'Siempre',text:'Diluir con agua BAC después de reconstitución antes de inyectar'}],
+    schedule: 'Agregar 2ml al vial luego diluir con agua BAC',
+    cycle: 'N/A',
+  },
+};
+
+// Function to get peptide data in current language
+function getPeptideData(name) {
+  const base = PEPTIDES[name];
+  if (!base) return null;
+  if (currentLang === 'es' && PEPTIDE_ES[name]) {
+    return { ...base, ...PEPTIDE_ES[name] };
+  }
+  return base;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// STACK TRANSLATIONS — SPANISH
+// ═══════════════════════════════════════════════════════
+const STACKS_ES = [
+  {
+    name:'WOLVERINE STACK',
+    goal:'Recuperación de lesiones · Reparación de tejidos · Reducción del dolor',
+    description:'El stack de sanación más popular — BPC-157 actúa localmente en el sitio de lesión mientras TB-500 proporciona reparación sistémica en todo el cuerpo. Juntos cubren ambas vías de sanación para una recuperación integral.',
+    rationale:'BPC-157 actúa localmente vía VEGFR2/Akt-eNOS en el sitio de lesión. TB-500 actúa sistémicamente vía regulación de actina en todo el cuerpo. Son mecanismos completamente diferentes — cada protocolo clínico recomienda usarlos juntos precisamente porque se complementan.',
+    benefits:['Cicatrización acelerada de tendones y ligamentos','Reducción del dolor e inflamación en el sitio de lesión','Regreso más rápido al entrenamiento','Reparación sistémica de tejidos y mejora de flexibilidad','Sanación intestinal como beneficio secundario (BPC-157)','Reducción de formación de tejido cicatricial (TB-500)'],
+    sideEffects:[{text:'Irritación en sitio de inyección (leve)',severity:'low'},{text:'Preocupación teórica de promoción tumoral con BPC-157 — no confirmada en humanos',severity:'med'}],
+    note:'Inyectar cada uno por separado — nunca mezclar en la misma jeringa. BPC-157 cerca del sitio de lesión; TB-500 en cualquier lugar SubQ.',
+  },
+  {
+    name:'GLOW STACK',
+    goal:'Antienvejecimiento · Piel y colágeno · Regeneración integral',
+    description:'GLOW = GHK-Cu + BPC-157 + TB-500. El stack de antienvejecimiento y optimización de piel. GHK-Cu impulsa la síntesis de colágeno mientras los péptidos de sanación proporcionan soporte regenerativo sistémico.',
+    rationale:'GHK-Cu activa genes de síntesis de colágeno y restablece la expresión genética hacia patrones más juveniles. BPC-157 y TB-500 proporcionan la base de reparación de tejidos y antiinflamación. Los tres trabajan en aspectos diferentes pero complementarios de la regeneración de piel y tejidos.',
+    benefits:['Firmeza de piel y reducción de arrugas por estimulación de colágeno de GHK-Cu','Efectos antienvejecimiento sistémicos vía reconfiguración de expresión genética','Producción de colágeno y elastina','Reducción de inflamación','Mejora de flexibilidad y rango de movimiento'],
+    sideEffects:[{text:'Enrojecimiento en sitio de inyección por GHK-Cu (leve, transitorio)',severity:'low'},{text:'Posible oscurecimiento temporal de piel (efecto del cobre)',severity:'low'}],
+    note:'GHK-Cu también puede aplicarse tópicamente en cara/piel además de SubQ. Inyectar BPC-157 y TB-500 por separado.',
+  },
+  {
+    name:'KLOW STACK',
+    goal:'Sanación máxima · Inmunomodulación · Reparación intestinal · Inflamación crónica',
+    description:'KLOW = GLOW + KPV. El stack de sanación y antiinflamación más integral disponible. KPV añade potente inhibición de NF-kB y sanación mucosa — especialmente poderoso para problemas intestinales, EII y inflamación crónica.',
+    rationale:'KPV inhibe específicamente NF-kB en superficies mucosas donde BPC-157 también actúa. La combinación proporciona sanación local + sistémica (BPC-157 + TB-500), regeneración de piel/colágeno (GHK-Cu), Y modulación antiinflamatoria de NF-kB (KPV) en todos los tipos de tejido.',
+    benefits:['El protocolo de sanación más integral disponible','Soporte para inflamación GI y EII (sinergia KPV + BPC-157)','Regeneración de piel y tejidos sistémicos','Inmunomodulación sin inmunosupresión','Reparación de intestino permeable y barrera mucosa'],
+    sideEffects:[{text:'Los cuatro péptidos son bien tolerados individualmente',severity:'low'},{text:'Carga de inyecciones: 3 SubQ diarios + 1 semanal',severity:'low'}],
+    note:'Inyectar todos los péptidos por separado. Alta frecuencia — considera comenzar con Wolverine o GLOW antes de escalar al KLOW completo.',
+  },
+  {
+    name:'GH STACK (Classic)',
+    goal:'Optimización de GH · Músculo magro · Pérdida de grasa · Sueño · Antienvejecimiento',
+    description:'El protocolo estándar de oro para péptidos de GH. CJC-1295 (sin DAC) prepara la hipófisis mientras Ipamorelin desencadena un pulso limpio de GH. Juntos producen una respuesta sinérgica mucho mayor que cualquiera solo — sin elevar cortisol ni prolactina.',
+    rationale:'CJC-1295 actúa en receptores GHRH para preparar la respuesta hipofisaria. Ipamorelin actúa en GHS-R1a (receptor de ghrelina) para un pulso limpio de GH. Son dos vías de receptores completamente diferentes — usar ambas produce 2–3x más GH que cualquiera sola y mimetiza mejor el patrón fisiológico de liberación de GH.',
+    benefits:['Pulso de GH 2–3x mayor que cualquier péptido solo','Ganancia de masa muscular magra','Pérdida de grasa vía lipólisis','Mejora del sueño profundo','Recuperación más rápida','Sin elevación de cortisol ni prolactina'],
+    sideEffects:[{text:'Retención de agua al inicio (común, se resuelve en 2–3 semanas)',severity:'low'},{text:'Túnel carpiano con IGF-1 elevado',severity:'med'},{text:'Elevación de glucosa en sangre',severity:'med'}],
+    note:'Ambos péptidos pueden cargarse en la misma jeringa. Inyectar 2–3 horas después de la última comida antes de dormir para alinear con el pulso natural de GH.',
+  },
+  {
+    name:'SLEEP STACK',
+    goal:'Sueño profundo · Pulso nocturno de GH · Reducción de cortisol · Recuperación',
+    description:'Optimización integral del sueño. Cada péptido actúa en un mecanismo diferente — secretagogos de GH, neuropéptidos inductores del sueño y la hormona circadiana principal — para una mejora completa de la arquitectura del sueño.',
+    rationale:'Sermorelin + Ipamorelin impulsan el pulso natural nocturno de GH durante el sueño de ondas lentas. DSIP promueve el sueño delta vía modulación hipotalámica y reducción de cortisol. La melatonina inyectable proporciona señal de temporización circadiana y protección antioxidante mitocondrial sin somnolencia matutina.',
+    benefits:['Sueño de ondas lentas (delta) más profundo','Pulso nocturno de GH mejorado','Normalización del cortisol','Energía matutina y claridad cognitiva','Adaptación al estrés y resiliencia'],
+    sideEffects:[{text:'Somnolencia matutina si la melatonina se dosifica demasiado alta — empezar BAJO',severity:'low'},{text:'Retención de agua por los péptidos de GH',severity:'low'}],
+    note:'Todo antes de dormir con estómago vacío. Sermorelin + Ipamorelin pueden compartir jeringa. DSIP por separado. La melatonina inyectable es 5–10x más potente que la oral — siempre empezar BAJO.',
+  },
+  {
+    name:'CAGRISA STACK',
+    goal:'Pérdida máxima de peso — doble vía GLP-1 + amilina',
+    description:'El stack de pérdida de peso más potente en datos de ensayos Fase 3. CagriSema produjo 25.1% de pérdida de peso — el mayor jamás visto en un ensayo farmacéutico de Fase 3.',
+    rationale:'Semaglutida activa receptores GLP-1. Cagrilintida activa receptores de amilina en el hipotálamo — una vía completamente diferente. La combinación produce pérdida de peso genuinamente aditiva porque los mecanismos biológicos no se superponen.',
+    benefits:['25.1% de pérdida de peso corporal (ensayo Fase 3 REDEFINE)','Superior a cualquier agente GLP-1 único','Saciedad mejorada a través de dos vías independientes','Normalización del azúcar en sangre','Reducción de grasa hepática'],
+    sideEffects:[{text:'Náuseas — aditivas de ambos agentes; titular lentamente',severity:'med'},{text:'Vómito durante la escalada de dosis',severity:'med'},{text:'Enfermedad de la vesícula biliar (efecto de clase GLP-1)',severity:'high'}],
+    note:'Titular cada péptido de forma independiente. NUNCA combinar semaglutida con tirzepatida. Inyectar en sitios diferentes.',
+  },
+  {
+    name:'NAD+ LONGEVITY STACK',
+    goal:'Salud mitocondrial · Energía celular · Optimización metabólica · Antienvejecimiento',
+    description:'El protocolo mitocondrial y de longevidad más integral. Cuatro compuestos dirigidos a diferentes vías mitocondriales para una optimización completa de la energía celular.',
+    rationale:'NAD+ repone la coenzima esencial que disminuye con la edad. SS-31 reduce el estrés oxidativo en la membrana mitocondrial interna. MOTS-c imita el ejercicio activando AMPK. 5-amino-1mq previene que el NAD+ sea degradado por NNMT. Los cuatro actúan en objetivos completamente diferentes — sin redundancia.',
+    benefits:['Optimización mitocondrial integral desde 4 vías diferentes','Restauración de energía celular y producción de ATP','Activación de reparación de ADN','Estimulación de sirtuinas de longevidad','Mejora de flexibilidad metabólica','Mejora de sensibilidad a la insulina'],
+    sideEffects:[{text:'Sofocos con NAD+ — muy comunes al inicio; usar LOW primero',severity:'med'},{text:'Fatiga inicial (1–2 semanas) mientras las mitocondrias se adaptan',severity:'low'},{text:'Alta frecuencia de inyecciones (3 diarias)',severity:'low'}],
+    note:'Preferiblemente todo en la mañana. NAD+ puede causar sofocos — siempre empezar BAJO. Agregar cada péptido una semana aparte para aislar reacciones.',
+  },
+  {
+    name:'IMMUNE STACK',
+    goal:'Inmunomodulación · Longevidad · Antienvejecimiento · Soporte post-viral',
+    description:'Optimización inmune integral. Timosina Alfa-1 es el péptido inmunomodulador más potente — aprobado en 35+ países. Epitalón añade antienvejecimiento a nivel de telómeros. BPC-157 proporciona la base antiinflamatoria.',
+    rationale:'Timosina Alfa-1 activa células T, NK y dendríticas bidireccionalmente. Epitalón activa la telomerasa para alargar los telómeros. BPC-157 proporciona antiinflamación sistémica reduciendo la inflamación crónica de bajo grado que impulsa la disfunción inmune.',
+    benefits:['Respuesta inmune antiviral mejorada','Activación de células T y NK','Alargamiento de telómeros','Soporte para COVID largo y síndrome post-viral','Regulación autoinmune (bidireccional)'],
+    sideEffects:[{text:'Síntomas gripales las primeras 1–2 dosis de Timosina Alfa-1',severity:'low'},{text:'Epitalón SOLO en ciclos cortos de ráfaga — no continuo',severity:'med'}],
+    note:'Timosina Alfa-1 es el núcleo. Epitalón en RÁFAGAS CORTAS únicamente (10–20 días por ráfaga, 2–4x/año). BPC-157 puede ejecutarse continuamente.',
+  },
+  {
+    name:'FAT LOSS STACK',
+    goal:'Pérdida agresiva de grasa · Lipólisis · Aceleración metabólica · Preservación muscular',
+    description:'Protocolo integral de pérdida de grasa atacando desde cuatro ángulos — supresión del apetito (GLP-1), lipólisis directa (AOD9604 + Fragmento HGH), y elevación de la tasa metabólica vía inhibición de NNMT (5-amino-1mq).',
+    rationale:'GLP-1 maneja el apetito y la señalización metabólica. AOD9604 y Fragmento HGH activan lipólisis vía vías beta-3 adrenérgicas sin efectos de IGF-1 — seguros para combinar con GLP-1. 5-amino-1mq inhibe NNMT para elevar NAD+ y la tasa metabólica sin estimulantes.',
+    benefits:['Pérdida de grasa por múltiples vías','GLP-1 maneja apetito y vaciado gástrico','AOD9604 + Fragmento HGH añaden lipólisis directa','5-amino-1mq eleva la tasa metabólica vía NAD+','Preservación de masa muscular durante déficit calórico'],
+    sideEffects:[{text:'Efectos GI del componente GLP-1 (náuseas, diarrea) — titular lentamente',severity:'med'},{text:'Riesgo de vesícula biliar (efecto de clase GLP-1)',severity:'high'},{text:'Alta frecuencia de inyecciones',severity:'low'}],
+    note:'GLP-1 maneja el lado del apetito. AOD9604 y Fragmento HGH funcionan mejor con estómago vacío en la mañana. 5-amino-1mq puede ser oral.',
+  },
+  {
+    name:"WOMEN'S WELLNESS STACK",
+    goal:'Equilibrio hormonal · Piel · Libido · Estado de ánimo · Composición corporal',
+    description:'Un protocolo integral de optimización femenina que aborda las áreas clave donde la terapia peptídica proporciona mayor beneficio para la mujer — equilibrio hormonal, calidad de piel, libido, estado de ánimo y composición corporal.',
+    rationale:'Las mujeres tienen fisiología hormonal distinta que responde diferente a los protocolos peptídicos. PT-141 tiene aprobación de FDA específicamente para disfunción sexual femenina (Vyleesi). GHK-Cu y L-Glutatión son particularmente impactantes para calidad de piel y antienvejecimiento en mujeres. Selank aborda la ansiedad y el estado de ánimo sin interferencia hormonal.',
+    benefits:['Mejora de libido y deseo sexual (PT-141 — aprobado por FDA para HSDD en mujeres)','Firmeza de piel, producción de colágeno y aclaramiento (GHK-Cu + Glutatión)','Estabilización de ansiedad y estado de ánimo sin sedación (Selank)','Composición corporal magra y calidad del sueño mejorada (péptidos GH)','Antienvejecimiento integral desde múltiples vías'],
+    sideEffects:[{text:'Náuseas con PT-141 — siempre empezar BAJO con estómago vacío',severity:'med'},{text:'Retención de agua por péptidos GH (común, se resuelve)',severity:'low'},{text:'Enrojecimiento en sitio por GHK-Cu (leve, breve)',severity:'low'}],
+    note:'PT-141 es solo según necesidad (no diario). Péptidos GH antes de dormir diariamente. GHK-Cu y Glutatión pueden ejecutarse continuamente. Máx 2x/semana para PT-141. Las mujeres suelen ser más sensibles a GH — empezar en dosis BAJA.',
+  },
+  {
+    name:'HPG TESTOSTERONE STACK',
+    goal:'Testosterona natural · Restauración del eje HPG · Fertilidad · Libido',
+    description:'El stack completo de restauración del eje HPG. Kisspeptina-10 activa el hipotálamo, HCG activa los testículos — juntos restauran la cascada completa de producción de testosterona de arriba hacia abajo.',
+    rationale:'Kisspeptina-10 se une a receptores KISS1R en el hipotálamo desencadenando el pulso de GnRH → LH/FSH → testosterona. HCG imita directamente LH a nivel testicular. Estos dos juntos cubren ambos extremos del eje HPG simultáneamente. CJC-1295 + Ipamorelin añaden soporte del eje GH para recuperación y ambiente anabólico general.',
+    benefits:['Estimulación completa del eje HPG en dos niveles','Restauración de producción de testosterona sin apagado de TRT','Mantenimiento de función y tamaño testicular','Preservación de fertilidad','Mejora de libido','Soporte de GH para recuperación y composición corporal'],
+    sideEffects:[{text:'Elevación de estradiol por aromatización de HCG — monitorear E2',severity:'med'},{text:'El pico de LH por Kisspeptina puede alterar temporalmente el estrógeno',severity:'med'},{text:'SE REQUIERE ANÁLISIS DE SANGRE (T total, T libre, LH, FSH, E2, IGF-1)',severity:'high'},{text:'Retención de agua por péptidos GH',severity:'low'}],
+    note:'SE REQUIEREN ANÁLISIS DE SANGRE. Obtener T total, T libre, LH, FSH, estradiol e IGF-1 basales antes de comenzar. Revisar a las 6 semanas. Este no es un stack para principiantes — consultar con Defy Medical o Marek Health para protocolo supervisado.',
+  },
+  {
+    name:'COGNITIVE STACK',
+    goal:'Enfoque · Memoria · Neuroprotección · Reducción de ansiedad · BDNF',
+    description:'El protocolo de optimización cognitiva más dirigido. Semax eleva BDNF para enfoque y neuroprotección. Selank proporciona calma ansiolítica limpia sin sedación. NAD+ potencia las mitocondrias cerebrales. Tres vías distintas para una mejora cognitiva integral.',
+    rationale:'Semax actúa vía ACTH(4-7) para regular al alza BDNF y modular dopamina/serotonina — mejorando el enfoque, la consolidación de memoria y la neuroplasticidad. Selank modula GABA-A y reduce la ansiedad sin sedación — creando el estado calmado y enfocado donde Semax es más efectivo. NAD+ asegura que la energía mitocondrial no sea el cuello de botella para el rendimiento cerebral.',
+    benefits:['Enfoque y claridad cognitiva mejorados (efecto BDNF de Semax)','Estado de calma sin ansiedad para rendimiento óptimo (Selank)','Optimización de energía mitocondrial cerebral (NAD+)','Consolidación de memoria y neuroplasticidad','Neuroprotección del estrés oxidativo','Sin sedación ni riesgo de dependencia'],
+    sideEffects:[{text:'Irritabilidad con Semax a dosis altas — quedarse en BAJO para empezar',severity:'med'},{text:'Fatiga post-ciclo después de Semax (reinicio de BDNF) — descanso de 2 semanas',severity:'low'},{text:'Sofocos iniciales con NAD+',severity:'low'}],
+    note:'Semax y Selank son complementarios — Semax es activador (tomar AM), Selank es calmante (tomar mediodía o antes de situaciones estresantes). Ambos ciclan 6 semanas activo / 2 de descanso. NAD+ puede ejecutarse continuamente.',
+  },
+  {
+    name:'TRIPLE AGONIST STACK',
+    goal:'Pérdida máxima de peso · Sin meseta · Grasa hepática · Cardiometabólico',
+    description:'Construido alrededor de retatrutida — el compuesto para pérdida de peso más potente en la historia de ensayos de Fase 2 con 24.2% de pérdida de peso sin meseta a las 48 semanas. NAD+ y 5-amino-1mq complementan el cambio metabólico con soporte de vías mitocondriales y NNMT.',
+    rationale:'Retatrutida es un agonista triple GLP-1/GIP/glucagón — el componente de glucagón aumenta únicamente el gasto calórico además de la reducción del apetito, explicando por qué supera a todos los demás agentes. NAD+ apoya la adaptación mitocondrial al cambio metabólico. 5-amino-1mq inhibe NNMT para elevar aún más el NAD+ y suprimir la adipogénesis. Los tres actúan en objetivos diferentes sin redundancia.',
+    benefits:['24.2% de pérdida de peso a las 48 semanas — sin meseta (Ensayo Fase 2 NEJM RCT)','Reducción >80% de grasa hepática','El componente de glucagón único aumenta el gasto calórico','Soporte de adaptación mitocondrial (NAD+)','Supresión de expansión de células grasas (5-amino-1mq)','Mejoras en todos los marcadores cardiometabólicos'],
+    sideEffects:[{text:'Náuseas — TITULAR MUY LENTAMENTE; empezar a 2mg y mantener 8 semanas',severity:'med'},{text:'Vómito durante escalada de dosis si se acelera',severity:'med'},{text:'No aprobado por FDA — ensayos Fase 3 en curso a 2025',severity:'high'},{text:'Sofocos con NAD+ inicialmente',severity:'low'}],
+    note:'Retatrutida requiere la titulación más lenta de cualquier péptido para pérdida de peso. Pasar 6–8 semanas en cada paso de dosis. No acelerar. Los sofocos con NAD+ generalmente se resuelven después de la semana 2. NUNCA combinar con semaglutida o tirzepatida.',
+  },
+];
+
+function getStackData(idx) {
+  const base = STACKS[idx];
+  if (!base) return null;
+  if (currentLang === 'es' && STACKS_ES[idx]) {
+    return { ...base, ...STACKS_ES[idx] };
+  }
+  return base;
+}
+
 const CATEGORIES = [
   {id:'weight',name:'Weight Loss',icon:'⚖️',color:'#3ddc84',peptides:['Tirzepatide','Semaglutide','Retarutide','Cagrilintide','Retatrutide','Semaglutide (Oral)','Tirzepatide (Oral)','Lipo-C','AOD9604','HGH Fragment','5-amino-1mq','Adipotide','Amylin','Berberine']},
   {id:'healing',name:'Healing & Recovery',icon:'🔧',color:'#60b4ff',peptides:['BPC-157','TB-500','KPV','LL37','GHK-Cu','Fortigel','Tendoforte','Pentadeca Arginate','GLP-2','Thymosin Beta-4 (TB4)','Glutamine','Collagen Type I']},
@@ -964,12 +1847,14 @@ const EVIDENCE_LABELS=['','Anecdotal Only','Preclinical / Animal','Early Human D
 const EVIDENCE_BADGE_CLASS=['','experimental','preclinical','phase2','phase3','fda'];
 
 function renderCategories(){
-  document.getElementById('catGrid').innerHTML=CATEGORIES.map((cat,i)=>`
-    <div class="cat-card" style="--cat-color:${CAT_COLORS[cat.id]||'#1756a9'};animation-delay:${i*0.04}s" onclick="showList('${cat.id}')">
+  document.getElementById('catGrid').innerHTML=CATEGORIES.map((cat,i)=>{
+    const catName = t(CAT_I18N_KEYS[cat.id]) || cat.name;
+    return `<div class="cat-card" style="--cat-color:${CAT_COLORS[cat.id]||'#1756a9'};animation-delay:${i*0.04}s" onclick="showList('${cat.id}')">
       <div class="cat-icon-box" style="background:${CAT_BG[cat.id]||'#e8f0fb'}">${cat.icon}</div>
-      <div class="cat-name">${cat.name}</div>
-      <div class="cat-meta">${cat.peptides.length} compounds</div>
-    </div>`).join('');
+      <div class="cat-name">${catName}</div>
+      <div class="cat-meta">${cat.peptides.length} ${t('compounds_label')}</div>
+    </div>`;
+  }).join('');
 }
 
 function showList(catId){
@@ -980,7 +1865,7 @@ function showList(catId){
   document.getElementById('listTitle').textContent=cat.name;
   document.getElementById('listLabel').textContent=`${cat.name.toUpperCase()} — ${cat.peptides.length} COMPOUNDS`;
   document.getElementById('peptideList').innerHTML=cat.peptides.map((name,i)=>{
-    const p=PEPTIDES[name];
+    const p=getPeptideData(name);
     const evLabels=['','Anecdotal','Preclinical','Early Human','Phase 3','FDA Approved'];
     return `<div class="peptide-card" style="animation-delay:${i*0.04}s" onclick="showDetail('${name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
       <div class="pc-idx">${String(i+1).padStart(2,'0')}</div>
@@ -998,16 +1883,16 @@ function showList(catId){
 }
 
 function showDetail(name){
-  const p=PEPTIDES[name];if(!p)return;
+  const p=getPeptideData(name);if(!p)return;
   document.getElementById('listView').style.display='none';
   const dv=document.getElementById('detailView');dv.style.display='block';
   document.getElementById('detailTitle').textContent=name;
   const pips=Array.from({length:5},(_,i)=>`<div class="ev-pip${i<p.evidence?' filled':''}"></div>`).join('');
   const studiesHTML=p.studies&&p.studies.length?p.studies.map(s=>{
-    const linkHTML=s.url?'<a class="sc-link" href="'+s.url+'" target="_blank" rel="noopener">Read full study →</a>':'';
+    const linkHTML=s.url?'<a class="sc-link" href="'+s.url+'" target="_blank" rel="noopener">'+t('read_study')+'</a>':'';
     const pmidHTML=s.pmid?' · PMID: '+s.pmid:'';
     return '<div class="study-card"><div class="sc-title">'+s.title+'</div><div class="sc-journal">'+s.journal+pmidHTML+'</div><div class="sc-summary">'+s.summary+'</div>'+linkHTML+'</div>';
-  }).join(''):'<div style="color:var(--text3);font-size:12px;padding-top:6px;">No linked publications yet.</div>';
+  }).join(''):t('no_studies');
   document.getElementById('detailContent').innerHTML=`
     <div class="detail-hero">
       <div class="dh-cat">${p.category}</div>
@@ -1017,63 +1902,63 @@ function showDetail(name){
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">Dosing Protocol</div></div>
+        <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">${t('sec_dosing')}</div></div>
         <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body open">
         <div class="dose-legend">
-          <div class="dl-item"><span class="dl-label lo">LOW</span><div class="dl-desc">Conservative. New users.</div></div>
-          <div class="dl-item"><span class="dl-label mid">STANDARD</span><div class="dl-desc">Maintenance dose.</div></div>
-          <div class="dl-item"><span class="dl-label hi">HIGH</span><div class="dl-desc">Experienced users only.</div></div>
+          <div class="dl-item"><span class="dl-label lo">${t('dose_low')}</span><div class="dl-desc">${t('dose_legend_lo_desc')}</div></div>
+          <div class="dl-item"><span class="dl-label mid">${t('dose_mid')}</span><div class="dl-desc">${t('dose_legend_mid_desc')}</div></div>
+          <div class="dl-item"><span class="dl-label hi">${t('dose_hi')}</span><div class="dl-desc">${t('dose_legend_hi_desc')}</div></div>
         </div>
         <div class="info-grid">
-          <div class="ig-item"><div class="ig-label">ROUTE / SCHEDULE</div><div class="ig-value">${p.schedule}</div></div>
-          <div class="ig-item"><div class="ig-label">CYCLE LENGTH</div><div class="ig-value">${p.cycle}</div></div>
+          <div class="ig-item"><div class="ig-label">${t('label_schedule')}</div><div class="ig-value">${p.schedule}</div></div>
+          <div class="ig-item"><div class="ig-label">${t('label_cycle')}</div><div class="ig-value">${p.cycle}</div></div>
         </div>
         <table class="dose-table">
-          <thead><tr><th>TIER</th><th>DOSE</th><th>FOR WHO</th></tr></thead>
+          <thead><tr><th>TIER</th><th>DOSE</th><th>PARA QUIÉN</th></tr></thead>
           <tbody>
-            <tr><td class="t-lo">🟢 LOW</td><td>${p.lo}</td><td>First cycle / sensitive</td></tr>
-            <tr><td class="t-mid">🔵 STANDARD</td><td>${p.mid}</td><td>Standard maintenance</td></tr>
-            <tr><td class="t-hi">🔴 HIGH</td><td>${p.hi}</td><td>Experienced users</td></tr>
+            <tr><td class="t-lo">${t('tier_lo')}</td><td>${p.lo}</td><td>${t('tier_lo_who')}</td></tr>
+            <tr><td class="t-mid">${t('tier_mid')}</td><td>${p.mid}</td><td>${t('tier_mid_who')}</td></tr>
+            <tr><td class="t-hi">${t('tier_hi')}</td><td>${p.hi}</td><td>${t('tier_hi_who')}</td></tr>
           </tbody>
         </table>
       </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">Clinical Benefits</div></div>
+        <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">${t('sec_benefits')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
         ${p.benefits.map(b=>`<div class="benefit-row"><div class="benefit-check">✓</div>${b}</div>`).join('')}
-        ${p.timeline?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin:12px 0 4px;">Expected Timeline</div><div class="timeline">'+p.timeline.map(t=>'<div class="tl-row"><div class="tl-time">'+t.time+'</div><div class="tl-text">'+t.text+'</div></div>').join('')+'</div>':''}
+        ${p.timeline?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin:12px 0 4px;">'+ t('sec_timeline') +'</div><div class="timeline">'+p.timeline.map(t=>'<div class="tl-row"><div class="tl-time">'+t.time+'</div><div class="tl-text">'+t.text+'</div></div>').join('')+'</div>':''}
       </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon blue">🔬</div><div class="sh-title">Mechanism of Action</div></div>
+        <div class="sh-left"><div class="sh-icon blue">🔬</div><div class="sh-title">${t('sec_mechanism')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body"><div class="mechanism-box">${p.mechanism}</div></div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Adverse Effects & Safety</div></div>
+        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">${t('sec_adverse')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
         <div style="display:flex;gap:12px;margin-bottom:10px;font-size:11px;color:var(--text3);">
-          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge low" style="margin:0">MILD</span>Minor</span>
-          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge med" style="margin:0">MOD</span>Monitor</span>
-          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge high" style="margin:0">SERIOUS</span>Medical attention</span>
+          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge low" style="margin:0">${t('sev_mild')}</span>${t('sev_minor')}</span>
+          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge med" style="margin:0">${t('sev_mod')}</span>${t('sev_monitor')}</span>
+          <span style="display:flex;gap:4px;align-items:center"><span class="se-badge high" style="margin:0">${t('sev_serious')}</span>${t('sev_medical')}</span>
         </div>
-        ${p.sideEffects.map(se=>`<div class="se-row"><span class="se-badge ${se.severity}">${se.severity==='low'?'MILD':se.severity==='med'?'MOD':'SERIOUS'}</span>${se.text}</div>`).join('')}
+        ${p.sideEffects.map(se=>`<div class="se-row"><span class="se-badge ${se.severity}">${se.severity==='low'?t('sev_mild'):se.severity==='med'?t('sev_mod'):t('sev_serious')}</span>${se.text}</div>`).join('')}
       </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon teal">🔗</div><div class="sh-title">Pairings & Compatibility</div></div>
+        <div class="sh-left"><div class="sh-icon teal">🔗</div><div class="sh-title">${t('sec_compat')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
@@ -1083,19 +1968,19 @@ function showDetail(name){
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon purple">📚</div><div class="sh-title">Studies & Evidence</div></div>
+        <div class="sh-left"><div class="sh-icon purple">📚</div><div class="sh-title">${t('sec_studies')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
         <div class="evidence-box">
-          <div class="ev-label">Evidence Quality — ${EVIDENCE_LABELS[p.evidence]}</div>
+          <div class="ev-label">${t('label_ev_quality')} — ${currentLang==='es'?[,'Solo Anecdótico','Preclínico','Datos Tempranos','Fase 3','Aprobado FDA'][p.evidence]:EVIDENCE_LABELS[p.evidence]}</div>
           <div class="ev-bar">${pips}</div>
           <div class="ev-note">${p.evidenceNote}</div>
         </div>
         ${studiesHTML}
       </div>
     </div>
-    <div class="disclaimer"><strong>Research reference only.</strong> Not medical advice. Consult a qualified healthcare provider.</div>
+    <div class="disclaimer">${t('research_note')}</div>
   `;
   window.scrollTo(0,0);
 }
@@ -1107,27 +1992,27 @@ function toggleSec(header){
 }
 
 function renderStacks(){
-  document.getElementById('stacksList').innerHTML=STACKS.map((stack,si)=>`
+  document.getElementById('stacksList').innerHTML=STACKS.map((stack,si)=>{ const s=getStackData(si); return `
     <div class="stack-card" style="animation-delay:${si*0.05}s" onclick="showStackDetail(${si})">
       <div class="stack-hdr" style="border-left:3px solid ${stack.color}">
         <div class="stack-hdr-content">
-          <div class="stack-name">${stack.emoji} ${stack.name}</div>
-          <div class="stack-goal">${stack.goal}</div>
+          <div class="stack-name">${s.emoji} ${s.name}</div>
+          <div class="stack-goal">${s.goal}</div>
         </div>
         <svg style="width:16px;height:16px;color:var(--text3);flex-shrink:0;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
       </div>
-    </div>`).join('');
+    </div>`; }).join('');
 }
 
 function showStackDetail(idx){
   window._originStackIdx=idx;
-  const stack=STACKS[idx];
+  const stack=getStackData(idx);
   document.getElementById('stacksListView').style.display='none';
   const dv=document.getElementById('stackDetailView');dv.style.display='block';
-  document.getElementById('stackDetailTitle').textContent=stack.name;
+  document.getElementById('stackDetailTitle').textContent=stack.emoji + ' ' + stack.name;
   const peptideSections=stack.peptides.map(p=>`
     <div class="sp-row">
-      <div class="sp-name" onclick="goToProfile('${p.name.replace(/'/g,"\\'")}',true)">${p.name} <span style="font-size:11px;font-weight:400;opacity:0.6;">→ profile</span></div>
+      <div class="sp-name" onclick="goToProfile('${p.name.replace(/'/g,"\\'")}',true)">${p.name} <span style="font-size:11px;font-weight:400;opacity:0.6;">${t('profile_link')}</span></div>
       <div class="sp-schedule">${p.schedule}</div>
       <table class="sp-table">
         <tr><td class="t-lo">🟢 LOW</td><td>${p.lo}</td><td style="font-size:11px;color:var(--text3)">Conservative</td></tr>
@@ -1136,7 +2021,7 @@ function showStackDetail(idx){
       </table>
     </div>`).join('');
   const studiesHTML=stack.studies&&stack.studies.length?stack.studies.map(s=>{
-    const linkHTML=s.url?'<a class="sc-link" href="'+s.url+'" target="_blank" rel="noopener">Read full study →</a>':'';
+    const linkHTML=s.url?'<a class="sc-link" href="'+s.url+'" target="_blank" rel="noopener">'+t('read_study')+'</a>':'';
     const pmidHTML=s.pmid?' · PMID: '+s.pmid:'';
     return '<div class="study-card"><div class="sc-title">'+s.title+'</div><div class="sc-journal">'+s.journal+pmidHTML+'</div><div class="sc-summary">'+s.summary+'</div>'+linkHTML+'</div>';
   }).join(''):'<div style="color:var(--text3);font-size:12px;padding-top:6px;">See individual peptide profiles for citations.</div>';
@@ -1147,13 +2032,13 @@ function showStackDetail(idx){
       <div class="dh-name">${stack.emoji} ${stack.name}</div>
       <div class="dh-tagline" style="margin-top:6px;">${stack.description||''}</div>
       <div class="dh-badges" style="margin-top:12px;">
-        <span class="dh-badge phase2">${stack.peptides.length} Peptides</span>
-        <span class="dh-badge fda">Research Protocol</span>
+        <span class="dh-badge phase2">${stack.peptides.length} ${t('stack_peptides_badge')}</span>
+        <span class="dh-badge fda">${t('stack_research_badge')}</span>
       </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">Stack Benefits</div></div>
+        <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">${t('stack_benefits_title')}</div></div>
         <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body open">
@@ -1162,7 +2047,7 @@ function showStackDetail(idx){
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">Per-Peptide Dosing</div></div>
+        <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">${t('stack_dosing_title')}</div></div>
         <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body open">
@@ -1181,12 +2066,12 @@ function showStackDetail(idx){
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
-        ${(stack.sideEffects||[]).map(se=>`<div class="se-row"><span class="se-badge ${se.severity}">${se.severity==='low'?'MILD':se.severity==='med'?'MOD':'SERIOUS'}</span>${se.text}</div>`).join('')}
+        ${(stack.sideEffects||[]).map(se=>`<div class="se-row"><span class="se-badge ${se.severity}">${se.severity==='low'?t('sev_mild'):se.severity==='med'?t('sev_mod'):t('sev_serious')}</span>${se.text}</div>`).join('')}
       </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon blue">🔬</div><div class="sh-title">Why These Peptides Together</div></div>
+        <div class="sh-left"><div class="sh-icon blue">🔬</div><div class="sh-title">${t('label_why_together')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
@@ -1199,12 +2084,12 @@ function showStackDetail(idx){
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon purple">📚</div><div class="sh-title">Studies & Evidence</div></div>
+        <div class="sh-left"><div class="sh-icon purple">📚</div><div class="sh-title">${t('sec_studies')}</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">${studiesHTML}</div>
     </div>
-    <div class="disclaimer"><strong>Research reference only.</strong> Stack protocols based on community and clinical use patterns. Not medical advice. Consult a qualified healthcare provider.</div>
+    <div class="disclaimer">${t('stack_research_note')}</div>
   `;
   window.scrollTo(0,0);
 }
@@ -1217,9 +2102,9 @@ document.getElementById('backToStacks').addEventListener('click',()=>{
 
 function renderAZ(filter=''){
   const all=Object.entries(PEPTIDES).filter(([n])=>n!=='BAC Water'&&n!=='Acetic Acid Water').sort(([a],[b])=>a.localeCompare(b));
-  const filtered=filter?all.filter(([n,p])=>n.toLowerCase().includes(filter)||(p.category||'').toLowerCase().includes(filter)||(p.tagline||'').toLowerCase().includes(filter)):all;
+  const filtered=filter?all.filter(([n,p])=>{const pd=getPeptideData(n)||p;return n.toLowerCase().includes(filter)||(pd.category||'').toLowerCase().includes(filter)||(pd.tagline||'').toLowerCase().includes(filter);}):all;
   const groups={};
-  filtered.forEach(([n,p])=>{const l=n[0].toUpperCase();if(!groups[l])groups[l]=[];groups[l].push([n,p]);});
+  filtered.forEach(([n])=>{const p=getPeptideData(n);const l=n[0].toUpperCase();if(!groups[l])groups[l]=[];groups[l].push([n,p]);});
   document.getElementById('azList').innerHTML=Object.entries(groups).map(([letter,items])=>`
     <div class="az-section" id="az-${letter}">
       <div class="az-section-hdr">${letter}</div>
@@ -1228,7 +2113,7 @@ function renderAZ(filter=''){
           <div><div class="az-item-name">${n}</div><div class="az-item-meta">${p.category} · ${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)}</div></div>
           <div class="az-item-arrow">›</div>
         </div>`).join('')}
-    </div>`).join('')||'<div style="color:var(--text3);padding:20px 0;text-align:center;">No results</div>';
+    </div>`).join('')||'<div style="color:var(--text3);padding:20px 0;text-align:center;">'+t('no_results_az')+'</div>';
   const letters=Object.keys(groups);
   document.getElementById('azSidebar').innerHTML='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=>
     `<div class="az-letter-btn" onclick="${letters.includes(l)?'scrollToLetter(\''+l+'\')':''}" style="${letters.includes(l)?'':'opacity:0.25;cursor:default'}">${l}</div>`
@@ -1262,7 +2147,7 @@ document.getElementById('searchInput').addEventListener('input',function(){
   sr.innerHTML=results.length?results.map(r=>`
     <div class="sr-item" onclick="${r.isStack?'switchToStack('+r.idx+')':'goToProfile(\''+r.name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")+'\')'} ">
       <div class="sr-name">${r.name}</div><div class="sr-sub">${r.sub}</div>
-    </div>`).join(''):`<div style="padding:20px;text-align:center;color:var(--text3)">No results for "${q}"</div>`;
+    </div>`).join(''):`<div style="padding:20px;text-align:center;color:var(--text3)">${t("no_results_for")} "${q}"</div>`;
 });
 
 function switchToStack(idx){
@@ -1326,6 +2211,8 @@ function goToProfile(name,fromStack){
 }
 
 let isDark=false;
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+
 document.getElementById('themeBtn').addEventListener('click',()=>{
   isDark=!isDark;
   document.body.classList.toggle('dark',isDark);
@@ -1370,7 +2257,7 @@ function calculateRecon(){
   const fillPercent=Math.min((parseFloat(units)/syringeSize)*100,100);
   if(parseFloat(units)>syringeSize){showCalcError('reconError','This dose exceeds syringe capacity. Use a larger syringe, add more BAC water, or split into 2 injections.');return;}
   document.getElementById('reconUnits').textContent=parseFloat(units)+' units';
-  document.getElementById('reconMl').textContent=volumeMl.toFixed(3)+' ml — draw to the '+parseFloat(units)+' unit line';
+  document.getElementById('reconMl').textContent=volumeMl.toFixed(3)+' ml — '+t('calc_draw_to')+' '+parseFloat(units)+' '+t('calc_unit_line');
   document.getElementById('reconConc').textContent=concMcgPerMl>=1000?(concMcgPerMl/1000).toFixed(2)+' mg/ml':concMcgPerMl.toFixed(0)+' mcg/ml';
   document.getElementById('reconPerUnit').textContent=mcgPerUnit+' mcg/unit';
   document.getElementById('reconDoses').textContent=dosesPerVial+' doses';
@@ -1407,7 +2294,7 @@ function calculateVials(){
   document.getElementById('totalDoses').textContent=totalInjections+' injections';
   document.getElementById('totalMg').textContent=totalMgNeeded.toFixed(2)+' mg';
   document.getElementById('mgPerWeek').textContent=mgPerWeek.toFixed(2)+' mg/wk';
-  document.getElementById('vialLeftover').textContent=mgInLastVial>0?mgInLastVial.toFixed(2)+' mg':'None — exact fit';
+  document.getElementById('vialLeftover').textContent=mgInLastVial>0?mgInLastVial.toFixed(2)+' mg':t('calc_exact_fit');
   resultEl.classList.add('visible');
 }
 
@@ -1418,6 +2305,7 @@ function showCalcError(id,msg){
 renderCategories();
 renderStacks();
 renderAZ();
+applyTranslations();
 
 // ── SWIPE BACK GESTURE ────────────────────────────────────────
 (function() {

@@ -1341,7 +1341,7 @@ function getPeptideData(name) {
 // ═══════════════════════════════════════════════════════
 const STACKS_ES = [
   {
-    name:'WOLVERINE STACK',
+    name:'WOLVERINE STACK',cycle:'8–12 weeks on / 4 weeks off',
     goal:'Recuperación de lesiones · Reparación de tejidos · Reducción del dolor',
     description:'El stack de sanación más popular — BPC-157 actúa localmente en el sitio de lesión mientras TB-500 proporciona reparación sistémica en todo el cuerpo. Juntos cubren ambas vías de sanación para una recuperación integral.',
     rationale:'BPC-157 actúa localmente vía VEGFR2/Akt-eNOS en el sitio de lesión. TB-500 actúa sistémicamente vía regulación de actina en todo el cuerpo. Son mecanismos completamente diferentes — cada protocolo clínico recomienda usarlos juntos precisamente porque se complementan.',
@@ -1350,7 +1350,7 @@ const STACKS_ES = [
     note:'Inyectar cada uno por separado — nunca mezclar en la misma jeringa. BPC-157 cerca del sitio de lesión; TB-500 en cualquier lugar SubQ.',
   },
   {
-    name:'GLOW STACK',
+    name:'GLOW STACK',cycle:'12 weeks on / 4 weeks off',
     goal:'Antienvejecimiento · Piel y colágeno · Regeneración integral',
     description:'GLOW = GHK-Cu + BPC-157 + TB-500. El stack de antienvejecimiento y optimización de piel. GHK-Cu impulsa la síntesis de colágeno mientras los péptidos de sanación proporcionan soporte regenerativo sistémico.',
     rationale:'GHK-Cu activa genes de síntesis de colágeno y restablece la expresión genética hacia patrones más juveniles. BPC-157 y TB-500 proporcionan la base de reparación de tejidos y antiinflamación. Los tres trabajan en aspectos diferentes pero complementarios de la regeneración de piel y tejidos.',
@@ -1359,7 +1359,7 @@ const STACKS_ES = [
     note:'GHK-Cu también puede aplicarse tópicamente en cara/piel además de SubQ. Inyectar BPC-157 y TB-500 por separado.',
   },
   {
-    name:'KLOW STACK',
+    name:'KLOW STACK',cycle:'12 weeks on / 4 weeks off',
     goal:'Sanación máxima · Inmunomodulación · Reparación intestinal · Inflamación crónica',
     description:'KLOW = GLOW + KPV. El stack de sanación y antiinflamación más integral disponible. KPV añade potente inhibición de NF-kB y sanación mucosa — especialmente poderoso para problemas intestinales, EII y inflamación crónica.',
     rationale:'KPV inhibe específicamente NF-kB en superficies mucosas donde BPC-157 también actúa. La combinación proporciona sanación local + sistémica (BPC-157 + TB-500), regeneración de piel/colágeno (GHK-Cu), Y modulación antiinflamatoria de NF-kB (KPV) en todos los tipos de tejido.',
@@ -1368,7 +1368,7 @@ const STACKS_ES = [
     note:'Inyectar todos los péptidos por separado. Alta frecuencia — considera comenzar con Wolverine o GLOW antes de escalar al KLOW completo.',
   },
   {
-    name:'GH STACK (Classic)',
+    name:'GH STACK (Classic)',cycle:'16–24 weeks (two-phase: 8–12 wks CJC, then 8–12 wks Tesamorelin)',
     goal:'Optimización de GH · Músculo magro · Pérdida de grasa · Sueño · Antienvejecimiento',
     description:'El protocolo estándar de oro para péptidos de GH. CJC-1295 (con DAC) proporciona elevación sostenida de GH una vez por semana mediante unión a albúmina, mientras Ipamorelin añade un pulso diario limpio de GH. Juntos producen elevación basal sostenida más un pulso diario — sin elevar cortisol ni prolactina.',
     rationale:'CJC-1295 (con DAC) se une a la albúmina extendiendo su vida media a 6–8 días — una inyección por semana mantiene GH elevado durante toda la semana. Ipamorelin actúa en GHS-R1a para añadir un pulso diario limpio de GH encima. Dos vías de receptores completamente diferentes — la combinación te da elevación sostenida Y pulsatilidad fisiológica. Sin cortisol, sin prolactina, sin ACTH.',
@@ -1377,7 +1377,7 @@ const STACKS_ES = [
     note:'CJC-1295 con DAC: una inyección por semana, mismo día cada semana. Ipamorelin: inyección diaria antes de dormir con estómago vacío. No mezclar en la misma jeringa.',
   },
   {
-    name:'SLEEP STACK',
+    name:'SLEEP STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',
     goal:'Sueño profundo · Pulso nocturno de GH · Reducción de cortisol · Recuperación',
     description:'Optimización integral del sueño. Cada péptido actúa en un mecanismo diferente — secretagogos de GH, neuropéptidos inductores del sueño y la hormona circadiana principal — para una mejora completa de la arquitectura del sueño.',
     rationale:'Sermorelin + Ipamorelin impulsan el pulso natural nocturno de GH durante el sueño de ondas lentas. DSIP promueve el sueño delta vía modulación hipotalámica y reducción de cortisol. La melatonina inyectable proporciona señal de temporización circadiana y protección antioxidante mitocondrial sin somnolencia matutina.',
@@ -1386,7 +1386,7 @@ const STACKS_ES = [
     note:'Todo antes de dormir con estómago vacío. Sermorelin + Ipamorelin pueden compartir jeringa. DSIP por separado. La melatonina inyectable es 5–10x más potente que la oral — siempre empezar BAJO.',
   },
   {
-    name:'CAGRISA STACK',
+    name:'CAGRISA STACK',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',
     goal:'Pérdida máxima de peso — doble vía GLP-1 + amilina',
     description:'El stack de pérdida de peso más potente en datos de ensayos Fase 3. CagriSema produjo 25.1% de pérdida de peso — el mayor jamás visto en un ensayo farmacéutico de Fase 3.',
     rationale:'Semaglutida activa receptores GLP-1. Cagrilintida activa receptores de amilina en el hipotálamo — una vía completamente diferente. La combinación produce pérdida de peso genuinamente aditiva porque los mecanismos biológicos no se superponen.',
@@ -1395,7 +1395,7 @@ const STACKS_ES = [
     note:'Titular cada péptido de forma independiente. NUNCA combinar semaglutida con tirzepatida. Inyectar en sitios diferentes.',
   },
   {
-    name:'NAD+ LONGEVITY STACK',
+    name:'NAD+ LONGEVITY STACK',cycle:'10 weeks on / 2 weeks off for NAD+ and MOTS-c. SS-31 can run longer.',
     goal:'Salud mitocondrial · Energía celular · Optimización metabólica · Antienvejecimiento',
     description:'El protocolo mitocondrial y de longevidad más integral. Cuatro compuestos dirigidos a diferentes vías mitocondriales para una optimización completa de la energía celular.',
     rationale:'NAD+ repone la coenzima esencial que disminuye con la edad. SS-31 reduce el estrés oxidativo en la membrana mitocondrial interna. MOTS-c imita el ejercicio activando AMPK. 5-amino-1mq previene que el NAD+ sea degradado por NNMT. Los cuatro actúan en objetivos completamente diferentes — sin redundancia.',
@@ -1404,7 +1404,7 @@ const STACKS_ES = [
     note:'Preferiblemente todo en la mañana. NAD+ puede causar sofocos — siempre empezar BAJO. Agregar cada péptido una semana aparte para aislar reacciones.',
   },
   {
-    name:'IMMUNE STACK',
+    name:'IMMUNE STACK',cycle:'Thymosin Alpha-1: 4–6 weeks 2x/week. Epithalon: 10–20 day burst 2–4x/year. BPC-157: ongoing.',
     goal:'Inmunomodulación · Longevidad · Antienvejecimiento · Soporte post-viral',
     description:'Optimización inmune integral. Timosina Alfa-1 es el péptido inmunomodulador más potente — aprobado en 35+ países. Epitalón añade antienvejecimiento a nivel de telómeros. BPC-157 proporciona la base antiinflamatoria.',
     rationale:'Timosina Alfa-1 activa células T, NK y dendríticas bidireccionalmente. Epitalón activa la telomerasa para alargar los telómeros. BPC-157 proporciona antiinflamación sistémica reduciendo la inflamación crónica de bajo grado que impulsa la disfunción inmune.',
@@ -1413,7 +1413,7 @@ const STACKS_ES = [
     note:'Timosina Alfa-1 es el núcleo. Epitalón en RÁFAGAS CORTAS únicamente (10–20 días por ráfaga, 2–4x/año). BPC-157 puede ejecutarse continuamente.',
   },
   {
-    name:'FAT LOSS STACK',
+    name:'FAT LOSS STACK',cycle:'20+ weeks. GLP-1 component runs ongoing. AOD9604 cycles 12 weeks on / 4 off.',
     goal:'Pérdida agresiva de grasa · Lipólisis · Aceleración metabólica · Preservación muscular',
     description:'Protocolo integral de pérdida de grasa atacando desde cuatro ángulos — supresión del apetito (GLP-1), lipólisis directa (AOD9604 + Fragmento HGH), y elevación de la tasa metabólica vía inhibición de NNMT (5-amino-1mq).',
     rationale:'GLP-1 maneja el apetito y la señalización metabólica. AOD9604 y Fragmento HGH activan lipólisis vía vías beta-3 adrenérgicas sin efectos de IGF-1 — seguros para combinar con GLP-1. 5-amino-1mq inhibe NNMT para elevar NAD+ y la tasa metabólica sin estimulantes.',
@@ -1422,7 +1422,7 @@ const STACKS_ES = [
     note:'GLP-1 maneja el lado del apetito. AOD9604 y Fragmento HGH funcionan mejor con estómago vacío en la mañana. 5-amino-1mq puede ser oral.',
   },
   {
-    name:"WOMEN'S WELLNESS STACK",
+    name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',
     goal:'Equilibrio hormonal · Piel · Libido · Estado de ánimo · Composición corporal',
     description:'Un protocolo integral de optimización femenina que aborda las áreas clave donde la terapia peptídica proporciona mayor beneficio para la mujer — equilibrio hormonal, calidad de piel, libido, estado de ánimo y composición corporal.',
     rationale:'Las mujeres tienen fisiología hormonal distinta que responde diferente a los protocolos peptídicos. PT-141 tiene aprobación de FDA específicamente para disfunción sexual femenina (Vyleesi). GHK-Cu y L-Glutatión son particularmente impactantes para calidad de piel y antienvejecimiento en mujeres. Selank aborda la ansiedad y el estado de ánimo sin interferencia hormonal.',
@@ -1431,7 +1431,7 @@ const STACKS_ES = [
     note:'PT-141 es solo según necesidad (no diario). Péptidos GH antes de dormir diariamente. GHK-Cu y Glutatión pueden ejecutarse continuamente. Máx 2x/semana para PT-141. Las mujeres suelen ser más sensibles a GH — empezar en dosis BAJA.',
   },
   {
-    name:'HPG TESTOSTERONE STACK',
+    name:'HPG TESTOSTERONE STACK',cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',
     goal:'Testosterona natural · Restauración del eje HPG · Fertilidad · Libido',
     description:'El stack completo de restauración del eje HPG. Kisspeptina-10 activa el hipotálamo, HCG activa los testículos — juntos restauran la cascada completa de producción de testosterona de arriba hacia abajo.',
     rationale:'Kisspeptina-10 se une a receptores KISS1R en el hipotálamo desencadenando el pulso de GnRH → LH/FSH → testosterona. HCG imita directamente LH a nivel testicular. Estos dos juntos cubren ambos extremos del eje HPG simultáneamente. CJC-1295 + Ipamorelin añaden soporte del eje GH para recuperación y ambiente anabólico general.',
@@ -1440,7 +1440,7 @@ const STACKS_ES = [
     note:'SE REQUIEREN ANÁLISIS DE SANGRE. Obtener T total, T libre, LH, FSH, estradiol e IGF-1 basales antes de comenzar. Revisar a las 6 semanas. Este no es un stack para principiantes — consultar con Defy Medical o Marek Health para protocolo supervisado.',
   },
   {
-    name:'COGNITIVE STACK',
+    name:'COGNITIVE STACK',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',
     goal:'Enfoque · Memoria · Neuroprotección · Reducción de ansiedad · BDNF',
     description:'El protocolo de optimización cognitiva más dirigido. Semax eleva BDNF para enfoque y neuroprotección. Selank proporciona calma ansiolítica limpia sin sedación. NAD+ potencia las mitocondrias cerebrales. Tres vías distintas para una mejora cognitiva integral.',
     rationale:'Semax actúa vía ACTH(4-7) para regular al alza BDNF y modular dopamina/serotonina — mejorando el enfoque, la consolidación de memoria y la neuroplasticidad. Selank modula GABA-A y reduce la ansiedad sin sedación — creando el estado calmado y enfocado donde Semax es más efectivo. NAD+ asegura que la energía mitocondrial no sea el cuello de botella para el rendimiento cerebral.',
@@ -1449,7 +1449,7 @@ const STACKS_ES = [
     note:'Semax y Selank son complementarios — Semax es activador (tomar AM), Selank es calmante (tomar mediodía o antes de situaciones estresantes). Ambos ciclan 6 semanas activo / 2 de descanso. NAD+ puede ejecutarse continuamente.',
   },
   {
-    name:'TRIPLE AGONIST STACK',
+    name:'TRIPLE AGONIST STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',
     goal:'Pérdida máxima de peso · Sin meseta · Grasa hepática · Cardiometabólico',
     description:'Construido alrededor de retatrutida — el compuesto para pérdida de peso más potente en la historia de ensayos de Fase 2 con 24.2% de pérdida de peso sin meseta a las 48 semanas. NAD+ y 5-amino-1mq complementan el cambio metabólico con soporte de vías mitocondriales y NNMT.',
     rationale:'Retatrutida es un agonista triple GLP-1/GIP/glucagón — el componente de glucagón aumenta únicamente el gasto calórico además de la reducción del apetito, explicando por qué supera a todos los demás agentes. NAD+ apoya la adaptación mitocondrial al cambio metabólico. 5-amino-1mq inhibe NNMT para elevar aún más el NAD+ y suprimir la adipogénesis. Los tres actúan en objetivos diferentes sin redundancia.',
@@ -1487,7 +1487,7 @@ const PEPTIDES = {
   'Tirzepatide':{category:'Weight Loss',tagline:'Dual GIP + GLP-1 agonist — strongest approved weight loss medication',mechanism:'Activates both GIP and GLP-1 receptors simultaneously. Slows gastric emptying, suppresses appetite, enhances insulin secretion and reduces glucagon.',benefits:['20.2% average body weight loss vs 13.7% semaglutide (SURMOUNT-5 head-to-head 2025)','Superior to semaglutide in SURPASS-2 and SURMOUNT-5','Reduces visceral and abdominal fat preferentially','Improves HbA1c, blood pressure, triglycerides'],sideEffects:[{text:'Nausea (17–22%) — most common, dose-dependent, peaks during titration',severity:'med'},{text:'Diarrhea (13–16%)',severity:'low'},{text:'Vomiting (6–10%)',severity:'med'},{text:'Pancreatitis (rare)',severity:'high'},{text:'Thyroid C-cell tumors in rodents — clinical significance unclear',severity:'high'}],timeline:[{time:'Wk 1–4',text:'Appetite suppression begins; GI adjustment period'},{time:'Wk 4–16',text:'Noticeable weight reduction during titration'},{time:'Wk 20+',text:'Peak results — 15–22% total weight loss'}],schedule:'Once weekly SubQ injection — same day each week, any time of day',cycle:'20+ weeks minimum — long-term use for maximum benefit',lo:'2.5 mg/wk × 4 wks → 5 mg/wk × 4 wks (hold at 5mg maintenance)',mid:'2.5→5→7.5→10 mg/wk (4 wks per step) — standard FDA titration',hi:'2.5→5→7.5→10→12.5→15 mg/wk (4 wks per step) — maximum FDA dose',pairsWith:['Cagrilintide','NAD+','Lipo-C'],avoid:['Semaglutide (same receptor class — never combine)','Retatrutide'],evidence:5,evidenceNote:'Multiple Phase 3 RCTs (SURMOUNT 1–5). FDA approved Mounjaro (T2D) and Zepbound (obesity). SURMOUNT-5 2025 head-to-head vs semaglutide confirmed superiority.',studies:[{title:'SURMOUNT-1: Tirzepatide for Obesity',journal:'NEJM 2022',summary:'20.9% body weight loss vs 3.1% placebo at 72 weeks. Landmark approval trial.',pmid:'35658024',url:'https://pubmed.ncbi.nlm.nih.gov/35658024/'}]},
   'Semaglutide':{category:'Weight Loss',tagline:'GLP-1 agonist — gold standard weight loss with cardiovascular benefit',mechanism:'Activates GLP-1 receptors to reduce appetite, slow gastric emptying, enhance insulin secretion. Most extensively studied weight loss peptide. Available in three injection doses (1.7mg, 2.4mg, 7.2mg) and oral form (25mg).',benefits:['15–17% average body weight loss at 2.4mg (STEP-1)','20.7% average weight loss at 7.2mg Wegovy HD (STEP UP, 2025)','21% reduction in major cardiovascular events (SELECT trial)','FDA-approved for T2D, obesity, and MASH liver disease','Up to 1 in 3 patients achieve ≥25% weight loss at 7.2mg'],sideEffects:[{text:'Nausea — very common (74–84%)',severity:'med'},{text:'Gallbladder disease / gallstones (2.6x risk)',severity:'high'},{text:'Vomiting and diarrhea',severity:'med'},{text:'Muscle mass loss without resistance training',severity:'med'},{text:'Pancreatitis (rare)',severity:'high'},{text:'Dysesthesia (altered skin sensation — burning, pain) at 7.2mg dose: 22.9% vs 6% at 2.4mg. Usually resolves. FDA investigating.',severity:'med'}],timeline:[{time:'Wk 1–2',text:'Appetite reduction begins'},{time:'Wk 68',text:'~15% weight loss at 2.4mg; ~21% at 7.2mg'}],schedule:'Once weekly SubQ injection. 7.2mg requires tolerating 2.4mg for ≥4 weeks first.',cycle:'20+ weeks',lo:'0.25 mg/wk → 0.5 mg/wk (starting/titration)',mid:'0.25→0.5→1.0→2.4 mg/wk (standard 4-step titration)',hi:'2.4mg → 7.2mg/wk (Wegovy HD — FDA approved March 2026)',pairsWith:['Cagrilintide','NAD+','Lipo-C'],avoid:['Tirzepatide (same receptor — never combine)','Retarutide (GLP-1 class — never combine)'],evidence:5,evidenceNote:'Multiple Phase 3 RCTs. FDA approved Ozempic (T2D), Wegovy 2.4mg (obesity), Wegovy HD 7.2mg (obesity, March 2026), oral Wegovy pill 25mg (obesity, Dec 2025), and for MASH. SELECT cardiovascular outcomes trial.',studies:[{title:'STEP-1: Semaglutide 2.4mg for Weight Management',journal:'NEJM 2021',summary:'14.9% weight loss vs 2.4% placebo over 68 weeks. Established 2.4mg as standard obesity dose.',pmid:'33567185',url:'https://pubmed.ncbi.nlm.nih.gov/33567185/'},{title:'STEP UP: Semaglutide 7.2mg (Wegovy HD)',journal:'Lancet Diabetes & Endocrinology 2025',summary:'20.7% average weight loss at 72 weeks. ~1 in 3 patients achieved ≥25% loss. Dysesthesia signal at 22.9%. FDA approved March 2026.',pmid:'',url:'https://pubmed.ncbi.nlm.nih.gov/'}]},
   'BPC-157':{category:'Healing',tagline:'Gastric pentadecapeptide — tissue repair, gut healing, anti-inflammatory',mechanism:'Promotes angiogenesis via VEGFR2/Akt-eNOS. Stimulates fibroblast activity, reduces pro-inflammatory cytokines, enhances GH receptor expression.',benefits:['Accelerated tendon and ligament healing','Gut healing and leaky gut repair','Reduced systemic inflammation','Joint pain relief','Neuroprotective effects in animal models'],sideEffects:[{text:'Mild injection site irritation',severity:'low'},{text:'Nausea at very high doses (rare)',severity:'low'},{text:'Theoretical tumor promotion concern — unconfirmed in humans',severity:'med'},{text:'Very limited human data — only 3 published pilot studies',severity:'med'}],timeline:[{time:'Days 1–7',text:'Pain reduction often noted within first week'},{time:'Wk 2–4',text:'Tissue repair acceleration measurable'},{time:'Wk 8–12',text:'Full cycle benefit — cycle off 4–8 wks'}],schedule:'Daily SubQ near injury site or abdomen — split AM/PM dosing preferred',cycle:'8–12 weeks on / 4–8 wks off',lo:'250 mcg/day (1x AM)',mid:'250 mcg 2x/day (AM + PM) — most common clinical protocol',hi:'500 mcg 2x/day — upper range, significant injuries only',pairsWith:['TB-500','GHK-Cu','KPV'],avoid:['Do not mix in same syringe as TB-500'],evidence:2,evidenceNote:'35+ preclinical studies. 3 published human pilot studies (2021 knee, 2024 bladder/IC, 2025 IV safety). FDA Category 2 bulk substance — cannot be legally compounded in US. NOTE: BPC-157 was temporarily on WADA prohibited list in 2022 but is NOT currently prohibited by WADA (2025 review).',studies:[{title:'BPC-157 Systematic Review: Orthopaedic Sports Medicine',journal:'Orthopaedic Journal of Sports Medicine 2025',summary:'36-study review. BPC-157 enhanced angiogenesis and tissue repair. 87.5% knee pain relief in 16-patient pilot study.',pmid:'',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/'}]},
-  'TB-500':{category:'Healing',tagline:'Thymosin Beta-4 fragment — systemic tissue repair and flexibility',mechanism:'Promotes actin regulation, cell migration, angiogenesis. Unlike BPC-157 which acts locally, TB-500 provides broad systemic healing.',benefits:['Systemic tissue repair','Inflammation reduction throughout body','Improved flexibility and range of motion','Cardiac protection (animal models)','Wound healing acceleration'],sideEffects:[{text:'Injection site redness',severity:'low'},{text:'Mild fatigue (rare)',severity:'low'},{text:'Headache (occasional)',severity:'low'},{text:'Limited long-term human safety data — no human RCTs',severity:'med'}],timeline:[{time:'Wk 1–2',text:'Systemic anti-inflammatory begins'},{time:'Wk 3–5',text:'Flexibility and flexibility improvements'},{time:'Wk 8–10',text:'Full cycle completion'}],schedule:'SubQ — loading phase 2x/week (non-consecutive days), then 1x/week maintenance',cycle:'Loading 4–6 wks, then maintenance 4–6 wks. Total 10–12 weeks.',lo:'2 mg 2x/wk loading (4 wks) → 2 mg/wk maintenance',mid:'2.5 mg 2x/wk loading (4 wks) → 2.5 mg/wk maintenance',hi:'5 mg 2x/wk × 4 wks loading (acute injury only), then drop to 2.5 mg once/week maintenance',pairsWith:['BPC-157','GHK-Cu','KPV'],avoid:['Do not mix in same syringe as BPC-157'],evidence:2,evidenceNote:'Strong animal data. WADA prohibited. No human clinical trials for TB-500 specifically.',studies:[{title:'Thymosin Beta-4: Roles in Development and Repair',journal:'Annals of NY Academy of Sciences 2007',summary:'TB4 demonstrated roles in cell migration, wound healing, angiogenesis via actin regulation.',pmid:'17650008',url:'https://pubmed.ncbi.nlm.nih.gov/17650008/'}]},
+  'TB-500':{category:'Healing',tagline:'Thymosin Beta-4 fragment — systemic tissue repair and flexibility',mechanism:'Promotes actin regulation, cell migration, angiogenesis. Unlike BPC-157 which acts locally, TB-500 provides broad systemic healing.',benefits:['Systemic tissue repair','Inflammation reduction throughout body','Improved flexibility and range of motion','Cardiac protection (animal models)','Wound healing acceleration'],sideEffects:[{text:'Injection site redness',severity:'low'},{text:'Mild fatigue (rare)',severity:'low'},{text:'Headache (occasional)',severity:'low'},{text:'Limited long-term human safety data — no human RCTs',severity:'med'}],timeline:[{time:'Wk 1–2',text:'Systemic anti-inflammatory begins'},{time:'Wk 3–5',text:'Flexibility and flexibility improvements'},{time:'Wk 8–10',text:'Full cycle completion'}],schedule:'SubQ — loading phase 2x/week (non-consecutive days), then 1x/week maintenance',cycle:'Loading 4–6 wks, then maintenance 4–6 wks. Total 10–12 weeks.',lo:'2 mg once/week (mild support / maintenance only — no loading phase)',mid:'2 mg 2x/week × 4–6 wks loading, then 2 mg once/week maintenance',hi:'2.5 mg 2x/week × 4–6 wks loading (acute injury), then 2–2.5 mg once/week maintenance. 5mg+ doses are veterinary ranges — not standard for humans.',pairsWith:['BPC-157','GHK-Cu','KPV'],avoid:['Do not mix in same syringe as BPC-157'],evidence:2,evidenceNote:'Strong animal data. WADA prohibited. No human clinical trials for TB-500 specifically.',studies:[{title:'Thymosin Beta-4: Roles in Development and Repair',journal:'Annals of NY Academy of Sciences 2007',summary:'TB4 demonstrated roles in cell migration, wound healing, angiogenesis via actin regulation.',pmid:'17650008',url:'https://pubmed.ncbi.nlm.nih.gov/17650008/'}]},
   'GHK-Cu':{category:'Anti-Aging',tagline:'Copper tripeptide — skin, collagen, anti-aging, wound healing',mechanism:'Activates collagen synthesis genes, promotes angiogenesis, powerful antioxidant. Resets gene expression toward a more youthful pattern.',benefits:['Skin tightening and wrinkle reduction','Collagen and elastin stimulation','Hair growth activation','Wound healing','Anti-inflammatory effects'],sideEffects:[{text:'Injection site redness (common, brief)',severity:'low'},{text:'Temporary skin darkening near site',severity:'low'}],timeline:[{time:'Wk 2–4',text:'Skin texture improvements'},{time:'Wk 8–12',text:'Visible skin tightening'}],schedule:'SubQ daily (systemic) OR topical daily to target skin area — both routes effective, different targets.',cycle:'12 weeks continuous. Safe for longer ongoing use topically.',lo:'1 mg/day SubQ or 0.1–0.5% topical serum 1x/day',mid:'2 mg/day SubQ or 0.5–1% topical 2x/day',hi:'3–5 mg/day SubQ (experienced) or high-concentration topical 2x/day + SubQ combined',pairsWith:['BPC-157','TB-500','L-Glutathione'],avoid:['None known'],evidence:3,evidenceNote:'Solid human topical clinical data. Injectable protocols based on animal studies.',studies:[{title:'GHK-Cu and Gene Expression: Anti-Aging Mechanisms',journal:'Cosmetics 2015',summary:'Review of 42 human studies — skin tightening, elasticity, wrinkle reduction.',pmid:'',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}]},
   'CJC-1295 (no DAC)':{category:'Growth Hormone',tagline:'GHRH analog — preferred for natural pulsatility, daily dosing',mechanism:'Modified GHRH analog stimulating pulsatile GH release while preserving natural hypothalamic feedback. Short half-life (~30 min) maintains physiological GH pulsatility. Best for users who want daily injection control.',benefits:['Increased lean muscle mass','Fat loss via lipolysis stimulation','Improved sleep quality and depth','Faster recovery from training','Anti-aging via GH/IGF-1 axis'],sideEffects:[{text:'Water retention (common at start, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],timeline:[{time:'Wk 1–2',text:'Better sleep, possible water retention'},{time:'Wk 4–6',text:'Energy and recovery improvements'},{time:'Wk 8–12',text:'Body composition changes visible'}],schedule:'Daily SubQ before bed on empty stomach, 2–3 hours after last meal. Some protocols use 5 days/week with weekend break.',cycle:'12 weeks / 4 wks off',lo:'100 mcg/day before bed',mid:'200 mcg/day before bed — standard clinical protocol',hi:'300 mcg/day before bed — upper range',pairsWith:['Ipamorelin (synergistic dual-pathway GH stimulation)','Sermorelin','DSIP'],avoid:['Exogenous HGH (redundant pathway)','Food within 2 hrs of injection'],evidence:3,evidenceNote:'Phase 1/2 human data confirms GH/IGF-1 elevation. Body comp based on GH axis studies.',studies:[{title:'Sustained GH and IGF-1 Elevation by CJC-1295',journal:'JCEM 2006',summary:'Dose-dependent GH increases 2–10x for 6+ days after single injection.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'}]},
   'CJC-1295 (with DAC)':{category:'Growth Hormone',tagline:'Long-acting GHRH — once weekly dosing via albumin binding',mechanism:'DAC modification binds to albumin extending half-life to 6–8 days. Sustained non-pulsatile GH elevation. More convenient once-weekly dosing.',benefits:['Once-weekly injection','Sustained GH and IGF-1 elevation','Lean muscle support','Fat loss','Anti-aging effects'],sideEffects:[{text:'Water retention (more than no-DAC)',severity:'med'},{text:'Joint aches',severity:'low'},{text:'Carpal tunnel risk',severity:'med'},{text:'Blood glucose elevation',severity:'med'}],timeline:[{time:'Days 2–4',text:'GH/IGF-1 peak for 6+ days'},{time:'Wk 8–12',text:'Full body comp benefit'}],schedule:'Once weekly SubQ',cycle:'12 weeks / 4 wks off',lo:'1 mg once/wk',mid:'2 mg once/wk',hi:'4 mg once/wk (split 2mg x2 sites) — experienced only',pairsWith:['Ipamorelin'],avoid:['Exogenous HGH'],evidence:3,evidenceNote:'Phase 1/2 human data (Teichman et al. 2006).',studies:[{title:'Prolonged GH and IGF-1 Elevation by CJC-1295',journal:'JCEM 2006',summary:'Single injection produced 2–10 fold GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'}]},
@@ -1673,7 +1673,7 @@ const STACKS = [
     studies:[{title:'BPC-157 Systematic Review',journal:'Orthopaedic Journal of Sports Medicine 2025',summary:'36-study review. Enhanced angiogenesis and tissue repair. 7/12 patients reported joint pain relief.',pmid:'',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/'}],
     peptides:[
       {name:'BPC-157',schedule:'Daily SubQ near injury site or abdomen',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'Once weekly SubQ, any site',lo:'2 mg/wk',mid:'5 mg/wk',hi:'5 mg 2x/wk (loading) then 5 mg/wk'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading (acute injury), then 2.5 mg/wk'},
     ]
   },
   {
@@ -1687,7 +1687,7 @@ const STACKS = [
     peptides:[
       {name:'GHK-Cu',schedule:'Daily SubQ or topical',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'Once weekly SubQ',lo:'2 mg/wk',mid:'5 mg/wk',hi:'5 mg 2x/wk then 5 mg/wk'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
     ]
   },
   {
@@ -1701,20 +1701,33 @@ const STACKS = [
     peptides:[
       {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'Once weekly SubQ',lo:'2 mg/wk',mid:'5 mg/wk',hi:'5 mg 2x/wk then 5 mg/wk'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
       {name:'KPV',schedule:'Daily SubQ or oral',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'},
     ]
   },
   {
     name:'GH STACK (Classic)',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',color:'#1A6B9A',
-    description:'The gold standard GH peptide protocol. CJC-1295 (with DAC) provides sustained once-weekly GH elevation via albumin binding, while Ipamorelin adds a clean daily GH pulse. Together they produce sustained baseline GH elevation plus a daily pulse — without raising cortisol or prolactin.',
-    rationale:'CJC-1295 (with DAC) binds albumin extending its half-life to 6–8 days — one injection per week sustains elevated GH for the full week. Ipamorelin acts on GHS-R1a (ghrelin receptor) to add a clean daily GH pulse on top. Two completely different receptor pathways — the combination gives you both sustained elevation AND physiological pulsatility. No cortisol, no prolactin, no ACTH elevation.',
-    benefits:['2–3x greater GH pulse than either peptide alone','Lean muscle mass gain','Fat loss via lipolysis','Deep sleep improvement','Faster recovery','No cortisol or prolactin elevation'],
-    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Carpal tunnel at high IGF-1',severity:'med'},{text:'Blood glucose elevation',severity:'med'}],
-    note:'Both peptides can be drawn into the same syringe. Inject 2–3 hours after last meal before bed to align with natural GH pulse.',
-    studies:[{title:'CJC-1295 GH and IGF-1 Elevation in Humans',journal:'JCEM 2006',summary:'Single injection produced 2–10x GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'}],
+    description:'The gold standard GH peptide protocol. CJC-1295 (with DAC) provides sustained once-weekly GH elevation via albumin binding, while Ipamorelin adds a clean daily GH pulse on top. Two completely different receptor pathways — sustained baseline elevation plus physiological pulsatility, without raising cortisol or prolactin.',
+    rationale:'CJC-1295 (with DAC) binds albumin extending its half-life to 6–8 days — one injection per week sustains elevated GH for the full week. Ipamorelin acts on GHS-R1a (ghrelin receptor) to add a clean daily GH pulse on top. GHRH receptor + ghrelin receptor = true synergy. The combination produces 2–3x greater GH output than either peptide alone.',
+    benefits:[
+      '2–3x greater GH pulse than either peptide alone',
+      'Lean muscle mass gain',
+      'Fat loss via lipolysis',
+      'Deep sleep improvement — GH pulse aligns with slow-wave sleep',
+      'Faster recovery from training',
+      'No cortisol, prolactin, or ACTH elevation',
+    ],
+    sideEffects:[
+      {text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},
+      {text:'Carpal tunnel if IGF-1 runs high — monitor at 6–8 weeks',severity:'med'},
+      {text:'Blood glucose elevation',severity:'med'},
+    ],
+    note:'Both peptides can be drawn into the same syringe. Inject before bed on empty stomach to align with natural GH pulse. Monitor IGF-1 at baseline and week 6–8.',
+    studies:[
+      {title:'CJC-1295 GH and IGF-1 Elevation in Humans',journal:'JCEM 2006',summary:'Single CJC-1295 injection produced 2–10x GH elevation lasting 6+ days. Established albumin-binding extended half-life mechanism.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},
+    ],
     peptides:[
-      {name:'CJC-1295 (with DAC)',schedule:'Once weekly SubQ — any time, same day each week',lo:'1 mg/wk',mid:'2 mg/wk',hi:'2 mg/wk (extended 16-wk cycle)'},
+      {name:'CJC-1295 (with DAC)',schedule:'Once weekly SubQ — same day each week',lo:'1 mg/wk',mid:'2 mg/wk',hi:'2 mg/wk'},
       {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
     ]
   },
@@ -1851,7 +1864,7 @@ const STACKS = [
     ]
   }  ,
   {
-    name:'J STACK',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
+    name:'J STACK',cycle:'12–16 weeks. Epithalon as 10-day burst only. IGF-1 LR3 max 6 weeks.',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
     description:'A comprehensive performance and longevity stack combining GH optimization, anabolic support, systemic healing, immune modulation, and mitochondrial protection. Eight compounds covering five distinct biological pathways simultaneously — designed for experienced users optimizing body composition and long-term health in parallel.',
     rationale:'CJC-1295 (with DAC) provides sustained once-weekly GH elevation. Ipamorelin adds a clean daily GH pulse without cortisol or prolactin. BPC-157 handles local tissue repair and gut health. TB-500 provides systemic healing and flexibility. Epithalon targets telomere-level anti-aging. Thymosin Alpha-1 modulates immune function bidirectionally. IGF-1 LR3 drives muscle hyperplasia during its strict 4-week cycle. SS-31 protects mitochondria from oxidative stress. Each compound targets a completely different pathway — no redundancy.',
     benefits:['GH axis optimization via two complementary pathways (GHRH + GHRP)','Muscle hyperplasia and superior nutrient partitioning (IGF-1 LR3)','Systemic and local tissue repair (BPC-157 + TB-500)','Telomere-level anti-aging (Epithalon)','Bidirectional immune modulation (Thymosin Alpha-1)','Mitochondrial protection and cellular energy (SS-31)','Improved sleep quality and overnight GH pulse','Body composition and longevity optimized simultaneously'],
@@ -1862,7 +1875,7 @@ const STACKS = [
       {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week',lo:'1 mg/wk',mid:'2 mg/wk',hi:'4 mg/wk (split 2mg x2 sites)'},
       {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
-      {name:'TB-500',schedule:'SubQ 2x per week',lo:'2.5 mg 2x/wk',mid:'5 mg 2x/wk',hi:'7.5 mg 2x/wk'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
       {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
       {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
       {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
@@ -1870,7 +1883,7 @@ const STACKS = [
     ]
   }  ,
   {
-    name:'INTIMACY STACK',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal · Connection',color:'#880E4F',
+    name:'INTIMACY STACK',cycle:'As-needed — not a daily protocol. PT-141 and Oxytocin max 2x/week.',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal · Connection',color:'#880E4F',
     description:'A three-compound as-needed stack targeting sexual desire, emotional bonding, and performance anxiety from completely different neurological pathways. PT-141 works centrally on desire circuits in the brain. Oxytocin deepens emotional connection and bonding. Selank eliminates performance anxiety without any sedation. All three can be taken together at the same time — 45–60 minutes before.',
     rationale:'PT-141 activates MC4R in the hypothalamus — the neural desire circuit — working even when PDE5 inhibitors (Viagra/Cialis) fail because it operates at the brain level not the vascular level. Oxytocin enhances trust, bonding, and emotional connection — amplifying the experience beyond physical arousal alone. Selank modulates GABA-A to remove anxiety and self-consciousness without sedation — the calm, present state where intimacy is most natural. Three different mechanisms, genuine synergy, no redundancy.',
     benefits:['Increased sexual desire at the neural level — works for both men and women','Emotional bonding and connection enhancement (Oxytocin)','Performance anxiety elimination without sedation or grogginess (Selank)','Effective even when conventional medications fail','Works on psychological and physiological arousal simultaneously','Simple as-needed protocol — all three taken together 45–60 min before'],
@@ -1885,7 +1898,7 @@ const STACKS = [
   }
 
   ,{
-    name:'PERI/MENOPAUSE STACK',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',color:'#6A1B9A',
+    name:'PERI/MENOPAUSE STACK',cycle:'Ongoing for core stack. Epithalon as 10–20 day burst 2x/year. Kisspeptin-10 cycles 8–12 weeks.',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',color:'#6A1B9A',
     description:'A comprehensive peptide protocol designed around the two distinct phases of female hormonal transition. The core stack — Ipamorelin/CJC-1295, BPC-157, and Selank/Semax — runs through both perimenopause and menopause. One key swap: Kisspeptin-10 in perimenopause, Epithalon in full menopause. HRT (bioidentical hormones) remains the clinical foundation — these peptides are adjuncts that work alongside it, not replacements.',
     rationale:'In perimenopause, estrogen fluctuations (not deficiency) drive most symptoms — erratic signaling, brain fog, GI changes, mood dysregulation, and accelerated muscle loss. Kisspeptin-10 stimulates GnRH → LH/FSH, helping smooth out erratic ovarian signaling while the ovaries are still producing. Once fully menopausal, the ovaries are offline — Kisspeptin loses its rationale and Epithalon becomes more valuable: telomere support, pineal/melatonin regulation, sleep, and longevity at a stage when cardiovascular and bone risks rise significantly. Ipamorelin + CJC-1295 become more critical post-menopause as GH decline accelerates alongside estrogen loss. BPC-157 addresses the increased joint inflammation and GI changes common across both phases. Selank or Semax targets the brain fog and anxiety driven by fluctuating then declining estrogen effects on serotonin and GABA.',
     benefits:[
@@ -2139,6 +2152,7 @@ function showStackDetail(idx){
   document.getElementById('stacksListView').style.display='none';
   const dv=document.getElementById('stackDetailView');dv.style.display='block';
   document.getElementById('stackDetailTitle').textContent=stack.emoji + ' ' + stack.name;
+  const cycleHTML=stack.cycle?'<div style="background:var(--card2);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">&#9201;</span><div><div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;">Cycle Length</div><div style="font-size:13px;font-weight:500;color:var(--text1);margin-top:2px;">'+stack.cycle+'</div></div></div>':'';
   const peptideSections=stack.peptides.map(p=>`
     <div class="sp-row">
       <div class="sp-name" onclick="goToProfile('${p.name.replace(/'/g,"\\'")}',true)">${p.name} <span style="font-size:11px;font-weight:400;opacity:0.6;">${t('profile_link')}</span></div>
@@ -2162,6 +2176,7 @@ function showStackDetail(idx){
       <div class="dh-tagline" style="margin-top:6px;">${stack.description||''}</div>
       <div class="dh-badges" style="margin-top:12px;">
         <span class="dh-badge phase2">${stack.peptides.length} ${t('stack_peptides_badge')}</span>
+        <span class="dh-badge experimental" style="display:${stack.cycle?'inline-flex':'none'}">⏱ ${stack.cycle||''}</span>
         <span class="dh-badge fda">${t('stack_research_badge')}</span>
       </div>
     </div>
@@ -2180,6 +2195,7 @@ function showStackDetail(idx){
         <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body open">
+        ${cycleHTML}
         <div class="dose-legend" style="margin-bottom:12px;">
           <div class="dl-item"><span class="dl-label lo">LOW</span><div class="dl-desc">Conservative</div></div>
           <div class="dl-item"><span class="dl-label mid">STANDARD</span><div class="dl-desc">Maintenance</div></div>

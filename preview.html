@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSW Widget Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#040e1f;--navy2:#071428;--navy3:#0a1d3a;
+  --blue:#0e4fa8;--blue2:#1565c0;--blue-bright:#2196f3;
+  --cyan:#00b4d8;--white:#ffffff;--text:#d0e4f7;--text2:#8aafd4;--text3:#4a6d96;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --gold:#f0c040;--mono:'Rajdhani',sans-serif;--script:'Dancing Script',cursive;
+}
+body{font-family:'Open Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(14,79,168,0.25) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(21,101,192,0.2) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(4,14,31,0.96);border-bottom:1px solid rgba(33,150,243,0.2);padding:0 20px;}
+.topbar-inner{max-width:1200px;margin:0 auto;height:58px;display:flex;align-items:center;gap:14px;}
+.brand-logo{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--white);letter-spacing:0.05em;text-shadow:0 0 20px rgba(33,150,243,0.6);}
+.brand-logo span{color:var(--cyan);}
+.brand-divider{width:1px;height:24px;background:var(--border2);}
+.brand-sub{font-size:10px;color:var(--text2);letter-spacing:0.1em;font-family:var(--mono);text-transform:uppercase;}
+.preview-badge{margin-left:auto;background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.3);border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.08em;}
+
+/* HERO (abridged) */
+.hero{position:relative;z-index:1;padding:52px 20px 56px;text-align:center;overflow:hidden;}
+.hero-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;pointer-events:none;}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(33,150,243,0.1);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse-ring 4s ease-out infinite;}
+.ring:nth-child(1){width:200px;height:200px;animation-delay:0s;}
+.ring:nth-child(2){width:350px;height:350px;animation-delay:1s;}
+.ring:nth-child(3){width:500px;height:500px;animation-delay:2s;}
+@keyframes pulse-ring{0%{opacity:0.6;transform:translate(-50%,-50%) scale(0.95);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05);}}
+.hero-content{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);width:40px;}
+.hero-title{font-family:var(--mono);font-size:clamp(28px,7vw,56px);font-weight:700;color:var(--white);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:14px;text-shadow:0 0 40px rgba(33,150,243,0.4);}
+.hero-title span{color:transparent;background:linear-gradient(135deg,var(--cyan),var(--blue-bright));-webkit-background-clip:text;background-clip:text;}
+.hero-tagline{font-family:var(--script);font-size:clamp(20px,4vw,30px);color:#c8d8ea;margin-bottom:8px;}
+.hero-sub{font-size:13px;color:var(--text2);letter-spacing:0.06em;margin-bottom:28px;}
+.hero-contact{display:inline-flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:14px 24px;margin-bottom:24px;}
+.contact-row{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;color:var(--white);letter-spacing:0.04em;}
+.contact-label{font-size:10px;color:var(--text2);letter-spacing:0.08em;margin-right:4px;}
+.mj-sig{font-family:var(--script);font-size:32px;color:var(--gold);display:block;margin-bottom:4px;}
+
+/* CAT STRIP (placeholder) */
+.cat-strip{position:relative;z-index:1;background:rgba(7,20,40,0.8);border-top:1px solid rgba(33,150,243,0.15);border-bottom:1px solid rgba(33,150,243,0.15);padding:0 20px;}
+.cat-strip-inner{max-width:1200px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+.cat-pill{padding:13px 18px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+.cat-pill.active{color:var(--cyan);border-bottom:2px solid var(--cyan);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-logo">PSW<span>·</span></div>
+    <div class="brand-divider"></div>
+    <div class="brand-sub">Research Compounds</div>
+    <div class="preview-badge">⚠ LOCAL PREVIEW</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Research Grade Peptides</div>
+    <h1 class="hero-title">Peptide Supply<br><span>Warehouse</span></h1>
+    <div class="hero-tagline">we supply your favorite doctors</div>
+    <div class="hero-sub">Wholesale and retail inquiries welcome</div>
+    <div class="hero-contact">
+      <span class="mj-sig">Michael John</span>
+      <div class="contact-row"><span>💬</span><span class="contact-label">WHATSAPP</span><span>+1-310-683-0049</span></div>
+      <div class="contact-row"><span>📱</span><span class="contact-label">MOBILE</span><span>+52-55-2446-9745</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ↓ THE TWO LINES TO ADD IN PSW ↓ -->
+<div id="psw-peptide-ref" data-base="http://localhost:8080/"></div>
+<script src="./js/widget.js"></script>
+<!-- ↑ END OF ADDITION ↑ -->
+
+<div class="cat-strip">
+  <div class="cat-strip-inner">
+    <div class="cat-pill active">ALL</div>
+    <div class="cat-pill">WEIGHT LOSS</div>
+    <div class="cat-pill">HEALING & RECOVERY</div>
+    <div class="cat-pill">GROWTH HORMONE</div>
+    <div class="cat-pill">MITOCHONDRIAL</div>
+  </div>
+</div>
+
+</body>
+</html>

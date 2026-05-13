@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var REF_BASE = 'https://jmitsuominor-ux.github.io/peptide-reference/';
+  var REF_BASE_DEFAULT = 'https://jmitsuominor-ux.github.io/peptide-reference/';
 
   var CATS = [
     { id: 'weight',    name: 'Weight Loss',          icon: '⚖️',  count: 12, accent: '#00b4d8' },
@@ -52,6 +52,7 @@
 
     var root = document.getElementById('psw-peptide-ref');
     if (!root) return;
+    var REF_BASE = root.dataset.base || REF_BASE_DEFAULT;
 
     root.innerHTML =
       '<div class="pref-wrap">' +

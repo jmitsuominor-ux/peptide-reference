@@ -120,6 +120,16 @@ export const STACKS_ES = [
     sideEffects:[{text:'Náuseas — TITULAR MUY LENTAMENTE; empezar a 2mg y mantener 8 semanas',severity:'med'},{text:'Vómito durante escalada de dosis si se acelera',severity:'med'},{text:'No aprobado por FDA — ensayos Fase 3 en curso a 2025',severity:'high'},{text:'Sofocos con NAD+ inicialmente',severity:'low'}],
     note:'Retatrutida requiere la titulación más lenta de cualquier péptido para pérdida de peso. Pasar 6–8 semanas en cada paso de dosis. No acelerar. Los sofocos con NAD+ generalmente se resuelven después de la semana 2. NUNCA combinar con semaglutida o tirzepatida.',
   },
+  {
+    name:'SILVERBACK STACK',
+    cycle:'12 semanas para el stack principal / 4 semanas de descanso. Epithalón: ráfaga de 10–20 días 2–4x por año. Timosina Alfa-1: ciclo de 10 semanas 2x/año.',
+    goal:'Envejecimiento saludable · Restauración de GH · Reparación celular · Vitalidad inmune · Salud mitocondrial',
+    description:'Un protocolo integral que aborda seis mecanismos del envejecimiento simultáneamente: decline del eje GH (Tesamorelin + Ipamorelin), acumulación de grasa (AOD9604), degradación de tejido conectivo e intestinal (BPC-157), desgaste de telómeros y alteración circadiana (Epithalón), senescencia inmune (Timosina Alfa-1), y disfunción mitocondrial (SS-31).',
+    rationale:'Tesamorelin + Ipamorelin actúan en dos vías de receptores separadas para restaurar la pulsatilidad de GH perdida con la edad. AOD9604 actúa directamente sobre el metabolismo de grasa sin elevar IGF-1. BPC-157 aborda el eje intestino-sistémico que se deteriora con la edad. Epithalón activa la telomerasa. Timosina Alfa-1 revierte la senescencia inmune. SS-31 se concentra en las membranas mitocondriales internas.',
+    benefits:['Restauración del eje GH — contrarresta la somatopausia relacionada con la edad','Reducción de grasa visceral vía fragmento específico de grasa AOD9604','Reparación de tejido conectivo e integridad del revestimiento intestinal vía BPC-157','Alargamiento de telómeros y restauración del sueño vía Epithalón','Activación de células T, NK y dendríticas vía Timosina Alfa-1','Protección y optimización mitocondrial vía SS-31','Aborda 6 de los principales mecanismos del envejecimiento en un solo protocolo'],
+    sideEffects:[{text:'Retención de agua al inicio por péptidos de GH — se resuelve en 2–3 semanas',severity:'low'},{text:'Elevación de glucosa en sangre — monitorear en pre-diabéticos',severity:'med'},{text:'Múltiples inyecciones SubQ diarias requeridas',severity:'low'},{text:'Síntomas gripales en las primeras 1–2 dosis de Timosina Alfa-1',severity:'low'}],
+    note:'Este es un protocolo de alta complejidad. Comenzar con 2–3 péptidos y agregar otros durante 4–6 semanas. Tesamorelin + Ipamorelin deben inyectarse en ayunas. AOD9604 debe separarse de los péptidos de GH por al menos 2 horas. Epithalón solo en ráfagas. Se recomienda análisis de sangre al inicio y en la semana 8.',
+  },
 ];
 
 export const STACKS = [
@@ -391,6 +401,43 @@ export const STACKS = [
       {name:'KissPeptin-10',schedule:'PERIMENOPAUSE ONLY — Daily SubQ. Swap for Epithalon post-menopause.',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
       {name:'Epithalon',schedule:'FULL MENOPAUSE — replaces Kisspeptin-10. Daily SubQ burst cycle only.',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
     ]
-  }
+  },
+
+  {
+    name:'SILVERBACK STACK',
+    emoji:'🌿',
+    goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality · Mitochondrial health',
+    color:'#27ae60',
+    description:'A comprehensive protocol targeting six hallmarks of aging simultaneously: GH axis decline (Tesamorelin + Ipamorelin), fat accumulation (AOD9604), connective tissue and gut degradation (BPC-157), telomere attrition and circadian disruption (Epithalon), immune senescence (Thymosin Alpha-1), and mitochondrial dysfunction (SS-31). Each peptide addresses a distinct mechanism — no redundancy.',
+    cycle:'12 weeks for core stack (Tesamorelin, Ipamorelin, AOD9604, BPC-157, SS-31) / 4 weeks off. Epithalon: 10–20 day burst 2–4x per year. Thymosin Alpha-1: 10-week course 2x/year.',
+    benefits:[
+      'GH axis restoration — counters age-related somatopause via dual GHRH + GHRP signaling',
+      'Visceral fat reduction via AOD9604 fat-specific fragment',
+      'Connective tissue repair and gut lining integrity via BPC-157',
+      'Telomere lengthening and circadian/sleep restoration via Epithalon',
+      'T-cell, NK cell, and dendritic cell activation via Thymosin Alpha-1',
+      'Mitochondrial membrane protection and ATP optimization via SS-31',
+      'Addresses 6 of the major hallmarks of aging in a single protocol',
+    ],
+    peptides:[
+      {name:'Tesamorelin',schedule:'SubQ daily, 30 min before bed, fasted',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
+      {name:'Ipamorelin',schedule:'SubQ nightly before bed, fasted — stack with Tesamorelin for synergy',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'AOD9604',schedule:'SubQ daily, fasted AM — separate from GH peptides by 2+ hrs',lo:'150 mcg/day',mid:'300 mcg/day',hi:'500 mcg/day'},
+      {name:'BPC-157',schedule:'SubQ daily — abdomen or near any area of concern',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+      {name:'Epithalon',schedule:'SubQ daily — burst cycles only, not continuous',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'20 mg/day × 10 days'},
+      {name:'Thymosin Alpha-1',schedule:'SubQ 2x/week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
+      {name:'SS-31',schedule:'SubQ daily, preferably AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
+    ],
+    sideEffects:[
+      {text:'Water retention at start from GH peptides (Tesamorelin + Ipamorelin) — resolves in 2–3 weeks',severity:'low'},
+      {text:'Blood glucose elevation — monitor if pre-diabetic or insulin resistant',severity:'med'},
+      {text:'Injection site reactions — multiple daily SubQ injections required',severity:'low'},
+      {text:'Carpal tunnel syndrome with prolonged elevated IGF-1',severity:'med'},
+      {text:'Flu-like symptoms on first 1–2 Thymosin Alpha-1 doses (immune activation)',severity:'low'},
+    ],
+    rationale:'Tesamorelin (GHRH analog) + Ipamorelin (GHRP) work on two separate receptor pathways to restore GH pulsatility lost with age — this dual approach is far more effective than either alone. AOD9604 targets fat metabolism directly without IGF-1 elevation. BPC-157 addresses the gut-systemic axis that degrades with age. Epithalon is the only compound shown to activate telomerase and lengthen telomeres in humans. Thymosin Alpha-1 reverses immune senescence — the gradual T-cell dysfunction that defines aging immunity. SS-31 concentrates specifically on mitochondrial inner membranes where age-related oxidative damage occurs. Together they cover the full landscape of biological aging.',
+    note:'This is a high-complexity protocol with multiple daily injections. Start with 2–3 peptides and add others over 4–6 weeks. Tesamorelin + Ipamorelin must be injected fasted. AOD9604 must be separated from GH peptides by at least 2 hours. Epithalon runs as a burst — do not use continuously. Bloodwork recommended at baseline and at 8 weeks.',
+    studies:[],
+  },
 
 ];

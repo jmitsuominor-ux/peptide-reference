@@ -270,7 +270,6 @@ export function showStackDetail(idx) {
       <div class="dh-tagline" style="margin-top:6px;">${stack.description||''}</div>
       <div class="dh-badges" style="margin-top:12px;">
         <span class="dh-badge phase2">${stack.peptides.length} ${tr('stack_peptides_badge')}</span>
-        <span class="dh-badge experimental" style="display:${stack.cycle?'inline-flex':'none'}">⏱ ${stack.cycle||''}</span>
         <span class="dh-badge fda">${tr('stack_research_badge')}</span>
       </div>
     </div>

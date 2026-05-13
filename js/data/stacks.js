@@ -134,7 +134,7 @@ export const STACKS_ES = [
 
 export const STACKS = [
   {
-    name:'WOLVERINE STACK',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',color:'#0E7C7B',
+    name:'WOLVERINE STACK',cycle:'8–12 weeks on / 4 weeks off',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',color:'#0E7C7B',
     description:'The most popular healing stack — BPC-157 works locally at the injury site while TB-500 provides systemic repair. Together they cover both local and systemic healing pathways for comprehensive recovery.',
     rationale:'BPC-157 acts locally via VEGFR2/Akt-eNOS at the injury site. TB-500 acts systemically via actin regulation throughout the body. Completely different mechanisms — every clinical protocol recommends using them together because they complement each other precisely.',
     benefits:['Accelerated tendon and ligament healing','Reduced pain and inflammation at injury site','Faster return to training','Systemic tissue repair and flexibility','Gut healing as secondary benefit (BPC-157)','Reduced scar tissue formation (TB-500)'],
@@ -147,7 +147,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'GLOW STACK',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
+    name:'GLOW STACK',cycle:'12 weeks on / 4 weeks off',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
     description:'GLOW = GHK-Cu + BPC-157 + TB-500. The anti-aging and skin optimization stack. GHK-Cu drives collagen synthesis while the healing peptides provide systemic regeneration.',
     rationale:'GHK-Cu activates collagen synthesis genes and resets gene expression toward youthful patterns. BPC-157 and TB-500 provide the underlying tissue repair and anti-inflammatory foundation. All three work on different but complementary aspects of skin and tissue regeneration.',
     benefits:['Skin tightening and wrinkle reduction','Systemic anti-aging via gene expression reset','Collagen and elastin production','Inflammation reduction','Improved flexibility'],
@@ -161,7 +161,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'KLOW STACK',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
+    name:'KLOW STACK',cycle:'12 weeks on / 4 weeks off',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
     description:'KLOW = GLOW + KPV. The most comprehensive healing and anti-inflammatory stack. KPV adds potent NF-kB inhibition and mucosal healing — particularly powerful for gut issues, IBD, and chronic inflammation.',
     rationale:'KPV specifically inhibits NF-kB at mucosal surfaces where BPC-157 also works. The combination provides local + systemic healing (BPC-157 + TB-500), skin/collagen regeneration (GHK-Cu), AND NF-kB anti-inflammatory modulation (KPV) across all tissue types.',
     benefits:['Most comprehensive healing protocol','GI inflammation and IBD support (KPV + BPC-157)','Skin and systemic tissue regeneration','Immune modulation without immunosuppression','Leaky gut and mucosal barrier repair'],
@@ -176,7 +176,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'GH STACK (Classic)',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',color:'#1A6B9A',
+    name:'GH STACK (Classic)',cycle:'16–24 weeks (two-phase: 8–12 wks CJC, then 8–12 wks Tesamorelin)',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',color:'#1A6B9A',
     description:'The gold standard GH peptide protocol. CJC-1295 (with DAC) provides sustained once-weekly GH elevation via albumin binding, while Ipamorelin adds a clean daily GH pulse on top. Two completely different receptor pathways — sustained baseline elevation plus physiological pulsatility, without raising cortisol or prolactin.',
     rationale:'CJC-1295 (with DAC) binds albumin extending its half-life to 6–8 days — one injection per week sustains elevated GH for the full week. Ipamorelin acts on GHS-R1a (ghrelin receptor) to add a clean daily GH pulse on top. GHRH receptor + ghrelin receptor = true synergy. The combination produces 2–3x greater GH output than either peptide alone.',
     benefits:[
@@ -202,7 +202,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'SLEEP STACK',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',color:'#37474F',
+    name:'SLEEP STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',color:'#37474F',
     description:'Comprehensive sleep optimization. Each peptide hits a different sleep mechanism — GH secretagogues, sleep-inducing neuropeptides, and the primary circadian hormone — for complete sleep architecture enhancement.',
     rationale:'Sermorelin + Ipamorelin drive the natural overnight GH pulse during slow-wave sleep. DSIP promotes delta sleep via hypothalamic modulation and cortisol reduction. Injectable melatonin provides circadian timing and mitochondrial antioxidant protection without morning grogginess.',
     benefits:['Deeper slow-wave delta sleep','Enhanced overnight GH pulse','Cortisol normalization','Morning energy and clarity','Stress adaptation and resilience'],
@@ -217,7 +217,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'CAGRISA STACK',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
+    name:'CAGRISA STACK',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
     description:'The most powerful weight loss stack in Phase 3 data. CagriSema (REDEFINE 1) produced 23% average weight loss on-treatment — among the highest ever in a Phase 3 pharmaceutical trial.',
     rationale:'Semaglutide activates GLP-1 receptors. Cagrilintide activates amylin receptors in the hypothalamus — a completely different pathway. The combination produces genuine additive weight loss because the mechanisms do not overlap.',
     benefits:['23% body weight loss on-treatment (Phase 3 REDEFINE 1, 68 weeks)','Superior to any single GLP-1 agent','Improved satiety through two independent pathways','Blood sugar normalization','Reduced liver fat'],
@@ -230,7 +230,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'NAD+ LONGEVITY STACK',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Metabolic optimization · Anti-aging',color:'#4A148C',
+    name:'NAD+ LONGEVITY STACK',cycle:'10 weeks on / 2 weeks off for NAD+ and MOTS-c. SS-31 can run longer.',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Metabolic optimization · Anti-aging',color:'#4A148C',
     description:'The most comprehensive mitochondrial and longevity protocol. Four compounds each targeting a different mitochondrial pathway for complete cellular energy optimization.',
     rationale:'NAD+ replenishes the essential coenzyme declining with age. SS-31 reduces oxidative stress at the inner mitochondrial membrane. MOTS-c mimics exercise by activating AMPK. 5-amino-1mq prevents NAD+ breakdown by NNMT. All four hit completely different targets — no redundancy.',
     benefits:['Comprehensive mitochondrial optimization','Cellular energy and ATP restoration','DNA repair activation','Sirtuin longevity stimulation','Metabolic flexibility improvement','Insulin sensitivity'],
@@ -245,7 +245,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'IMMUNE STACK',emoji:'🛡️',goal:'Immune modulation · Longevity · Anti-aging · Post-viral support',color:'#BF360C',
+    name:'IMMUNE STACK',cycle:'Thymosin Alpha-1: 4–6 weeks 2x/week. Epithalon: 10–20 day burst 2–4x/year. BPC-157: ongoing.',emoji:'🛡️',goal:'Immune modulation · Longevity · Anti-aging · Post-viral support',color:'#BF360C',
     description:'Comprehensive immune optimization. Thymosin Alpha-1 is the most potent immune-modulating peptide — approved in 35+ countries. Epithalon adds telomere-level anti-aging. BPC-157 provides the anti-inflammatory base.',
     rationale:'Thymosin Alpha-1 activates T-cells, NK cells, and dendritic cells bidirectionally. Epithalon activates telomerase to lengthen telomeres. BPC-157 provides systemic anti-inflammation reducing chronic low-grade inflammation that drives immune dysfunction.',
     benefits:['Enhanced antiviral immune response','T-cell and NK cell activation','Telomere lengthening','Long COVID and post-viral support','Autoimmune regulation (bidirectional)'],
@@ -259,7 +259,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'FAT LOSS STACK',emoji:'🔥',goal:'Aggressive fat loss · Lipolysis · Metabolic acceleration · Muscle preservation',color:'#E65100',
+    name:'FAT LOSS STACK',cycle:'20+ weeks. GLP-1 component runs ongoing. AOD9604 cycles 12 weeks on / 4 off.',emoji:'🔥',goal:'Aggressive fat loss · Lipolysis · Metabolic acceleration · Muscle preservation',color:'#E65100',
     description:'Comprehensive fat loss attacking from four angles — appetite suppression (GLP-1), direct lipolysis (AOD9604 + HGH Fragment), and metabolic rate elevation via NNMT inhibition (5-amino-1mq).',
     rationale:'GLP-1 handles appetite and metabolic signaling. AOD9604 and HGH Fragment both target lipolysis via beta-3 adrenergic pathways without IGF-1 effects — safe to combine with GLP-1. 5-amino-1mq inhibits NNMT to elevate NAD+ and metabolic rate without stimulants.',
     benefits:['Multi-pathway fat loss','GLP-1 handles appetite and gastric emptying','AOD9604 + HGH Fragment add direct lipolysis','5-amino-1mq elevates metabolic rate via NAD+','Muscle preservation during caloric deficit'],
@@ -274,7 +274,7 @@ export const STACKS = [
     ]
   },
   {
-    name:"WOMEN'S WELLNESS STACK",emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",color:'#AD1457',
+    name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",color:'#AD1457',
     description:"A comprehensive women's optimization protocol targeting the key areas where peptide therapy provides the most benefit for women — hormonal balance, skin quality, libido, mood, and body composition — using compounds with well-established female-specific data.",
     rationale:"Women have distinct hormonal physiology that responds differently to peptide protocols. PT-141 has FDA approval specifically for female sexual dysfunction (Vyleesi). GHK-Cu and L-Glutathione are particularly impactful for skin quality and anti-aging in women. Selank addresses anxiety and mood without hormone interference. GH peptides (CJC-1295 + Ipamorelin) improve body composition while supporting the sleep and recovery that women disproportionately lose with age.",
     benefits:["Improved libido and sexual desire (PT-141 — FDA approved for HSDD in women)","Skin tightening, collagen production, and brightening (GHK-Cu + Glutathione)","Anxiety and mood stabilization without sedation (Selank)","Lean body composition and improved sleep quality (GH peptides)","Comprehensive anti-aging from multiple pathways","No direct hormonal pathway interference"],
@@ -291,7 +291,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'HPG TESTOSTERONE STACK',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
+    name:'HPG TESTOSTERONE STACK',cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
     description:'The full HPG axis restoration stack. Kisspeptin-10 activates the hypothalamus, HCG activates the testes — together they restore the complete testosterone production cascade from the top down.',
     rationale:'KissPeptin-10 binds KISS1R in the hypothalamus triggering GnRH pulse → LH/FSH → testosterone. HCG directly mimics LH at the testicular level. These two together cover both ends of the HPG axis simultaneously. CJC-1295 + Ipamorelin added for GH axis support, recovery, and overall anabolic environment.',
     benefits:['Complete HPG axis stimulation at two levels','Testosterone production restoration without TRT shutdown','Testicular function and size maintenance','Fertility preservation','Libido improvement','GH support for recovery and body composition'],
@@ -306,7 +306,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'COGNITIVE STACK',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',color:'#1565C0',
+    name:'COGNITIVE STACK',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',color:'#1565C0',
     description:'The most targeted cognitive optimization protocol. Semax elevates BDNF for focus and neuroprotection. Selank provides clean anxiolytic calm without sedation. NAD+ powers brain mitochondria. Three distinct pathways for comprehensive cognitive enhancement.',
     rationale:'Semax acts via ACTH(4-7) to upregulate BDNF and modulate dopamine/serotonin — enhancing focus, memory consolidation, and neuroplasticity. Selank modulates GABA-A and reduces anxiety without sedation — creating the calm, focused state where Semax is most effective. NAD+ ensures mitochondrial energy is not the bottleneck for brain performance. These work synergistically rather than redundantly.',
     benefits:['Enhanced focus and cognitive clarity (Semax BDNF effect)','Anxiety-free calm state for peak performance (Selank)','Brain mitochondrial energy optimization (NAD+)','Memory consolidation and neuroplasticity','Neuroprotection from oxidative stress','No sedation or dependency risk'],
@@ -320,7 +320,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'TRIPLE AGONIST STACK',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
+    name:'TRIPLE AGONIST STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
     description:'Built around retatrutide — the most potent weight loss compound ever tested. Phase 3 TRIUMPH-4 (Dec 2025): 28.7% weight loss at 68 weeks — highest in Phase 3 trial history. Phase 2 showed 24.2% at 48 weeks with no plateau. NAD+ and 5-amino-1mq complement the metabolic shift with mitochondrial and NNMT pathway support.',
     rationale:'Retatrutide is a triple GLP-1/GIP/glucagon agonist — the glucagon component uniquely increases caloric expenditure on top of appetite reduction, explaining why it outperforms all other agents. NAD+ supports mitochondrial adaptation to the metabolic shift. 5-amino-1mq inhibits NNMT to further elevate NAD+ and suppress adipogenesis. All three hit different targets with no redundancy.',
     benefits:['28.7% weight loss at 68 weeks in Phase 3 TRIUMPH-4 (Dec 2025) — highest ever Phase 3 obesity trial result','80%+ reduction in liver fat','Unique glucagon component increases caloric expenditure','Mitochondrial adaptation support (NAD+)','Fat cell expansion suppression (5-amino-1mq)','Improvements in all cardiometabolic markers'],
@@ -405,11 +405,11 @@ export const STACKS = [
 
   {
     name:'GOLDEN ERA STACK',
+    cycle:'12 weeks for core stack / 4 weeks off. Epithalon: 10–20 day burst 2–4x per year. Thymosin Alpha-1: 10-week course 2x/year.',
     emoji:'🌿',
     goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality · Mitochondrial health',
     color:'#27ae60',
     description:'A comprehensive protocol targeting six hallmarks of aging simultaneously: GH axis decline (Tesamorelin + Ipamorelin), fat accumulation (AOD9604), connective tissue and gut degradation (BPC-157), telomere attrition and circadian disruption (Epithalon), immune senescence (Thymosin Alpha-1), and mitochondrial dysfunction (SS-31). Each peptide addresses a distinct mechanism — no redundancy.',
-    cycle:'12 weeks for core stack (Tesamorelin, Ipamorelin, AOD9604, BPC-157, SS-31) / 4 weeks off. Epithalon: 10–20 day burst 2–4x per year. Thymosin Alpha-1: 10-week course 2x/year.',
     benefits:[
       'GH axis restoration — counters age-related somatopause via dual GHRH + GHRP signaling',
       'Visceral fat reduction via AOD9604 fat-specific fragment',

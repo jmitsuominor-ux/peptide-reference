@@ -5,6 +5,7 @@
 import { AppState } from './state.js';
 import { TRANSLATIONS } from './data/translations.js';
 import { STACKS } from './utils.js';
+import { CATEGORIES } from './data/categories.js';
 import { t, parseDoseToMgPerWeek, getCommonVialSize, computeVialCount, getStackData, PEPTIDES } from './utils.js';
 import {
   renderCategories, showList, showDetail, toggleSec,
@@ -493,6 +494,12 @@ function init() {
   applyTranslations();
   initEventListeners();
   initSwipeBack();
+
+  // Deep-link support: ?cat=weight opens that category directly
+  const catParam = new URLSearchParams(window.location.search).get('cat');
+  if (catParam && CATEGORIES.some(c => c.id === catParam)) {
+    showList(catParam);
+  }
 }
 
 init();

@@ -226,6 +226,7 @@ export function renderStacks() {
         <div class="stack-hdr-content">
           <div class="stack-name">${s.emoji} ${s.name}</div>
           <div class="stack-goal">${s.goal}</div>
+          ${s.cycle ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:5px;letter-spacing:0.03em;">⏱ ${s.cycle}</div>` : ''}
         </div>
         <svg style="width:16px;height:16px;color:var(--text3);flex-shrink:0;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
       </div>
@@ -288,13 +289,13 @@ export function showStackDetail(idx) {
         <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body open">
-        ${cycleHTML}
         <div class="dose-legend" style="margin-bottom:12px;">
           <div class="dl-item"><span class="dl-label lo">LOW</span><div class="dl-desc">Conservative</div></div>
           <div class="dl-item"><span class="dl-label mid">STANDARD</span><div class="dl-desc">Maintenance</div></div>
           <div class="dl-item"><span class="dl-label hi">HIGH</span><div class="dl-desc">Experienced only</div></div>
         </div>
         ${peptideSections}
+        ${cycleHTML}
         <div class="stack-note" style="margin:12px 0 0;"><strong>⚠ Important:</strong> ${stack.note}</div>
       </div>
     </div>

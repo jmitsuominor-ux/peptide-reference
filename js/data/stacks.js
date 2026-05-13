@@ -121,7 +121,7 @@ export const STACKS_ES = [
     note:'Retatrutida requiere la titulación más lenta de cualquier péptido para pérdida de peso. Pasar 6–8 semanas en cada paso de dosis. No acelerar. Los sofocos con NAD+ generalmente se resuelven después de la semana 2. NUNCA combinar con semaglutida o tirzepatida.',
   },
   {
-    name:'SILVERBACK STACK',
+    name:'GOLDEN ERA STACK',
     cycle:'12 semanas para el stack principal / 4 semanas de descanso. Epithalón: ráfaga de 10–20 días 2–4x por año. Timosina Alfa-1: ciclo de 10 semanas 2x/año.',
     goal:'Envejecimiento saludable · Restauración de GH · Reparación celular · Vitalidad inmune · Salud mitocondrial',
     description:'Un protocolo integral que aborda seis mecanismos del envejecimiento simultáneamente: decline del eje GH (Tesamorelin + Ipamorelin), acumulación de grasa (AOD9604), degradación de tejido conectivo e intestinal (BPC-157), desgaste de telómeros y alteración circadiana (Epithalón), senescencia inmune (Timosina Alfa-1), y disfunción mitocondrial (SS-31).',
@@ -404,7 +404,7 @@ export const STACKS = [
   },
 
   {
-    name:'SILVERBACK STACK',
+    name:'GOLDEN ERA STACK',
     emoji:'🌿',
     goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality · Mitochondrial health',
     color:'#27ae60',

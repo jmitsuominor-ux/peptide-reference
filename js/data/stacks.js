@@ -31,13 +31,13 @@ export const STACKS_ES = [
     note:'Inyectar todos los péptidos por separado. Alta frecuencia — considera comenzar con Wolverine o GLOW antes de escalar al KLOW completo.',
   },
   {
-    name:'GH STACK (Classic)',cycle:'16–24 weeks (two-phase: 8–12 wks CJC, then 8–12 wks Tesamorelin)',
+    name:'GH STACK (Classic)',cycle:'16–24 semanas / 8 semanas de descanso',
     goal:'Optimización de GH · Músculo magro · Pérdida de grasa · Sueño · Antienvejecimiento',
-    description:'El protocolo estándar de oro para péptidos de GH. CJC-1295 (con DAC) proporciona elevación sostenida de GH una vez por semana mediante unión a albúmina, mientras Ipamorelin añade un pulso diario limpio de GH. Juntos producen elevación basal sostenida más un pulso diario — sin elevar cortisol ni prolactina.',
-    rationale:'CJC-1295 (con DAC) se une a la albúmina extendiendo su vida media a 6–8 días — una inyección por semana mantiene GH elevado durante toda la semana. Ipamorelin actúa en GHS-R1a para añadir un pulso diario limpio de GH encima. Dos vías de receptores completamente diferentes — la combinación te da elevación sostenida Y pulsatilidad fisiológica. Sin cortisol, sin prolactina, sin ACTH.',
-    benefits:['Elevación basal sostenida de GH (CJC con DAC semanal)','Pulso diario limpio de GH añadido (Ipamorelin)','Ganancia de masa muscular magra','Pérdida de grasa vía lipólisis','Mejora del sueño profundo','Sin elevación de cortisol ni prolactina'],
-    sideEffects:[{text:'Retención de agua al inicio (común, se resuelve en 2–3 semanas)',severity:'low'},{text:'Túnel carpiano con IGF-1 elevado',severity:'med'},{text:'Elevación de glucosa en sangre',severity:'med'}],
-    note:'CJC-1295 con DAC: una inyección por semana, mismo día cada semana. Ipamorelin: inyección diaria antes de dormir con estómago vacío. No mezclar en la misma jeringa.',
+    description:'El protocolo estándar de oro para péptidos de GH. Tesamorelin (un análogo estabilizado de GHRH) impulsa la liberación diaria sostenida de GH con los datos clínicos más sólidos de cualquier péptido GHRH, mientras Ipamorelin añade un pulso limpio de GH a través de una vía de receptores completamente diferente — sin elevar cortisol ni prolactina.',
+    rationale:'Tesamorelin es un análogo estabilizado de GHRH con aprobación de la FDA (Egrifta) y los datos clínicos humanos más robustos de cualquier péptido secretagogo de GH. Ipamorelin actúa en GHS-R1a — una vía completamente diferente — para amplificar cada pulso de GH. GHRH + GHRP = sinergia real produciendo 2–3x mayor producción de GH que cualquiera solo, sin suprimir el eje de retroalimentación natural.',
+    benefits:['2–3x mayor pulso de GH que cualquier péptido solo','Mecanismo aprobado por la FDA — datos clínicos más sólidos de cualquier péptido de GH','Ganancia de masa muscular magra','Pérdida de grasa vía lipólisis — especialmente efectivo para grasa visceral','Mejora del sueño profundo','Sin elevación de cortisol ni prolactina'],
+    sideEffects:[{text:'Retención de agua al inicio (común, se resuelve en 2–3 semanas)',severity:'low'},{text:'Túnel carpiano con IGF-1 elevado — monitorear a las 6–8 semanas',severity:'med'},{text:'Elevación de glucosa en sangre — monitorear si hay prediabetes',severity:'med'},{text:'Reacciones en sitio de inyección (dosificación diaria)',severity:'low'}],
+    note:'Ambos péptidos inyectados antes de dormir con estómago vacío — pueden compartir la misma jeringa. La inyección en ayunas es crítica para un pulso limpio de GH. Monitorear IGF-1 al inicio y en la semana 6–8.',
   },
   {
     name:'SLEEP STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',
@@ -176,13 +176,14 @@ export const STACKS = [
     ]
   },
   {
-    name:'GH STACK (Classic)',cycle:'16–24 weeks (two-phase: 8–12 wks CJC, then 8–12 wks Tesamorelin)',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',color:'#1A6B9A',
-    description:'The gold standard GH peptide protocol. CJC-1295 (with DAC) provides sustained once-weekly GH elevation via albumin binding, while Ipamorelin adds a clean daily GH pulse on top. Two completely different receptor pathways — sustained baseline elevation plus physiological pulsatility, without raising cortisol or prolactin.',
-    rationale:'CJC-1295 (with DAC) binds albumin extending its half-life to 6–8 days — one injection per week sustains elevated GH for the full week. Ipamorelin acts on GHS-R1a (ghrelin receptor) to add a clean daily GH pulse on top. GHRH receptor + ghrelin receptor = true synergy. The combination produces 2–3x greater GH output than either peptide alone.',
+    name:'GH STACK (Classic)',cycle:'16–24 weeks on / 8 weeks off',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',color:'#1A6B9A',
+    description:'The gold standard GH peptide protocol. Tesamorelin (a stabilized GHRH analog) drives sustained daily GH release with the strongest clinical data of any GHRH peptide, while Ipamorelin adds a clean GH pulse via a completely separate receptor pathway — without raising cortisol or prolactin.',
+    rationale:'Tesamorelin is a stabilized GHRH analog with FDA approval (Egrifta) and the most robust human clinical data of any GH secretagogue peptide. It drives daily physiological GH release from the pituitary via GHRH receptors. Ipamorelin acts on GHS-R1a (ghrelin receptor) — a completely different pathway — to amplify each GH pulse. GHRH + GHRP = true synergy producing 2–3x greater GH output than either alone, without suppressing the natural feedback axis.',
     benefits:[
       '2–3x greater GH pulse than either peptide alone',
       'Lean muscle mass gain',
-      'Fat loss via lipolysis',
+      'FDA-approved mechanism — strongest clinical data of any GH peptide',
+      'Fat loss via lipolysis — particularly effective for visceral fat',
       'Deep sleep improvement — GH pulse aligns with slow-wave sleep',
       'Faster recovery from training',
       'No cortisol, prolactin, or ACTH elevation',
@@ -190,15 +191,16 @@ export const STACKS = [
     sideEffects:[
       {text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},
       {text:'Carpal tunnel if IGF-1 runs high — monitor at 6–8 weeks',severity:'med'},
-      {text:'Blood glucose elevation',severity:'med'},
+      {text:'Blood glucose elevation — monitor if pre-diabetic',severity:'med'},
+      {text:'Injection site reactions (daily dosing)',severity:'low'},
     ],
-    note:'Both peptides can be drawn into the same syringe. Inject before bed on empty stomach to align with natural GH pulse. Monitor IGF-1 at baseline and week 6–8.',
+    note:'Both peptides injected before bed on empty stomach — can share the same syringe. Fasted injection is critical for clean GH pulse. Monitor IGF-1 at baseline and week 6–8.',
     studies:[
-      {title:'CJC-1295 GH and IGF-1 Elevation in Humans',journal:'JCEM 2006',summary:'Single CJC-1295 injection produced 2–10x GH elevation lasting 6+ days. Established albumin-binding extended half-life mechanism.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},
+      {title:'Tesamorelin Reduces Visceral Adiposity in HIV Patients',journal:'NEJM 2010',summary:'Tesamorelin significantly reduced visceral fat vs placebo in a Phase 3 trial. Basis for FDA approval (Egrifta).',pmid:'20818904',url:'https://pubmed.ncbi.nlm.nih.gov/20818904/'},
     ],
     peptides:[
-      {name:'CJC-1295 (with DAC)',schedule:'Once weekly SubQ — same day each week',lo:'1 mg/wk',mid:'2 mg/wk',hi:'2 mg/wk'},
-      {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+      {name:'Tesamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
+      {name:'Ipamorelin',schedule:'Same injection as Tesamorelin before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
     ]
   },
   {

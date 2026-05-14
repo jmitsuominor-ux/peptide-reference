@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSW Core Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+.dev-bar{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a0a2e;border-top:1px solid rgba(240,192,64,0.3);display:flex;align-items:center;gap:0;font-family:'Rajdhani',sans-serif;font-size:12px;}
+.dev-bar-label{padding:0 14px;color:#f0c040;font-weight:700;letter-spacing:0.1em;border-right:1px solid rgba(240,192,64,0.2);height:38px;display:flex;align-items:center;white-space:nowrap;}
+.dev-btn{padding:0 18px;height:38px;display:flex;align-items:center;color:#8aafd4;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.15s,color 0.15s;}
+.dev-btn:hover{background:rgba(0,180,216,0.1);color:#00b4d8;}
+.dev-btn.active{background:rgba(0,180,216,0.15);color:#00b4d8;font-weight:700;}
+.dev-badge{margin-left:auto;padding:0 14px;height:38px;display:flex;align-items:center;color:rgba(240,192,64,0.6);font-size:10px;letter-spacing:0.08em;border-left:1px solid rgba(240,192,64,0.2);}
+body{padding-bottom:38px;}
+</style>
+<script>
+// ── Pick market from ?market= param (default: cerritos) ──────────
+(function () {
+  var m = new URLSearchParams(window.location.search).get('market') || 'cerritos';
+  var configs = {
+    cerritos: {
+      marketName:    'Peptide Supply Warehouse',
+      marketCity:    'Cerritos',
+      contactName:   'Michael John',
+      whatsapp:      '+1-310-683-0049',
+      mobile:        '+52-55-2446-9745',
+      sheetApiUrl:   '',
+      defaultLang:   'en',
+      accentColor:   '#00b4d8',
+      isInfluencer:  false,
+      pricingMode:   'standard',
+      customPrices:  {},
+    },
+    sandiego: {
+      marketName:    'Peptide Supply Warehouse – San Diego',
+      marketCity:    'San Diego',
+      contactName:   'Michael John',
+      whatsapp:      '+1-310-683-0049',
+      mobile:        '+1-310-683-0049',
+      sheetApiUrl:   '',
+      defaultLang:   'en',
+      accentColor:   '#9c79ff',
+      isInfluencer:  false,
+      pricingMode:   'standard',
+      customPrices:  {},
+    },
+    tijuana: {
+      marketName:    'Peptide Supply Warehouse – Tijuana',
+      marketCity:    'Tijuana',
+      contactName:   'Michael John',
+      whatsapp:      '+52-55-2446-9745',
+      mobile:        '+52-55-2446-9745',
+      sheetApiUrl:   '',
+      defaultLang:   'es',
+      accentColor:   '#00c896',
+      isInfluencer:  false,
+      pricingMode:   'standard',
+      customPrices:  {},
+    },
+    influencer: {
+      marketName:    'PSW – Dr. Amanda Cole',
+      marketCity:    'San Diego',
+      contactName:   'Michael John',
+      whatsapp:      '+1-310-683-0049',
+      mobile:        '+1-310-683-0049',
+      sheetApiUrl:   '',
+      defaultLang:   'en',
+      accentColor:   '#ff6b9d',
+      isInfluencer:  true,
+      influencerName:    'Dr. Amanda Cole',
+      influencerHandle:  '@dramandacole',
+      influencerPhoto:   '',
+      pricingMode:   'influencer',
+      customPrices:  { TR5: 15.00, TR10: 22.00, SM5: 14.00 },
+    },
+  };
+  window.PSW_CONFIG = configs[m] || configs.cerritos;
+  window._PSW_PREVIEW_MARKET = m;
+})();
+</script>
+</head>
+<body>
+
+<script src="./psw-core.js"></script>
+
+<!-- Developer switcher bar (fixed at bottom) -->
+<div class="dev-bar">
+  <div class="dev-bar-label">⚠ DEV PREVIEW</div>
+  <a class="dev-btn" id="btn-cerritos"   href="?market=cerritos">Cerritos (MX)</a>
+  <a class="dev-btn" id="btn-sandiego"   href="?market=sandiego">San Diego</a>
+  <a class="dev-btn" id="btn-tijuana"    href="?market=tijuana">Tijuana</a>
+  <a class="dev-btn" id="btn-influencer" href="?market=influencer">Influencer</a>
+  <div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>
+</div>
+
+<script>
+// Highlight active market button
+(function () {
+  var m = window._PSW_PREVIEW_MARKET || 'cerritos';
+  var btn = document.getElementById('btn-' + m);
+  if (btn) btn.classList.add('active');
+})();
+</script>
+
+</body>
+</html>

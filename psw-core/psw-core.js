@@ -164,7 +164,7 @@
   var CAT_ORDER = ['Weight Loss','Growth Hormone','Healing & Recovery','Anti-Aging & Immune','Mitochondrial','Muscle & IGF','Hormonal','Cognitive','Immune','Reconstitution'];
 
   // ── CSS ───────────────────────────────────────────────────────
-  var CSS = `
+  function buildCSS() { return `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
   --navy:#040e1f;--navy2:#071428;--navy3:#0a1d3a;
@@ -343,7 +343,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .pref-icon{font-size:16px;line-height:1;margin-bottom:2px;}
 .pref-name{font-family:var(--mono);font-size:12px;font-weight:700;color:#d0e4f7;letter-spacing:0.01em;line-height:1.2;}
 .pref-count{font-family:var(--mono);font-size:10px;font-weight:600;color:#4a6d96;letter-spacing:0.04em;text-transform:uppercase;margin-top:3px;}
-`;
+`; }
 
   // ── Inject fonts + styles ─────────────────────────────────────
   function injectStyles() {
@@ -354,12 +354,12 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
       link.href = 'https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Dancing+Script:wght@700&display=swap';
       document.head.appendChild(link);
     }
-    if (!document.getElementById('psw-styles')) {
-      var style = document.createElement('style');
-      style.id = 'psw-styles';
-      style.textContent = CSS;
-      document.head.appendChild(style);
-    }
+    var existing = document.getElementById('psw-styles');
+    if (existing) existing.remove();
+    var style = document.createElement('style');
+    style.id = 'psw-styles';
+    style.textContent = buildCSS();
+    document.head.appendChild(style);
   }
 
   // ── Helpers ───────────────────────────────────────────────────
@@ -711,6 +711,28 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
     wireEvents();
     loadInventory();
   }
+
+  // Exposed so preview switcher can change markets without a page reload
+  window.PSW_REINIT = function(newConfig) {
+    var C = newConfig || {};
+    cfg.marketName    = C.marketName    || 'Peptide Supply Warehouse';
+    cfg.marketCity    = C.marketCity    || '';
+    cfg.contactName   = C.contactName   || 'Michael John';
+    cfg.whatsapp      = C.whatsapp      || '';
+    cfg.mobile        = C.mobile        || '';
+    cfg.sheetApiUrl   = C.sheetApiUrl   || '';
+    cfg.defaultLang   = C.defaultLang   || 'en';
+    cfg.accentColor   = C.accentColor   || '#00b4d8';
+    cfg.isInfluencer  = C.isInfluencer  || false;
+    cfg.influencerName    = C.influencerName    || '';
+    cfg.influencerHandle  = C.influencerHandle  || '';
+    cfg.influencerPhoto   = C.influencerPhoto   || '';
+    cfg.pricingMode   = C.pricingMode   || 'standard';
+    cfg.customPrices  = C.customPrices  || {};
+    cart = {};
+    activeCategory = 'All';
+    boot();
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);

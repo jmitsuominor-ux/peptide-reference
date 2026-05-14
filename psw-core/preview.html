@@ -74,29 +74,49 @@
 <script src="./psw-core.js"></script>
 
 <script>
-// psw-core.js wipes body.innerHTML, so we build the dev bar fresh after it runs
-(function () {
-  var m = window._PSW_PREVIEW_MARKET || 'cerritos';
+var PREVIEW_CONFIGS = {
+  cerritos: window.PSW_CONFIG,  // already set in head
+  sandiego: {
+    marketName:'Peptide Supply Warehouse – San Diego', marketCity:'San Diego',
+    contactName:'Michael John', whatsapp:'+1-310-683-0049', mobile:'+1-310-683-0049',
+    sheetApiUrl:'', defaultLang:'en', accentColor:'#9c79ff',
+    isInfluencer:false, pricingMode:'standard', customPrices:{},
+  },
+  tijuana: {
+    marketName:'Peptide Supply Warehouse – Tijuana', marketCity:'Tijuana',
+    contactName:'Michael John', whatsapp:'+52-55-2446-9745', mobile:'+52-55-2446-9745',
+    sheetApiUrl:'', defaultLang:'es', accentColor:'#00c896',
+    isInfluencer:false, pricingMode:'standard', customPrices:{},
+  },
+};
 
+function buildDevBar(activeMarket) {
+  var old = document.getElementById('psw-dev-bar');
+  if (old) old.remove();
   var bar = document.createElement('div');
+  bar.id = 'psw-dev-bar';
   bar.className = 'dev-bar';
   bar.innerHTML =
     '<div class="dev-bar-label">⚠ DEV PREVIEW</div>' +
     ['cerritos','sandiego','tijuana'].map(function(id) {
       var label = {cerritos:'Cerritos (MX)', sandiego:'San Diego', tijuana:'Tijuana'}[id];
-      var active = id === m ? ' active' : '';
+      var active = id === activeMarket ? ' active' : '';
       return '<span class="dev-btn' + active + '" onclick="switchMarket(\'' + id + '\')">' + label + '</span>';
     }).join('') +
     '<div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>';
-
   document.body.insertBefore(bar, document.body.firstChild);
-})();
+}
 
 function switchMarket(m) {
-  try { localStorage.setItem('psw_preview_market', m); } catch(e) {}
-  window.location.hash = 'market=' + m;
-  window.location.reload();
+  window._PSW_PREVIEW_MARKET = m;
+  if (window.PSW_REINIT) {
+    window.PSW_REINIT(PREVIEW_CONFIGS[m] || PREVIEW_CONFIGS.cerritos);
+  }
+  buildDevBar(m);
 }
+
+// Initial dev bar
+buildDevBar(window._PSW_PREVIEW_MARKET || 'cerritos');
 </script>
 
 </body>

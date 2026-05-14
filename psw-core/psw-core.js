@@ -471,7 +471,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
   // ── Inventory ─────────────────────────────────────────────────
   function loadInventory() {
     if (!cfg.sheetApiUrl) {
-      PRODUCTS = ALL_PRODUCTS;
+      PRODUCTS = [];
       finishLoad();
       return;
     }
@@ -523,6 +523,9 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
     var noRes = document.getElementById('noResults');
     if (!filtered.length) {
       grid.innerHTML = '';
+      noRes.innerHTML = PRODUCTS.length === 0
+        ? 'Inventory not yet connected — contact us directly to place an order.'
+        : 'No products match your search.';
       noRes.style.display = 'block';
       return;
     }

@@ -208,6 +208,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);width:40px;}
 .hero-title{font-family:var(--mono);font-size:clamp(28px,7vw,56px);font-weight:700;color:var(--white);letter-spacing:0.04em;text-transform:uppercase;line-height:1.05;margin-bottom:14px;text-shadow:0 0 40px rgba(33,150,243,0.4);}
 .hero-title span{color:transparent;background:linear-gradient(135deg,var(--cyan),var(--blue-bright));-webkit-background-clip:text;background-clip:text;}
+.hero-city{font-size:0.55em;letter-spacing:0.18em;opacity:0.85;}
 .hero-tagline{font-family:var(--script);font-size:clamp(20px,4vw,30px);color:var(--silver,#c8d8ea);margin-bottom:8px;opacity:0.9;}
 .hero-sub{font-size:13px;color:var(--text2);letter-spacing:0.06em;margin-bottom:28px;}
 .hero-contact{display:inline-flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:14px 24px;margin-bottom:24px;}
@@ -408,7 +409,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
         '<div class="hero-rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>' +
         '<div class="hero-content">' +
           '<div class="hero-eyebrow">Research Grade Peptides</div>' +
-          '<h1 class="hero-title">Peptide Supply<br><span>Warehouse</span></h1>' +
+          '<h1 class="hero-title">Peptide Supply<br><span>Warehouse</span>' + (cfg.marketCity ? '<br><span class="hero-city">' + cfg.marketCity + '</span>' : '') + '</h1>' +
           '<div class="hero-tagline">we supply your favorite doctors</div>' +
           '<div class="hero-sub">Wholesale and retail inquiries welcome</div>' +
           heroContactBlock +

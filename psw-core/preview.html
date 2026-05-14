@@ -18,7 +18,11 @@
 <script>
 (function () {
   var hash = window.location.hash.replace('#', '');
-  var m = (hash.match(/(?:^|market=)([^&]+)/) || [])[1] || 'cerritos';
+  var fromHash = (hash.match(/(?:^|market=)([^&]+)/) || [])[1];
+  var fromStorage = '';
+  try { fromStorage = localStorage.getItem('psw_preview_market') || ''; } catch(e) {}
+  var m = fromHash || fromStorage || 'cerritos';
+  try { localStorage.setItem('psw_preview_market', m); } catch(e) {}
   var configs = {
     cerritos: {
       marketName:    'Peptide Supply Warehouse',
@@ -89,6 +93,7 @@
 })();
 
 function switchMarket(m) {
+  try { localStorage.setItem('psw_preview_market', m); } catch(e) {}
   window.location.hash = 'market=' + m;
   window.location.reload();
 }

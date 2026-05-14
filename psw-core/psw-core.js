@@ -187,6 +187,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .brand-logo span{color:var(--cyan);}
 .brand-divider{width:1px;height:24px;background:var(--border2);}
 .brand-sub{font-size:10px;color:var(--text2);letter-spacing:0.1em;font-family:var(--mono);text-transform:uppercase;}
+.brand-city{font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;font-family:var(--mono);text-transform:uppercase;}
 .topbar-search{flex:1;max-width:340px;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:6px;display:flex;align-items:center;padding:0 12px;gap:8px;transition:border-color 0.2s;}
 .topbar-search:focus-within{border-color:rgba(33,150,243,0.4);}
 .topbar-search svg{width:13px;height:13px;color:var(--text3);flex-shrink:0;}
@@ -391,6 +392,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
         '<div class="brand-logo" onclick="window.location.href=\'index.html\'">PSW<span>·</span></div>' +
         '<div class="brand-divider"></div>' +
         '<div class="brand-sub">Research Compounds</div>' +
+        (cfg.marketCity ? '<div class="brand-divider"></div><div class="brand-city">' + cfg.marketCity + '</div>' : '') +
         '<div class="topbar-search">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' +
           '<input type="text" id="searchInput" placeholder="Search compounds, codes…">' +

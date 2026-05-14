@@ -67,26 +67,25 @@
 </head>
 <body>
 
-<!-- Dev bar sits above everything psw-core renders -->
-<div class="dev-bar" id="devBar">
-  <div class="dev-bar-label">⚠ DEV PREVIEW</div>
-  <span class="dev-btn" id="btn-cerritos"   onclick="switchMarket('cerritos')">Cerritos (MX)</span>
-  <span class="dev-btn" id="btn-sandiego"   onclick="switchMarket('sandiego')">San Diego</span>
-  <span class="dev-btn" id="btn-tijuana"    onclick="switchMarket('tijuana')">Tijuana</span>
-  <div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>
-</div>
-
 <script src="./psw-core.js"></script>
 
 <script>
+// psw-core.js wipes body.innerHTML, so we build the dev bar fresh after it runs
 (function () {
   var m = window._PSW_PREVIEW_MARKET || 'cerritos';
-  var btn = document.getElementById('btn-' + m);
-  if (btn) btn.classList.add('active');
 
-  // psw-core overwrites body.innerHTML — move the dev bar back to the top
-  var bar = document.getElementById('devBar');
-  if (bar) document.body.insertBefore(bar, document.body.firstChild);
+  var bar = document.createElement('div');
+  bar.className = 'dev-bar';
+  bar.innerHTML =
+    '<div class="dev-bar-label">⚠ DEV PREVIEW</div>' +
+    ['cerritos','sandiego','tijuana'].map(function(id) {
+      var label = {cerritos:'Cerritos (MX)', sandiego:'San Diego', tijuana:'Tijuana'}[id];
+      var active = id === m ? ' active' : '';
+      return '<span class="dev-btn' + active + '" onclick="switchMarket(\'' + id + '\')">' + label + '</span>';
+    }).join('') +
+    '<div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>';
+
+  document.body.insertBefore(bar, document.body.firstChild);
 })();
 
 function switchMarket(m) {

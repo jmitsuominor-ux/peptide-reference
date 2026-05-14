@@ -8,17 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-.dev-bar{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a0a2e;border-top:1px solid rgba(240,192,64,0.3);display:flex;align-items:center;gap:0;font-family:'Rajdhani',sans-serif;font-size:12px;}
-.dev-bar-label{padding:0 14px;color:#f0c040;font-weight:700;letter-spacing:0.1em;border-right:1px solid rgba(240,192,64,0.2);height:38px;display:flex;align-items:center;white-space:nowrap;}
-.dev-btn{padding:0 18px;height:38px;display:flex;align-items:center;color:#8aafd4;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.15s,color 0.15s;}
-.dev-btn:hover{background:rgba(0,180,216,0.1);color:#00b4d8;}
-.dev-btn.active{background:rgba(0,180,216,0.15);color:#00b4d8;font-weight:700;}
-.dev-badge{margin-left:auto;padding:0 14px;height:38px;display:flex;align-items:center;color:rgba(240,192,64,0.6);font-size:10px;letter-spacing:0.08em;border-left:1px solid rgba(240,192,64,0.2);}
-body{padding-bottom:calc(38px + env(safe-area-inset-bottom,0px));}
-.dev-bar{padding-bottom:env(safe-area-inset-bottom,0px);}
+.dev-bar{width:100%;background:#0d0520;border-bottom:2px solid rgba(240,192,64,0.4);display:flex;align-items:center;font-family:'Rajdhani',sans-serif;font-size:12px;}
+.dev-bar-label{padding:0 14px;color:#f0c040;font-weight:700;letter-spacing:0.1em;border-right:1px solid rgba(240,192,64,0.25);height:36px;display:flex;align-items:center;white-space:nowrap;gap:6px;}
+.dev-btn{padding:0 18px;height:36px;display:flex;align-items:center;color:#8aafd4;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-right:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:background 0.15s,color 0.15s;}
+.dev-btn:hover{background:rgba(0,180,216,0.12);color:#00b4d8;}
+.dev-btn.active{background:rgba(0,180,216,0.18);color:#00b4d8;font-weight:700;}
+.dev-badge{margin-left:auto;padding:0 14px;height:36px;display:flex;align-items:center;color:rgba(240,192,64,0.5);font-size:10px;letter-spacing:0.08em;}
 </style>
 <script>
-// ── Pick market from #market= hash (works through htmlpreview.github.io) ──
 (function () {
   var hash = window.location.hash.replace('#', '');
   var m = (hash.match(/(?:^|market=)([^&]+)/) || [])[1] || 'cerritos';
@@ -62,22 +59,6 @@ body{padding-bottom:calc(38px + env(safe-area-inset-bottom,0px));}
       pricingMode:   'standard',
       customPrices:  {},
     },
-    influencer: {
-      marketName:    'PSW – Dr. Amanda Cole',
-      marketCity:    'San Diego',
-      contactName:   'Michael John',
-      whatsapp:      '+1-310-683-0049',
-      mobile:        '+1-310-683-0049',
-      sheetApiUrl:   '',
-      defaultLang:   'en',
-      accentColor:   '#ff6b9d',
-      isInfluencer:  true,
-      influencerName:    'Dr. Amanda Cole',
-      influencerHandle:  '@dramandacole',
-      influencerPhoto:   '',
-      pricingMode:   'influencer',
-      customPrices:  { TR5: 15.00, TR10: 22.00, SM5: 14.00 },
-    },
   };
   window.PSW_CONFIG = configs[m] || configs.cerritos;
   window._PSW_PREVIEW_MARKET = m;
@@ -86,23 +67,26 @@ body{padding-bottom:calc(38px + env(safe-area-inset-bottom,0px));}
 </head>
 <body>
 
-<script src="./psw-core.js"></script>
-
-<!-- Developer switcher bar (fixed at bottom) -->
-<div class="dev-bar">
+<!-- Dev bar sits above everything psw-core renders -->
+<div class="dev-bar" id="devBar">
   <div class="dev-bar-label">⚠ DEV PREVIEW</div>
-  <a class="dev-btn" id="btn-cerritos"   href="#" onclick="switchMarket('cerritos');return false;">Cerritos (MX)</a>
-  <a class="dev-btn" id="btn-sandiego"   href="#" onclick="switchMarket('sandiego');return false;">San Diego</a>
-  <a class="dev-btn" id="btn-tijuana"    href="#" onclick="switchMarket('tijuana');return false;">Tijuana</a>
+  <span class="dev-btn" id="btn-cerritos"   onclick="switchMarket('cerritos')">Cerritos (MX)</span>
+  <span class="dev-btn" id="btn-sandiego"   onclick="switchMarket('sandiego')">San Diego</span>
+  <span class="dev-btn" id="btn-tijuana"    onclick="switchMarket('tijuana')">Tijuana</span>
   <div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>
 </div>
 
+<script src="./psw-core.js"></script>
+
 <script>
-// Highlight active market button
 (function () {
   var m = window._PSW_PREVIEW_MARKET || 'cerritos';
   var btn = document.getElementById('btn-' + m);
   if (btn) btn.classList.add('active');
+
+  // psw-core overwrites body.innerHTML — move the dev bar back to the top
+  var bar = document.getElementById('devBar');
+  if (bar) document.body.insertBefore(bar, document.body.firstChild);
 })();
 
 function switchMarket(m) {

@@ -17,9 +17,10 @@
 body{padding-bottom:38px;}
 </style>
 <script>
-// ── Pick market from ?market= param (default: cerritos) ──────────
+// ── Pick market from #market= hash (works through htmlpreview.github.io) ──
 (function () {
-  var m = new URLSearchParams(window.location.search).get('market') || 'cerritos';
+  var hash = window.location.hash.replace('#', '');
+  var m = (hash.match(/(?:^|market=)([^&]+)/) || [])[1] || 'cerritos';
   var configs = {
     cerritos: {
       marketName:    'Peptide Supply Warehouse',
@@ -89,10 +90,10 @@ body{padding-bottom:38px;}
 <!-- Developer switcher bar (fixed at bottom) -->
 <div class="dev-bar">
   <div class="dev-bar-label">⚠ DEV PREVIEW</div>
-  <a class="dev-btn" id="btn-cerritos"   href="?market=cerritos">Cerritos (MX)</a>
-  <a class="dev-btn" id="btn-sandiego"   href="?market=sandiego">San Diego</a>
-  <a class="dev-btn" id="btn-tijuana"    href="?market=tijuana">Tijuana</a>
-  <a class="dev-btn" id="btn-influencer" href="?market=influencer">Influencer</a>
+  <a class="dev-btn" id="btn-cerritos"   href="#" onclick="switchMarket('cerritos');return false;">Cerritos (MX)</a>
+  <a class="dev-btn" id="btn-sandiego"   href="#" onclick="switchMarket('sandiego');return false;">San Diego</a>
+  <a class="dev-btn" id="btn-tijuana"    href="#" onclick="switchMarket('tijuana');return false;">Tijuana</a>
+  <a class="dev-btn" id="btn-influencer" href="#" onclick="switchMarket('influencer');return false;">Influencer</a>
   <div class="dev-badge">NOT LIVE — FEATURE BRANCH ONLY</div>
 </div>
 
@@ -103,6 +104,11 @@ body{padding-bottom:38px;}
   var btn = document.getElementById('btn-' + m);
   if (btn) btn.classList.add('active');
 })();
+
+function switchMarket(m) {
+  window.location.hash = 'market=' + m;
+  window.location.reload();
+}
 </script>
 
 </body>

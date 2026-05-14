@@ -98,22 +98,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
   var CSS = [
     '#psw-peptide-ref{position:relative;z-index:1;}',
-    '.pref-wrap{padding:36px 20px;background:rgba(7,20,40,0.7);border-top:1px solid rgba(0,180,216,0.15);border-bottom:1px solid rgba(0,180,216,0.15);backdrop-filter:blur(8px);}',
+    '.pref-wrap{padding:14px 20px 16px;background:rgba(7,20,40,0.7);border-top:1px solid rgba(0,180,216,0.15);border-bottom:1px solid rgba(0,180,216,0.15);backdrop-filter:blur(8px);}',
     '.pref-inner{max-width:1200px;margin:0 auto;}',
-    '.pref-hd{text-align:center;margin-bottom:24px;}',
-    '.pref-eyebrow{font-family:"Rajdhani",sans-serif;font-size:11px;font-weight:700;color:#00b4d8;letter-spacing:0.18em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:6px;}',
-    '.pref-eyebrow::before,.pref-eyebrow::after{content:"";display:block;width:32px;height:1px;background:#00b4d8;opacity:0.5;}',
-    '.pref-sub{font-family:"Rajdhani",sans-serif;font-size:13px;color:rgba(208,228,247,0.45);letter-spacing:0.06em;}',
-    '.pref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}',
-    '.pref-card{position:relative;background:linear-gradient(145deg,rgba(10,29,58,0.9),rgba(7,20,40,0.95));border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px 12px 14px 16px;text-decoration:none;display:flex;flex-direction:column;gap:5px;overflow:hidden;transition:transform 0.18s,border-color 0.18s,box-shadow 0.18s;}',
-    '.pref-card:hover{transform:translateY(-2px);border-color:rgba(0,180,216,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.35);}',
-    '.pref-bar{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:10px 0 0 10px;}',
-    '.pref-icon{font-size:20px;line-height:1;margin-bottom:3px;}',
-    '.pref-name{font-family:"Rajdhani",sans-serif;font-size:13px;font-weight:700;color:#d0e4f7;letter-spacing:0.02em;line-height:1.2;}',
-    '.pref-count{font-family:"Rajdhani",sans-serif;font-size:11px;font-weight:600;color:#4a6d96;letter-spacing:0.06em;text-transform:uppercase;margin-top:auto;padding-top:6px;}',
-    '.pref-cta{font-family:"Rajdhani",sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.18s;margin-top:2px;}',
-    '.pref-card:hover .pref-cta{opacity:1;}',
-    '@media(max-width:480px){.pref-grid{grid-template-columns:repeat(2,1fr);}}'
+    '.pref-label{font-family:"Rajdhani",sans-serif;font-size:10px;font-weight:700;color:#00b4d8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}',
+    '.pref-label::after{content:"";flex:1;height:1px;background:rgba(0,180,216,0.2);}',
+    '.pref-scroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;}',
+    '.pref-scroll::-webkit-scrollbar{display:none;}',
+    '.pref-card{position:relative;flex-shrink:0;width:106px;background:linear-gradient(145deg,rgba(10,29,58,0.9),rgba(7,20,40,0.95));border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 10px 10px 13px;text-decoration:none;display:flex;flex-direction:column;gap:3px;overflow:hidden;transition:transform 0.15s,border-color 0.15s;}',
+    '.pref-card:active{transform:scale(0.96);}',
+    '.pref-card:hover{border-color:rgba(0,180,216,0.3);}',
+    '.pref-bar{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:8px 0 0 8px;}',
+    '.pref-icon{font-size:16px;line-height:1;margin-bottom:2px;}',
+    '.pref-name{font-family:"Rajdhani",sans-serif;font-size:12px;font-weight:700;color:#d0e4f7;letter-spacing:0.01em;line-height:1.2;}',
+    '.pref-count{font-family:"Rajdhani",sans-serif;font-size:10px;font-weight:600;color:#4a6d96;letter-spacing:0.04em;text-transform:uppercase;margin-top:3px;}'
   ].join('');
 
   function inject() {
@@ -131,19 +128,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     root.innerHTML =
       '<div class="pref-wrap">' +
         '<div class="pref-inner">' +
-          '<div class="pref-hd">' +
-            '<div class="pref-eyebrow">Compound Reference Guide</div>' +
-            '<div class="pref-sub">Select a category to view dosing protocols, mechanisms &amp; research data</div>' +
-          '</div>' +
-          '<div class="pref-grid">' +
+          '<div class="pref-label">Compound Reference Guide</div>' +
+          '<div class="pref-scroll">' +
             CATS.map(function (c) {
               return (
                 '<a class="pref-card" href="' + REF_BASE + '?cat=' + c.id + '" target="_blank" rel="noopener">' +
                   '<div class="pref-bar" style="background:' + c.accent + '"></div>' +
                   '<div class="pref-icon">' + c.icon + '</div>' +
                   '<div class="pref-name">' + c.name + '</div>' +
-                  '<div class="pref-count">' + c.count + ' compounds</div>' +
-                  '<div class="pref-cta" style="color:' + c.accent + '">View Reference →</div>' +
+                  '<div class="pref-count">' + c.count + ' cmpds</div>' +
                 '</a>'
               );
             }).join('') +

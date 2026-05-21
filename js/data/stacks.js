@@ -82,7 +82,7 @@ export const STACKS_ES = [
     rationale:'GLP-1 maneja el apetito y la señalización metabólica. AOD9604 y Fragmento HGH activan lipólisis vía vías beta-3 adrenérgicas sin efectos de IGF-1 — seguros para combinar con GLP-1. 5-amino-1mq inhibe NNMT para elevar NAD+ y la tasa metabólica sin estimulantes.',
     benefits:['Pérdida de grasa por múltiples vías','GLP-1 maneja apetito y vaciado gástrico','AOD9604 + Fragmento HGH añaden lipólisis directa','5-amino-1mq eleva la tasa metabólica vía NAD+','Preservación de masa muscular durante déficit calórico'],
     sideEffects:[{text:'Efectos GI del componente GLP-1 (náuseas, diarrea) — titular lentamente',severity:'med'},{text:'Riesgo de vesícula biliar (efecto de clase GLP-1)',severity:'high'},{text:'Alta frecuencia de inyecciones',severity:'low'}],
-    note:'GLP-1 maneja el lado del apetito. AOD9604 y Fragmento HGH funcionan mejor con estómago vacío en la mañana. 5-amino-1mq puede ser oral.',
+    note:'GLP-1 maneja el lado del apetito. AOD9604 y Fragmento HGH funcionan mejor con estómago vacío en la mañana. 5-amino-1mq SubQ en la mañana.',
   },
   {
     name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',
@@ -243,7 +243,7 @@ export const STACKS = [
       {name:'NAD+',schedule:'Daily SubQ AM or IV infusion',lo:'100 mg/day',mid:'500 mg/day',hi:'1,000 mg/day'},
       {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'5 mg/day',hi:'10 mg/day'},
       {name:'MOTS-c',schedule:'SubQ 2–3x per week (AM or pre-workout)',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ or oral',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
@@ -266,13 +266,13 @@ export const STACKS = [
     rationale:'GLP-1 handles appetite and metabolic signaling. AOD9604 and HGH Fragment both target lipolysis via beta-3 adrenergic pathways without IGF-1 effects — safe to combine with GLP-1. 5-amino-1mq inhibits NNMT to elevate NAD+ and metabolic rate without stimulants.',
     benefits:['Multi-pathway fat loss','GLP-1 handles appetite and gastric emptying','AOD9604 + HGH Fragment add direct lipolysis','5-amino-1mq elevates metabolic rate via NAD+','Muscle preservation during caloric deficit'],
     sideEffects:[{text:'GI effects from GLP-1 (nausea, diarrhea) — titrate slowly',severity:'med'},{text:'Gallbladder risk (GLP-1 class effect)',severity:'high'},{text:'High injection frequency',severity:'low'}],
-    note:'GLP-1 handles the appetite side. AOD9604 and HGH Fragment work best on empty stomach in AM. 5-amino-1mq can be oral.',
+    note:'GLP-1 handles the appetite side. AOD9604 and HGH Fragment work best on empty stomach in AM. 5-amino-1mq SubQ AM.',
     studies:[{title:'Tirzepatide SURMOUNT-1: 20.9% Weight Loss',journal:'NEJM 2022',summary:'Phase 3 RCT. Foundation of GLP-1 component of this stack.',pmid:'35658024',url:'https://pubmed.ncbi.nlm.nih.gov/35658024/'}],
     peptides:[
       {name:'Tirzepatide or Semaglutide',schedule:'Once weekly SubQ',lo:'Tirze 2.5mg or Sema 0.25mg/wk',mid:'Tirze 5–10mg or Sema 1–2.4mg/wk',hi:'Tirze 10–15mg or Sema 2.4mg/wk max'},
       {name:'AOD9604',schedule:'Daily SubQ AM on empty stomach',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
       {name:'HGH Fragment',schedule:'Daily SubQ 2x on empty stomach',lo:'250 mcg 2x/day',mid:'500 mcg 2x/day',hi:'500 mcg 3x/day'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ or oral',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
@@ -332,7 +332,7 @@ export const STACKS = [
     peptides:[
       {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
       {name:'NAD+',schedule:'Daily SubQ AM',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
-      {name:'5-amino-1mq',schedule:'Daily oral or SubQ',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   }  ,
   {

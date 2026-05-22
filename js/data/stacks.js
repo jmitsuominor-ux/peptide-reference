@@ -270,7 +270,7 @@ export const STACKS = [
     studies:[{title:'Tirzepatide SURMOUNT-1: 20.9% Weight Loss',journal:'NEJM 2022',summary:'Phase 3 RCT. Foundation of GLP-1 component of this stack.',pmid:'35658024',url:'https://pubmed.ncbi.nlm.nih.gov/35658024/'}],
     peptides:[
       {name:'Tirzepatide or Semaglutide',schedule:'Once weekly SubQ',lo:'Tirze 2.5mg or Sema 0.25mg/wk',mid:'Tirze 5–10mg or Sema 1–2.4mg/wk',hi:'Tirze 10–15mg or Sema 2.4mg/wk max'},
-      {name:'AOD9604',schedule:'Daily SubQ AM on empty stomach',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+      {name:'AOD9604',schedule:'Daily SubQ AM on empty stomach',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
       {name:'HGH Fragment',schedule:'Daily SubQ 2x on empty stomach',lo:'250 mcg 2x/day',mid:'500 mcg 2x/day',hi:'500 mcg 3x/day'},
       {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]

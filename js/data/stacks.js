@@ -40,6 +40,15 @@ export const STACKS_ES = [
     note:'Ambos péptidos inyectados antes de dormir con estómago vacío — pueden compartir la misma jeringa. La inyección en ayunas es crítica para un pulso limpio de GH. Monitorear IGF-1 al inicio y en la semana 6–8.',
   },
   {
+    name:'GH LITE STACK',cycle:'12 semanas / 4 semanas de descanso',
+    goal:'Optimización de GH · Nivel principiante · Músculo magro · Pérdida de grasa · Sueño',
+    description:'El stack clásico de GH para principiantes. Dos compuestos, una inyección diaria antes de dormir, dos vías de GH completamente diferentes. CJC-1295 (sin DAC) estimula los receptores GHRH; Ipamorelin estimula GHS-R1a. El output combinado es 2–3x mayor que cualquiera solo.',
+    rationale:'CJC-1295 (sin DAC) actúa sobre los receptores GHRH — la misma vía que la hormona liberadora de GH natural del cuerpo. Ipamorelin actúa sobre GHS-R1a mediante un mecanismo completamente diferente. Ambos inyectados juntos antes de dormir amplifica el pulso natural nocturno de GH. Ipamorelin es el GHRP más limpio — sin cortisol, sin prolactina, solo un pulso selectivo de GH. Este es el stack de péptidos más recetado en telesalud de EE.UU. por una razón: funciona, es simple y ambos compuestos son bien tolerados.',
+    benefits:['Pulso limpio de GH vía sinergia de doble vía','Ganancia de masa muscular magra','Pérdida de grasa vía lipólisis','Mejora significativa del sueño profundo','Aceleración de recuperación','Antienvejecimiento vía eje GH/IGF-1','Nivel principiante — pueden inyectarse juntos en una sola jeringa'],
+    sideEffects:[{text:'Retención de agua al inicio (se resuelve en 2–3 semanas)',severity:'low'},{text:'Leves dolores articulares por retención de agua',severity:'low'},{text:'Síntomas de túnel carpiano si IGF-1 sube demasiado — monitorear a las 6–8 semanas',severity:'med'},{text:'Elevación de glucosa en sangre (antagonismo insulínico del GH)',severity:'med'}],
+    note:'Ambos péptidos inyectados juntos antes de dormir con estómago vacío — pueden compartir la misma jeringa. El ayuno 2+ horas antes es crítico para un pulso limpio de GH. Este es el stack de GH ideal para comenzar antes de avanzar al GH STACK (Classic) con Tesamorelin.',
+  },
+  {
     name:'SLEEP STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',
     goal:'Sueño profundo · Pulso nocturno de GH · Reducción de cortisol · Recuperación',
     description:'Optimización integral del sueño. Cada péptido actúa en un mecanismo diferente — secretagogos de GH, neuropéptidos inductores del sueño y la hormona circadiana principal — para una mejora completa de la arquitectura del sueño.',
@@ -201,6 +210,19 @@ export const STACKS = [
     peptides:[
       {name:'Tesamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
       {name:'Ipamorelin',schedule:'Same injection as Tesamorelin before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+    ]
+  },
+  {
+    name:'GH LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
+    description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
+    rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
+    benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],
+    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high — monitor at 6–8 weeks',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],
+    note:'Both peptides share the same syringe — inject together before bed on empty stomach. Fasting 2+ hours before injection is critical for a clean GH pulse. This is the ideal first GH stack before advancing to GH STACK (Classic) with Tesamorelin.',
+    studies:[{title:'Ipamorelin Selective GH Secretagogue Without Cortisol/Prolactin',journal:'Growth Hormone & IGF Research 1999',summary:'Potent GH release comparable to GHRP-6 without ACTH, cortisol or prolactin elevation. Established the clean GH pulse profile.',pmid:'10373343',url:'https://pubmed.ncbi.nlm.nih.gov/10373343/'}],
+    peptides:[
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 (no DAC) before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
   },
   {

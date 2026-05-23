@@ -40,7 +40,7 @@ export const STACKS_ES = [
     note:'Ambos péptidos inyectados antes de dormir con estómago vacío — pueden compartir la misma jeringa. La inyección en ayunas es crítica para un pulso limpio de GH. Monitorear IGF-1 al inicio y en la semana 6–8.',
   },
   {
-    name:'CJC + IPAMORELIN STACK',cycle:'12 semanas / 4 semanas de descanso',
+    name:'GH LITE STACK',cycle:'12 semanas / 4 semanas de descanso',
     goal:'Optimización de GH · Nivel principiante · Músculo magro · Pérdida de grasa · Sueño',
     description:'El stack clásico de GH para principiantes. Dos compuestos, una inyección diaria antes de dormir, dos vías de GH completamente diferentes. CJC-1295 (sin DAC) estimula los receptores GHRH; Ipamorelin estimula GHS-R1a. El output combinado es 2–3x mayor que cualquiera solo.',
     rationale:'CJC-1295 (sin DAC) actúa sobre los receptores GHRH — la misma vía que la hormona liberadora de GH natural del cuerpo. Ipamorelin actúa sobre GHS-R1a mediante un mecanismo completamente diferente. Ambos inyectados juntos antes de dormir amplifica el pulso natural nocturno de GH. Ipamorelin es el GHRP más limpio — sin cortisol, sin prolactina, solo un pulso selectivo de GH. Este es el stack de péptidos más recetado en telesalud de EE.UU. por una razón: funciona, es simple y ambos compuestos son bien tolerados.',
@@ -213,7 +213,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'CJC + IPAMORELIN STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
+    name:'GH LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
     description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
     rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
     benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],

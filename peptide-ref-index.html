@@ -605,15 +605,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   function reveal(){ document.documentElement.classList.remove('dl-pending'); document.documentElement.classList.add('dl-ready'); }
   function tryClick(){
     attempts++;
-    // Try calling showList directly if it's available
-    if(typeof window.showList==='function'){
-      window.showList(hash);
-      reveal();
-      return;
-    }
-    // Otherwise find and click the matching card
+    // Wait until catGrid has cards rendered (means init() is complete)
     var cards=document.querySelectorAll('#catGrid .cat-card');
     if(cards.length>0){
+      // Categories are rendered — now call showList
+      if(typeof window.showList==='function'){
+        window.showList(hash);
+        reveal();
+        return;
+      }
+      // Fallback: click the matching card directly
       for(var i=0;i<cards.length;i++){
         var oc=cards[i].getAttribute('onclick')||'';
         if(oc.indexOf("'"+hash+"'")>-1){
@@ -627,8 +628,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     if(attempts<50) setTimeout(tryClick,100);
     else reveal();
   }
-  // Start after a short delay to let the module begin loading
-  setTimeout(tryClick,300);
+  // Start polling immediately
+  tryClick();
 })();
 </script>
 

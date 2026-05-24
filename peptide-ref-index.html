@@ -13,6 +13,18 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Deep link: hide body before paint to prevent homepage flash -->
+<script>
+(function(){
+  var h=window.location.hash.replace('#','');
+  var ok=['weight','healing','gh','antiaging','mito','muscle','neuro','immune','hormonal','metabolic','cardio','recon'];
+  if(h&&ok.indexOf(h)>=0) document.documentElement.classList.add('dl-pending');
+})();
+</script>
+<style>
+html.dl-pending body{opacity:0;}
+html.dl-ready body{opacity:1;transition:opacity 0.2s ease;}
+</style>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
@@ -590,11 +602,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   var ok=['weight','healing','gh','antiaging','mito','muscle','neuro','immune','hormonal','metabolic','cardio','recon'];
   if(ok.indexOf(hash)<0)return;
   var attempts=0;
+  function reveal(){ document.documentElement.classList.remove('dl-pending'); document.documentElement.classList.add('dl-ready'); }
   function tryClick(){
     attempts++;
     // Try calling showList directly if it's available
     if(typeof window.showList==='function'){
       window.showList(hash);
+      reveal();
       return;
     }
     // Otherwise find and click the matching card
@@ -604,12 +618,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         var oc=cards[i].getAttribute('onclick')||'';
         if(oc.indexOf("'"+hash+"'")>-1){
           cards[i].click();
+          reveal();
           return;
         }
       }
     }
-    // Keep trying for up to 5 seconds
+    // Keep trying for up to 5 seconds, then reveal anyway
     if(attempts<50) setTimeout(tryClick,100);
+    else reveal();
   }
   // Start after a short delay to let the module begin loading
   setTimeout(tryClick,300);

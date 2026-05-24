@@ -589,18 +589,26 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   if(!hash)return;
   var ok=['weight','healing','gh','antiaging','mito','muscle','neuro','immune','hormonal','metabolic','cardio','recon'];
   if(ok.indexOf(hash)<0)return;
-  window.addEventListener('load',function(){
-    setTimeout(function(){
-      var cards=document.querySelectorAll('#catGrid .cat-card');
+    var attempts=0;
+  function reveal(){ document.documentElement.classList.remove('dl-pending'); document.documentElement.classList.add('dl-ready'); }
+  function tryClick(){
+    attempts++;
+    var cards=document.querySelectorAll('#catGrid .cat-card');
+    if(cards.length>0){
+      if(typeof window.showList==='function'){
+        window.showList(hash);
+        reveal();
+        return;
+      }
       for(var i=0;i<cards.length;i++){
         var oc=cards[i].getAttribute('onclick')||'';
-        if(oc.indexOf("'"+hash+"'")>-1){
-          cards[i].click();
-          return;
-        }
+        if(oc.indexOf("'"+hash+"'")>-1){ cards[i].click(); reveal(); return; }
       }
-    },800);
-  });
+    }
+    if(attempts<50) setTimeout(tryClick,100);
+    else reveal();
+  }
+  tryClick();
 })();
 </script>
 

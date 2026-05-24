@@ -589,28 +589,31 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   if(!hash)return;
   var ok=['weight','healing','gh','antiaging','mito','muscle','neuro','immune','hormonal','metabolic','cardio','recon'];
   if(ok.indexOf(hash)<0)return;
-    var attempts=0;
-  function reveal(){ document.documentElement.classList.remove('dl-pending'); document.documentElement.classList.add('dl-ready'); }
+  // Cover the page immediately so the homepage never shows
+  var cover=document.createElement('div');
+  cover.style.cssText='position:fixed;inset:0;background:#f7f9fc;z-index:9999;';
+  document.body.appendChild(cover);
+  var attempts=0;
+  function reveal(){
+    cover.style.transition='opacity 0.2s';
+    cover.style.opacity='0';
+    setTimeout(function(){if(cover.parentNode)cover.parentNode.removeChild(cover);},220);
+  }
   function tryClick(){
     attempts++;
     var cards=document.querySelectorAll('#catGrid .cat-card');
     if(cards.length>0){
-      if(typeof window.showList==='function'){
-        window.showList(hash);
-        reveal();
-        return;
-      }
+      if(typeof window.showList==='function'){window.showList(hash);reveal();return;}
       for(var i=0;i<cards.length;i++){
         var oc=cards[i].getAttribute('onclick')||'';
-        if(oc.indexOf("'"+hash+"'")>-1){ cards[i].click(); reveal(); return; }
+        if(oc.indexOf("'"+hash+"'")>-1){cards[i].click();reveal();return;}
       }
     }
-    if(attempts<50) setTimeout(tryClick,100);
+    if(attempts<50)setTimeout(tryClick,100);
     else reveal();
   }
   tryClick();
 })();
 </script>
-
 </body>
 </html>

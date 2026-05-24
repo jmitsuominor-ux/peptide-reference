@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PeptideRef — Clinical Reference</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1756a9">
@@ -176,7 +176,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .sc-summary{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:7px;}
 .sc-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--blue);text-decoration:none;font-weight:500;}
 .sc-link:hover{text-decoration:underline;}
-/* STACKS */
 .stack-card{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;}
 .stack-hdr{padding:14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:background 0.15s;}
 .stack-hdr:hover{background:var(--bg);}
@@ -193,7 +192,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .sp-table tr:hover td{background:var(--bg);}
 .stack-note{margin:12px 14px;background:var(--amber-light);border:1px solid rgba(212,129,43,0.2);border-radius:6px;padding:9px 11px;font-size:12px;color:var(--text2);line-height:1.5;}
 .stack-note strong{color:var(--amber);}
-/* AZ */
 .az-wrap{display:flex;gap:6px;}
 .az-main{flex:1;}
 .az-sidebar{width:18px;display:flex;flex-direction:column;align-items:center;gap:1px;position:sticky;top:100px;height:fit-content;}
@@ -219,7 +217,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .dark .disclaimer{background:rgba(210,153,34,0.06);border-color:rgba(210,153,34,0.2);color:var(--text3);}
 .disclaimer strong{color:#8b6500;}
 .dark .disclaimer strong{color:var(--warn);}
-/* CALCULATOR */
 .calc-section{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;}
 .calc-section-title{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .calc-field{margin-bottom:12px;}
@@ -327,7 +324,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- STACKS PAGE — two sub-views with correct IDs -->
+<!-- STACKS PAGE -->
 <div class="page" id="page-stacks">
   <div id="stacksListView">
     <div class="clin-header">
@@ -350,7 +347,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- AZ INDEX PAGE — single legend only -->
+<!-- AZ INDEX PAGE -->
 <div class="page" id="page-az">
   <div class="clin-header">
     <div><div class="ch-title" data-i18n="az_title">A–Z Compound Index</div><div class="ch-sub">All 100 peptides — tap any for full profile</div></div>
@@ -530,64 +527,82 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <strong>Research Reference Only</strong><br>
     This calculator is a mathematical tool only. Always verify calculations independently and consult a licensed healthcare provider before use.
   </div>
-
-  <!-- STACK PLANNER — Calculator tab 3 -->
   <div id="calc-planner" style="display:none">
     <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;padding:4px 0 10px;border-bottom:1px solid var(--border);margin-bottom:12px;">📋 Stack Planner</div>
-  <div class="calc-section">
-    <div class="calc-section-title"><div class="sh-icon blue">📋</div>Step 1 — Choose Your Stack</div>
-    <div class="calc-field">
-      <label class="calc-label">Select Stack</label>
-      <select class="calc-select" id="plannerStackSelect" onchange="plannerLoadStack()">
-        <option value="">— Select a stack —</option>
-      </select>
+    <div class="calc-section">
+      <div class="calc-section-title"><div class="sh-icon blue">📋</div>Step 1 — Choose Your Stack</div>
+      <div class="calc-field">
+        <label class="calc-label">Select Stack</label>
+        <select class="calc-select" id="plannerStackSelect" onchange="plannerLoadStack()">
+          <option value="">— Select a stack —</option>
+        </select>
+      </div>
+      <div id="plannerStackDesc" style="display:none;background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-top:4px;"></div>
     </div>
-    <div id="plannerStackDesc" style="display:none;background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-top:4px;"></div>
-  </div>
-
-  <div class="calc-section" id="plannerStep2" style="display:none">
-    <div class="calc-section-title"><div class="sh-icon teal">⏱</div>Step 2 — Cycle Settings</div>
-    <div class="calc-field">
-      <label class="calc-label">Cycle Length</label>
-      <div class="calc-input-row">
-        <input type="number" class="calc-input" id="plannerWeeks" placeholder="e.g. 12" min="1" max="52" value="12" oninput="plannerCalculate()">
-        <span class="calc-unit">weeks</span>
+    <div class="calc-section" id="plannerStep2" style="display:none">
+      <div class="calc-section-title"><div class="sh-icon teal">⏱</div>Step 2 — Cycle Settings</div>
+      <div class="calc-field">
+        <label class="calc-label">Cycle Length</label>
+        <div class="calc-input-row">
+          <input type="number" class="calc-input" id="plannerWeeks" placeholder="e.g. 12" min="1" max="52" value="12" oninput="plannerCalculate()">
+          <span class="calc-unit">weeks</span>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label class="calc-label">Dose Tier</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+          <div class="planner-tier-btn" onclick="plannerSetTier('lo',this)">🟢 LOW</div>
+          <div class="planner-tier-btn active" onclick="plannerSetTier('mid',this)">🔵 STANDARD</div>
+          <div class="planner-tier-btn" onclick="plannerSetTier('hi',this)">🔴 HIGH</div>
+        </div>
       </div>
     </div>
-    <div class="calc-field">
-      <label class="calc-label">Dose Tier</label>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
-        <div class="planner-tier-btn" onclick="plannerSetTier('lo',this)">🟢 LOW</div>
-        <div class="planner-tier-btn active" onclick="plannerSetTier('mid',this)">🔵 STANDARD</div>
-        <div class="planner-tier-btn" onclick="plannerSetTier('hi',this)">🔴 HIGH</div>
+    <div class="calc-section" id="plannerStep3" style="display:none">
+      <div class="calc-section-title"><div class="sh-icon amber">💉</div>Step 3 — Vial Sizes</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">Enter the mg per vial you plan to buy for each peptide.</div>
+      <div id="plannerPeptideInputs"></div>
+      <button class="calc-btn" style="margin-top:8px" onclick="plannerCalculate()">Calculate Shopping List →</button>
+    </div>
+    <div class="calc-result" id="plannerResult" style="margin-top:0">
+      <div class="calc-result-label">Your Shopping List</div>
+      <div id="plannerResultContent"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--mid-border);font-size:11px;color:var(--text2);line-height:1.6;">
+        💡 <strong>Tip:</strong> Always buy 1 extra vial per peptide as a buffer for waste and reconstitution loss.
       </div>
     </div>
-  </div>
-
-  <div class="calc-section" id="plannerStep3" style="display:none">
-    <div class="calc-section-title"><div class="sh-icon amber">💉</div>Step 3 — Vial Sizes</div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">Enter the mg per vial you plan to buy for each peptide.</div>
-    <div id="plannerPeptideInputs"></div>
-    <button class="calc-btn" style="margin-top:8px" onclick="plannerCalculate()">Calculate Shopping List →</button>
-  </div>
-
-  <div class="calc-result" id="plannerResult" style="margin-top:0">
-    <div class="calc-result-label">Your Shopping List</div>
-    <div id="plannerResultContent"></div>
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--mid-border);font-size:11px;color:var(--text2);line-height:1.6;">
-      💡 <strong>Tip:</strong> Always buy 1 extra vial per peptide as a buffer for waste and reconstitution loss.
+    <div class="disclaimer" style="margin-top:12px;">
+      <strong>Research Reference Only.</strong> Vial counts are calculated from dose tier data. Verify all quantities independently before ordering.
     </div>
   </div>
-
-  <div class="disclaimer" style="margin-top:12px;">
-    <strong>Research Reference Only.</strong> Vial counts are calculated from dose tier data. Verify all quantities independently before ordering.
-  </div>
-</div>
 </div>
 
 <div class="scroll-top" id="scrollTop">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
 </div>
+
 <script type="module" src="js/app.js"></script>
+
+<!-- DEEP LINK HANDLER: routes #category hashes from PSW market sites -->
+<script>
+(function(){
+  var hash=window.location.hash.replace('#','');
+  if(!hash)return;
+  var ok=['weight','healing','gh','antiaging','mito','muscle','neuro','immune','hormonal','metabolic','cardio','recon'];
+  if(ok.indexOf(hash)<0)return;
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      var cards=document.querySelectorAll('#catGrid .cat-card');
+      for(var i=0;i<cards.length;i++){
+        var oc=cards[i].getAttribute('onclick')||'';
+        if(oc.indexOf("'"+hash+"'")>-1){
+          cards[i].click();
+          return;
+        }
+      }
+    },800);
+  });
+})();
+</script>
+
 </body>
 </html>

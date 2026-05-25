@@ -503,7 +503,7 @@ function initStoreBack() {
     const store = JSON.parse(stored);
     const btn = document.getElementById('storeBackBtn');
     const lbl = document.getElementById('storeBackLabel');
-    if (btn && lbl) { btn.href = store.url; lbl.textContent = store.label; btn.classList.add('visible'); }
+    if (btn && lbl) { btn.href = store.url; lbl.textContent = '← Back to ' + store.label + ' Store'; btn.classList.add('visible'); }
   }
 }
 

@@ -484,6 +484,29 @@ function initSwipeBack() {
   }, { passive: true });
 }
 
+// ─── Store Back Button ────────────────────────────────────
+function initStoreBack() {
+  const STORES = {
+    cerritos: { label: 'Cerritos', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html' },
+    sd:       { label: 'San Diego', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html' },
+    sandiego: { label: 'San Diego', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html' },
+    tj:       { label: 'Tijuana',   url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html' },
+    tijuana:  { label: 'Tijuana',   url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html' },
+  };
+  const param = new URLSearchParams(window.location.search).get('store');
+  if (param) {
+    const store = STORES[param.toLowerCase()];
+    if (store) sessionStorage.setItem('psw_store', JSON.stringify(store));
+  }
+  const stored = sessionStorage.getItem('psw_store');
+  if (stored) {
+    const store = JSON.parse(stored);
+    const btn = document.getElementById('storeBackBtn');
+    const lbl = document.getElementById('storeBackLabel');
+    if (btn && lbl) { btn.href = store.url; lbl.textContent = store.label; btn.classList.add('visible'); }
+  }
+}
+
 // ─── Bootstrap ────────────────────────────────────────────
 function init() {
   renderCategories();
@@ -493,6 +516,7 @@ function init() {
   applyTranslations();
   initEventListeners();
   initSwipeBack();
+  initStoreBack();
 }
 
 init();

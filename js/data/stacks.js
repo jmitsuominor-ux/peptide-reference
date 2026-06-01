@@ -143,19 +143,6 @@ export const STACKS_ES = [
 
 export const STACKS = [
   {
-    name:'FAT STACK LITE',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
-    description:'The most powerful weight loss stack in Phase 3 data. CagriSema (REDEFINE 1) produced 23% average weight loss on-treatment — among the highest ever in a Phase 3 pharmaceutical trial.',
-    rationale:'Semaglutide activates GLP-1 receptors. Cagrilintide activates amylin receptors in the hypothalamus — a completely different pathway. The combination produces genuine additive weight loss because the mechanisms do not overlap.',
-    benefits:['23% body weight loss on-treatment (Phase 3 REDEFINE 1, 68 weeks)','Superior to any single GLP-1 agent','Improved satiety through two independent pathways','Blood sugar normalization','Reduced liver fat'],
-    sideEffects:[{text:'Nausea — additive from both agents; titrate slowly',severity:'med'},{text:'Vomiting during dose escalation',severity:'med'},{text:'Gallbladder disease (GLP-1 class effect)',severity:'high'}],
-    note:'Titrate each peptide independently. NEVER combine semaglutide with tirzepatide. Inject at different sites.',
-    studies:[{title:'CagriSema Phase 3 REDEFINE: 25.1% Weight Loss',journal:'NEJM 2025',summary:'23% average weight loss on-treatment at 68 weeks vs 8.1% semaglutide alone (REDEFINE 1). NDA filed Dec 2025.',pmid:'',url:'https://www.nejm.org/doi/10.1056/NEJMoa2410605'}],
-    peptides:[
-      {name:'Semaglutide',schedule:'Once weekly SubQ, same day each week',lo:'0.25 mg/wk → 0.5 mg maintenance',mid:'0.25→0.5→1.0→2.4 mg/wk (4 wks each)',hi:'2.4 mg/wk (full dose)'},
-      {name:'Cagrilintide',schedule:'Once weekly SubQ (different site from sema)',lo:'0.16 mg/wk → 0.3 mg maintenance',mid:'0.16→0.3→0.6→1.2 mg/wk',hi:'2.4 mg/wk'},
-    ]
-  },
-  {
     name:'FAT STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
     description:'Built around retatrutide — the most potent weight loss compound ever tested. Phase 3 TRIUMPH-4 (Dec 2025): 28.7% weight loss at 68 weeks — highest in Phase 3 trial history. Phase 2 showed 24.2% at 48 weeks with no plateau. NAD+ and 5-amino-1mq complement the metabolic shift with mitochondrial and NNMT pathway support.',
     rationale:'Retatrutide is a triple GLP-1/GIP/glucagon agonist — the glucagon component uniquely increases caloric expenditure on top of appetite reduction, explaining why it outperforms all other agents. NAD+ supports mitochondrial adaptation to the metabolic shift. 5-amino-1mq inhibits NNMT to further elevate NAD+ and suppress adipogenesis. All three hit different targets with no redundancy.',
@@ -170,16 +157,16 @@ export const STACKS = [
     ]
   },
   {
-    name:'BETTER BODY LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
-    description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
-    rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
-    benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],
-    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high — monitor at 6–8 weeks',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],
-    note:'Both peptides share the same syringe — inject together before bed on empty stomach. Fasting 2+ hours before injection is critical for a clean GH pulse. This is the ideal first GH stack before advancing to Better Body Stack with Tesamorelin.',
-    studies:[{title:'Ipamorelin Selective GH Secretagogue Without Cortisol/Prolactin',journal:'Growth Hormone & IGF Research 1999',summary:'Potent GH release comparable to GHRP-6 without ACTH, cortisol or prolactin elevation. Established the clean GH pulse profile.',pmid:'10373343',url:'https://pubmed.ncbi.nlm.nih.gov/10373343/'}],
+    name:'FAT STACK LITE',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
+    description:'The most powerful weight loss stack in Phase 3 data. CagriSema (REDEFINE 1) produced 23% average weight loss on-treatment — among the highest ever in a Phase 3 pharmaceutical trial.',
+    rationale:'Semaglutide activates GLP-1 receptors. Cagrilintide activates amylin receptors in the hypothalamus — a completely different pathway. The combination produces genuine additive weight loss because the mechanisms do not overlap.',
+    benefits:['23% body weight loss on-treatment (Phase 3 REDEFINE 1, 68 weeks)','Superior to any single GLP-1 agent','Improved satiety through two independent pathways','Blood sugar normalization','Reduced liver fat'],
+    sideEffects:[{text:'Nausea — additive from both agents; titrate slowly',severity:'med'},{text:'Vomiting during dose escalation',severity:'med'},{text:'Gallbladder disease (GLP-1 class effect)',severity:'high'}],
+    note:'Titrate each peptide independently. NEVER combine semaglutide with tirzepatide. Inject at different sites.',
+    studies:[{title:'CagriSema Phase 3 REDEFINE: 25.1% Weight Loss',journal:'NEJM 2025',summary:'23% average weight loss on-treatment at 68 weeks vs 8.1% semaglutide alone (REDEFINE 1). NDA filed Dec 2025.',pmid:'',url:'https://www.nejm.org/doi/10.1056/NEJMoa2410605'}],
     peptides:[
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 (no DAC) before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Semaglutide',schedule:'Once weekly SubQ, same day each week',lo:'0.25 mg/wk → 0.5 mg maintenance',mid:'0.25→0.5→1.0→2.4 mg/wk (4 wks each)',hi:'2.4 mg/wk (full dose)'},
+      {name:'Cagrilintide',schedule:'Once weekly SubQ (different site from sema)',lo:'0.16 mg/wk → 0.3 mg maintenance',mid:'0.16→0.3→0.6→1.2 mg/wk',hi:'2.4 mg/wk'},
     ]
   },
   {
@@ -237,20 +224,6 @@ export const STACKS = [
       {name:'GHK-Cu',schedule:'Daily SubQ or topical',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
       {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
-    ]
-  },
-  {
-    name:'FAT STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
-    description:'Built around retatrutide — the most potent weight loss compound ever tested. Phase 3 TRIUMPH-4 (Dec 2025): 28.7% weight loss at 68 weeks — highest in Phase 3 trial history. Phase 2 showed 24.2% at 48 weeks with no plateau. NAD+ and 5-amino-1mq complement the metabolic shift with mitochondrial and NNMT pathway support.',
-    rationale:'Retatrutide is a triple GLP-1/GIP/glucagon agonist — the glucagon component uniquely increases caloric expenditure on top of appetite reduction, explaining why it outperforms all other agents. NAD+ supports mitochondrial adaptation to the metabolic shift. 5-amino-1mq inhibits NNMT to further elevate NAD+ and suppress adipogenesis. All three hit different targets with no redundancy.',
-    benefits:['28.7% weight loss at 68 weeks in Phase 3 TRIUMPH-4 (Dec 2025) — highest ever Phase 3 obesity trial result','80%+ reduction in liver fat','Unique glucagon component increases caloric expenditure','Mitochondrial adaptation support (NAD+)','Fat cell expansion suppression (5-amino-1mq)','Improvements in all cardiometabolic markers'],
-    sideEffects:[{text:'Nausea — TITRATE VERY SLOWLY; start at 2mg and hold 8 weeks',severity:'med'},{text:'Vomiting during dose escalation if rushed',severity:'med'},{text:'Not FDA approved — Phase 3 trials ongoing as of 2025',severity:'high'},{text:'NAD+ flushing initially',severity:'low'}],
-    note:'Retatrutide requires the slowest titration of any weight loss peptide. Spend 6–8 weeks at each dose step. Do not rush. NAD+ flushing usually resolves after week 2. NEVER combine with semaglutide or tirzepatide.',
-    studies:[{title:'Retatrutide Phase 2 Trial: 24.2% Weight Loss',journal:'NEJM 2023',summary:'338 participants. 24.2% weight loss at 48 weeks with no plateau. 100% on 8–12mg achieved ≥5% loss. Historic efficacy data.',pmid:'37389765',url:'https://pubmed.ncbi.nlm.nih.gov/37389765/'}],
-    peptides:[
-      {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
-      {name:'NAD+',schedule:'Daily SubQ AM',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
@@ -386,6 +359,21 @@ export const STACKS = [
     ]
   },
   {
+    name:"MEN'S WELLNESS STACK",cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
+    description:'The full HPG axis restoration stack. Kisspeptin-10 activates the hypothalamus, HCG activates the testes — together they restore the complete testosterone production cascade from the top down.',
+    rationale:'KissPeptin-10 binds KISS1R in the hypothalamus triggering GnRH pulse → LH/FSH → testosterone. HCG directly mimics LH at the testicular level. These two together cover both ends of the HPG axis simultaneously. CJC-1295 + Ipamorelin added for GH axis support, recovery, and overall anabolic environment.',
+    benefits:['Complete HPG axis stimulation at two levels','Testosterone production restoration without TRT shutdown','Testicular function and size maintenance','Fertility preservation','Libido improvement','GH support for recovery and body composition'],
+    sideEffects:[{text:'Estradiol elevation from HCG aromatization — monitor E2',severity:'med'},{text:'LH surge from Kisspeptin may temporarily alter estrogen',severity:'med'},{text:'Bloodwork monitoring required (Total T, Free T, LH, FSH, E2, IGF-1)',severity:'high'},{text:'Water retention from GH peptides',severity:'low'}],
+    note:'BLOODWORK REQUIRED. Get baseline Total T, Free T, LH, FSH, estradiol, and IGF-1 before starting. Recheck at 6 weeks. This is not a beginner stack — consult Defy Medical or Marek Health for supervised protocol.',
+    studies:[{title:'Kisspeptin-10 Stimulates LH and Testosterone in Men',journal:'JCEM 2009',summary:'Significantly increased LH, FSH, and testosterone. Established HPG axis stimulation mechanism.',pmid:'19190100',url:'https://pubmed.ncbi.nlm.nih.gov/19190100/'},{title:'HCG for Testosterone Restoration During TRT',journal:'Journal of Urology 2013',summary:'HCG maintained intratesticular testosterone and spermatogenesis in men on TRT.',pmid:'23260547',url:'https://pubmed.ncbi.nlm.nih.gov/23260547/'}],
+    peptides:[
+      {name:'KissPeptin-10',schedule:'Daily SubQ injection',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
+      {name:'HCG',schedule:'SubQ 3x per week (different days)',lo:'500 IU EOD',mid:'1,000 IU 3x/wk',hi:'1,500 IU 3x/wk'},
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+    ]
+  },
+  {
     name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",color:'#AD1457',
     description:"A comprehensive women's optimization protocol targeting the key areas where peptide therapy provides the most benefit for women — hormonal balance, skin quality, libido, mood, and body composition — using compounds with well-established female-specific data.",
     rationale:"Women have distinct hormonal physiology that responds differently to peptide protocols. PT-141 has FDA approval specifically for female sexual dysfunction (Vyleesi). GHK-Cu and L-Glutathione are particularly impactful for skin quality and anti-aging in women. Selank addresses anxiety and mood without hormone interference. GH peptides (CJC-1295 + Ipamorelin) improve body composition while supporting the sleep and recovery that women disproportionately lose with age.",
@@ -472,24 +460,5 @@ export const STACKS = [
     rationale:'Tesamorelin (GHRH analog) + Ipamorelin (GHRP) work on two separate receptor pathways to restore GH pulsatility lost with age — this dual approach is far more effective than either alone. AOD9604 targets fat metabolism directly without IGF-1 elevation. BPC-157 addresses the gut-systemic axis that degrades with age. Epithalon is the only compound shown to activate telomerase and lengthen telomeres in humans. Thymosin Alpha-1 reverses immune senescence — the gradual T-cell dysfunction that defines aging immunity. SS-31 concentrates specifically on mitochondrial inner membranes where age-related oxidative damage occurs. Together they cover the full landscape of biological aging.',
     note:'This is a high-complexity protocol with multiple daily injections. Start with 2–3 peptides and add others over 4–6 weeks. Tesamorelin + Ipamorelin must be injected fasted. AOD9604 must be separated from GH peptides by at least 2 hours. Epithalon runs as a burst — do not use continuously. Bloodwork recommended at baseline and at 8 weeks.',
     studies:[],
-  },
-  {
-    name:'ULTIMATE STACK',cycle:'12–16 weeks. Epithalon as 10-day burst only. IGF-1 LR3 max 6 weeks.',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
-    description:'A comprehensive performance and longevity stack combining GH optimization, anabolic support, systemic healing, immune modulation, and mitochondrial protection. Eight compounds covering five distinct biological pathways simultaneously — designed for experienced users optimizing body composition and long-term health in parallel.',
-    rationale:'CJC-1295 (with DAC) provides sustained once-weekly GH elevation. Ipamorelin adds a clean daily GH pulse without cortisol or prolactin. BPC-157 handles local tissue repair and gut health. TB-500 provides systemic healing and flexibility. Epithalon targets telomere-level anti-aging. Thymosin Alpha-1 modulates immune function bidirectionally. IGF-1 LR3 drives muscle hyperplasia during its strict 4-week cycle. SS-31 protects mitochondria from oxidative stress. Each compound targets a completely different pathway — no redundancy.',
-    benefits:['GH axis optimization via two complementary pathways (GHRH + GHRP)','Muscle hyperplasia and superior nutrient partitioning (IGF-1 LR3)','Systemic and local tissue repair (BPC-157 + TB-500)','Telomere-level anti-aging (Epithalon)','Bidirectional immune modulation (Thymosin Alpha-1)','Mitochondrial protection and cellular energy (SS-31)','Improved sleep quality and overnight GH pulse','Body composition and longevity optimized simultaneously'],
-    sideEffects:[{text:'Water retention from GH peptides — common at start, resolves',severity:'low'},{text:'Hypoglycemia from IGF-1 LR3 — MUST eat carbs within 30 min',severity:'high'},{text:'High injection frequency — plan your schedule carefully',severity:'low'},{text:'IGF-1 LR3 strictly 4 weeks on / 4 weeks off — do not extend',severity:'high'},{text:'Epithalon is a 20-day burst cycle — not continuous',severity:'med'}],
-    note:'Advanced stack — not for beginners. IGF-1 LR3 runs 4 weeks only then stops regardless of how you feel. Epithalon runs as a 20-day burst then stops. All other compounds run the full cycle. Always have carbohydrates ready when injecting IGF-1 LR3. Bloodwork before starting and at 6 weeks minimum.',
-    studies:[{title:'CJC-1295 Sustained GH and IGF-1 Elevation',journal:'JCEM 2006',summary:'Single injection produced 2–10x GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},{title:'IGF-1 and Muscle Protein Synthesis in Humans',journal:'American Journal of Physiology 1993',summary:'IGF-1 infusion acutely stimulated skeletal muscle protein synthesis in healthy adults.',pmid:'8338003',url:'https://pubmed.ncbi.nlm.nih.gov/8338003/'},{title:'SS-31 in Heart Failure: Phase 2 Trial',journal:'European Journal of Heart Failure 2020',summary:'SS-31 improved exercise capacity. First Phase 2 human data for mitochondria-targeted peptide.',pmid:'31701612',url:'https://pubmed.ncbi.nlm.nih.gov/31701612/'}],
-    peptides:[
-      {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week — once weekly only (6–8 day half-life)',lo:'300 mcg/wk',mid:'500–1,000 mcg/wk',hi:'1,000–2,000 mcg/wk'},
-      {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
-      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
-      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
-      {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
-      {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
-      {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
-      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
-    ]
   }
 ];

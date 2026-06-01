@@ -594,9 +594,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <script>
 (function(){
   var markets={
-    cerritos:{label:'← Cerritos', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html'},
-    sandiego:{label:'← San Diego',url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html'},
-    tijuana: {label:'← Tijuana',  url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html'}
+    cerritos:{label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html'},
+    sandiego:{label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html'},
+    tijuana: {label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html'}
   };
   var from=new URLSearchParams(window.location.search).get('from');
   if(from&&markets[from])sessionStorage.setItem('psw_from',from);

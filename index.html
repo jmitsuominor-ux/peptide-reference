@@ -590,6 +590,26 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <script type="module" src="js/app.js"></script>
 
+<!-- BACK BUTTON: shows persistent "← Market" button when arriving from a PSW storefront -->
+<script>
+(function(){
+  var markets={
+    cerritos:{label:'← Cerritos', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html'},
+    sandiego:{label:'← San Diego',url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html'},
+    tijuana: {label:'← Tijuana',  url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html'}
+  };
+  var from=new URLSearchParams(window.location.search).get('from');
+  if(from&&markets[from])sessionStorage.setItem('psw_from',from);
+  var stored=sessionStorage.getItem('psw_from');
+  var m=stored&&markets[stored];
+  if(m){
+    var btn=document.getElementById('storeBackBtn');
+    var lbl=document.getElementById('storeBackLabel');
+    if(btn&&lbl){btn.href=m.url;lbl.textContent=m.label;btn.classList.add('visible');}
+  }
+})();
+</script>
+
 <!-- DEEP LINK HANDLER: routes #category hashes from PSW market sites -->
 <script>
 (function(){

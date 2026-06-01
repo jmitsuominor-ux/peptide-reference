@@ -143,45 +143,43 @@ export const STACKS_ES = [
 
 export const STACKS = [
   {
-    name:'WOLVERINE STACK',cycle:'8–12 weeks on / 4 weeks off',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',color:'#0E7C7B',
-    description:'The most popular healing stack — BPC-157 works locally at the injury site while TB-500 provides systemic repair. Together they cover both local and systemic healing pathways for comprehensive recovery.',
-    rationale:'BPC-157 acts locally via VEGFR2/Akt-eNOS at the injury site. TB-500 acts systemically via actin regulation throughout the body. Completely different mechanisms — every clinical protocol recommends using them together because they complement each other precisely.',
-    benefits:['Accelerated tendon and ligament healing','Reduced pain and inflammation at injury site','Faster return to training','Systemic tissue repair and flexibility','Gut healing as secondary benefit (BPC-157)','Reduced scar tissue formation (TB-500)'],
-    sideEffects:[{text:'Injection site irritation (mild)',severity:'low'},{text:'Theoretical tumor promotion with BPC-157 — unconfirmed in humans',severity:'med'}],
-    note:'Inject each separately — never mix in same syringe. BPC-157 near injury site; TB-500 anywhere SubQ.',
-    studies:[{title:'BPC-157 Systematic Review',journal:'Orthopaedic Journal of Sports Medicine 2025',summary:'36-study review. Enhanced angiogenesis and tissue repair. 7/12 patients reported joint pain relief.',pmid:'',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/'}],
+    name:'FAT STACK LITE',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
+    description:'The most powerful weight loss stack in Phase 3 data. CagriSema (REDEFINE 1) produced 23% average weight loss on-treatment — among the highest ever in a Phase 3 pharmaceutical trial.',
+    rationale:'Semaglutide activates GLP-1 receptors. Cagrilintide activates amylin receptors in the hypothalamus — a completely different pathway. The combination produces genuine additive weight loss because the mechanisms do not overlap.',
+    benefits:['23% body weight loss on-treatment (Phase 3 REDEFINE 1, 68 weeks)','Superior to any single GLP-1 agent','Improved satiety through two independent pathways','Blood sugar normalization','Reduced liver fat'],
+    sideEffects:[{text:'Nausea — additive from both agents; titrate slowly',severity:'med'},{text:'Vomiting during dose escalation',severity:'med'},{text:'Gallbladder disease (GLP-1 class effect)',severity:'high'}],
+    note:'Titrate each peptide independently. NEVER combine semaglutide with tirzepatide. Inject at different sites.',
+    studies:[{title:'CagriSema Phase 3 REDEFINE: 25.1% Weight Loss',journal:'NEJM 2025',summary:'23% average weight loss on-treatment at 68 weeks vs 8.1% semaglutide alone (REDEFINE 1). NDA filed Dec 2025.',pmid:'',url:'https://www.nejm.org/doi/10.1056/NEJMoa2410605'}],
     peptides:[
-      {name:'BPC-157',schedule:'Daily SubQ near injury site or abdomen',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading (acute injury), then 2.5 mg/wk'},
+      {name:'Semaglutide',schedule:'Once weekly SubQ, same day each week',lo:'0.25 mg/wk → 0.5 mg maintenance',mid:'0.25→0.5→1.0→2.4 mg/wk (4 wks each)',hi:'2.4 mg/wk (full dose)'},
+      {name:'Cagrilintide',schedule:'Once weekly SubQ (different site from sema)',lo:'0.16 mg/wk → 0.3 mg maintenance',mid:'0.16→0.3→0.6→1.2 mg/wk',hi:'2.4 mg/wk'},
     ]
   },
   {
-    name:'YOUTH STACK',cycle:'12 weeks on / 4 weeks off',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
-    description:'The anti-aging and skin optimization stack. GHK-Cu drives collagen synthesis while the healing peptides provide systemic regeneration.',
-    rationale:'GHK-Cu activates collagen synthesis genes and resets gene expression toward youthful patterns. BPC-157 and TB-500 provide the underlying tissue repair and anti-inflammatory foundation. All three work on different but complementary aspects of skin and tissue regeneration.',
-    benefits:['Skin tightening and wrinkle reduction','Systemic anti-aging via gene expression reset','Collagen and elastin production','Inflammation reduction','Improved flexibility'],
-    sideEffects:[{text:'Injection site redness from GHK-Cu (mild, transient)',severity:'low'},{text:'Possible temporary skin darkening (copper effect)',severity:'low'}],
-    note:'GHK-Cu can also be applied topically to face/skin in addition to SubQ. Inject BPC-157 and TB-500 separately.',
-    studies:[{title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and clarity, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
+    name:'FAT STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
+    description:'Built around retatrutide — the most potent weight loss compound ever tested. Phase 3 TRIUMPH-4 (Dec 2025): 28.7% weight loss at 68 weeks — highest in Phase 3 trial history. Phase 2 showed 24.2% at 48 weeks with no plateau. NAD+ and 5-amino-1mq complement the metabolic shift with mitochondrial and NNMT pathway support.',
+    rationale:'Retatrutide is a triple GLP-1/GIP/glucagon agonist — the glucagon component uniquely increases caloric expenditure on top of appetite reduction, explaining why it outperforms all other agents. NAD+ supports mitochondrial adaptation to the metabolic shift. 5-amino-1mq inhibits NNMT to further elevate NAD+ and suppress adipogenesis. All three hit different targets with no redundancy.',
+    benefits:['28.7% weight loss at 68 weeks in Phase 3 TRIUMPH-4 (Dec 2025) — highest ever Phase 3 obesity trial result','80%+ reduction in liver fat','Unique glucagon component increases caloric expenditure','Mitochondrial adaptation support (NAD+)','Fat cell expansion suppression (5-amino-1mq)','Improvements in all cardiometabolic markers'],
+    sideEffects:[{text:'Nausea — TITRATE VERY SLOWLY; start at 2mg and hold 8 weeks',severity:'med'},{text:'Vomiting during dose escalation if rushed',severity:'med'},{text:'Not FDA approved — Phase 3 trials ongoing as of 2025',severity:'high'},{text:'NAD+ flushing initially',severity:'low'}],
+    note:'Retatrutide requires the slowest titration of any weight loss peptide. Spend 6–8 weeks at each dose step. Do not rush. NAD+ flushing usually resolves after week 2. NEVER combine with semaglutide or tirzepatide.',
+    studies:[{title:'Retatrutide Phase 2 Trial: 24.2% Weight Loss',journal:'NEJM 2023',summary:'338 participants. 24.2% weight loss at 48 weeks with no plateau. 100% on 8–12mg achieved ≥5% loss. Historic efficacy data.',pmid:'37389765',url:'https://pubmed.ncbi.nlm.nih.gov/37389765/'}],
     peptides:[
-      {name:'GHK-Cu',schedule:'Daily SubQ or topical',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
-      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
+      {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
+      {name:'NAD+',schedule:'Daily SubQ AM',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
-    name:'RESET STACK',cycle:'12 weeks on / 4 weeks off',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
-    description:'The most comprehensive healing and anti-inflammatory stack. KPV adds potent NF-kB inhibition and mucosal healing — particularly powerful for gut issues, IBD, and chronic inflammation.',
-    rationale:'KPV specifically inhibits NF-kB at mucosal surfaces where BPC-157 also works. The combination provides local + systemic healing (BPC-157 + TB-500), skin/collagen regeneration (GHK-Cu), AND NF-kB anti-inflammatory modulation (KPV) across all tissue types.',
-    benefits:['Most comprehensive healing protocol','GI inflammation and IBD support (KPV + BPC-157)','Skin and systemic tissue regeneration','Immune modulation without immunosuppression','Leaky gut and mucosal barrier repair'],
-    sideEffects:[{text:'All four peptides well tolerated individually',severity:'low'},{text:'Injection burden: 3 daily SubQ + 1 weekly',severity:'low'}],
-    note:'Inject all peptides separately. High frequency — consider running Wolverine or Youth Stack first before escalating to full Reset Stack.',
-    studies:[{title:'KPV Reduces Colitis via NF-kB Inhibition',journal:'Gastroenterology 2006',summary:'KPV reduced colonic inflammation via NF-kB inhibition. Effective orally and locally.',pmid:'16530527',url:'https://pubmed.ncbi.nlm.nih.gov/16530527/'}],
+    name:'BETTER BODY LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
+    description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
+    rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
+    benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],
+    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high — monitor at 6–8 weeks',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],
+    note:'Both peptides share the same syringe — inject together before bed on empty stomach. Fasting 2+ hours before injection is critical for a clean GH pulse. This is the ideal first GH stack before advancing to Better Body Stack with Tesamorelin.',
+    studies:[{title:'Ipamorelin Selective GH Secretagogue Without Cortisol/Prolactin',journal:'Growth Hormone & IGF Research 1999',summary:'Potent GH release comparable to GHRP-6 without ACTH, cortisol or prolactin elevation. Established the clean GH pulse profile.',pmid:'10373343',url:'https://pubmed.ncbi.nlm.nih.gov/10373343/'}],
     peptides:[
-      {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
-      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
-      {name:'KPV',schedule:'Daily SubQ or oral',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'},
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 (no DAC) before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
   },
   {
@@ -213,19 +211,6 @@ export const STACKS = [
     ]
   },
   {
-    name:'BETTER BODY LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
-    description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
-    rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
-    benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],
-    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high — monitor at 6–8 weeks',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],
-    note:'Both peptides share the same syringe — inject together before bed on empty stomach. Fasting 2+ hours before injection is critical for a clean GH pulse. This is the ideal first GH stack before advancing to Better Body Stack with Tesamorelin.',
-    studies:[{title:'Ipamorelin Selective GH Secretagogue Without Cortisol/Prolactin',journal:'Growth Hormone & IGF Research 1999',summary:'Potent GH release comparable to GHRP-6 without ACTH, cortisol or prolactin elevation. Established the clean GH pulse profile.',pmid:'10373343',url:'https://pubmed.ncbi.nlm.nih.gov/10373343/'}],
-    peptides:[
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 (no DAC) before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-    ]
-  },
-  {
     name:'LIGHTS OUT STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',color:'#37474F',
     description:'Comprehensive sleep optimization. Each peptide hits a different sleep mechanism — GH secretagogues, sleep-inducing neuropeptides, and the primary circadian hormone — for complete sleep architecture enhancement.',
     rationale:'Sermorelin + Ipamorelin drive the natural overnight GH pulse during slow-wave sleep. DSIP promotes delta sleep via hypothalamic modulation and cortisol reduction. Injectable melatonin provides circadian timing and mitochondrial antioxidant protection without morning grogginess.',
@@ -241,16 +226,17 @@ export const STACKS = [
     ]
   },
   {
-    name:'FAT STACK LITE',cycle:'20+ weeks — no defined ceiling. Continue as long as weight loss is active.',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',color:'#2E7D32',
-    description:'The most powerful weight loss stack in Phase 3 data. CagriSema (REDEFINE 1) produced 23% average weight loss on-treatment — among the highest ever in a Phase 3 pharmaceutical trial.',
-    rationale:'Semaglutide activates GLP-1 receptors. Cagrilintide activates amylin receptors in the hypothalamus — a completely different pathway. The combination produces genuine additive weight loss because the mechanisms do not overlap.',
-    benefits:['23% body weight loss on-treatment (Phase 3 REDEFINE 1, 68 weeks)','Superior to any single GLP-1 agent','Improved satiety through two independent pathways','Blood sugar normalization','Reduced liver fat'],
-    sideEffects:[{text:'Nausea — additive from both agents; titrate slowly',severity:'med'},{text:'Vomiting during dose escalation',severity:'med'},{text:'Gallbladder disease (GLP-1 class effect)',severity:'high'}],
-    note:'Titrate each peptide independently. NEVER combine semaglutide with tirzepatide. Inject at different sites.',
-    studies:[{title:'CagriSema Phase 3 REDEFINE: 25.1% Weight Loss',journal:'NEJM 2025',summary:'23% average weight loss on-treatment at 68 weeks vs 8.1% semaglutide alone (REDEFINE 1). NDA filed Dec 2025.',pmid:'',url:'https://www.nejm.org/doi/10.1056/NEJMoa2410605'}],
+    name:'YOUTH STACK',cycle:'12 weeks on / 4 weeks off',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
+    description:'The anti-aging and skin optimization stack. GHK-Cu drives collagen synthesis while the healing peptides provide systemic regeneration.',
+    rationale:'GHK-Cu activates collagen synthesis genes and resets gene expression toward youthful patterns. BPC-157 and TB-500 provide the underlying tissue repair and anti-inflammatory foundation. All three work on different but complementary aspects of skin and tissue regeneration.',
+    benefits:['Skin tightening and wrinkle reduction','Systemic anti-aging via gene expression reset','Collagen and elastin production','Inflammation reduction','Improved flexibility'],
+    sideEffects:[{text:'Injection site redness from GHK-Cu (mild, transient)',severity:'low'},{text:'Possible temporary skin darkening (copper effect)',severity:'low'}],
+    note:'GHK-Cu can also be applied topically to face/skin in addition to SubQ. Inject BPC-157 and TB-500 separately.',
+    studies:[{title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and clarity, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
     peptides:[
-      {name:'Semaglutide',schedule:'Once weekly SubQ, same day each week',lo:'0.25 mg/wk → 0.5 mg maintenance',mid:'0.25→0.5→1.0→2.4 mg/wk (4 wks each)',hi:'2.4 mg/wk (full dose)'},
-      {name:'Cagrilintide',schedule:'Once weekly SubQ (different site from sema)',lo:'0.16 mg/wk → 0.3 mg maintenance',mid:'0.16→0.3→0.6→1.2 mg/wk',hi:'2.4 mg/wk'},
+      {name:'GHK-Cu',schedule:'Daily SubQ or topical',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
+      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
     ]
   },
   {
@@ -297,38 +283,6 @@ export const STACKS = [
     ]
   },
   {
-    name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",color:'#AD1457',
-    description:"A comprehensive women's optimization protocol targeting the key areas where peptide therapy provides the most benefit for women — hormonal balance, skin quality, libido, mood, and body composition — using compounds with well-established female-specific data.",
-    rationale:"Women have distinct hormonal physiology that responds differently to peptide protocols. PT-141 has FDA approval specifically for female sexual dysfunction (Vyleesi). GHK-Cu and L-Glutathione are particularly impactful for skin quality and anti-aging in women. Selank addresses anxiety and mood without hormone interference. GH peptides (CJC-1295 + Ipamorelin) improve body composition while supporting the sleep and recovery that women disproportionately lose with age.",
-    benefits:["Improved libido and sexual desire (PT-141 — FDA approved for HSDD in women)","Skin tightening, collagen production, and brightening (GHK-Cu + Glutathione)","Anxiety and mood stabilization without sedation (Selank)","Lean body composition and improved sleep quality (GH peptides)","Comprehensive anti-aging from multiple pathways","No direct hormonal pathway interference"],
-    sideEffects:[{text:'PT-141 nausea — always start at LOW and take on empty stomach',severity:'med'},{text:'Water retention from GH peptides (common, resolves)',severity:'low'},{text:'GHK-Cu injection site redness (mild, brief)',severity:'low'},{text:'Selank very well tolerated overall',severity:'low'}],
-    note:"PT-141 is as-needed only (not daily). GH peptides before bed daily. GHK-Cu and Glutathione can be run continuously. Run PT-141 only 2x/week maximum. Women are often more GH-sensitive — start at LOW dose for GH peptides.",
-    studies:[{title:'PT-141 (Bremelanotide) for Female HSDD: Phase 3',journal:'NEJM/JAMA 2019',summary:'PT-141 significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi. Landmark female-specific peptide approval.',pmid:'',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'GHK-Cu Skin Benefits: 42 Human Studies',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, reduced fine lines. Strong female anti-aging data.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
-    peptides:[
-      {name:'PT-141',schedule:'SubQ as needed, 45 min before — 2x/wk MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
-      {name:'GHK-Cu',schedule:'Daily SubQ or topical application to face',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
-      {name:'L-Glutathione',schedule:'SubQ 2x/week or IV infusion',lo:'500 mg 2x/wk',mid:'1,000 mg 2–3x/wk',hi:'1,500 mg 3x/wk'},
-      {name:'Selank',schedule:'Daily intranasal or SubQ (morning preferred)',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — empty stomach',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
-    ]
-  },
-  {
-    name:"MEN'S WELLNESS STACK",cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
-    description:'The full HPG axis restoration stack. Kisspeptin-10 activates the hypothalamus, HCG activates the testes — together they restore the complete testosterone production cascade from the top down.',
-    rationale:'KissPeptin-10 binds KISS1R in the hypothalamus triggering GnRH pulse → LH/FSH → testosterone. HCG directly mimics LH at the testicular level. These two together cover both ends of the HPG axis simultaneously. CJC-1295 + Ipamorelin added for GH axis support, recovery, and overall anabolic environment.',
-    benefits:['Complete HPG axis stimulation at two levels','Testosterone production restoration without TRT shutdown','Testicular function and size maintenance','Fertility preservation','Libido improvement','GH support for recovery and body composition'],
-    sideEffects:[{text:'Estradiol elevation from HCG aromatization — monitor E2',severity:'med'},{text:'LH surge from Kisspeptin may temporarily alter estrogen',severity:'med'},{text:'Bloodwork monitoring required (Total T, Free T, LH, FSH, E2, IGF-1)',severity:'high'},{text:'Water retention from GH peptides',severity:'low'}],
-    note:'BLOODWORK REQUIRED. Get baseline Total T, Free T, LH, FSH, estradiol, and IGF-1 before starting. Recheck at 6 weeks. This is not a beginner stack — consult Defy Medical or Marek Health for supervised protocol.',
-    studies:[{title:'Kisspeptin-10 Stimulates LH and Testosterone in Men',journal:'JCEM 2009',summary:'Significantly increased LH, FSH, and testosterone. Established HPG axis stimulation mechanism.',pmid:'19190100',url:'https://pubmed.ncbi.nlm.nih.gov/19190100/'},{title:'HCG for Testosterone Restoration During TRT',journal:'Journal of Urology 2013',summary:'HCG maintained intratesticular testosterone and spermatogenesis in men on TRT.',pmid:'23260547',url:'https://pubmed.ncbi.nlm.nih.gov/23260547/'}],
-    peptides:[
-      {name:'KissPeptin-10',schedule:'Daily SubQ injection',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
-      {name:'HCG',schedule:'SubQ 3x per week (different days)',lo:'500 IU EOD',mid:'1,000 IU 3x/wk',hi:'1,500 IU 3x/wk'},
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-    ]
-  },
-  {
     name:'LIMITLESS STACK',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',color:'#1565C0',
     description:'The most targeted cognitive optimization protocol. Semax elevates BDNF for focus and neuroprotection. Selank provides clean anxiolytic calm without sedation. NAD+ powers brain mitochondria. Three distinct pathways for comprehensive cognitive enhancement.',
     rationale:'Semax acts via ACTH(4-7) to upregulate BDNF and modulate dopamine/serotonin — enhancing focus, memory consolidation, and neuroplasticity. Selank modulates GABA-A and reduces anxiety without sedation — creating the calm, focused state where Semax is most effective. NAD+ ensures mitochondrial energy is not the bottleneck for brain performance. These work synergistically rather than redundantly.',
@@ -340,6 +294,48 @@ export const STACKS = [
       {name:'Semax',schedule:'Daily SubQ or intranasal — morning',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
       {name:'Selank',schedule:'Daily SubQ or intranasal — midday or AM',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
       {name:'NAD+',schedule:'Daily SubQ AM (can continue year-round)',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+    ]
+  },
+  {
+    name:'INTIMACY STACK',cycle:'As-needed — not a daily protocol. PT-141 and Oxytocin max 2x/week.',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal · Connection',color:'#880E4F',
+    description:'A three-compound as-needed stack targeting sexual desire, emotional bonding, and performance anxiety from completely different neurological pathways. PT-141 works centrally on desire circuits in the brain. Oxytocin deepens emotional connection and bonding. Selank eliminates performance anxiety without any sedation. All three can be taken together at the same time — 45–60 minutes before.',
+    rationale:'PT-141 activates MC4R in the hypothalamus — the neural desire circuit — working even when PDE5 inhibitors (Viagra/Cialis) fail because it operates at the brain level not the vascular level. Oxytocin enhances trust, bonding, and emotional connection — amplifying the experience beyond physical arousal alone. Selank modulates GABA-A to remove anxiety and self-consciousness without sedation — the calm, present state where intimacy is most natural. Three different mechanisms, genuine synergy, no redundancy.',
+    benefits:['Increased sexual desire at the neural level — works for both men and women','Emotional bonding and connection enhancement (Oxytocin)','Performance anxiety elimination without sedation or grogginess (Selank)','Effective even when conventional medications fail','Works on psychological and physiological arousal simultaneously','Simple as-needed protocol — all three taken together 45–60 min before'],
+    sideEffects:[{text:'PT-141 nausea — most common; always take on empty stomach and start LOW',severity:'med'},{text:'Flushing and headache from PT-141',severity:'low'},{text:'Transient blood pressure increase from PT-141',severity:'med'},{text:'Oxytocin may cause paradoxical anxiety in rare individuals',severity:'low'},{text:'Do not exceed PT-141 2x per week',severity:'high'},{text:'Avoid Oxytocin during pregnancy',severity:'high'}],
+    note:'All three compounds can be taken together at the same time — 45–60 minutes before. No need to stagger them. PT-141 SubQ, Oxytocin intranasal spray, Selank intranasal or SubQ — all at once. Never exceed PT-141 more than 2x per week. Women are often more sensitive to PT-141 — always start at LOW dose. Do not use Oxytocin during pregnancy.',
+    studies:[{title:'PT-141 for Female Sexual Dysfunction: Phase 3',journal:'JAMA 2019',summary:'Bremelanotide significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi.',pmid:'31116916',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'Intranasal Oxytocin Increases Trust and Bonding',journal:'Nature 2005',summary:'Intranasal oxytocin significantly increased trust behavior. Landmark demonstration of oxytocin modulating human social behavior.',pmid:'15931222',url:'https://pubmed.ncbi.nlm.nih.gov/15931222/'},{title:'Selank Anxiolytic Effects vs Diazepam',journal:'Bulletin of Experimental Biology 2008',summary:'Significant anxiolytic effects comparable to diazepam without sedation or memory impairment. No dependency risk.',pmid:'19145268',url:'https://pubmed.ncbi.nlm.nih.gov/19145268/'}],
+    peptides:[
+      {name:'PT-141',schedule:'SubQ 45–60 min before — empty stomach. 2x/week MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
+      {name:'Oxytocin',schedule:'Intranasal spray or SubQ — take at same time as PT-141. For SubQ: reconstitute 10mg in 2ml BAC water = 5,000 IU/ml',lo:'10 IU intranasal OR 0.05ml SubQ',mid:'20–40 IU intranasal OR 0.1ml SubQ',hi:'50 IU intranasal OR 0.15ml SubQ'},
+      {name:'Selank',schedule:'Intranasal or SubQ — take at same time as PT-141',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'},
+    ]
+  },
+  {
+    name:'RESET STACK',cycle:'12 weeks on / 4 weeks off',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
+    description:'The most comprehensive healing and anti-inflammatory stack. KPV adds potent NF-kB inhibition and mucosal healing — particularly powerful for gut issues, IBD, and chronic inflammation.',
+    rationale:'KPV specifically inhibits NF-kB at mucosal surfaces where BPC-157 also works. The combination provides local + systemic healing (BPC-157 + TB-500), skin/collagen regeneration (GHK-Cu), AND NF-kB anti-inflammatory modulation (KPV) across all tissue types.',
+    benefits:['Most comprehensive healing protocol','GI inflammation and IBD support (KPV + BPC-157)','Skin and systemic tissue regeneration','Immune modulation without immunosuppression','Leaky gut and mucosal barrier repair'],
+    sideEffects:[{text:'All four peptides well tolerated individually',severity:'low'},{text:'Injection burden: 3 daily SubQ + 1 weekly',severity:'low'}],
+    note:'Inject all peptides separately. High frequency — consider running Wolverine or Youth Stack first before escalating to full Reset Stack.',
+    studies:[{title:'KPV Reduces Colitis via NF-kB Inhibition',journal:'Gastroenterology 2006',summary:'KPV reduced colonic inflammation via NF-kB inhibition. Effective orally and locally.',pmid:'16530527',url:'https://pubmed.ncbi.nlm.nih.gov/16530527/'}],
+    peptides:[
+      {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
+      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
+      {name:'KPV',schedule:'Daily SubQ or oral',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'},
+    ]
+  },
+  {
+    name:'WOLVERINE STACK',cycle:'8–12 weeks on / 4 weeks off',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',color:'#0E7C7B',
+    description:'The most popular healing stack — BPC-157 works locally at the injury site while TB-500 provides systemic repair. Together they cover both local and systemic healing pathways for comprehensive recovery.',
+    rationale:'BPC-157 acts locally via VEGFR2/Akt-eNOS at the injury site. TB-500 acts systemically via actin regulation throughout the body. Completely different mechanisms — every clinical protocol recommends using them together because they complement each other precisely.',
+    benefits:['Accelerated tendon and ligament healing','Reduced pain and inflammation at injury site','Faster return to training','Systemic tissue repair and flexibility','Gut healing as secondary benefit (BPC-157)','Reduced scar tissue formation (TB-500)'],
+    sideEffects:[{text:'Injection site irritation (mild)',severity:'low'},{text:'Theoretical tumor promotion with BPC-157 — unconfirmed in humans',severity:'med'}],
+    note:'Inject each separately — never mix in same syringe. BPC-157 near injury site; TB-500 anywhere SubQ.',
+    studies:[{title:'BPC-157 Systematic Review',journal:'Orthopaedic Journal of Sports Medicine 2025',summary:'36-study review. Enhanced angiogenesis and tissue repair. 7/12 patients reported joint pain relief.',pmid:'',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12313605/'}],
+    peptides:[
+      {name:'BPC-157',schedule:'Daily SubQ near injury site or abdomen',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading (acute injury), then 2.5 mg/wk'},
     ]
   },
   {
@@ -375,39 +371,37 @@ export const STACKS = [
     ]
   },
   {
-    name:'ULTIMATE STACK',cycle:'12–16 weeks. Epithalon as 10-day burst only. IGF-1 LR3 max 6 weeks.',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
-    description:'A comprehensive performance and longevity stack combining GH optimization, anabolic support, systemic healing, immune modulation, and mitochondrial protection. Eight compounds covering five distinct biological pathways simultaneously — designed for experienced users optimizing body composition and long-term health in parallel.',
-    rationale:'CJC-1295 (with DAC) provides sustained once-weekly GH elevation. Ipamorelin adds a clean daily GH pulse without cortisol or prolactin. BPC-157 handles local tissue repair and gut health. TB-500 provides systemic healing and flexibility. Epithalon targets telomere-level anti-aging. Thymosin Alpha-1 modulates immune function bidirectionally. IGF-1 LR3 drives muscle hyperplasia during its strict 4-week cycle. SS-31 protects mitochondria from oxidative stress. Each compound targets a completely different pathway — no redundancy.',
-    benefits:['GH axis optimization via two complementary pathways (GHRH + GHRP)','Muscle hyperplasia and superior nutrient partitioning (IGF-1 LR3)','Systemic and local tissue repair (BPC-157 + TB-500)','Telomere-level anti-aging (Epithalon)','Bidirectional immune modulation (Thymosin Alpha-1)','Mitochondrial protection and cellular energy (SS-31)','Improved sleep quality and overnight GH pulse','Body composition and longevity optimized simultaneously'],
-    sideEffects:[{text:'Water retention from GH peptides — common at start, resolves',severity:'low'},{text:'Hypoglycemia from IGF-1 LR3 — MUST eat carbs within 30 min',severity:'high'},{text:'High injection frequency — plan your schedule carefully',severity:'low'},{text:'IGF-1 LR3 strictly 4 weeks on / 4 weeks off — do not extend',severity:'high'},{text:'Epithalon is a 20-day burst cycle — not continuous',severity:'med'}],
-    note:'Advanced stack — not for beginners. IGF-1 LR3 runs 4 weeks only then stops regardless of how you feel. Epithalon runs as a 20-day burst then stops. All other compounds run the full cycle. Always have carbohydrates ready when injecting IGF-1 LR3. Bloodwork before starting and at 6 weeks minimum.',
-    studies:[{title:'CJC-1295 Sustained GH and IGF-1 Elevation',journal:'JCEM 2006',summary:'Single injection produced 2–10x GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},{title:'IGF-1 and Muscle Protein Synthesis in Humans',journal:'American Journal of Physiology 1993',summary:'IGF-1 infusion acutely stimulated skeletal muscle protein synthesis in healthy adults.',pmid:'8338003',url:'https://pubmed.ncbi.nlm.nih.gov/8338003/'},{title:'SS-31 in Heart Failure: Phase 2 Trial',journal:'European Journal of Heart Failure 2020',summary:'SS-31 improved exercise capacity. First Phase 2 human data for mitochondria-targeted peptide.',pmid:'31701612',url:'https://pubmed.ncbi.nlm.nih.gov/31701612/'}],
+    name:"MEN'S WELLNESS STACK",cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
+    description:'The full HPG axis restoration stack. Kisspeptin-10 activates the hypothalamus, HCG activates the testes — together they restore the complete testosterone production cascade from the top down.',
+    rationale:'KissPeptin-10 binds KISS1R in the hypothalamus triggering GnRH pulse → LH/FSH → testosterone. HCG directly mimics LH at the testicular level. These two together cover both ends of the HPG axis simultaneously. CJC-1295 + Ipamorelin added for GH axis support, recovery, and overall anabolic environment.',
+    benefits:['Complete HPG axis stimulation at two levels','Testosterone production restoration without TRT shutdown','Testicular function and size maintenance','Fertility preservation','Libido improvement','GH support for recovery and body composition'],
+    sideEffects:[{text:'Estradiol elevation from HCG aromatization — monitor E2',severity:'med'},{text:'LH surge from Kisspeptin may temporarily alter estrogen',severity:'med'},{text:'Bloodwork monitoring required (Total T, Free T, LH, FSH, E2, IGF-1)',severity:'high'},{text:'Water retention from GH peptides',severity:'low'}],
+    note:'BLOODWORK REQUIRED. Get baseline Total T, Free T, LH, FSH, estradiol, and IGF-1 before starting. Recheck at 6 weeks. This is not a beginner stack — consult Defy Medical or Marek Health for supervised protocol.',
+    studies:[{title:'Kisspeptin-10 Stimulates LH and Testosterone in Men',journal:'JCEM 2009',summary:'Significantly increased LH, FSH, and testosterone. Established HPG axis stimulation mechanism.',pmid:'19190100',url:'https://pubmed.ncbi.nlm.nih.gov/19190100/'},{title:'HCG for Testosterone Restoration During TRT',journal:'Journal of Urology 2013',summary:'HCG maintained intratesticular testosterone and spermatogenesis in men on TRT.',pmid:'23260547',url:'https://pubmed.ncbi.nlm.nih.gov/23260547/'}],
     peptides:[
-      {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week — once weekly only (6–8 day half-life)',lo:'300 mcg/wk',mid:'500–1,000 mcg/wk',hi:'1,000–2,000 mcg/wk'},
-      {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
-      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
-      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
-      {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
-      {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
-      {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
-      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
+      {name:'KissPeptin-10',schedule:'Daily SubQ injection',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
+      {name:'HCG',schedule:'SubQ 3x per week (different days)',lo:'500 IU EOD',mid:'1,000 IU 3x/wk',hi:'1,500 IU 3x/wk'},
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
-  }  ,
+  },
   {
-    name:'INTIMACY STACK',cycle:'As-needed — not a daily protocol. PT-141 and Oxytocin max 2x/week.',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal · Connection',color:'#880E4F',
-    description:'A three-compound as-needed stack targeting sexual desire, emotional bonding, and performance anxiety from completely different neurological pathways. PT-141 works centrally on desire circuits in the brain. Oxytocin deepens emotional connection and bonding. Selank eliminates performance anxiety without any sedation. All three can be taken together at the same time — 45–60 minutes before.',
-    rationale:'PT-141 activates MC4R in the hypothalamus — the neural desire circuit — working even when PDE5 inhibitors (Viagra/Cialis) fail because it operates at the brain level not the vascular level. Oxytocin enhances trust, bonding, and emotional connection — amplifying the experience beyond physical arousal alone. Selank modulates GABA-A to remove anxiety and self-consciousness without sedation — the calm, present state where intimacy is most natural. Three different mechanisms, genuine synergy, no redundancy.',
-    benefits:['Increased sexual desire at the neural level — works for both men and women','Emotional bonding and connection enhancement (Oxytocin)','Performance anxiety elimination without sedation or grogginess (Selank)','Effective even when conventional medications fail','Works on psychological and physiological arousal simultaneously','Simple as-needed protocol — all three taken together 45–60 min before'],
-    sideEffects:[{text:'PT-141 nausea — most common; always take on empty stomach and start LOW',severity:'med'},{text:'Flushing and headache from PT-141',severity:'low'},{text:'Transient blood pressure increase from PT-141',severity:'med'},{text:'Oxytocin may cause paradoxical anxiety in rare individuals',severity:'low'},{text:'Do not exceed PT-141 2x per week',severity:'high'},{text:'Avoid Oxytocin during pregnancy',severity:'high'}],
-    note:'All three compounds can be taken together at the same time — 45–60 minutes before. No need to stagger them. PT-141 SubQ, Oxytocin intranasal spray, Selank intranasal or SubQ — all at once. Never exceed PT-141 more than 2x per week. Women are often more sensitive to PT-141 — always start at LOW dose. Do not use Oxytocin during pregnancy.',
-    studies:[{title:'PT-141 for Female Sexual Dysfunction: Phase 3',journal:'JAMA 2019',summary:'Bremelanotide significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi.',pmid:'31116916',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'Intranasal Oxytocin Increases Trust and Bonding',journal:'Nature 2005',summary:'Intranasal oxytocin significantly increased trust behavior. Landmark demonstration of oxytocin modulating human social behavior.',pmid:'15931222',url:'https://pubmed.ncbi.nlm.nih.gov/15931222/'},{title:'Selank Anxiolytic Effects vs Diazepam',journal:'Bulletin of Experimental Biology 2008',summary:'Significant anxiolytic effects comparable to diazepam without sedation or memory impairment. No dependency risk.',pmid:'19145268',url:'https://pubmed.ncbi.nlm.nih.gov/19145268/'}],
+    name:"WOMEN'S WELLNESS STACK",cycle:'12 weeks for GH peptides. GHK-Cu and Glutathione ongoing. PT-141 as-needed only.',emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",color:'#AD1457',
+    description:"A comprehensive women's optimization protocol targeting the key areas where peptide therapy provides the most benefit for women — hormonal balance, skin quality, libido, mood, and body composition — using compounds with well-established female-specific data.",
+    rationale:"Women have distinct hormonal physiology that responds differently to peptide protocols. PT-141 has FDA approval specifically for female sexual dysfunction (Vyleesi). GHK-Cu and L-Glutathione are particularly impactful for skin quality and anti-aging in women. Selank addresses anxiety and mood without hormone interference. GH peptides (CJC-1295 + Ipamorelin) improve body composition while supporting the sleep and recovery that women disproportionately lose with age.",
+    benefits:["Improved libido and sexual desire (PT-141 — FDA approved for HSDD in women)","Skin tightening, collagen production, and brightening (GHK-Cu + Glutathione)","Anxiety and mood stabilization without sedation (Selank)","Lean body composition and improved sleep quality (GH peptides)","Comprehensive anti-aging from multiple pathways","No direct hormonal pathway interference"],
+    sideEffects:[{text:'PT-141 nausea — always start at LOW and take on empty stomach',severity:'med'},{text:'Water retention from GH peptides (common, resolves)',severity:'low'},{text:'GHK-Cu injection site redness (mild, brief)',severity:'low'},{text:'Selank very well tolerated overall',severity:'low'}],
+    note:"PT-141 is as-needed only (not daily). GH peptides before bed daily. GHK-Cu and Glutathione can be run continuously. Run PT-141 only 2x/week maximum. Women are often more GH-sensitive — start at LOW dose for GH peptides.",
+    studies:[{title:'PT-141 (Bremelanotide) for Female HSDD: Phase 3',journal:'NEJM/JAMA 2019',summary:'PT-141 significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi. Landmark female-specific peptide approval.',pmid:'',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'GHK-Cu Skin Benefits: 42 Human Studies',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, reduced fine lines. Strong female anti-aging data.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
     peptides:[
-      {name:'PT-141',schedule:'SubQ 45–60 min before — empty stomach. 2x/week MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
-      {name:'Oxytocin',schedule:'Intranasal spray or SubQ — take at same time as PT-141. For SubQ: reconstitute 10mg in 2ml BAC water = 5,000 IU/ml',lo:'10 IU intranasal OR 0.05ml SubQ',mid:'20–40 IU intranasal OR 0.1ml SubQ',hi:'50 IU intranasal OR 0.15ml SubQ'},
-      {name:'Selank',schedule:'Intranasal or SubQ — take at same time as PT-141',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'},
+      {name:'PT-141',schedule:'SubQ as needed, 45 min before — 2x/wk MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
+      {name:'GHK-Cu',schedule:'Daily SubQ or topical application to face',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
+      {name:'L-Glutathione',schedule:'SubQ 2x/week or IV infusion',lo:'500 mg 2x/wk',mid:'1,000 mg 2–3x/wk',hi:'1,500 mg 3x/wk'},
+      {name:'Selank',schedule:'Daily intranasal or SubQ (morning preferred)',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — empty stomach',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
     ]
-  }
-
+  },
   ,{
     name:'PERI/MENOPAUSE STACK',cycle:'Ongoing for core stack. Epithalon as 10–20 day burst 2x/year. Kisspeptin-10 cycles 8–12 weeks.',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',color:'#6A1B9A',
     description:'A comprehensive peptide protocol designed around the two distinct phases of female hormonal transition. The core stack — Ipamorelin/CJC-1295, BPC-157, and Selank/Semax — runs through both perimenopause and menopause. One key swap: Kisspeptin-10 in perimenopause, Epithalon in full menopause. HRT (bioidentical hormones) remains the clinical foundation — these peptides are adjuncts that work alongside it, not replacements.',
@@ -443,7 +437,6 @@ export const STACKS = [
       {name:'Epithalon',schedule:'FULL MENOPAUSE — replaces Kisspeptin-10. Daily SubQ burst cycle only.',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
     ]
   },
-
   {
     name:'GOLDEN ERA STACK',
     cycle:'12 weeks for core stack / 4 weeks off. Epithalon: 10–20 day burst 2–4x per year. Thymosin Alpha-1: 10-week course 2x/year.',
@@ -480,5 +473,23 @@ export const STACKS = [
     note:'This is a high-complexity protocol with multiple daily injections. Start with 2–3 peptides and add others over 4–6 weeks. Tesamorelin + Ipamorelin must be injected fasted. AOD9604 must be separated from GH peptides by at least 2 hours. Epithalon runs as a burst — do not use continuously. Bloodwork recommended at baseline and at 8 weeks.',
     studies:[],
   },
-
+  {
+    name:'ULTIMATE STACK',cycle:'12–16 weeks. Epithalon as 10-day burst only. IGF-1 LR3 max 6 weeks.',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
+    description:'A comprehensive performance and longevity stack combining GH optimization, anabolic support, systemic healing, immune modulation, and mitochondrial protection. Eight compounds covering five distinct biological pathways simultaneously — designed for experienced users optimizing body composition and long-term health in parallel.',
+    rationale:'CJC-1295 (with DAC) provides sustained once-weekly GH elevation. Ipamorelin adds a clean daily GH pulse without cortisol or prolactin. BPC-157 handles local tissue repair and gut health. TB-500 provides systemic healing and flexibility. Epithalon targets telomere-level anti-aging. Thymosin Alpha-1 modulates immune function bidirectionally. IGF-1 LR3 drives muscle hyperplasia during its strict 4-week cycle. SS-31 protects mitochondria from oxidative stress. Each compound targets a completely different pathway — no redundancy.',
+    benefits:['GH axis optimization via two complementary pathways (GHRH + GHRP)','Muscle hyperplasia and superior nutrient partitioning (IGF-1 LR3)','Systemic and local tissue repair (BPC-157 + TB-500)','Telomere-level anti-aging (Epithalon)','Bidirectional immune modulation (Thymosin Alpha-1)','Mitochondrial protection and cellular energy (SS-31)','Improved sleep quality and overnight GH pulse','Body composition and longevity optimized simultaneously'],
+    sideEffects:[{text:'Water retention from GH peptides — common at start, resolves',severity:'low'},{text:'Hypoglycemia from IGF-1 LR3 — MUST eat carbs within 30 min',severity:'high'},{text:'High injection frequency — plan your schedule carefully',severity:'low'},{text:'IGF-1 LR3 strictly 4 weeks on / 4 weeks off — do not extend',severity:'high'},{text:'Epithalon is a 20-day burst cycle — not continuous',severity:'med'}],
+    note:'Advanced stack — not for beginners. IGF-1 LR3 runs 4 weeks only then stops regardless of how you feel. Epithalon runs as a 20-day burst then stops. All other compounds run the full cycle. Always have carbohydrates ready when injecting IGF-1 LR3. Bloodwork before starting and at 6 weeks minimum.',
+    studies:[{title:'CJC-1295 Sustained GH and IGF-1 Elevation',journal:'JCEM 2006',summary:'Single injection produced 2–10x GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},{title:'IGF-1 and Muscle Protein Synthesis in Humans',journal:'American Journal of Physiology 1993',summary:'IGF-1 infusion acutely stimulated skeletal muscle protein synthesis in healthy adults.',pmid:'8338003',url:'https://pubmed.ncbi.nlm.nih.gov/8338003/'},{title:'SS-31 in Heart Failure: Phase 2 Trial',journal:'European Journal of Heart Failure 2020',summary:'SS-31 improved exercise capacity. First Phase 2 human data for mitochondria-targeted peptide.',pmid:'31701612',url:'https://pubmed.ncbi.nlm.nih.gov/31701612/'}],
+    peptides:[
+      {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week — once weekly only (6–8 day half-life)',lo:'300 mcg/wk',mid:'500–1,000 mcg/wk',hi:'1,000–2,000 mcg/wk'},
+      {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
+      {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
+      {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
+      {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
+      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
+    ]
+  }
 ];

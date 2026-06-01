@@ -240,6 +240,20 @@ export const STACKS = [
     ]
   },
   {
+    name:'FAT STACK',cycle:'20+ weeks minimum. Retatrutide requires slow titration — do not rush.',emoji:'🟢',goal:'Maximum weight loss · No plateau · Liver fat · Cardiometabolic',color:'#1B5E20',
+    description:'Built around retatrutide — the most potent weight loss compound ever tested. Phase 3 TRIUMPH-4 (Dec 2025): 28.7% weight loss at 68 weeks — highest in Phase 3 trial history. Phase 2 showed 24.2% at 48 weeks with no plateau. NAD+ and 5-amino-1mq complement the metabolic shift with mitochondrial and NNMT pathway support.',
+    rationale:'Retatrutide is a triple GLP-1/GIP/glucagon agonist — the glucagon component uniquely increases caloric expenditure on top of appetite reduction, explaining why it outperforms all other agents. NAD+ supports mitochondrial adaptation to the metabolic shift. 5-amino-1mq inhibits NNMT to further elevate NAD+ and suppress adipogenesis. All three hit different targets with no redundancy.',
+    benefits:['28.7% weight loss at 68 weeks in Phase 3 TRIUMPH-4 (Dec 2025) — highest ever Phase 3 obesity trial result','80%+ reduction in liver fat','Unique glucagon component increases caloric expenditure','Mitochondrial adaptation support (NAD+)','Fat cell expansion suppression (5-amino-1mq)','Improvements in all cardiometabolic markers'],
+    sideEffects:[{text:'Nausea — TITRATE VERY SLOWLY; start at 2mg and hold 8 weeks',severity:'med'},{text:'Vomiting during dose escalation if rushed',severity:'med'},{text:'Not FDA approved — Phase 3 trials ongoing as of 2025',severity:'high'},{text:'NAD+ flushing initially',severity:'low'}],
+    note:'Retatrutide requires the slowest titration of any weight loss peptide. Spend 6–8 weeks at each dose step. Do not rush. NAD+ flushing usually resolves after week 2. NEVER combine with semaglutide or tirzepatide.',
+    studies:[{title:'Retatrutide Phase 2 Trial: 24.2% Weight Loss',journal:'NEJM 2023',summary:'338 participants. 24.2% weight loss at 48 weeks with no plateau. 100% on 8–12mg achieved ≥5% loss. Historic efficacy data.',pmid:'37389765',url:'https://pubmed.ncbi.nlm.nih.gov/37389765/'}],
+    peptides:[
+      {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
+      {name:'NAD+',schedule:'Daily SubQ AM',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+    ]
+  },
+  {
     name:'BENJAMIN BUTTON STACK',cycle:'10 weeks on / 2 weeks off for NAD+ and MOTS-c. SS-31 can run longer.',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Metabolic optimization · Anti-aging',color:'#4A148C',
     description:'The most comprehensive mitochondrial and longevity protocol. Four compounds each targeting a different mitochondrial pathway for complete cellular energy optimization.',
     rationale:'NAD+ replenishes the essential coenzyme declining with age. SS-31 reduces oxidative stress at the inner mitochondrial membrane. MOTS-c mimics exercise by activating AMPK. 5-amino-1mq prevents NAD+ breakdown by NNMT. All four hit completely different targets — no redundancy.',

@@ -198,6 +198,19 @@ export const STACKS = [
     ]
   },
   {
+    name:'BETTER BODY LITE STACK',cycle:'12 weeks on / 4 weeks off',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',color:'#1B5E20',
+    description:'The classic starter GH stack. Two compounds, one nightly injection, two completely different GH pathways. CJC-1295 (no DAC) stimulates GHRH receptors; Ipamorelin stimulates GHS-R1a (ghrelin receptor). Combined output is 2–3x greater than either alone — and both can be drawn into the same syringe.',
+    rationale:'CJC-1295 (no DAC) acts on GHRH receptors — the same pathway as your body\'s natural growth hormone releasing hormone, preserving pulsatility. Ipamorelin acts on GHS-R1a via a completely different mechanism, adding a selective GH pulse without elevating cortisol or prolactin. Together they hit both GH pathways simultaneously. This is the most commonly prescribed peptide combination in US telehealth — straightforward, effective, and well-tolerated. Start here before moving to GH STACK (Classic) with Tesamorelin.',
+    benefits:['Clean dual-pathway GH pulse — 2–3x output vs either alone','Lean muscle mass gains','Fat loss via GH-driven lipolysis','Significantly improved deep sleep quality','Recovery acceleration','Anti-aging via GH/IGF-1 axis elevation','One syringe, one nightly injection — simplest GH protocol available'],
+    sideEffects:[{text:'Water retention at start (common, resolves 2–3 weeks)',severity:'low'},{text:'Mild joint aches from water retention',severity:'low'},{text:'Carpal tunnel symptoms if IGF-1 runs too high — monitor at 6–8 weeks',severity:'med'},{text:'Blood glucose elevation (GH insulin antagonism)',severity:'med'}],
+    note:'Both peptides share the same syringe — inject together before bed on empty stomach. Fasting 2+ hours before injection is critical for a clean GH pulse. This is the ideal first GH stack before advancing to Better Body Stack with Tesamorelin.',
+    studies:[{title:'Ipamorelin Selective GH Secretagogue Without Cortisol/Prolactin',journal:'Growth Hormone & IGF Research 1999',summary:'Potent GH release comparable to GHRP-6 without ACTH, cortisol or prolactin elevation. Established the clean GH pulse profile.',pmid:'10373343',url:'https://pubmed.ncbi.nlm.nih.gov/10373343/'}],
+    peptides:[
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 (no DAC) before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+    ]
+  },
+  {
     name:'LIGHTS OUT STACK',cycle:'12 weeks on / 4 weeks off. Melatonin can run ongoing at low dose.',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',color:'#37474F',
     description:'Comprehensive sleep optimization. Each peptide hits a different sleep mechanism — GH secretagogues, sleep-inducing neuropeptides, and the primary circadian hormone — for complete sleep architecture enhancement.',
     rationale:'Sermorelin + Ipamorelin drive the natural overnight GH pulse during slow-wave sleep. DSIP promotes delta sleep via hypothalamic modulation and cortisol reduction. Injectable melatonin provides circadian timing and mitochondrial antioxidant protection without morning grogginess.',
@@ -341,6 +354,25 @@ export const STACKS = [
       {name:'Follistatin 344',schedule:'SubQ daily — 10–20 day burst, then 4+ weeks off',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
       {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week only (6–8 day half-life)',lo:'300 mcg/wk',mid:'500 mcg/wk',hi:'1,000 mcg/wk'},
       {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+    ]
+  },
+  {
+    name:'ULTIMATE STACK',cycle:'12–16 weeks. Epithalon as 10-day burst only. IGF-1 LR3 max 6 weeks.',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',color:'#1565C0',
+    description:'A comprehensive performance and longevity stack combining GH optimization, anabolic support, systemic healing, immune modulation, and mitochondrial protection. Eight compounds covering five distinct biological pathways simultaneously — designed for experienced users optimizing body composition and long-term health in parallel.',
+    rationale:'CJC-1295 (with DAC) provides sustained once-weekly GH elevation. Ipamorelin adds a clean daily GH pulse without cortisol or prolactin. BPC-157 handles local tissue repair and gut health. TB-500 provides systemic healing and flexibility. Epithalon targets telomere-level anti-aging. Thymosin Alpha-1 modulates immune function bidirectionally. IGF-1 LR3 drives muscle hyperplasia during its strict 4-week cycle. SS-31 protects mitochondria from oxidative stress. Each compound targets a completely different pathway — no redundancy.',
+    benefits:['GH axis optimization via two complementary pathways (GHRH + GHRP)','Muscle hyperplasia and superior nutrient partitioning (IGF-1 LR3)','Systemic and local tissue repair (BPC-157 + TB-500)','Telomere-level anti-aging (Epithalon)','Bidirectional immune modulation (Thymosin Alpha-1)','Mitochondrial protection and cellular energy (SS-31)','Improved sleep quality and overnight GH pulse','Body composition and longevity optimized simultaneously'],
+    sideEffects:[{text:'Water retention from GH peptides — common at start, resolves',severity:'low'},{text:'Hypoglycemia from IGF-1 LR3 — MUST eat carbs within 30 min',severity:'high'},{text:'High injection frequency — plan your schedule carefully',severity:'low'},{text:'IGF-1 LR3 strictly 4 weeks on / 4 weeks off — do not extend',severity:'high'},{text:'Epithalon is a 20-day burst cycle — not continuous',severity:'med'}],
+    note:'Advanced stack — not for beginners. IGF-1 LR3 runs 4 weeks only then stops regardless of how you feel. Epithalon runs as a 20-day burst then stops. All other compounds run the full cycle. Always have carbohydrates ready when injecting IGF-1 LR3. Bloodwork before starting and at 6 weeks minimum.',
+    studies:[{title:'CJC-1295 Sustained GH and IGF-1 Elevation',journal:'JCEM 2006',summary:'Single injection produced 2–10x GH elevation lasting 6+ days.',pmid:'16352683',url:'https://pubmed.ncbi.nlm.nih.gov/16352683/'},{title:'IGF-1 and Muscle Protein Synthesis in Humans',journal:'American Journal of Physiology 1993',summary:'IGF-1 infusion acutely stimulated skeletal muscle protein synthesis in healthy adults.',pmid:'8338003',url:'https://pubmed.ncbi.nlm.nih.gov/8338003/'},{title:'SS-31 in Heart Failure: Phase 2 Trial',journal:'European Journal of Heart Failure 2020',summary:'SS-31 improved exercise capacity. First Phase 2 human data for mitochondria-targeted peptide.',pmid:'31701612',url:'https://pubmed.ncbi.nlm.nih.gov/31701612/'}],
+    peptides:[
+      {name:'CJC-1295 (with DAC)',schedule:'SubQ once per week — once weekly only (6–8 day half-life)',lo:'300 mcg/wk',mid:'500–1,000 mcg/wk',hi:'1,000–2,000 mcg/wk'},
+      {name:'Ipamorelin',schedule:'Daily SubQ before bed, empty stomach',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
+      {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
+      {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
+      {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
+      {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
+      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
     ]
   },
   {

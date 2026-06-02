@@ -19,6 +19,7 @@ Object.assign(window, {
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
   sdSetTier, sdCalculate, switchCalcTab,
   plannerSetTier, plannerLoadStack, plannerCalculate,
+  STACKS,
 });
 
 // ─── i18n ────────────────────────────────────────────────

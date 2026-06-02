@@ -272,6 +272,56 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .planner-result-detail{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
 .planner-result-vials{font-size:22px;font-weight:600;color:var(--blue);text-align:right;}
 .planner-result-vials-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);text-align:right;}
+/* ─── Order Builder ─── */
+.ob-market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.ob-market-btn{background:var(--white);border:2px solid var(--border);border-radius:10px;padding:16px 8px;text-align:center;cursor:pointer;transition:all 0.15s;font-family:'IBM Plex Sans',sans-serif;width:100%;}
+.ob-market-btn:hover{border-color:var(--blue);background:var(--blue-light);}
+.ob-market-btn:active{transform:scale(0.97);}
+.ob-market-emoji{font-size:22px;margin-bottom:5px;}
+.ob-market-name{font-size:12px;font-weight:600;color:var(--text);}
+.ob-header-bar{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.ob-header-title{font-size:14px;font-weight:600;}
+.ob-header-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.ob-change-btn{background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:5px 10px;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer;color:var(--text2);white-space:nowrap;flex-shrink:0;}
+.ob-section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px;}
+.ob-stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ob-stack-card{background:var(--white);border:2px solid var(--border);border-radius:8px;padding:11px 11px 9px;transition:border-color 0.15s;}
+.ob-stack-card.selected{border-color:var(--blue);background:var(--blue-light);}
+.ob-stack-emoji{font-size:18px;margin-bottom:4px;}
+.ob-stack-name{font-size:10px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.02em;}
+.ob-stack-goal{font-size:10px;color:var(--text3);line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ob-tier-row{display:flex;gap:4px;}
+.ob-tier-btn{flex:1;padding:5px 2px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace;cursor:pointer;background:var(--bg);color:var(--text3);transition:all 0.12s;letter-spacing:0.03em;}
+.ob-tier-btn:active{transform:scale(0.95);}
+.ob-tier-btn.lo.active{background:var(--lo-bg);border-color:var(--lo);color:var(--lo);}
+.ob-tier-btn.mid.active{background:var(--mid-bg);border-color:var(--mid);color:var(--mid);}
+.ob-tier-btn.hi.active{background:var(--hi-bg);border-color:var(--hi);color:var(--hi);}
+.ob-queue-box{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.ob-queue-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+.ob-queue-item:last-child{border-bottom:none;}
+.ob-queue-name{font-size:12px;font-weight:600;}
+.ob-queue-tier{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;flex-shrink:0;}
+.ob-queue-tier.lo{background:var(--lo-bg);color:var(--lo);}
+.ob-queue-tier.mid{background:var(--mid-bg);color:var(--mid);}
+.ob-queue-tier.hi{background:var(--hi-bg);color:var(--hi);}
+.ob-queue-remove{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;flex-shrink:0;transition:color 0.12s;}
+.ob-queue-remove:hover{color:var(--red);}
+.ob-result-row{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);}
+.ob-result-row:last-child{border-bottom:none;}
+.ob-result-name{font-size:12px;font-weight:600;}
+.ob-result-detail{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
+.ob-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:2px solid var(--border2);margin-top:4px;}
+.ob-total-label{font-size:13px;font-weight:600;}
+.ob-total-price{font-size:20px;font-weight:700;color:var(--blue);}
+.ob-skip-box{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px;}
+.ob-skip-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
+.ob-skip-row:last-child{border-bottom:none;}
+.ob-skip-name{font-size:12px;font-weight:600;color:var(--text2);}
+.ob-skip-reason{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--amber);}
+.ob-send-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:14px;letter-spacing:0.02em;transition:all 0.15s;font-family:'IBM Plex Sans',sans-serif;}
+.ob-send-btn:active{transform:scale(0.98);background:#1245a0;}
+.ob-loading{text-align:center;padding:24px;color:var(--text3);font-size:13px;}
+.ob-error{background:var(--red-light);border:1px solid var(--hi-border);border-radius:7px;padding:12px 14px;color:var(--red);font-size:13px;margin-top:8px;}
 </style>
 <script data-goatcounter="https://peptiderefrenceapp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -303,6 +353,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="nav-tab" data-page="stacks" data-i18n="nav_stacks">Stacks</div>
   <div class="nav-tab" data-page="az" data-i18n="nav_az">A–Z Index</div>
   <div class="nav-tab" data-page="calc" data-i18n="nav_calc">Calculator</div>
+  <div class="nav-tab" data-page="order">Order</div>
 </div>
 
 <!-- BROWSE PAGE -->
@@ -584,11 +635,452 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
+<!-- ORDER PAGE -->
+<div class="page" id="page-order">
+
+  <!-- Market selector screen -->
+  <div id="obMarketScreen">
+    <div class="clin-header">
+      <div>
+        <div class="ch-title">Build Your Stack Order</div>
+        <div class="ch-sub">Select stacks · choose dose tier · order auto-calculated from live inventory</div>
+      </div>
+      <div class="ch-badge">ORDER</div>
+    </div>
+    <div class="ob-section-label">SELECT YOUR LOCATION</div>
+    <div class="ob-market-grid">
+      <button class="ob-market-btn" onclick="obSelectMarket('cerritos')">
+        <div class="ob-market-emoji">📍</div>
+        <div class="ob-market-name">Cerritos</div>
+      </button>
+      <button class="ob-market-btn" onclick="obSelectMarket('sandiego')">
+        <div class="ob-market-emoji">🌊</div>
+        <div class="ob-market-name">San Diego</div>
+      </button>
+      <button class="ob-market-btn" onclick="obSelectMarket('tijuana')">
+        <div class="ob-market-emoji">🌮</div>
+        <div class="ob-market-name">Tijuana</div>
+      </button>
+    </div>
+    <div class="disclaimer">Each location maintains its own live inventory. Select yours to see what's in stock and calculate vial quantities automatically.</div>
+  </div>
+
+  <!-- Builder screen (shown after market selected) -->
+  <div id="obBuilderScreen" style="display:none">
+
+    <div class="ob-header-bar">
+      <div>
+        <div class="ob-header-title" id="obHeaderTitle">Build Your Stack</div>
+        <div class="ob-header-sub">Tap a tier to add a stack · duplicates auto-merged</div>
+      </div>
+      <button class="ob-change-btn" onclick="obResetMarket()">Change</button>
+    </div>
+
+    <div class="ob-section-label">CHOOSE YOUR STACKS</div>
+    <div class="ob-stack-grid" id="obStackGrid"></div>
+
+    <!-- Queue section -->
+    <div id="obQueueSection" style="display:none">
+      <div class="ob-section-label">YOUR SELECTION</div>
+      <div class="ob-queue-box">
+        <div id="obQueueList"></div>
+        <button class="calc-btn" style="margin-top:12px" onclick="obCalculate()">Calculate Order →</button>
+      </div>
+    </div>
+
+    <!-- Result section -->
+    <div id="obResultSection" style="display:none">
+      <div class="ob-section-label" style="margin-top:12px">CALCULATED ORDER</div>
+      <div id="obResultContent"></div>
+    </div>
+
+    <div class="disclaimer" style="margin-top:14px;"><strong>Order Builder.</strong> Vial quantities are calculated from stack dose tiers and minimum cycle lengths. Verify amounts before checkout. Add BAC Water separately for reconstitution. Skipped items (IU-based, as-needed, not in catalog) must be ordered manually.</div>
+  </div>
+
+</div>
+
 <div class="scroll-top" id="scrollTop">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
 </div>
 
 <script type="module" src="js/app.js"></script>
+
+<!-- ORDER BUILDER -->
+<script>
+(function(){
+'use strict';
+
+var OB_MARKETS={
+  cerritos:{name:'Cerritos',emoji:'📍',
+    api:'https://script.google.com/macros/s/AKfycbztRTHC4PFfMqbCXmeEy_xKAiDH3z9Ue3DJAyYkvjqvhu4D300k6_jcjW-BY9k7xhY8/exec',
+    url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html'},
+  sandiego:{name:'San Diego',emoji:'🌊',
+    api:'https://script.google.com/macros/s/AKfycbxeYIWTinJkzindnRHziQTGQFHoU5ZLYM9O8QM5hERFwsVQd51eIPz-C29RPc5NbgNszQ/exec',
+    url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html'},
+  tijuana:{name:'Tijuana',emoji:'🌮',
+    api:'https://script.google.com/macros/s/AKfycbxCQp5yYAdFZsBqWjDC_9TrDRHjJFxx4HaMmE15LeVizpbMMzeSjA4DnXNBLTycfHE/exec',
+    url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html'}
+};
+
+// Peptide name → [{code, mg}] sorted largest first
+var OB_CODES={
+  'Retatrutide':        [{code:'RT60',mg:60},{code:'RT50',mg:50},{code:'RT40',mg:40},{code:'RT30',mg:30},{code:'RT20',mg:20},{code:'RT15',mg:15},{code:'RT10',mg:10},{code:'RT5',mg:5}],
+  'NAD+':               [{code:'NJ1000',mg:1000},{code:'NJ500',mg:500}],
+  '5-amino-1mq':        [{code:'50AM',mg:50},{code:'5AM',mg:5}],
+  'Semaglutide':        [{code:'SM30',mg:30},{code:'SM20',mg:20},{code:'SM15',mg:15},{code:'SM10',mg:10},{code:'SM5',mg:5}],
+  'Cagrilintide':       [{code:'CGL10',mg:10},{code:'CGL5',mg:5}],
+  'Tesamorelin':        [{code:'TSM10',mg:10},{code:'TSM5',mg:5}],
+  'Ipamorelin':         [{code:'IP10',mg:10},{code:'IP5',mg:5}],
+  'CJC-1295 (no DAC)':  [{code:'CND10',mg:10},{code:'CND5',mg:5}],
+  'CJC-1295 (with DAC)':[{code:'CD5',mg:5}],
+  'Sermorelin':         [{code:'SMO10',mg:10},{code:'SMO5',mg:5}],
+  'DSIP':               [{code:'DS10',mg:10},{code:'DS5',mg:5}],
+  'Melatonin':          [{code:'MT10',mg:10}],
+  'GHK-Cu':             [{code:'CU100',mg:100},{code:'CU50',mg:50}],
+  'BPC-157':            [{code:'BC10',mg:10},{code:'BC5',mg:5}],
+  'TB-500':             [{code:'TB10',mg:10},{code:'TB5',mg:5}],
+  'SS-31':              [{code:'2S50',mg:50},{code:'2S10',mg:10}],
+  'MOTS-c':             [{code:'MS40',mg:40},{code:'MS10',mg:10}],
+  'Thymosin Alpha-1':   [{code:'TA10',mg:10},{code:'TA5',mg:5}],
+  'Epithalon':          [{code:'ET50',mg:50},{code:'ET10',mg:10}],
+  'Semax':              [{code:'XA11',mg:11},{code:'XA5',mg:5}],
+  'Selank':             [{code:'SK11',mg:11},{code:'SK5',mg:5}],
+  'PT-141':             [{code:'P41',mg:10}],
+  'KissPeptin-10':      [{code:'KS10',mg:10},{code:'KS5',mg:5}],
+  'IGF-1 LR3':          [{code:'IG1',mg:1},{code:'IG01',mg:0.1}],
+  'L-Glutathione':      [{code:'GTT',mg:1500}],
+  'KPV':                [{code:'KPV10',mg:10}],
+  'AOD9604':            [{code:'5AD',mg:5}]
+};
+
+var obMarket=null,obQueue=[],obInitialized=false,obOrderItems=[];
+
+// ─── Init ────────────────────────────────────────────────
+window.obInit=function(){
+  if(!obInitialized){obRenderCards();obInitialized=true;}
+  var from=sessionStorage.getItem('psw_from');
+  if(from&&OB_MARKETS[from]&&!obMarket)obSelectMarket(from);
+  obUpdateQueueUI();
+};
+
+// ─── Market ──────────────────────────────────────────────
+window.obSelectMarket=function(key){
+  obMarket=key;
+  document.getElementById('obMarketScreen').style.display='none';
+  document.getElementById('obBuilderScreen').style.display='block';
+  document.getElementById('obHeaderTitle').textContent='Build Your Stack — '+OB_MARKETS[key].name;
+  document.getElementById('obResultSection').style.display='none';
+  if(!obInitialized){obRenderCards();obInitialized=true;}
+  obUpdateQueueUI();
+};
+window.obResetMarket=function(){
+  obMarket=null;
+  document.getElementById('obMarketScreen').style.display='block';
+  document.getElementById('obBuilderScreen').style.display='none';
+};
+
+// ─── Render stack cards ──────────────────────────────────
+function obRenderCards(){
+  var stacks=window.STACKS;
+  if(!stacks||!stacks.length){setTimeout(obRenderCards,150);return;}
+  var html='';
+  stacks.forEach(function(stack,idx){
+    var q=obQueue.find(function(x){return x.idx===idx;});
+    var sel=q?q.tier:null;
+    html+='<div class="ob-stack-card'+(sel?' selected':'')+'" id="obCard_'+idx+'">';
+    html+='<div class="ob-stack-emoji">'+(stack.emoji||'💊')+'</div>';
+    html+='<div class="ob-stack-name">'+stack.name+'</div>';
+    html+='<div class="ob-stack-goal">'+(stack.goal||'')+'</div>';
+    html+='<div class="ob-tier-row">';
+    ['lo','mid','hi'].forEach(function(t){
+      var act=sel===t?' active':'';
+      html+='<button class="ob-tier-btn '+t+act+'" onclick="obToggleTier('+idx+',\''+t+'\',this)">'+t.toUpperCase()+'</button>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('obStackGrid').innerHTML=html;
+}
+
+// ─── Tier toggle ─────────────────────────────────────────
+window.obToggleTier=function(idx,tier){
+  var i=obQueue.findIndex(function(x){return x.idx===idx;});
+  if(i>=0){
+    if(obQueue[i].tier===tier)obQueue.splice(i,1);
+    else obQueue[i].tier=tier;
+  }else{
+    obQueue.push({idx:idx,tier:tier});
+  }
+  obRefreshCard(idx);
+  obUpdateQueueUI();
+  document.getElementById('obResultSection').style.display='none';
+};
+window.obRemoveStack=function(idx){
+  obQueue=obQueue.filter(function(x){return x.idx!==idx;});
+  obRefreshCard(idx);
+  obUpdateQueueUI();
+  document.getElementById('obResultSection').style.display='none';
+};
+function obRefreshCard(idx){
+  var card=document.getElementById('obCard_'+idx);
+  if(!card)return;
+  var q=obQueue.find(function(x){return x.idx===idx;});
+  var sel=q?q.tier:null;
+  card.className='ob-stack-card'+(sel?' selected':'');
+  card.querySelectorAll('.ob-tier-btn').forEach(function(btn){
+    var t=['lo','mid','hi'].find(function(x){return btn.classList.contains(x);});
+    btn.className='ob-tier-btn '+t+(sel===t?' active':'');
+  });
+}
+
+// ─── Queue display ───────────────────────────────────────
+function obUpdateQueueUI(){
+  var sec=document.getElementById('obQueueSection');
+  var list=document.getElementById('obQueueList');
+  if(!sec||!list)return;
+  if(!obQueue.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  var stacks=window.STACKS;
+  list.innerHTML=obQueue.map(function(q){
+    var s=stacks[q.idx];
+    var wks=obCycleWeeks(s.cycle);
+    var goalShort=(s.goal||'').split(' · ').slice(0,2).join(' · ');
+    var tLabel=q.tier==='lo'?'🟢 LO':q.tier==='mid'?'🔵 MID':'🔴 HI';
+    return '<div class="ob-queue-item">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div class="ob-queue-name">'+(s.emoji||'')+'&nbsp;'+s.name+'</div>'
+      +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--text3);">'+wks+' wks · '+goalShort+'</div>'
+      +'</div>'
+      +'<span class="ob-queue-tier '+q.tier+'">'+tLabel+'</span>'
+      +'<button class="ob-queue-remove" onclick="obRemoveStack('+q.idx+')">×</button>'
+      +'</div>';
+  }).join('');
+}
+
+// ─── Dose parsing ─────────────────────────────────────────
+function obCycleWeeks(cycleStr){
+  if(!cycleStr)return 12;
+  var lc=cycleStr.toLowerCase();
+  if(lc.includes('as-needed')||lc.includes('as needed'))return 4;
+  var m=cycleStr.match(/(\d+)/);
+  return m?Math.max(parseInt(m[1]),1):12;
+}
+
+function obParseMg(dose,weeks){
+  if(!dose)return null;
+  var s=dose.trim();
+  if(/\bIU\b/i.test(s))return null;         // IU-based
+  if(/as.?needed/i.test(s))return null;      // as-needed
+  if(/intranasal\s+or/i.test(s))return null; // Oxytocin IU string
+
+  s=s.replace(/(\d),(\d)/g,'$1$2');          // strip commas: 1,000 → 1000
+
+  // "...then X mg..." → take maintenance
+  if(/\bthen\b/i.test(s))s=s.replace(/.*\bthen\b\s*/i,'');
+
+  // titration with → → take last segment
+  if(/→/.test(s)){var parts=s.split('→');s=parts[parts.length-1].trim();}
+
+  s=s.replace(/^up\s+to\s+/i,'');           // "up to X mg/wk"
+  s=s.replace(/(\d+\.?\d*)[–\-](\d+\.?\d*)/g,'$1'); // range X–Y → X
+
+  var n,unit,mult;
+
+  // Burst: "X mg/day × N days" or "X mg × N days"
+  var bm=s.match(/^([\d.]+)\s*(mg|mcg)\s*(?:\/day|\/night)?\s*[×x]\s*(\d+)\s*days?/i);
+  if(bm){n=parseFloat(bm[1]);unit=bm[2].toLowerCase();mult=parseInt(bm[3]);
+    return (unit==='mcg'?n/1000:n)*mult;}
+
+  // Multi-daily: "X mg Nx/day"
+  var mdm=s.match(/^([\d.]+)\s*(mg|mcg)\s+(\d+)x\s*\/day/i);
+  if(mdm){n=parseFloat(mdm[1])*parseInt(mdm[3]);unit=mdm[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*7*weeks;}
+
+  // Multi-weekly: "X mg Nx/wk"
+  var mwm=s.match(/^([\d.]+)\s*(mg|mcg)\s+(\d+)x\s*\/wk/i);
+  if(mwm){n=parseFloat(mwm[1])*parseInt(mwm[3]);unit=mwm[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*weeks;}
+
+  // Daily: /day, /night, /d
+  var dm=s.match(/^([\d.]+)\s*(mg|mcg)\s*\/?(day|night|d)\b/i);
+  if(dm){n=parseFloat(dm[1]);unit=dm[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*7*weeks;}
+
+  // Weekly: /wk
+  var wm=s.match(/^([\d.]+)\s*(mg|mcg)\s*\/wk\b/i);
+  if(wm){n=parseFloat(wm[1]);unit=wm[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*weeks;}
+
+  // "X mg maintenance" (after → split)
+  var mm=s.match(/^([\d.]+)\s*(mg|mcg)\s+maintenance\b/i);
+  if(mm){n=parseFloat(mm[1]);unit=mm[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*weeks;}
+
+  // bare "X mg" after → split (e.g. "0.5 mg" from titration)
+  var barem=s.match(/^([\d.]+)\s*(mg|mcg)\s*$/i);
+  if(barem){n=parseFloat(barem[1]);unit=barem[2].toLowerCase();
+    return (unit==='mcg'?n/1000:n)*weeks;}
+
+  return null;
+}
+
+// ─── Vial optimizer (greedy minimum waste) ───────────────
+function obOptimize(totalMg,sizes){
+  var avail=sizes.filter(function(s){return s.stock>0&&s.mg>0;})
+    .sort(function(a,b){return b.mg-a.mg;});
+  if(!avail.length)return[];
+  var result=[],remaining=totalMg;
+  for(var i=0;i<avail.length&&remaining>0.001;i++){
+    var s=avail[i];
+    var qty=Math.min(Math.floor(remaining/s.mg),s.stock);
+    if(qty>0){result.push({code:s.code,mg:s.mg,price:s.price,qty:qty});remaining-=qty*s.mg;}
+  }
+  if(remaining>0.001){
+    var sm=avail.slice().sort(function(a,b){return a.mg-b.mg;})[0];
+    var ex=result.find(function(r){return r.code===sm.code;});
+    if(ex)ex.qty++;else result.push({code:sm.code,mg:sm.mg,price:sm.price,qty:1});
+  }
+  return result;
+}
+
+// ─── Inventory fetch ──────────────────────────────────────
+function obFetchInventory(key){
+  return new Promise(function(resolve){
+    var xhr=new XMLHttpRequest();
+    xhr.open('GET',OB_MARKETS[key].api+'?action=getInventory&t='+Date.now(),true);
+    xhr.onload=function(){try{resolve(JSON.parse(xhr.responseText));}catch(e){resolve(null);}};
+    xhr.onerror=function(){resolve(null);};
+    setTimeout(function(){resolve(null);},10000);
+    xhr.send();
+  });
+}
+
+// ─── Main calculate ───────────────────────────────────────
+window.obCalculate=function(){
+  var stacks=window.STACKS;
+  if(!stacks||!obMarket||!obQueue.length)return;
+  var resultSec=document.getElementById('obResultSection');
+  var resultContent=document.getElementById('obResultContent');
+  resultSec.style.display='block';
+  resultContent.innerHTML='<div class="ob-loading">⏳ Fetching live inventory from '+OB_MARKETS[obMarket].name+'…</div>';
+  window.scrollTo(0,document.body.scrollHeight);
+
+  obFetchInventory(obMarket).then(function(invData){
+    var invMap={};
+    if(Array.isArray(invData))invData.forEach(function(x){if(x.code)invMap[x.code]=x;});
+
+    if(!Object.keys(invMap).length){
+      resultContent.innerHTML='<div class="ob-error">⚠ Could not load live inventory from '+OB_MARKETS[obMarket].name+'. Check your connection and try again.</div>';
+      return;
+    }
+
+    // Build merged peptide requirements across all queued stacks
+    var merged={};
+    obQueue.forEach(function(q){
+      var stack=stacks[q.idx];
+      var weeks=obCycleWeeks(stack.cycle);
+      stack.peptides.forEach(function(p){
+        var dose=p[q.tier]||p.mid;
+        var mg=obParseMg(dose,weeks);
+        if(merged[p.name]){
+          if(mg!==null)merged[p.name].totalMg+=mg;
+          if(!merged[p.name].stacks.includes(stack.name))merged[p.name].stacks.push(stack.name);
+        }else{
+          merged[p.name]={totalMg:mg,dose:dose,stacks:[stack.name]};
+        }
+      });
+    });
+
+    // Optimize vials for each peptide
+    var orderItems=[],skipped=[];
+    Object.keys(merged).forEach(function(pName){
+      var req=merged[pName];
+      var catalog=OB_CODES[pName];
+      if(!catalog||!catalog.length){skipped.push({name:pName,reason:'Not in catalog'});return;}
+      if(req.totalMg===null||req.totalMg<=0){
+        var skipReason=(/\bIU\b/i.test(req.dose))?'IU-based':/as.?needed/i.test(req.dose)?'As-needed':'Cannot calculate';
+        skipped.push({name:pName,reason:skipReason});return;
+      }
+      var sizes=catalog.map(function(c){
+        var inv=invMap[c.code];
+        return {code:c.code,mg:c.mg,stock:inv?Math.max(0,parseInt(inv.stock)||0):0,price:inv&&inv.price>0?parseFloat(inv.price):0};
+      }).filter(function(s){return s.stock>0;});
+      if(!sizes.length){skipped.push({name:pName,reason:'Out of stock'});return;}
+      var vials=obOptimize(req.totalMg,sizes);
+      vials.forEach(function(v){
+        orderItems.push({code:v.code,mgPerVial:v.mg,qty:v.qty,price:v.price,peptideName:pName,totalMgNeeded:req.totalMg});
+      });
+    });
+
+    obOrderItems=orderItems;
+    resultContent.innerHTML=obRenderResult(orderItems,skipped);
+  });
+};
+
+// ─── Render result ────────────────────────────────────────
+function obRenderResult(items,skipped){
+  if(!items.length&&!skipped.length)
+    return'<div class="ob-error">No orderable items found for the selected stacks at this location.</div>';
+
+  // Group by peptide name
+  var byPeptide={};
+  items.forEach(function(item){
+    if(!byPeptide[item.peptideName])byPeptide[item.peptideName]=[];
+    byPeptide[item.peptideName].push(item);
+  });
+
+  var total=0,rows='';
+  Object.keys(byPeptide).forEach(function(pName){
+    var pItems=byPeptide[pName];
+    var pTotal=pItems.reduce(function(s,i){return s+i.price*i.qty;},0);
+    total+=pTotal;
+    var mgNeed=pItems[0].totalMgNeeded;
+    var mgHave=pItems.reduce(function(s,i){return s+i.mgPerVial*i.qty;},0);
+    var waste=mgHave-mgNeed;
+    var vialStr=pItems.map(function(i){return i.code+' ×'+i.qty;}).join(' + ');
+    var mgStr=mgNeed.toFixed(1)+'mg needed · '+mgHave.toFixed(1)+'mg ordered'+(waste>0.05?' · '+waste.toFixed(1)+'mg leftover':'');
+    rows+='<div class="ob-result-row">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div class="ob-result-name">'+pName+'</div>'
+      +'<div class="ob-result-detail">'+vialStr+'</div>'
+      +'<div class="ob-result-detail">'+mgStr+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0">'
+      +'<div style="font-size:12px;font-weight:600">'+(pTotal>0?'$'+pTotal.toFixed(2):'—')+'</div>'
+      +'</div>'
+      +'</div>';
+  });
+
+  var totalRow='<div class="ob-total-row"><div class="ob-total-label">Order Total</div><div class="ob-total-price">$'+total.toFixed(2)+'</div></div>';
+  var sendBtn='<button class="ob-send-btn" onclick="obSendToCart()">Send Order to '+OB_MARKETS[obMarket].name+' Cart →</button>';
+  var mainBox='<div class="ob-queue-box">'+rows+totalRow+(items.length?sendBtn:'')+'</div>';
+
+  var skipHtml='';
+  if(skipped.length){
+    skipHtml='<div class="ob-section-label" style="margin-top:12px">NOT CALCULATED — ORDER MANUALLY</div>'
+      +'<div class="ob-skip-box">'
+      +skipped.map(function(s){
+        return'<div class="ob-skip-row"><div class="ob-skip-name">'+s.name+'</div><div class="ob-skip-reason">'+s.reason+'</div></div>';
+      }).join('')
+      +'</div>';
+  }
+
+  return mainBox+skipHtml;
+}
+
+// ─── Send to cart ─────────────────────────────────────────
+window.obSendToCart=function(){
+  if(!obMarket||!obOrderItems.length)return;
+  var payload={market:obMarket,items:obOrderItems.map(function(i){return{code:i.code,qty:i.qty};}),source:'stack-builder'};
+  try{localStorage.setItem('psw_stack_cart',JSON.stringify(payload));}catch(e){}
+  window.location.href=OB_MARKETS[obMarket].url;
+};
+
+// ─── Hook ORDER tab ───────────────────────────────────────
+var _obTab=document.querySelector('[data-page="order"]');
+if(_obTab)_obTab.addEventListener('click',function(){if(typeof window.obInit==='function')window.obInit();});
+
+})();
+</script>
 
 <!-- BACK BUTTON: shows persistent "← Market" button when arriving from a PSW storefront -->
 <script>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Peptide Supply Warehouse – Cerritos</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#f0f4f9;--white:#ffffff;--navy2:#f8fafc;--navy3:#f0f4f9;
+  --blue:#1756a9;--blue2:#1348a0;--blue-bright:#2563eb;
+  --cyan:#1756a9;--cyan-dim:rgba(23,86,169,0.08);
+  --text:#0a1628;--text2:#3a4a5c;--text3:#7a8fa8;
+  --border:#dde3ec;--border2:#c5d0e0;
+  --gold:#9a7000;--green:#0d7377;--green-dim:rgba(13,115,119,0.08);
+  --red:#b83228;--red-dim:rgba(184,50,40,0.08);
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --script:'Dancing Script',cursive;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;pointer-events:none;z-index:0;}
+body::after{display:none;}
+.announce-bar{background:var(--blue);color:#fff;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.12em;text-align:center;padding:9px 20px;text-transform:uppercase;position:relative;z-index:201;}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);}
+.min-progress{padding:10px 0 4px;border-top:1px solid var(--border);margin-top:6px;}
+.min-progress-header{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:500;}
+.min-progress-track{height:5px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.min-progress-fill{height:100%;background:var(--blue);border-radius:3px;transition:width 0.3s ease;}
+.min-progress-fill.met{background:var(--green);}
+.min-progress-msg{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:5px;text-align:center;letter-spacing:0.04em;}
+.checkout-btn.locked{background:var(--surface3,#e4eaf3)!important;color:var(--text3)!important;cursor:not-allowed!important;}
+.sf-progress-strip{position:sticky;top:54px;z-index:199;background:var(--white);border-bottom:1px solid var(--border);padding:6px 20px;display:none;align-items:center;gap:12px;}
+.sf-progress-track2{flex:1;height:4px;background:var(--border2);border-radius:2px;overflow:hidden;}
+.sf-progress-fill2{height:100%;border-radius:2px;background:var(--blue);transition:width 0.35s ease,background 0.35s ease;}
+.sf-progress-fill2.met{background:var(--green);}
+.sf-progress-label{font-family:var(--mono);font-size:10px;color:var(--text2);white-space:nowrap;letter-spacing:0.05em;flex-shrink:0;transition:color 0.3s;}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:14px;}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.brand-logo{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--text);letter-spacing:0.04em;cursor:pointer;user-select:none;}
+.brand-logo span{color:var(--blue);}
+.brand-divider{width:1px;height:20px;background:var(--border2);}
+.brand-sub{font-size:10px;color:var(--text3);letter-spacing:0.1em;font-family:var(--mono);text-transform:uppercase;}
+.topbar-search{flex:1;max-width:340px;background:var(--bg);border:1px solid var(--border2);border-radius:6px;display:flex;align-items:center;padding:0 12px;gap:8px;transition:border-color 0.2s;}
+.topbar-search:focus-within{border-color:var(--blue);}
+.topbar-search svg{width:13px;height:13px;color:var(--text3);flex-shrink:0;}
+.topbar-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:13px;width:100%;padding:9px 0;}
+.topbar-search input::placeholder{color:var(--text3);}
+.cart-btn{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--blue);border:none;border-radius:6px;padding:8px 16px;cursor:pointer;transition:all 0.15s;color:#fff;font-family:var(--mono);font-size:13px;font-weight:500;white-space:nowrap;letter-spacing:0.04em;}
+.cart-btn:hover{background:var(--blue2);}
+.cart-btn:active{transform:scale(0.97);}
+.cart-btn svg{width:14px;height:14px;}
+.cart-badge{background:var(--text);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;font-family:var(--mono);flex-shrink:0;}
+.hero{position:relative;z-index:1;padding:48px 20px 52px;text-align:center;background:var(--white);border-bottom:1px solid var(--border);}
+.hero-rings{display:none;}
+.ring{display:none;}
+@keyframes pulse-ring{}
+.hero-content{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';height:1px;background:var(--border2);width:32px;}
+.hero-title{font-family:var(--mono);font-size:clamp(26px,6vw,48px);font-weight:500;color:var(--text);letter-spacing:0.03em;text-transform:uppercase;line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:var(--blue);}
+.hero-tagline{font-family:var(--script);font-size:clamp(18px,3.5vw,26px);color:var(--text2);margin-bottom:6px;opacity:0.85;}
+.hero-sub{font-size:13px;color:var(--text3);letter-spacing:0.04em;margin-bottom:24px;}
+.hero-contact{display:inline-flex;flex-direction:column;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 24px;margin-bottom:20px;}
+.contact-row{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);letter-spacing:0.03em;}
+.contact-icon{font-size:16px;}
+.contact-label{font-size:10px;color:var(--text3);letter-spacing:0.08em;margin-right:4px;}
+.mj-sig{font-family:var(--script);font-size:28px;color:var(--blue);display:block;margin-bottom:4px;}
+.cat-strip{position:relative;z-index:1;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 20px;}
+.cat-strip-inner{max-width:1200px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+.cat-strip-inner::-webkit-scrollbar{display:none;}
+.cat-pill{padding:12px 16px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.15s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;}
+.cat-pill:hover{color:var(--text2);}
+.cat-pill.active{color:var(--blue);border-bottom-color:var(--blue);}
+.main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:24px 20px;}
+.loading-state{text-align:center;padding:60px 20px;}
+.loading-spinner{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:0.08em;}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;}
+.product-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 13px;display:flex;flex-direction:column;gap:5px;transition:box-shadow 0.15s,border-color 0.15s;position:relative;overflow:hidden;}
+.product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);opacity:0;transition:opacity 0.15s;}
+.product-card:hover{box-shadow:0 2px 12px rgba(10,22,40,0.08);}
+.product-card:active{transform:scale(0.98);}
+.product-card.in-cart{border-color:rgba(13,115,119,0.4);}
+.product-card.in-cart::before{background:var(--green);opacity:1;}
+.pc-cat{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;}
+.pc-code{font-family:var(--mono);font-size:10px;color:var(--blue);background:var(--cyan-dim);border:1px solid rgba(23,86,169,0.15);border-radius:3px;padding:2px 7px;width:fit-content;letter-spacing:0.05em;}
+.pc-name{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text);line-height:1.2;letter-spacing:0.01em;}
+.pc-spec{font-size:12px;color:var(--text3);margin-top:2px;}
+.pc-stock{font-family:var(--mono);font-size:10px;font-weight:500;margin-top:4px;padding:2px 7px;border-radius:4px;width:fit-content;}
+.pc-stock.in-stock{color:var(--green);background:var(--green-dim);border:1px solid rgba(13,115,119,0.2);}
+.pc-stock.low-stock{color:#c47a1e;background:rgba(196,122,30,0.08);border:1px solid rgba(196,122,30,0.2);}
+.pc-stock.no-stock{color:var(--red);background:var(--red-dim);border:1px solid rgba(184,50,40,0.2);}
+.pc-price{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--blue);margin-top:auto;padding-top:8px;letter-spacing:0.01em;}
+.pc-add{width:100%;background:var(--cyan-dim);color:var(--blue);border:1px solid rgba(23,86,169,0.2);border-radius:6px;padding:9px;font-family:var(--mono);font-size:11px;font-weight:500;cursor:pointer;transition:all 0.15s;margin-top:7px;display:flex;align-items:center;justify-content:center;gap:5px;letter-spacing:0.05em;text-transform:uppercase;}
+.pc-add:hover{background:var(--blue);color:#fff;border-color:transparent;}
+.pc-add.in-cart{background:var(--green-dim);color:var(--green);border-color:rgba(13,115,119,0.25);}
+.pc-add.in-cart:hover{background:var(--green);color:#fff;}
+.pc-add:active{transform:scale(0.96);}
+.in-cart-dot{position:absolute;top:10px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--green);display:none;}
+.product-card.in-cart .in-cart-dot{display:block;}
+.pc-qty-controls{display:flex;align-items:center;margin-top:7px;border:1px solid rgba(13,115,119,0.3);border-radius:6px;overflow:hidden;width:100%;}
+.pc-qty-btn{width:36px;height:34px;background:var(--green-dim);color:var(--green);border:none;cursor:pointer;font-size:18px;font-family:var(--mono);display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;}
+.pc-qty-btn:hover{background:var(--green);color:#fff;}
+.pc-qty-num{flex:1;text-align:center;font-family:var(--mono);font-size:14px;font-weight:500;color:var(--green);background:var(--green-dim);line-height:34px;border-left:1px solid rgba(13,115,119,0.15);border-right:1px solid rgba(13,115,119,0.15);}
+.pc-remove-item{width:30px;height:34px;background:transparent;color:var(--text3);border:none;border-left:1px solid rgba(13,115,119,0.2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;}
+.pc-remove-item:hover{background:var(--red-dim);color:var(--red);}
+.no-results{text-align:center;padding:60px 20px;color:var(--text3);font-family:var(--mono);}
+.drawer-overlay{position:fixed;inset:0;background:rgba(10,22,40,0.3);z-index:300;display:none;backdrop-filter:blur(4px);}
+.drawer-overlay.open{display:block;}
+.cart-drawer{position:fixed;top:0;right:0;bottom:0;width:100%;max-width:420px;background:var(--white);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(10,22,40,0.1);}
+.cart-drawer.open{transform:translateX(0);}
+.drawer-header{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.drawer-title{font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:0.06em;color:var(--text);flex:1;}
+.drawer-close{width:30px;height:30px;background:var(--bg);border:1px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text3);transition:all 0.15s;}
+.drawer-close:hover{background:var(--red-dim);color:var(--red);}
+.drawer-body{flex:1;overflow-y:auto;padding:14px 20px;}
+.drawer-footer{padding:14px 20px;border-top:1px solid var(--border);}
+.cart-empty-state{text-align:center;padding:50px 20px;color:var(--text3);}
+.cart-empty-state svg{width:40px;height:40px;color:var(--text3);margin-bottom:12px;opacity:0.3;}
+.cart-empty-state p{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;}
+.cart-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);}
+.cart-item:last-child{border-bottom:none;}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);letter-spacing:0.01em;}
+.ci-spec{font-size:11px;color:var(--text3);margin-top:2px;}
+.ci-line-price{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--blue);margin-top:4px;}
+.ci-controls{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.qty-btn{width:24px;height:24px;border-radius:4px;background:var(--bg);border:1px solid var(--border2);color:var(--text2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.12s;font-family:var(--mono);}
+.qty-btn:active{transform:scale(0.88);}
+.qty-num{font-family:var(--mono);font-size:13px;font-weight:500;min-width:18px;text-align:center;color:var(--text);}
+.ci-remove{width:24px;height:24px;border-radius:4px;background:var(--red-dim);border:1px solid rgba(184,50,40,0.15);color:var(--red);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
+.ci-remove:active{transform:scale(0.88);}
+.cart-totals{background:var(--cyan-dim);border:1px solid rgba(23,86,169,0.15);border-radius:8px;padding:12px;margin-bottom:12px;}
+.ct-row{display:flex;justify-content:space-between;padding:3px 0;}
+.ct-label{font-size:13px;color:var(--text2);}
+.ct-value{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);}
+.ct-total .ct-label{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--text);}
+.ct-total .ct-value{font-size:18px;color:var(--blue);}
+.ct-divider{height:1px;background:var(--border);margin:7px 0;}
+.checkout-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:13px;font-family:var(--mono);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;text-transform:uppercase;}
+.checkout-btn:hover{background:var(--blue2);}
+.checkout-btn:active{transform:scale(0.98);}
+.checkout-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.clear-cart-btn{width:100%;background:transparent;color:var(--text3);border:none;padding:9px;font-size:11px;font-family:var(--mono);cursor:pointer;margin-top:5px;letter-spacing:0.04em;transition:color 0.15s;}
+.clear-cart-btn:hover{color:var(--red);}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,0.35);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);border:1px solid var(--border);border-radius:12px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(10,22,40,0.15);animation:modalIn 0.2s ease;}
+@keyframes modalIn{from{opacity:0;transform:scale(0.96) translateY(8px);}to{opacity:1;transform:none;}}
+.modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--white);z-index:1;}
+.modal-title{font-family:var(--mono);font-size:14px;font-weight:500;flex:1;letter-spacing:0.04em;color:var(--text);}
+.modal-close{width:28px;height:28px;background:var(--bg);border:1px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--text3);}
+.modal-close:hover{background:var(--border);}
+.modal-body{padding:18px 22px;}
+.modal-section-title{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;margin-top:20px;display:flex;align-items:center;gap:8px;}
+.modal-section-title::after{content:'';flex:1;height:1px;background:var(--border2);}
+.modal-section-title:first-child{margin-top:0;}
+.form-field{margin-bottom:13px;}
+.form-label{display:block;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text3);margin-bottom:4px;letter-spacing:0.08em;text-transform:uppercase;}
+.form-label .req{color:var(--red);}
+.form-label .opt{color:var(--text3);font-weight:400;text-transform:none;}
+.form-input,.form-textarea{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 12px;outline:none;transition:border-color 0.15s;}
+.form-input:focus,.form-textarea:focus{border-color:var(--blue);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text3);}
+.form-textarea{resize:vertical;min-height:70px;}
+.order-review{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:12px;margin-bottom:10px;max-height:180px;overflow-y:auto;}
+.or-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.or-item:last-child{border-bottom:none;}
+.or-name{flex:1;color:var(--text);font-family:var(--mono);}
+.or-qty{color:var(--text3);margin:0 8px;font-family:var(--mono);}
+.or-price{color:var(--blue);font-weight:500;font-family:var(--mono);}
+.or-total{display:flex;justify-content:space-between;padding-top:9px;border-top:1px solid var(--border2);margin-top:4px;}
+.or-total-label{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);}
+.or-total-val{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--blue);}
+.submit-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:13px;font-family:var(--mono);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.15s;margin-top:14px;letter-spacing:0.05em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:hover{background:var(--blue2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.submit-btn:active:not(:disabled){transform:scale(0.98);}
+.success-screen{text-align:center;padding:36px 22px 28px;}
+.success-icon{width:64px;height:64px;background:var(--green-dim);border:1px solid rgba(13,115,119,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;}
+.success-title{font-family:var(--mono);font-size:20px;font-weight:500;margin-bottom:8px;color:var(--text);letter-spacing:0.02em;}
+.success-sub{font-size:13px;color:var(--text2);line-height:1.6;}
+.success-note{background:var(--cyan-dim);border:1px solid rgba(23,86,169,0.15);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.7;margin-top:14px;text-align:left;}
+.success-done-btn{margin-top:18px;width:100%;background:var(--blue);color:#fff;border:none;border-radius:7px;padding:12px;font-family:var(--mono);font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;}
+.footer{position:relative;z-index:1;background:var(--white);border-top:1px solid var(--border);padding:28px 20px;text-align:center;margin-top:40px;}
+.footer-name{font-family:var(--script);font-size:24px;color:var(--blue);margin-bottom:10px;}
+.footer-contacts{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.footer-contact{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text2);letter-spacing:0.03em;}
+.footer-contact .icon{font-size:15px;}
+.footer-disc{font-size:11px;color:var(--text3);line-height:1.7;max-width:600px;margin:0 auto;}
+.footer-disc strong{color:var(--text2);}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+/* REFERENCE GUIDE */
+.ref-section{position:relative;z-index:1;padding:20px 20px 0;}
+.ref-heading{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;max-width:1200px;margin-left:auto;margin-right:auto;}
+.ref-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;max-width:1200px;margin:0 auto;padding-bottom:4px;}
+.ref-scroll::-webkit-scrollbar{display:none;}
+.ref-tile{flex-shrink:0;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--ta,#1756a9);border-radius:7px;padding:8px 10px 7px;cursor:pointer;transition:box-shadow 0.15s,transform 0.15s;min-width:88px;text-decoration:none;display:block;}
+.ref-tile:hover{box-shadow:0 2px 10px rgba(10,22,40,0.08);transform:translateY(-2px);}
+.ref-tile:active{transform:scale(0.96);}
+.ref-tile-icon{font-size:15px;margin-bottom:4px;line-height:1;}
+.ref-tile-name{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);line-height:1.25;margin-bottom:3px;}
+.ref-tile-count{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.08em;}
+@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr);}.hero-title{font-size:24px;}.cart-drawer{max-width:100%;}}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+/* ── Build Your Stack ──────────────────────────── */
+.bys-banner{background:linear-gradient(135deg,#1756a9,#0d3d8a);cursor:pointer;padding:14px 20px;transition:filter 0.15s;position:relative;z-index:1;border-bottom:1px solid var(--border);}
+.bys-banner:hover{filter:brightness(1.08);}
+.bys-banner-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+.bys-banner-icon{font-size:24px;flex-shrink:0;}
+.bys-banner-title{font-family:var(--mono);font-size:14px;font-weight:600;color:#fff;letter-spacing:0.05em;}
+.bys-banner-sub{font-size:11px;color:rgba(255,255,255,0.72);margin-top:2px;}
+.bys-banner-arrow{margin-left:auto;font-size:20px;color:rgba(255,255,255,0.8);flex-shrink:0;}
+.bys-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;display:none;align-items:flex-end;justify-content:center;}
+.bys-overlay.open{display:flex;}
+.bys-modal{background:var(--white);border-radius:16px 16px 0 0;width:100%;max-width:780px;max-height:92vh;display:flex;flex-direction:column;}
+.bys-modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.bys-modal-title{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.04em;}
+.bys-modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--text3);padding:0 4px;line-height:1;}
+.bys-modal-body{overflow-y:auto;flex:1;padding:18px 22px 28px;}
+.bys-tier-row{display:flex;gap:8px;margin-bottom:12px;}
+.bys-tier-btn{flex:1;padding:9px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.07em;border:1px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text2);cursor:pointer;transition:all 0.15s;}
+.bys-tier-btn.active{background:var(--blue);color:#fff;border-color:transparent;}
+.bys-note{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.04em;margin-bottom:14px;}
+.bys-stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:14px;}
+.bys-stack-card{border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all 0.15s;background:var(--white);}
+.bys-stack-card:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(23,86,169,0.1);}
+.bys-stack-card.selected{border-color:var(--blue);background:rgba(23,86,169,0.05);box-shadow:0 2px 8px rgba(23,86,169,0.12);}
+.bys-stack-emoji{font-size:18px;margin-bottom:5px;}
+.bys-stack-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.03em;margin-bottom:3px;}
+.bys-stack-goal{font-size:10px;color:var(--text3);line-height:1.35;margin-bottom:4px;}
+.bys-stack-cycle{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:0.04em;}
+.bys-queue-bar{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-top:4px;}
+.bys-queue-label{font-family:var(--mono);font-size:12px;color:var(--text2);font-weight:500;}
+.bys-calc-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
+.bys-calc-btn:hover{background:var(--blue2);}
+.bys-result-header{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.bys-back-btn{background:none;border:none;font-family:var(--mono);font-size:11px;color:var(--blue);cursor:pointer;padding:0;text-align:left;letter-spacing:0.04em;}
+.bys-result-title{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+.bys-result-tier{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue);background:rgba(23,86,169,0.08);border:1px solid rgba(23,86,169,0.2);border-radius:4px;padding:2px 8px;letter-spacing:0.06em;}
+.bys-result-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.bys-result-item{border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;}
+.bys-item-left{flex:0 0 150px;}
+.bys-item-name{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.bys-item-shared{font-size:10px;color:var(--green);margin-bottom:2px;}
+.bys-item-total{font-family:var(--mono);font-size:10px;color:var(--blue);}
+.bys-item-right{flex:1;display:flex;flex-direction:column;gap:5px;}
+.bys-item-note{font-family:var(--mono);font-size:10px;color:var(--text3);font-style:italic;}
+.bys-item-warn{font-family:var(--mono);font-size:9px;color:#c47a1e;margin-bottom:2px;}
+.bys-item-vial{display:flex;align-items:center;gap:8px;}
+.bys-vial-qty{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);min-width:28px;}
+.bys-vial-spec{font-family:var(--mono);font-size:11px;color:var(--text2);flex:1;}
+.bys-add-btn{background:rgba(23,86,169,0.08);color:var(--blue);border:1px solid rgba(23,86,169,0.2);border-radius:4px;padding:3px 10px;font-family:var(--mono);font-size:10px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all 0.15s;}
+.bys-add-btn:hover{background:var(--blue);color:#fff;}
+.bys-add-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.bys-add-all-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:14px;font-family:var(--mono);font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
+.bys-add-all-btn:hover{background:var(--blue2);}
+.bys-disclaimer{font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5;}
+@media(max-width:480px){.bys-stack-grid{grid-template-columns:1fr 1fr;}.bys-item-left{flex:0 0 110px;}}
+</style>
+</head>
+<body>
+<div class="announce-bar">⚠ Minimum order $250 &nbsp;·&nbsp; Free shipping on orders over $500 &nbsp;·&nbsp; Wholesale &amp; retail inquiries welcome</div>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo" onclick="window.location.href='index.html'" style="cursor:pointer;">PSW<span>·</span></div>
+      <div class="brand-divider"></div>
+      <div class="brand-sub" id="adminTrigger" onclick="adminTapped()" style="cursor:default;">Research Compounds</div>
+    </div>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search compounds, codes…" oninput="filterProducts()">
+    </div>
+    <button class="cart-btn" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      ORDER LIST
+      <div class="cart-badge" id="cartBadge" style="display:none">0</div>
+    </button>
+  </div>
+</div>
+<div class="sf-progress-strip" id="sfProgressStrip">
+  <div class="sf-progress-track2"><div class="sf-progress-fill2" id="sfProgressFill2"></div></div>
+  <span class="sf-progress-label" id="sfProgressLabel"></span>
+</div>
+
+<div class="hero">
+  <div class="hero-rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Research Grade Peptides</div>
+    <h1 class="hero-title">Peptide Supply<br><span>Warehouse</span></h1>
+    <div class="hero-eyebrow" style="margin-top:10px;color:#00b4d8;">CERRITOS</div>
+    <div class="hero-tagline">we supply your favorite doctors</div>
+    <div class="hero-sub">Wholesale and retail inquiries welcome</div>
+    <div class="hero-contact">
+      <span class="mj-sig">Michael John</span>
+      <div class="contact-row"><span class="contact-icon">💬</span><span class="contact-label">WHATSAPP</span><span>+1-310-683-0049</span></div>
+      <div class="contact-row"><span class="contact-icon">📱</span><span class="contact-label">MOBILE</span><span>+52-55-2446-9745</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPOUND REFERENCE GUIDE -->
+<div class="ref-section">
+  <div class="ref-heading">COMPOUND REFERENCE GUIDE</div>
+  <div class="ref-scroll">
+    <a class="ref-tile" style="--ta:#00b4d8" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#weight"><div class="ref-tile-icon">⚖️</div><div class="ref-tile-name">Weight Loss</div><div class="ref-tile-count">27 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#9c79ff" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#gh"><div class="ref-tile-icon">📈</div><div class="ref-tile-name">Growth Hormone</div><div class="ref-tile-count">14 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#00c896" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#healing"><div class="ref-tile-icon">🩹</div><div class="ref-tile-name">Healing & Recovery</div><div class="ref-tile-count">7 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#f0c040" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#antiaging"><div class="ref-tile-icon">✨</div><div class="ref-tile-name">Anti-Aging & Immune</div><div class="ref-tile-count">8 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#ff9f43" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#mito"><div class="ref-tile-icon">⚡</div><div class="ref-tile-name">Mitochondrial</div><div class="ref-tile-count">9 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#00b4d8" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#muscle"><div class="ref-tile-icon">💪</div><div class="ref-tile-name">Muscle & IGF</div><div class="ref-tile-count">3 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#f06292" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#hormonal"><div class="ref-tile-icon">🧬</div><div class="ref-tile-name">Hormonal</div><div class="ref-tile-count">8 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#9c79ff" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#neuro"><div class="ref-tile-icon">🧠</div><div class="ref-tile-name">Cognitive</div><div class="ref-tile-count">6 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#00c896" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#immune"><div class="ref-tile-icon">🛡️</div><div class="ref-tile-name">Immune</div><div class="ref-tile-count">3 CMPDS</div></a>
+    <a class="ref-tile" style="--ta:#8aafd4" href="https://jmitsuominor-ux.github.io/peptide-reference/?from=cerritos#recon"><div class="ref-tile-icon">💧</div><div class="ref-tile-name">Reconstitution</div><div class="ref-tile-count">3 CMPDS</div></a>
+  </div>
+</div>
+
+<div class="bys-banner" onclick="openStackBuilder()">
+  <div class="bys-banner-inner">
+    <div class="bys-banner-icon">🧬</div>
+    <div style="flex:1">
+      <div class="bys-banner-title">BUILD YOUR STACK</div>
+      <div class="bys-banner-sub">Select a protocol · choose your dose tier · vials auto-calculated from live inventory</div>
+    </div>
+    <div class="bys-banner-arrow">→</div>
+  </div>
+</div>
+<div class="cat-strip"><div class="cat-strip-inner" id="catNav"></div></div>
+
+<div class="main">
+  <div class="loading-state" id="loadingState">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">LOADING INVENTORY…</div>
+  </div>
+  <div class="product-grid" id="productGrid" style="display:none"></div>
+  <div class="no-results" id="noResults" style="display:none">No products match "<span id="noResultsQuery"></span>"</div>
+</div>
+
+<div class="footer">
+  <div class="footer-name">Michael John</div>
+  <div class="footer-contacts">
+    <div class="footer-contact"><span class="icon">💬</span> WhatsApp: +1-310-683-0049</div>
+    <div class="footer-contact"><span class="icon">📱</span> Mobile: +52-55-2446-9745</div>
+  </div>
+  <div class="footer-disc"><strong>Research Use Only.</strong> All compounds are sold for research purposes only. Not intended for human consumption. Not FDA approved. By placing an order you confirm you are a qualified researcher. Consult a licensed healthcare provider before any use.</div>
+</div>
+
+<div class="bys-overlay" id="bysOverlay">
+  <div class="bys-modal">
+    <div class="bys-modal-header">
+      <div class="bys-modal-title">🧬 BUILD YOUR STACK</div>
+      <button class="bys-modal-close" onclick="closeStackBuilder()">&#215;</button>
+    </div>
+    <div class="bys-modal-body" id="bysBody"></div>
+  </div>
+</div>
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header"><div class="drawer-title">YOUR ORDER</div><div class="drawer-close" onclick="closeCart()">×</div></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-footer" id="drawerFooter"></div>
+</div>
+
+<div class="modal-overlay" id="checkoutModal"><div class="modal" id="modalContent"></div></div>
+
+<script>
+(function(){
+'use strict';
+
+var BYS_STACKS=[
+  {name:'FAT STACK',emoji:'🟢',goal:'Maximum weight loss · No plateau · Cardiometabolic',cycle:'20+ weeks minimum',
+   peptides:[
+     {name:'Retatrutide',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6-8 wks per step)',hi:'12 mg/wk maximum'},
+     {name:'NAD+',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+     {name:'5-amino-1mq',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'}]},
+  {name:'FAT STACK LITE',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',cycle:'20+ weeks',
+   peptides:[
+     {name:'Semaglutide',lo:'0.5 mg/wk maintenance',mid:'2.4 mg/wk',hi:'2.4 mg/wk'},
+     {name:'Cagrilintide',lo:'0.3 mg/wk maintenance',mid:'1.2 mg/wk',hi:'2.4 mg/wk'}]},
+  {name:'BETTER BODY STACK',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',cycle:'16-24 weeks on',
+   peptides:[
+     {name:'Tesamorelin',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
+     {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'}]},
+  {name:'BETTER BODY LITE STACK',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',cycle:'12 weeks on',
+   peptides:[
+     {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'}]},
+  {name:'LIGHTS OUT STACK',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',cycle:'12 weeks on',
+   peptides:[
+     {name:'Sermorelin',lo:'200 mcg/night',mid:'300 mcg/night',hi:'500 mcg/night'},
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+     {name:'DSIP',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+     {name:'Melatonin',lo:'0.5 mg/night',mid:'0.8 mg/night',hi:'1 mg/night'}]},
+  {name:'YOUTH STACK',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',cycle:'12 weeks on',
+   peptides:[
+     {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'5 mg/day'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+     {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'}]},
+  {name:'BENJAMIN BUTTON STACK',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Anti-aging',cycle:'10 weeks on',
+   peptides:[
+     {name:'NAD+',lo:'100 mg/day',mid:'500 mg/day',hi:'1000 mg/day'},
+     {name:'SS-31',lo:'1 mg/day',mid:'5 mg/day',hi:'10 mg/day'},
+     {name:'MOTS-c',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
+     {name:'5-amino-1mq',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'}]},
+  {name:'IMMUNITY STACK',emoji:'🛡️',goal:'Immune modulation · Longevity · Anti-aging · Post-viral support',cycle:'6 weeks',
+   peptides:[
+     {name:'Thymosin Alpha-1',lo:'0.5 mg 2x/wk',mid:'1.0 mg 2x/wk',hi:'1.6 mg 2x/wk'},
+     {name:'Epithalon',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'}]},
+  {name:'LIMITLESS STACK',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',cycle:'6 weeks on',
+   peptides:[
+     {name:'Semax',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
+     {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+     {name:'NAD+',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'}]},
+  {name:'INTIMACY STACK',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal',cycle:'As-needed',
+   peptides:[
+     {name:'PT-141',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
+     {name:'Selank',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'}]},
+  {name:'RESET STACK',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',cycle:'12 weeks on',
+   peptides:[
+     {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'5 mg/day'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+     {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'},
+     {name:'KPV',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'}]},
+  {name:'WOLVERINE STACK',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',cycle:'12 weeks on',
+   peptides:[
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+     {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'}]},
+  {name:'SUPERMAN STACK',emoji:'🦸',goal:'Maximum muscle growth · Myostatin inhibition · Anabolic signaling',cycle:'12 weeks on',
+   peptides:[
+     {name:'IGF-1 LR3',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
+     {name:'CJC-1295 (with DAC)',lo:'300 mcg/wk',mid:'500 mcg/wk',hi:'1000 mcg/wk'},
+     {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'}]},
+  {name:'ULTIMATE STACK',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',cycle:'12 weeks',
+   peptides:[
+     {name:'CJC-1295 (with DAC)',lo:'300 mcg/wk',mid:'1000 mcg/wk',hi:'2000 mcg/wk'},
+     {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
+     {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'},
+     {name:'Epithalon',lo:'5 mg/day × 20 days',mid:'10 mg/day × 20 days',hi:'10 mg/day × 20 days'},
+     {name:'Thymosin Alpha-1',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
+     {name:'IGF-1 LR3',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
+     {name:'SS-31',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'}]},
+  {name:"MEN'S WELLNESS STACK",emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',cycle:'12 weeks',
+   peptides:[
+     {name:'KissPeptin-10',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
+     {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'}]},
+  {name:"WOMEN'S WELLNESS STACK",emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",cycle:'12 weeks',
+   peptides:[
+     {name:'PT-141',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
+     {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
+     {name:'L-Glutathione',lo:'500 mg 2x/wk',mid:'1000 mg 2x/wk',hi:'1500 mg 3x/wk'},
+     {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+     {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'}]},
+  {name:'PERI/MENOPAUSE STACK',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',cycle:'12 weeks',
+   peptides:[
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
+     {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg/day'},
+     {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+     {name:'KissPeptin-10',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
+     {name:'Epithalon',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'}]},
+  {name:'GOLDEN ERA STACK',emoji:'🏆',goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality',cycle:'12 weeks',
+   peptides:[
+     {name:'Tesamorelin',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
+     {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+     {name:'AOD9604',lo:'150 mcg/day',mid:'300 mcg/day',hi:'500 mcg/day'},
+     {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+     {name:'Epithalon',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'20 mg/day × 10 days'},
+     {name:'Thymosin Alpha-1',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
+     {name:'SS-31',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'}]}
+];
+
+var BYS_CODES={
+  'Retatrutide':[{code:'RT60',mg:60},{code:'RT50',mg:50},{code:'RT40',mg:40},{code:'RT30',mg:30},{code:'RT20',mg:20},{code:'RT15',mg:15},{code:'RT10',mg:10},{code:'RT5',mg:5}],
+  'NAD+':[{code:'NJ1000',mg:1000},{code:'NJ500',mg:500}],
+  '5-amino-1mq':[{code:'50AM',mg:50},{code:'5AM',mg:5}],
+  'Semaglutide':[{code:'SM30',mg:30},{code:'SM20',mg:20},{code:'SM15',mg:15},{code:'SM10',mg:10},{code:'SM5',mg:5}],
+  'Cagrilintide':[{code:'CGL10',mg:10},{code:'CGL5',mg:5}],
+  'Tesamorelin':[{code:'TSM10',mg:10},{code:'TSM5',mg:5}],
+  'Ipamorelin':[{code:'IP10',mg:10},{code:'IP5',mg:5}],
+  'CJC-1295 (no DAC)':[{code:'CND10',mg:10},{code:'CND5',mg:5}],
+  'Sermorelin':[{code:'SMO10',mg:10},{code:'SMO5',mg:5}],
+  'DSIP':[{code:'DS10',mg:10},{code:'DS5',mg:5}],
+  'Melatonin':[{code:'MT10',mg:10}],
+  'GHK-Cu':[{code:'CU100',mg:100},{code:'CU50',mg:50}],
+  'BPC-157':[{code:'BC10',mg:10},{code:'BC5',mg:5}],
+  'TB-500':[{code:'TB10',mg:10},{code:'TB5',mg:5}],
+  'SS-31':[{code:'2S50',mg:50},{code:'2S10',mg:10}],
+  'MOTS-c':[{code:'MS40',mg:40},{code:'MS10',mg:10}],
+  'Thymosin Alpha-1':[{code:'TA10',mg:10},{code:'TA5',mg:5}],
+  'Epithalon':[{code:'ET50',mg:50},{code:'ET10',mg:10}],
+  'Semax':[{code:'XA11',mg:11},{code:'XA5',mg:5}],
+  'Selank':[{code:'SK11',mg:11},{code:'SK5',mg:5}],
+  'PT-141':[{code:'P41',mg:10}],
+  'L-Glutathione':[{code:'GTT',mg:1500}],
+  'KPV':[{code:'KPV10',mg:10}],
+  'CJC-1295 (with DAC)':[{code:'CD5',mg:5}],
+  'IGF-1 LR3':[{code:'IG1',mg:1},{code:'IG01',mg:0.1}],
+  'KissPeptin-10':[{code:'KS10',mg:10},{code:'KS5',mg:5}],
+  'AOD9604':[{code:'5AD',mg:5}]
+};
+
+var bysQueue=[], bysTier='lo';
+
+function bysCycleWeeks(cycle){
+  var m=(cycle||'').match(/(\d+)/);
+  return m?parseInt(m[1]):12;
+}
+
+function bysParseMg(dose,weeks){
+  if(!dose)return null;
+  var d=dose.replace(/,/g,'').replace(/–|—/g,'-');
+  if(/\bIU\b/i.test(d))return null;
+  if(/as.needed/i.test(d))return null;
+  // Burst: N mg/day × M days
+  var b=d.match(/(\d+\.?\d*)\s*mg\/day\s*[x×]\s*(\d+)\s*days?/i);
+  if(b)return parseFloat(b[1])*parseInt(b[2]);
+  var bc=d.match(/(\d+\.?\d*)\s*mcg\/day\s*[x×]\s*(\d+)\s*days?/i);
+  if(bc)return parseFloat(bc[1])/1000*parseInt(bc[2]);
+  // Phased: N mg/wk × M wks → F mg/wk
+  var ph=d.match(/(\d+\.?\d*)\s*mg\/wk\s*[x×]\s*(\d+)\s*wks?\s*[→>]+\s*(\d+\.?\d*)\s*mg\/wk/i);
+  if(ph){var i1=parseFloat(ph[1]),i2=parseInt(ph[2]),f=parseFloat(ph[3]);return i1*Math.min(i2,weeks)+f*Math.max(0,weeks-i2);}
+  // All mg/wk — take last (= maintenance/max)
+  var mw=[...d.matchAll(/(\d+\.?\d*)\s*mg\/wk/gi)];
+  if(mw.length)return parseFloat(mw[mw.length-1][1])*weeks;
+  // All mcg/wk — take last
+  var mcgw=[...d.matchAll(/(\d+\.?\d*)\s*mcg\/wk/gi)];
+  if(mcgw.length)return parseFloat(mcgw[mcgw.length-1][1])/1000*weeks;
+  // N mg Nx/wk
+  var mx=d.match(/(\d+\.?\d*)\s*mg\s+(\d+)x\/wk/i);
+  if(mx)return parseFloat(mx[1])*parseInt(mx[2])*weeks;
+  // N mcg Nx/day
+  var mcxd=d.match(/(\d+\.?\d*)\s*mcg\s+(\d+)x\/day/i);
+  if(mcxd)return parseFloat(mcxd[1])/1000*parseInt(mcxd[2])*7*weeks;
+  // N mg Nx/day
+  var mxd=d.match(/(\d+\.?\d*)\s*mg\s+(\d+)x\/day/i);
+  if(mxd)return parseFloat(mxd[1])*parseInt(mxd[2])*7*weeks;
+  // mcg/night
+  var mn=d.match(/(\d+\.?\d*)\s*mcg\/night/i);
+  if(mn)return parseFloat(mn[1])/1000*7*weeks;
+  // mg/night — take last (handles ranges like "0.8 mg/night")
+  var mng=[...d.matchAll(/(\d+\.?\d*)\s*mg\/night/gi)];
+  if(mng.length)return parseFloat(mng[mng.length-1][1])*7*weeks;
+  // mcg/day — take last
+  var mcd=[...d.matchAll(/(\d+\.?\d*)\s*mcg\/day/gi)];
+  if(mcd.length)return parseFloat(mcd[mcd.length-1][1])/1000*7*weeks;
+  // mg/day — take last (handles ranges "3-5 mg/day" → takes 5)
+  var md=[...d.matchAll(/(\d+\.?\d*)\s*mg\/day/gi)];
+  if(md.length)return parseFloat(md[md.length-1][1])*7*weeks;
+  return null;
+}
+
+function bysOptimize(totalMg,sizes){
+  if(!sizes||!sizes.length)return[];
+  var result={},remaining=totalMg;
+  for(var i=0;i<sizes.length-1;i++){
+    var n=Math.floor(remaining/sizes[i].mg);
+    if(n>0){result[sizes[i].code]=(result[sizes[i].code]||0)+n;remaining-=n*sizes[i].mg;}
+  }
+  if(remaining>0.0001){
+    var s=sizes[sizes.length-1];
+    var cnt=Math.ceil(remaining/s.mg);
+    result[s.code]=(result[s.code]||0)+cnt;
+  }
+  return Object.keys(result).map(function(c){return{code:c,qty:result[c]};});
+}
+
+function openStackBuilder(){
+  document.getElementById('bysOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  bysRenderSelect();
+}
+window.openStackBuilder=openStackBuilder;
+
+function closeStackBuilder(){
+  document.getElementById('bysOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+window.closeStackBuilder=closeStackBuilder;
+
+function bysRenderSelect(){
+  var body=document.getElementById('bysBody');
+  var html='<div class="bys-tier-row">';
+  [{t:'lo',l:'LO DOSE'},{t:'mid',l:'MID DOSE'},{t:'hi',l:'HI DOSE'}].forEach(function(o){
+    html+='<button class="bys-tier-btn'+(bysTier===o.t?' active':'')+'" onclick="bysSetTier(\''+o.t+'\')">'+o.l+'</button>';
+  });
+  html+='</div>';
+  html+='<div class="bys-note">Select one or more stacks &nbsp;&#183;&nbsp; overlapping compounds are automatically deduplicated (max qty kept)</div>';
+  html+='<div class="bys-stack-grid">';
+  BYS_STACKS.forEach(function(s,i){
+    var sel=bysQueue.some(function(q){return q.name===s.name;});
+    html+='<div class="bys-stack-card'+(sel?' selected':'')+'" onclick="bysToggleStack('+i+')">';
+    html+='<div class="bys-stack-emoji">'+s.emoji+'</div>';
+    html+='<div class="bys-stack-name">'+s.name+'</div>';
+    html+='<div class="bys-stack-goal">'+s.goal+'</div>';
+    html+='<div class="bys-stack-cycle">'+s.cycle+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  if(bysQueue.length>0){
+    html+='<div class="bys-queue-bar"><span class="bys-queue-label">'+bysQueue.length+' stack'+(bysQueue.length>1?'s':'')+' selected</span>';
+    html+='<button class="bys-calc-btn" onclick="bysShowResult()">Calculate Vials &#8594;</button></div>';
+  }
+  body.innerHTML=html;
+}
+
+window.bysSetTier=function(t){bysTier=t;bysRenderSelect();};
+window.bysToggleStack=function(idx){
+  var s=BYS_STACKS[idx];
+  var pos=-1;
+  bysQueue.forEach(function(q,i){if(q.name===s.name)pos=i;});
+  if(pos===-1)bysQueue.push(s);else bysQueue.splice(pos,1);
+  bysRenderSelect();
+};
+
+function bysShowResult(){
+  var merged={};
+  bysQueue.forEach(function(stack){
+    var weeks=bysCycleWeeks(stack.cycle);
+    stack.peptides.forEach(function(p){
+      var dose=p[bysTier],mg=bysParseMg(dose,weeks);
+      if(merged[p.name]){
+        if(mg!==null&&merged[p.name].mg!==null)merged[p.name].mg=Math.max(merged[p.name].mg,mg);
+        else if(mg!==null)merged[p.name].mg=mg;
+        if(merged[p.name].stacks.indexOf(stack.name)===-1)merged[p.name].stacks.push(stack.name);
+      }else{
+        merged[p.name]={mg:mg,dose:dose,stacks:[stack.name]};
+      }
+    });
+  });
+
+  var lines=[];
+  Object.keys(merged).forEach(function(name){
+    var e=merged[name],codes=BYS_CODES[name];
+    if(!codes){lines.push({name:name,unavailable:true,stacks:e.stacks});return;}
+    if(e.mg===null){lines.push({name:name,manual:true,dose:e.dose,stacks:e.stacks});return;}
+    var inStock=codes.filter(function(c){return inventory[c.code]&&inventory[c.code].stock>0;});
+    var sizes=inStock.length>0?inStock:codes;
+    lines.push({name:name,vials:bysOptimize(e.mg,sizes),mg:e.mg,stacks:e.stacks,stockOk:inStock.length>0});
+  });
+
+  var body=document.getElementById('bysBody');
+  var stackNames=bysQueue.map(function(s){return s.emoji+' '+s.name;}).join(' + ');
+  var html='<div class="bys-result-header">';
+  html+='<button class="bys-back-btn" onclick="bysRenderSelect()">&#8592; Back to stacks</button>';
+  html+='<div class="bys-result-title">'+stackNames+'</div>';
+  html+='<div><span class="bys-result-tier">'+bysTier.toUpperCase()+' DOSE</span></div></div>';
+  html+='<div class="bys-result-list">';
+  lines.forEach(function(line){
+    html+='<div class="bys-result-item"><div class="bys-item-left">';
+    html+='<div class="bys-item-name">'+line.name+'</div>';
+    if(line.stacks.length>1)html+='<div class="bys-item-shared">&#10003; deduped: '+line.stacks.join(' + ')+'</div>';
+    if(line.mg){
+      var disp=line.mg>=1?Math.round(line.mg*10)/10+' mg total':(line.mg*1000).toFixed(0)+' mcg total';
+      html+='<div class="bys-item-total">'+disp+'</div>';
+    }
+    html+='</div><div class="bys-item-right">';
+    if(line.unavailable){html+='<div class="bys-item-note">Not in current catalog</div>';}
+    else if(line.manual){html+='<div class="bys-item-note">'+line.dose+'</div>';}
+    else if(!line.vials||!line.vials.length){html+='<div class="bys-item-note">Out of stock</div>';}
+    else{
+      if(!line.stockOk)html+='<div class="bys-item-warn">&#9888; Showing all sizes — verify stock</div>';
+      line.vials.forEach(function(v){
+        var prod=typeof ALL_PRODUCTS!=='undefined'?ALL_PRODUCTS.find(function(p){return p.code===v.code;}):null;
+        var spec=prod?prod.spec:v.code;
+        html+='<div class="bys-item-vial"><span class="bys-vial-qty">x'+v.qty+'</span>';
+        html+='<span class="bys-vial-spec">'+spec+'</span>';
+        html+='<button class="bys-add-btn" data-code="'+v.code+'" data-qty="'+v.qty+'" onclick="bysAddOne(this)">+ Add</button></div>';
+      });
+    }
+    html+='</div></div>';
+  });
+  html+='</div>';
+  var hasAddable=lines.some(function(l){return l.vials&&l.vials.length;});
+  if(hasAddable)html+='<button class="bys-add-all-btn" onclick="bysAddAll()">Add All Items to Order</button>';
+  html+='<div class="bys-disclaimer">Vial quantities estimated from '+bysTier.toUpperCase()+' dose x cycle length. Adjust based on your titration schedule.</div>';
+  body.innerHTML=html;
+  body._bysLines=lines;
+}
+
+window.bysAddOne=function(btn){
+  var code=btn.getAttribute('data-code'),qty=parseInt(btn.getAttribute('data-qty'));
+  cart[code]=(cart[code]||0)+qty;
+  updateCartUI();renderProducts();
+  btn.textContent='&#10003; Added';btn.disabled=true;
+};
+
+window.bysAddAll=function(){
+  var lines=document.getElementById('bysBody')._bysLines;
+  if(!lines)return;
+  lines.forEach(function(line){
+    if(line.vials)line.vials.forEach(function(v){cart[v.code]=(cart[v.code]||0)+v.qty;});
+  });
+  updateCartUI();renderProducts();
+  closeStackBuilder();
+  openCart();
+};
+
+})();
+</script>
+<script>
+const EMAILJS_PUBLIC_KEY='BLEcAY-zs_dwN4UuI';
+const EMAILJS_SERVICE_ID='service_x0hxs0b';
+const EMAILJS_TEMPLATE_ID='template_bd3i3oh';
+const FULFILLER_EMAIL='pswcerritos.orders@gmail.com';
+const API='https://script.google.com/macros/s/AKfycbztRTHC4PFfMqbCXmeEy_xKAiDH3z9Ue3DJAyYkvjqvhu4D300k6_jcjW-BY9k7xhY8/exec';
+window.addEventListener('load',()=>{if(typeof emailjs!=='undefined')emailjs.init(EMAILJS_PUBLIC_KEY);});
+const ALL_PRODUCTS=[
+  {code:'TR5',name:'Tirzepatide',cat:'Weight Loss',spec:'5mg/vial',price:12.61},
+  {code:'TR10',name:'Tirzepatide',cat:'Weight Loss',spec:'10mg/vial',price:18.02},
+  {code:'TR15',name:'Tirzepatide',cat:'Weight Loss',spec:'15mg/vial',price:22.52},
+  {code:'TR20',name:'Tirzepatide',cat:'Weight Loss',spec:'20mg/vial',price:28.53},
+  {code:'TR30',name:'Tirzepatide',cat:'Weight Loss',spec:'30mg/vial',price:36.04},
+  {code:'TR40',name:'Tirzepatide',cat:'Weight Loss',spec:'40mg/vial',price:43.54},
+  {code:'TR50',name:'Tirzepatide',cat:'Weight Loss',spec:'50mg/vial',price:52.55},
+  {code:'TR60',name:'Tirzepatide',cat:'Weight Loss',spec:'60mg/vial',price:59.46},
+  {code:'SM5',name:'Semaglutide',cat:'Weight Loss',spec:'5mg/vial',price:11.41},
+  {code:'SM10',name:'Semaglutide',cat:'Weight Loss',spec:'10mg/vial',price:16.52},
+  {code:'SM15',name:'Semaglutide',cat:'Weight Loss',spec:'15mg/vial',price:21.02},
+  {code:'SM20',name:'Semaglutide',cat:'Weight Loss',spec:'20mg/vial',price:28.53},
+  {code:'SM30',name:'Semaglutide',cat:'Weight Loss',spec:'30mg/vial',price:36.04},
+  {code:'RT5',name:'Retatrutide',cat:'Weight Loss',spec:'5mg/vial',price:19.52},
+  {code:'RT10',name:'Retatrutide',cat:'Weight Loss',spec:'10mg/vial',price:29.43},
+  {code:'RT15',name:'Retatrutide',cat:'Weight Loss',spec:'15mg/vial',price:39.04},
+  {code:'RT20',name:'Retatrutide',cat:'Weight Loss',spec:'20mg/vial',price:48.05},
+  {code:'RT30',name:'Retatrutide',cat:'Weight Loss',spec:'30mg/vial',price:66.07},
+  {code:'RT40',name:'Retatrutide',cat:'Weight Loss',spec:'40mg/vial',price:82.58},
+  {code:'RT50',name:'Retatrutide',cat:'Weight Loss',spec:'50mg/vial',price:96.10},
+  {code:'RT60',name:'Retatrutide',cat:'Weight Loss',spec:'60mg/vial',price:114.11},
+  {code:'LC216',name:'Lipo-C',cat:'Weight Loss',spec:'10ml/vial',price:24.02},
+  {code:'CGL5',name:'Cagrilintide',cat:'Weight Loss',spec:'5mg/vial',price:33.03},
+  {code:'CGL10',name:'Cagrilintide',cat:'Weight Loss',spec:'10mg/vial',price:60.06},
+  {code:'CS5',name:'CagriSema Combo',cat:'Weight Loss',spec:'Sema 2.5mg + Cagri 2.5mg',price:28.53},
+  {code:'CS10',name:'CagriSema Combo',cat:'Weight Loss',spec:'Sema 5mg + Cagri 5mg',price:51.05},
+  {code:'5AD',name:'AOD-9604',cat:'Weight Loss',spec:'5mg/vial',price:33.03},
+  {code:'CD5',name:'CJC-1295 With DAC',cat:'Growth Hormone',spec:'5mg/vial',price:49.55},
+  {code:'CND5',name:'CJC-1295 Without DAC',cat:'Growth Hormone',spec:'5mg/vial',price:24.02},
+  {code:'CND10',name:'CJC-1295 Without DAC',cat:'Growth Hormone',spec:'10mg/vial',price:42.04},
+  {code:'IP5',name:'Ipamorelin',cat:'Growth Hormone',spec:'5mg/vial',price:13.51},
+  {code:'IP10',name:'Ipamorelin',cat:'Growth Hormone',spec:'10mg/vial',price:22.52},
+  {code:'CP10',name:'CJC-1295 + Ipamorelin Combo',cat:'Growth Hormone',spec:'CJC 5mg + IPA 5mg',price:33.03},
+  {code:'SMO5',name:'Sermorelin Acetate',cat:'Growth Hormone',spec:'5mg/vial',price:24.02},
+  {code:'SMO10',name:'Sermorelin Acetate',cat:'Growth Hormone',spec:'10mg/vial',price:40.54},
+  {code:'TSM5',name:'Tesamorelin',cat:'Growth Hormone',spec:'5mg/vial',price:33.03},
+  {code:'TSM10',name:'Tesamorelin',cat:'Growth Hormone',spec:'10mg/vial',price:61.56},
+  {code:'H10',name:'HGH 191AA',cat:'Growth Hormone',spec:'10 IU/vial',price:15.02},
+  {code:'H15',name:'HGH 191AA',cat:'Growth Hormone',spec:'15 IU/vial',price:22.52},
+  {code:'H24',name:'HGH 191AA',cat:'Growth Hormone',spec:'24 IU/vial',price:36.04},
+  {code:'FR5',name:'HGH Fragment 176-191',cat:'Growth Hormone',spec:'5mg/vial',price:31.53},
+  {code:'BC5',name:'BPC-157',cat:'Healing & Recovery',spec:'5mg/vial',price:12.91},
+  {code:'BC10',name:'BPC-157',cat:'Healing & Recovery',spec:'10mg/vial',price:20.42},
+  {code:'TB5',name:'TB-500',cat:'Healing & Recovery',spec:'5mg/vial',price:24.02},
+  {code:'TB10',name:'TB-500',cat:'Healing & Recovery',spec:'10mg/vial',price:40.54},
+  {code:'BB10',name:'BPC-157 + TB-500 Combo',cat:'Healing & Recovery',spec:'BPC 5mg + TB 5mg',price:31.53},
+  {code:'BB20',name:'BPC-157 + TB-500 Combo',cat:'Healing & Recovery',spec:'BPC 10mg + TB 10mg',price:57.06},
+  {code:'KPV10',name:'KPV',cat:'Healing & Recovery',spec:'10mg/vial',price:18.02},
+  {code:'CU50',name:'GHK-Cu',cat:'Anti-Aging & Immune',spec:'50mg/vial',price:10.51},
+  {code:'CU100',name:'GHK-Cu',cat:'Anti-Aging & Immune',spec:'100mg/vial',price:15.02},
+  {code:'ET10',name:'Epithalon',cat:'Anti-Aging & Immune',spec:'10mg/vial',price:15.02},
+  {code:'ET50',name:'Epithalon',cat:'Anti-Aging & Immune',spec:'50mg/vial',price:45.05},
+  {code:'TA5',name:'Thymosin Alpha-1',cat:'Anti-Aging & Immune',spec:'5mg/vial',price:27.03},
+  {code:'TA10',name:'Thymosin Alpha-1',cat:'Anti-Aging & Immune',spec:'10mg/vial',price:48.05},
+  {code:'GTT',name:'L-Glutathione',cat:'Anti-Aging & Immune',spec:'1500mg/vial',price:24.02},
+  {code:'NP810',name:'SNAP-8',cat:'Anti-Aging & Immune',spec:'10mg/vial',price:16.52},
+  {code:'NJ500',name:'NAD+',cat:'Mitochondrial',spec:'500mg/vial',price:20.42},
+  {code:'NJ1000',name:'NAD+',cat:'Mitochondrial',spec:'1000mg/vial',price:34.53},
+  {code:'2S10',name:'SS-31',cat:'Mitochondrial',spec:'10mg/vial',price:29.43},
+  {code:'2S50',name:'SS-31',cat:'Mitochondrial',spec:'50mg/vial',price:97.60},
+  {code:'MS10',name:'MOTS-C',cat:'Mitochondrial',spec:'10mg/vial',price:20.42},
+  {code:'MS40',name:'MOTS-C',cat:'Mitochondrial',spec:'40mg/vial',price:60.06},
+  {code:'5AM',name:'5-Amino-1MQ',cat:'Mitochondrial',spec:'5mg/vial',price:13.51},
+  {code:'50AM',name:'5-Amino-1MQ',cat:'Mitochondrial',spec:'50mg/vial',price:27.03},
+  {code:'322',name:'SLU-PP-332',cat:'Mitochondrial',spec:'5mg/vial',price:43.54},
+  {code:'IG01',name:'IGF-1 LR3',cat:'Muscle & IGF',spec:'0.1mg/vial',price:17.42},
+  {code:'IG1',name:'IGF-1 LR3',cat:'Muscle & IGF',spec:'1mg/vial',price:60.06},
+  {code:'IGD',name:'IGF-1 DES',cat:'Muscle & IGF',spec:'1mg/vial',price:15.02},
+  {code:'P41',name:'PT-141',cat:'Hormonal',spec:'10mg/vial',price:19.52},
+  {code:'G5K',name:'HCG',cat:'Hormonal',spec:'5,000 IU/vial',price:25.53},
+  {code:'G10K',name:'HCG',cat:'Hormonal',spec:'10,000 IU/vial',price:46.55},
+  {code:'KS5',name:'Kisspeptin-10',cat:'Hormonal',spec:'5mg/vial',price:18.02},
+  {code:'KS10',name:'Kisspeptin-10',cat:'Hormonal',spec:'10mg/vial',price:30.03},
+  {code:'MT1',name:'Melanotan I',cat:'Hormonal',spec:'10mg/vial',price:15.02},
+  {code:'ML10',name:'Melanotan II',cat:'Hormonal',spec:'10mg/vial',price:15.02},
+  {code:'MT10',name:'Melatonin',cat:'Hormonal',spec:'10mg/vial',price:17.42},
+  {code:'SK5',name:'Selank',cat:'Cognitive',spec:'5mg/vial',price:14.41},
+  {code:'SK11',name:'Selank',cat:'Cognitive',spec:'11mg/vial',price:21.02},
+  {code:'XA5',name:'Semax',cat:'Cognitive',spec:'5mg/vial',price:15.02},
+  {code:'XA11',name:'Semax',cat:'Cognitive',spec:'11mg/vial',price:20.42},
+  {code:'DS5',name:'DSIP',cat:'Cognitive',spec:'5mg/vial',price:14.41},
+  {code:'DS10',name:'DSIP',cat:'Cognitive',spec:'10mg/vial',price:24.02},
+  {code:'VIP5',name:'VIP',cat:'Immune',spec:'5mg/vial',price:28.53},
+  {code:'VIP10',name:'VIP',cat:'Immune',spec:'10mg/vial',price:46.55},
+  {code:'375',name:'LL-37',cat:'Immune',spec:'5mg/vial',price:28.53},
+  {code:'WA3',name:'BAC Water',cat:'Reconstitution',spec:'3ml/vial',price:1.50},
+  {code:'WA10',name:'BAC Water',cat:'Reconstitution',spec:'10ml/vial',price:3.00},
+  {code:'AA',name:'Acetic Acid Water',cat:'Reconstitution',spec:'3ml/vial',price:1.50},
+];
+const CAT_ORDER=['Weight Loss','Growth Hormone','Healing & Recovery','Anti-Aging & Immune','Mitochondrial','Muscle & IGF','Hormonal','Cognitive','Immune','Reconstitution'];
+const cart={};
+const MIN_ORDER=250;
+const FREE_SHIP_THRESHOLD=500;
+let activeCategory='All';
+let inventory={};
+let PRODUCTS=[];
+let shippingRate=30;
+let adminTapCount=0,adminTapTimer;
+function adminTapped(){adminTapCount++;clearTimeout(adminTapTimer);if(adminTapCount>=3){adminTapCount=0;window.location.href='admin.html?market=cerritos';}else adminTapTimer=setTimeout(()=>adminTapCount=0,800);}
+document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.shiftKey&&e.key==='A')window.location.href='admin.html?market=cerritos';});
+async function loadInventory(){
+  try{
+    const data=await new Promise((resolve)=>{
+      const xhr=new XMLHttpRequest();
+      xhr.open('GET',API+'?action=getInventory&t='+Date.now(),true);
+      xhr.onload=()=>{try{resolve(JSON.parse(xhr.responseText));}catch(e){resolve({});}};
+      xhr.onerror=()=>resolve({});
+      xhr.send();
+      setTimeout(()=>resolve({}),8000);
+    });
+    if(Array.isArray(data)){inventory={};data.forEach(item=>{if(item.code)inventory[item.code]=item;});}else{inventory=data||{};}
+    if(inventory['SHIPPING']&&inventory['SHIPPING'].price>0)shippingRate=inventory['SHIPPING'].price;
+    if(inventory&&Object.keys(inventory).length>0){
+      PRODUCTS=ALL_PRODUCTS.filter(p=>p.code!=='SHIPPING'&&inventory[p.code]&&inventory[p.code].stock>0).map(p=>({...p,price:inventory[p.code].price>0?inventory[p.code].price:p.price}));
+    }else{PRODUCTS=[];}
+  }catch(e){console.warn('Could not load inventory');PRODUCTS=[];}
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('productGrid').style.display='grid';
+  buildCatNav();renderProducts();
+}
+function buildCatNav(){
+  const cats=['All',...CAT_ORDER.filter(c=>PRODUCTS.some(p=>p.cat===c))];
+  document.getElementById('catNav').innerHTML=cats.map(c=>`<div class="cat-pill ${c===activeCategory?'active':''}" onclick="setCategory('${c}')">${c}</div>`).join('');
+}
+function setCategory(cat){activeCategory=cat;buildCatNav();renderProducts();}
+function filterProducts(){renderProducts();}
+function renderProducts(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+  const filtered=PRODUCTS.filter(p=>{
+    const matchCat=activeCategory==='All'||p.cat===activeCategory;
+    const matchQ=!q||p.name.toLowerCase().includes(q)||p.code.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.spec.toLowerCase().includes(q);
+    return matchCat&&matchQ;
+  });
+  const grid=document.getElementById('productGrid');
+  const noRes=document.getElementById('noResults');
+  if(!filtered.length){
+    grid.innerHTML='';noRes.style.display='block';
+    if(PRODUCTS.length===0){noRes.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-family:var(--mono);font-size:13px;color:var(--text2);margin-bottom:8px;">Something went wrong loading the catalog.</div><div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:16px;">Please refresh the page to try again.</div><button onclick="window.location.reload()" style="background:linear-gradient(135deg,var(--blue),var(--blue-bright));color:#fff;border:none;border-radius:6px;padding:10px 20px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.06em;">RELOAD PAGE</button></div>';}
+    else{document.getElementById('noResultsQuery').textContent=q||activeCategory;}
+    return;
+  }
+  noRes.style.display='none';
+  grid.innerHTML=filtered.map(p=>{
+    const inCart=!!cart[p.code];const qty=inCart?cart[p.code]:0;
+    const stock=inventory[p.code]?inventory[p.code].stock:null;
+    const stockLabel=stock===null?'':(stock===0?'Out of Stock':stock<=5?stock+' left — Low Stock':stock+' in stock');
+    const stockClass=stock===null?'':(stock===0?'no-stock':stock<=5?'low-stock':'in-stock');
+    const btnHtml=inCart?`<div class="pc-qty-controls"><button class="pc-qty-btn" onclick="changeQty('${p.code}',-1)">−</button><span class="pc-qty-num">${qty}</span><button class="pc-qty-btn" onclick="changeQty('${p.code}',1)">+</button><button class="pc-remove-item" onclick="removeItem('${p.code}')" title="Remove">×</button></div>`:`<button class="pc-add" onclick="addToCart('${p.code}')">+ ADD TO ORDER</button>`;
+    return `<div class="product-card ${inCart?'in-cart':''}" id="card-${p.code}"><div class="in-cart-dot"></div><div class="pc-cat">${p.cat}</div><div class="pc-code">${p.code}</div><div class="pc-name">${p.name}</div><div class="pc-spec">${p.spec}</div><div class="pc-stock ${stockClass}">${stockLabel}</div><div class="pc-price">$${p.price.toFixed(2)}</div>${btnHtml}</div>`;
+  }).join('');
+}
+function addToCart(code){cart[code]=(cart[code]||0)+1;updateCartUI();renderProducts();}
+function changeQty(code,delta){if(!cart[code])return;cart[code]=Math.max(1,cart[code]+delta);updateCartUI();renderProducts();}
+function removeItem(code){delete cart[code];updateCartUI();renderProducts();}
+function clearCartFn(){Object.keys(cart).forEach(k=>delete cart[k]);updateCartUI();renderProducts();closeCart();}
+function cartTotal(){return Object.entries(cart).reduce((s,[c,q])=>{const p=PRODUCTS.find(p=>p.code===c);return s+(p?p.price*q:0);},0);}
+function cartCount(){return Object.values(cart).reduce((a,b)=>a+b,0);}
+function updateStorefrontProgress(){
+  const strip=document.getElementById('sfProgressStrip');if(!strip)return;
+  const total=cartTotal();const count=cartCount();
+  if(count===0){strip.style.display='none';return;}
+  strip.style.display='flex';
+  const pct=Math.min(100,(total/MIN_ORDER)*100);
+  const met=total>=MIN_ORDER;const freeShip=total>=FREE_SHIP_THRESHOLD;
+  const fill=document.getElementById('sfProgressFill2');
+  const label=document.getElementById('sfProgressLabel');
+  fill.style.width=(freeShip?100:pct)+'%';
+  fill.className='sf-progress-fill2'+(met?' met':'');
+  if(freeShip){label.textContent='✓ FREE SHIPPING UNLOCKED';label.style.color='var(--green)';}
+  else if(met){label.textContent='✓ $'+MIN_ORDER+' MINIMUM MET';label.style.color='var(--green)';}
+  else{const rem=(MIN_ORDER-total).toFixed(2);label.textContent='$'+total.toFixed(2)+' of $'+MIN_ORDER+' · $'+rem+' to go';label.style.color='var(--text2)';}
+}
+function updateCartUI(){const count=cartCount();const badge=document.getElementById('cartBadge');if(count>0){badge.textContent=count;badge.style.display='flex';}else badge.style.display='none';updateStorefrontProgress();renderDrawer();}
+function openCart(){renderDrawer();document.getElementById('drawerOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('drawerOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');document.body.style.overflow='';}
+function renderDrawer(){
+  const keys=Object.keys(cart);const body=document.getElementById('drawerBody');const footer=document.getElementById('drawerFooter');
+  if(!keys.length){body.innerHTML=`<div class="cart-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>ORDER LIST EMPTY<br>ADD COMPOUNDS BELOW</p></div>`;footer.innerHTML='';return;}
+  const total=cartTotal();
+  body.innerHTML=keys.map(code=>{const p=PRODUCTS.find(p=>p.code===code);const qty=cart[code];return `<div class="cart-item"><div class="ci-info"><div class="ci-name">${p.name}</div><div class="ci-spec">${p.code} · ${p.spec}</div><div class="ci-line-price">$${(p.price*qty).toFixed(2)}</div></div><div class="ci-controls"><button class="qty-btn" onclick="changeQty('${code}',-1)">−</button><span class="qty-num">${qty}</span><button class="qty-btn" onclick="changeQty('${code}',1)">+</button><button class="ci-remove" onclick="removeItem('${code}')">×</button></div></div>`;}).join('');
+  const remaining=Math.max(0,MIN_ORDER-total);const pct=Math.min(100,(total/MIN_ORDER)*100);const met=total>=MIN_ORDER;
+  const effectiveShipping=total>=FREE_SHIP_THRESHOLD?0:shippingRate;
+  footer.innerHTML=`<div class="cart-totals"><div class="ct-row"><span class="ct-label">${cartCount()} item${cartCount()!==1?'s':''}</span></div><div class="ct-divider"></div><div class="ct-row"><span class="ct-label">Subtotal</span><span class="ct-value">$${total.toFixed(2)}</span></div><div class="ct-row"><span class="ct-label">Shipping</span><span class="ct-value">${effectiveShipping===0?'<span style="color:var(--green);font-weight:500;">FREE</span>':'$'+effectiveShipping.toFixed(2)}</span></div><div class="ct-divider"></div><div class="ct-row ct-total"><span class="ct-label">ORDER TOTAL</span><span class="ct-value">$${(total+effectiveShipping).toFixed(2)}</span></div><div class="min-progress"><div class="min-progress-header"><span>${met?'✓ MINIMUM MET':'ORDER MINIMUM'}</span><span>$${total.toFixed(2)} / $${MIN_ORDER}</span></div><div class="min-progress-track"><div class="min-progress-fill${met?' met':''}" style="width:${pct}%"></div></div>${!met?`<div class="min-progress-msg">Add $${remaining.toFixed(2)} more to unlock checkout</div>`:''}</div></div><button class="checkout-btn${met?'':' locked'}" ${met?'':'disabled'} onclick="${met?'openCheckout()':''}">PROCEED TO CHECKOUT →</button><button class="clear-cart-btn" onclick="clearCartFn()">Clear order</button>`;
+}
+function openCheckout(){
+  closeCart();const subtotal=cartTotal();const keys=Object.keys(cart);
+  const checkoutShipping=subtotal>=FREE_SHIP_THRESHOLD?0:shippingRate;
+  const orderRows=keys.map(code=>{const p=PRODUCTS.find(p=>p.code===code);const qty=cart[code];return `<div class="or-item"><span class="or-name">${p.name} <span style="color:var(--text3);font-size:10px;">${p.spec}</span></span><span class="or-qty">×${qty}</span><span class="or-price">$${(p.price*qty).toFixed(2)}</span></div>`;}).join('');
+  document.getElementById('modalContent').innerHTML=`<div class="modal-header"><div class="modal-title">COMPLETE ORDER</div><div class="modal-close" onclick="closeCheckout()">×</div></div><div class="modal-body"><div class="modal-section-title">Order Summary</div><div class="order-review">${orderRows}<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:var(--text2);border-top:1px solid var(--border);margin-top:4px;"><span>Subtotal</span><span style="font-family:var(--mono);">$${subtotal.toFixed(2)}</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;color:var(--text2);"><span>Shipping</span><span style="font-family:var(--mono);color:${checkoutShipping===0?'var(--green)':'inherit'};" id="shippingVal">${checkoutShipping===0?'FREE (Over $500)':'$'+checkoutShipping.toFixed(2)}</span></div><div class="or-total"><span class="or-total-label">TOTAL</span><span class="or-total-val" id="checkoutTotal">$${(subtotal+checkoutShipping).toFixed(2)}</span></div></div><div class="modal-section-title">Your Information</div><div class="form-field"><label class="form-label">Full Name <span class="req">*</span></label><input type="text" class="form-input" id="custName" placeholder="First and last name"></div><div class="form-field"><label class="form-label">Email Address <span class="req">*</span></label><input type="email" class="form-input" id="custEmail" placeholder="you@email.com"></div><div class="form-field"><label class="form-label">Phone Number <span class="req">*</span></label><input type="tel" class="form-input" id="custPhone" placeholder="+1 (555) 000-0000"></div><div class="form-field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="localPickup" onchange="togglePickup()" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer;flex-shrink:0;"><span style="font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text2);">LOCAL PICKUP</span>${checkoutShipping>0?`<span style="font-family:var(--mono);font-size:10px;color:var(--green);">(removes $${checkoutShipping.toFixed(2)} shipping)</span>`:''}</label></div><div class="form-field" id="addressField"><label class="form-label">Shipping Address <span class="opt">(optional)</span></label><textarea class="form-textarea" id="custAddress" placeholder="Street, City, State, ZIP"></textarea></div><div class="form-field"><label class="form-label">Additional Notes <span class="opt">(optional)</span></label><textarea class="form-textarea" id="custNotes" placeholder="Special instructions…" style="min-height:60px;"></textarea></div><div style="background:rgba(33,150,243,0.06);border:1px solid rgba(33,150,243,0.15);border-radius:8px;padding:10px 13px;font-size:11px;color:var(--text2);line-height:1.6;margin-top:12px;">📧 We'll contact you within 24 hours to confirm and arrange fulfillment. Questions? WhatsApp +1-310-683-0049</div><button class="submit-btn" id="submitBtn" onclick="submitOrder()">PLACE ORDER →</button></div>`;
+  document.getElementById('checkoutModal').classList.add('open');document.body.style.overflow='hidden';
+}
+function togglePickup(){
+  const pickup=document.getElementById('localPickup').checked;
+  const subtotal=cartTotal();
+  const baseShipping=subtotal>=FREE_SHIP_THRESHOLD?0:shippingRate;
+  const shipping=pickup?0:baseShipping;
+  document.getElementById('shippingVal').textContent=pickup?'FREE (Local Pickup)':(baseShipping===0?'FREE (Over $500)':'$'+baseShipping.toFixed(2));
+  document.getElementById('shippingVal').style.color=(shipping===0)?'var(--green)':'inherit';
+  document.getElementById('checkoutTotal').textContent='$'+(subtotal+shipping).toFixed(2);
+  const addrField=document.getElementById('addressField');
+  if(addrField)addrField.style.display=pickup?'none':'block';
+}
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');document.body.style.overflow='';}
+async function submitOrder(){
+  const name=document.getElementById('custName').value.trim();const email=document.getElementById('custEmail').value.trim();const phone=document.getElementById('custPhone').value.trim();const address=document.getElementById('custAddress').value.trim();const notes=document.getElementById('custNotes').value.trim();
+  if(!name){flash('custName','Please enter your name.');return;}if(!email||!email.includes('@')){flash('custEmail','Please enter a valid email.');return;}if(!phone){flash('custPhone','Please enter your phone number.');return;}
+  const btn=document.getElementById('submitBtn');btn.disabled=true;btn.innerHTML='<div class="spinner"></div> SENDING…';
+  const pickup=(document.getElementById('localPickup')||{}).checked||false;
+  const items=Object.entries(cart).map(([code,qty])=>{const p=PRODUCTS.find(p=>p.code===code);return{code,name:p?p.name:code,spec:p?p.spec:'',qty,price:p?p.price:0};});
+  const subtotal=cartTotal();const effectiveShipping=subtotal>=FREE_SHIP_THRESHOLD?0:shippingRate;const shipping=pickup?0:effectiveShipping;const total=subtotal+shipping;
+  const orderSummary=items.map(i=>`${i.name} (${i.spec}) x${i.qty} — $${(i.price*i.qty).toFixed(2)}`).join('\n')+'\nShipping: '+(pickup?'Local Pickup':'$'+shipping.toFixed(2));
+  const order={id:'ORD-'+Date.now(),status:'pending',createdAt:Date.now(),subtotal,shipping,shippingMethod:pickup?'pickup':'delivery',total,customer:{name,email,phone,address:pickup?'LOCAL PICKUP':address,notes},items};
+  try{const params=new URLSearchParams({action:'saveOrder',order:encodeURIComponent(JSON.stringify(order))});await new Promise((resolve)=>{const xhr=new XMLHttpRequest();xhr.open('GET',API+'?'+params.toString(),true);xhr.onload=xhr.onerror=()=>resolve();xhr.send();});}catch(e){console.warn('Could not save to sheets:',e);}
+  try{const deductURL=API+'?action=deductInventory&items='+encodeURIComponent(JSON.stringify(items))+'&t='+Date.now();await new Promise((resolve)=>{const xhr=new XMLHttpRequest();xhr.open('GET',deductURL,true);xhr.onload=xhr.onerror=()=>resolve();xhr.send();setTimeout(()=>resolve(),8000);});}catch(e){console.warn('Inventory deduct failed:',e);}
+  try{await emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{to_email:FULFILLER_EMAIL,from_name:name,from_email:email,from_phone:phone,shipping_address:pickup?'LOCAL PICKUP':(address||'Not provided'),customer_notes:notes||'None',order_summary:orderSummary,order_total:'$'+total.toFixed(2)});}catch(e){console.error('EmailJS send failed:',JSON.stringify(e),e);}
+  Object.keys(cart).forEach(k=>delete cart[k]);updateCartUI();renderProducts();
+  document.getElementById('modalContent').innerHTML=`<div class="success-screen"><div class="success-icon">✓</div><div class="success-title">ORDER RECEIVED</div><div class="success-sub">Thank you, ${name}. Your order has been submitted.</div><div class="success-note">We'll reach out within <strong>24 hours</strong> to confirm and arrange fulfillment.<br>Questions? WhatsApp <strong>+1-310-683-0049</strong></div><button class="success-done-btn" onclick="closeCheckout()">BACK TO CATALOG</button></div>`;
+}
+function flash(id,msg){const el=document.getElementById(id);el.style.borderColor='var(--red)';el.focus();el.placeholder=msg;setTimeout(()=>{el.style.borderColor='';el.placeholder='';},3000);}
+loadInventory();
+</script>
+</body>
+</html>

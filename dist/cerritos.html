@@ -222,23 +222,46 @@ body::after{display:none;}
 .bys-modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .bys-modal-title{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.04em;}
 .bys-modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--text3);padding:0 4px;line-height:1;}
-.bys-modal-body{overflow-y:auto;flex:1;padding:18px 22px 28px;}
+.bys-modal-body{overflow-y:auto;flex:1;padding:18px 22px 12px;}
+.bys-modal-footer{flex-shrink:0;padding:12px 22px 18px;border-top:2px solid var(--border);background:var(--white);}
+.bys-footer-weeks{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bys-weeks-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;}
+.bys-wk-btn{background:var(--bg);border:1px solid var(--border2);border-radius:4px;width:26px;height:26px;font-size:15px;cursor:pointer;color:var(--text2);line-height:1;display:flex;align-items:center;justify-content:center;}
+.bys-wk-btn:hover{background:var(--blue);color:#fff;border-color:transparent;}
+.bys-weeks-val{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--text);min-width:26px;text-align:center;}
+.bys-weeks-unit{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.bys-wk-presets{display:flex;gap:4px;margin-left:6px;}
+.bys-wk-preset{background:var(--bg);border:1px solid var(--border2);border-radius:4px;padding:3px 9px;font-family:var(--mono);font-size:10px;cursor:pointer;color:var(--text2);transition:all 0.12s;}
+.bys-wk-preset:hover,.bys-wk-preset.active{background:var(--blue);color:#fff;border-color:transparent;}
+.bys-footer-action{display:flex;align-items:center;justify-content:space-between;}
+.bys-queue-count{font-family:var(--mono);font-size:12px;color:var(--text2);font-weight:500;}
+.bys-calc-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:11px 24px;font-family:var(--mono);font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
+.bys-calc-btn:hover{background:var(--blue2);}
 .bys-tier-row{display:flex;gap:8px;margin-bottom:12px;}
 .bys-tier-btn{flex:1;padding:9px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.07em;border:1px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text2);cursor:pointer;transition:all 0.15s;}
 .bys-tier-btn.active{background:var(--blue);color:#fff;border-color:transparent;}
-.bys-note{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.04em;margin-bottom:14px;}
-.bys-stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:14px;}
-.bys-stack-card{border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all 0.15s;background:var(--white);}
+.bys-note{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.04em;margin-bottom:14px;line-height:1.5;}
+.bys-stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:12px;}
+.bys-stack-card{border:1px solid var(--border);border-radius:8px;padding:12px 12px 10px;cursor:pointer;transition:all 0.15s;background:var(--white);position:relative;}
 .bys-stack-card:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(23,86,169,0.1);}
 .bys-stack-card.selected{border-color:var(--blue);background:rgba(23,86,169,0.05);box-shadow:0 2px 8px rgba(23,86,169,0.12);}
+.bys-info-btn{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:rgba(23,86,169,0.08);border:1px solid rgba(23,86,169,0.18);font-size:9px;cursor:pointer;color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;transition:all 0.12s;z-index:1;}
+.bys-info-btn:hover{background:var(--blue);color:#fff;border-color:transparent;}
+.bys-info-btn.active{background:var(--blue);color:#fff;border-color:transparent;}
 .bys-stack-emoji{font-size:18px;margin-bottom:5px;}
-.bys-stack-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.03em;margin-bottom:3px;}
+.bys-stack-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.03em;margin-bottom:3px;padding-right:22px;}
 .bys-stack-goal{font-size:10px;color:var(--text3);line-height:1.35;margin-bottom:4px;}
 .bys-stack-cycle{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:0.04em;}
-.bys-queue-bar{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-top:4px;}
-.bys-queue-label{font-family:var(--mono);font-size:12px;color:var(--text2);font-weight:500;}
-.bys-calc-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
-.bys-calc-btn:hover{background:var(--blue2);}
+.bys-dose-panel{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px;}
+.bys-dose-panel-title{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.bys-dose-table{width:100%;border-collapse:collapse;}
+.bys-dose-table th{text-align:left;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;padding:4px 8px;border-bottom:1px solid var(--border2);}
+.bys-dose-table td{font-family:var(--mono);font-size:10px;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;}
+.bys-dose-table tr:last-child td{border-bottom:none;}
+.bys-dose-table .bys-dt-compound{color:var(--text);font-weight:500;}
+.bys-dose-table .bys-dt-lo{color:#2e7d32;}
+.bys-dose-table .bys-dt-mid{color:#1565c0;}
+.bys-dose-table .bys-dt-hi{color:#b71c1c;}
 .bys-result-header{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
 .bys-back-btn{background:none;border:none;font-family:var(--mono);font-size:11px;color:var(--blue);cursor:pointer;padding:0;text-align:left;letter-spacing:0.04em;}
 .bys-result-title{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
@@ -261,7 +284,7 @@ body::after{display:none;}
 .bys-add-all-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:14px;font-family:var(--mono);font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.15s;}
 .bys-add-all-btn:hover{background:var(--blue2);}
 .bys-disclaimer{font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5;}
-@media(max-width:480px){.bys-stack-grid{grid-template-columns:1fr 1fr;}.bys-item-left{flex:0 0 110px;}}
+@media(max-width:480px){.bys-stack-grid{grid-template-columns:1fr 1fr;}.bys-item-left{flex:0 0 110px;}.bys-dose-table td,.bys-dose-table th{padding:3px 4px;font-size:9px;}}
 </style>
 </head>
 <body>
@@ -359,6 +382,25 @@ body::after{display:none;}
       <button class="bys-modal-close" onclick="closeStackBuilder()">&#215;</button>
     </div>
     <div class="bys-modal-body" id="bysBody"></div>
+    <div class="bys-modal-footer" id="bysFooter" style="display:none">
+      <div class="bys-footer-weeks">
+        <span class="bys-weeks-label">Cycle:</span>
+        <button class="bys-wk-btn" onclick="bysAdjWeeks(-4)">&#8722;</button>
+        <span class="bys-weeks-val" id="bysWeeksVal">12</span>
+        <span class="bys-weeks-unit">wks</span>
+        <button class="bys-wk-btn" onclick="bysAdjWeeks(4)">+</button>
+        <div class="bys-wk-presets">
+          <button class="bys-wk-preset" onclick="bysSetWeeks(8)">8</button>
+          <button class="bys-wk-preset active" onclick="bysSetWeeks(12)">12</button>
+          <button class="bys-wk-preset" onclick="bysSetWeeks(20)">20</button>
+          <button class="bys-wk-preset" onclick="bysSetWeeks(24)">24</button>
+        </div>
+      </div>
+      <div class="bys-footer-action">
+        <span class="bys-queue-count" id="bysQueueCount"></span>
+        <button class="bys-calc-btn" onclick="bysShowResult()">Calculate Vials &#8594;</button>
+      </div>
+    </div>
   </div>
 </div>
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
@@ -375,70 +417,70 @@ body::after{display:none;}
 'use strict';
 
 var BYS_STACKS=[
-  {name:'FAT STACK',emoji:'🟢',goal:'Maximum weight loss · No plateau · Cardiometabolic',cycle:'20+ weeks minimum',
+  {name:'FAT STACK',emoji:'🟢',goal:'Maximum weight loss · No plateau · Cardiometabolic',cycle:'20',
    peptides:[
      {name:'Retatrutide',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6-8 wks per step)',hi:'12 mg/wk maximum'},
      {name:'NAD+',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
      {name:'5-amino-1mq',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'}]},
-  {name:'FAT STACK LITE',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',cycle:'20+ weeks',
+  {name:'FAT STACK LITE',emoji:'⚡',goal:'Maximum weight loss — GLP-1 + amylin dual pathway',cycle:'20',
    peptides:[
-     {name:'Semaglutide',lo:'0.5 mg/wk maintenance',mid:'2.4 mg/wk',hi:'2.4 mg/wk'},
-     {name:'Cagrilintide',lo:'0.3 mg/wk maintenance',mid:'1.2 mg/wk',hi:'2.4 mg/wk'}]},
-  {name:'BETTER BODY STACK',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',cycle:'16-24 weeks on',
+     {name:'Semaglutide',lo:'0.5 mg/wk',mid:'2.4 mg/wk',hi:'2.4 mg/wk'},
+     {name:'Cagrilintide',lo:'0.3 mg/wk',mid:'1.2 mg/wk',hi:'2.4 mg/wk'}]},
+  {name:'BETTER BODY STACK',emoji:'📈',goal:'GH optimization · Lean muscle · Fat loss · Sleep · Anti-aging',cycle:'20',
    peptides:[
      {name:'Tesamorelin',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
      {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'}]},
-  {name:'BETTER BODY LITE STACK',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',cycle:'12 weeks on',
+  {name:'BETTER BODY LITE STACK',emoji:'🧬',goal:'GH optimization · Entry-level · Lean muscle · Fat loss · Sleep',cycle:'12',
    peptides:[
      {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'}]},
-  {name:'LIGHTS OUT STACK',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',cycle:'12 weeks on',
+  {name:'LIGHTS OUT STACK',emoji:'😴',goal:'Deep sleep · Overnight GH pulse · Cortisol reduction · Recovery',cycle:'12',
    peptides:[
      {name:'Sermorelin',lo:'200 mcg/night',mid:'300 mcg/night',hi:'500 mcg/night'},
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
      {name:'DSIP',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
      {name:'Melatonin',lo:'0.5 mg/night',mid:'0.8 mg/night',hi:'1 mg/night'}]},
-  {name:'YOUTH STACK',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',cycle:'12 weeks on',
+  {name:'YOUTH STACK',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',cycle:'12',
    peptides:[
      {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'5 mg/day'},
      {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
      {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'}]},
-  {name:'BENJAMIN BUTTON STACK',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Anti-aging',cycle:'10 weeks on',
+  {name:'BENJAMIN BUTTON STACK',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Anti-aging',cycle:'10',
    peptides:[
      {name:'NAD+',lo:'100 mg/day',mid:'500 mg/day',hi:'1000 mg/day'},
      {name:'SS-31',lo:'1 mg/day',mid:'5 mg/day',hi:'10 mg/day'},
      {name:'MOTS-c',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
      {name:'5-amino-1mq',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'}]},
-  {name:'IMMUNITY STACK',emoji:'🛡️',goal:'Immune modulation · Longevity · Anti-aging · Post-viral support',cycle:'6 weeks',
+  {name:'IMMUNITY STACK',emoji:'🛡️',goal:'Immune modulation · Longevity · Anti-aging · Post-viral support',cycle:'6',
    peptides:[
      {name:'Thymosin Alpha-1',lo:'0.5 mg 2x/wk',mid:'1.0 mg 2x/wk',hi:'1.6 mg 2x/wk'},
      {name:'Epithalon',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
      {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'}]},
-  {name:'LIMITLESS STACK',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',cycle:'6 weeks on',
+  {name:'LIMITLESS STACK',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',cycle:'6',
    peptides:[
      {name:'Semax',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
      {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
      {name:'NAD+',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'}]},
-  {name:'INTIMACY STACK',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal',cycle:'As-needed',
+  {name:'INTIMACY STACK',emoji:'🌹',goal:'Libido · Sexual desire · Bonding · Anxiety-free arousal',cycle:'4',
    peptides:[
      {name:'PT-141',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
      {name:'Selank',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'}]},
-  {name:'RESET STACK',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',cycle:'12 weeks on',
+  {name:'RESET STACK',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',cycle:'12',
    peptides:[
      {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'5 mg/day'},
      {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
      {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'},
      {name:'KPV',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'}]},
-  {name:'WOLVERINE STACK',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',cycle:'12 weeks on',
+  {name:'WOLVERINE STACK',emoji:'🐺',goal:'Injury recovery · Tissue repair · Pain reduction',cycle:'12',
    peptides:[
      {name:'BPC-157',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
      {name:'TB-500',lo:'2 mg/wk',mid:'4 mg/wk',hi:'5 mg/wk'}]},
-  {name:'SUPERMAN STACK',emoji:'🦸',goal:'Maximum muscle growth · Myostatin inhibition · Anabolic signaling',cycle:'12 weeks on',
+  {name:'SUPERMAN STACK',emoji:'🦸',goal:'Maximum muscle growth · Myostatin inhibition · Anabolic signaling',cycle:'12',
    peptides:[
      {name:'IGF-1 LR3',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
      {name:'CJC-1295 (with DAC)',lo:'300 mcg/wk',mid:'500 mcg/wk',hi:'1000 mcg/wk'},
      {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'}]},
-  {name:'ULTIMATE STACK',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',cycle:'12 weeks',
+  {name:'ULTIMATE STACK',emoji:'💪',goal:'Muscle gain · Longevity · Recovery · Immune support · Mitochondrial',cycle:'12',
    peptides:[
      {name:'CJC-1295 (with DAC)',lo:'300 mcg/wk',mid:'1000 mcg/wk',hi:'2000 mcg/wk'},
      {name:'Ipamorelin',lo:'100 mcg/day',mid:'200 mcg/day',hi:'300 mcg/day'},
@@ -448,12 +490,12 @@ var BYS_STACKS=[
      {name:'Thymosin Alpha-1',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
      {name:'IGF-1 LR3',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
      {name:'SS-31',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'}]},
-  {name:"MEN'S WELLNESS STACK",emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',cycle:'12 weeks',
+  {name:"MEN'S WELLNESS STACK",emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',cycle:'12',
    peptides:[
      {name:'KissPeptin-10',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
      {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'}]},
-  {name:"WOMEN'S WELLNESS STACK",emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",cycle:'12 weeks',
+  {name:"WOMEN'S WELLNESS STACK",emoji:'🌸',goal:"Hormonal balance · Skin · Libido · Mood · Body composition",cycle:'12',
    peptides:[
      {name:'PT-141',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
      {name:'GHK-Cu',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
@@ -461,7 +503,7 @@ var BYS_STACKS=[
      {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
      {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'}]},
-  {name:'PERI/MENOPAUSE STACK',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',cycle:'12 weeks',
+  {name:'PERI/MENOPAUSE STACK',emoji:'🌿',goal:'Hormonal balance · Muscle preservation · Mood · Brain fog · Longevity',cycle:'12',
    peptides:[
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
      {name:'CJC-1295 (no DAC)',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
@@ -469,7 +511,7 @@ var BYS_STACKS=[
      {name:'Selank',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
      {name:'KissPeptin-10',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
      {name:'Epithalon',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'}]},
-  {name:'GOLDEN ERA STACK',emoji:'🏆',goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality',cycle:'12 weeks',
+  {name:'GOLDEN ERA STACK',emoji:'🏆',goal:'Healthy aging · GH restoration · Cellular repair · Immune vitality',cycle:'12',
    peptides:[
      {name:'Tesamorelin',lo:'0.5 mg/day',mid:'1 mg/day',hi:'2 mg/day'},
      {name:'Ipamorelin',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
@@ -510,11 +552,12 @@ var BYS_CODES={
   'AOD9604':[{code:'5AD',mg:5}]
 };
 
-var bysQueue=[], bysTier='lo';
+var bysQueue=[],bysTier='lo',bysWeeks=12,bysInfoIdx=-1;
 
-function bysCycleWeeks(cycle){
-  var m=(cycle||'').match(/(\d+)/);
-  return m?parseInt(m[1]):12;
+function bysRxAll(str,re){
+  var m,res=[],rx=new RegExp(re.source,'g'+(re.ignoreCase?'i':''));
+  while((m=rx.exec(str))!==null)res.push(m);
+  return res;
 }
 
 function bysParseMg(dose,weeks){
@@ -522,40 +565,29 @@ function bysParseMg(dose,weeks){
   var d=dose.replace(/,/g,'').replace(/–|—/g,'-');
   if(/\bIU\b/i.test(d))return null;
   if(/as.needed/i.test(d))return null;
-  // Burst: N mg/day × M days
   var b=d.match(/(\d+\.?\d*)\s*mg\/day\s*[x×]\s*(\d+)\s*days?/i);
   if(b)return parseFloat(b[1])*parseInt(b[2]);
   var bc=d.match(/(\d+\.?\d*)\s*mcg\/day\s*[x×]\s*(\d+)\s*days?/i);
   if(bc)return parseFloat(bc[1])/1000*parseInt(bc[2]);
-  // Phased: N mg/wk × M wks → F mg/wk
-  var ph=d.match(/(\d+\.?\d*)\s*mg\/wk\s*[x×]\s*(\d+)\s*wks?\s*[→>]+\s*(\d+\.?\d*)\s*mg\/wk/i);
+  var ph=d.match(/(\d+\.?\d*)\s*mg\/wk\s*[x×]\s*(\d+)\s*wks?\s*[-→>]+\s*(\d+\.?\d*)\s*mg\/wk/i);
   if(ph){var i1=parseFloat(ph[1]),i2=parseInt(ph[2]),f=parseFloat(ph[3]);return i1*Math.min(i2,weeks)+f*Math.max(0,weeks-i2);}
-  // All mg/wk — take last (= maintenance/max)
-  var mw=[...d.matchAll(/(\d+\.?\d*)\s*mg\/wk/gi)];
+  var mw=bysRxAll(d,/(\d+\.?\d*)\s*mg\/wk/i);
   if(mw.length)return parseFloat(mw[mw.length-1][1])*weeks;
-  // All mcg/wk — take last
-  var mcgw=[...d.matchAll(/(\d+\.?\d*)\s*mcg\/wk/gi)];
-  if(mcgw.length)return parseFloat(mcgw[mcgw.length-1][1])/1000*weeks;
-  // N mg Nx/wk
+  var cw=bysRxAll(d,/(\d+\.?\d*)\s*mcg\/wk/i);
+  if(cw.length)return parseFloat(cw[cw.length-1][1])/1000*weeks;
   var mx=d.match(/(\d+\.?\d*)\s*mg\s+(\d+)x\/wk/i);
   if(mx)return parseFloat(mx[1])*parseInt(mx[2])*weeks;
-  // N mcg Nx/day
-  var mcxd=d.match(/(\d+\.?\d*)\s*mcg\s+(\d+)x\/day/i);
-  if(mcxd)return parseFloat(mcxd[1])/1000*parseInt(mcxd[2])*7*weeks;
-  // N mg Nx/day
+  var cxd=d.match(/(\d+\.?\d*)\s*mcg\s+(\d+)x\/day/i);
+  if(cxd)return parseFloat(cxd[1])/1000*parseInt(cxd[2])*7*weeks;
   var mxd=d.match(/(\d+\.?\d*)\s*mg\s+(\d+)x\/day/i);
   if(mxd)return parseFloat(mxd[1])*parseInt(mxd[2])*7*weeks;
-  // mcg/night
   var mn=d.match(/(\d+\.?\d*)\s*mcg\/night/i);
   if(mn)return parseFloat(mn[1])/1000*7*weeks;
-  // mg/night — take last (handles ranges like "0.8 mg/night")
-  var mng=[...d.matchAll(/(\d+\.?\d*)\s*mg\/night/gi)];
+  var mng=bysRxAll(d,/(\d+\.?\d*)\s*mg\/night/i);
   if(mng.length)return parseFloat(mng[mng.length-1][1])*7*weeks;
-  // mcg/day — take last
-  var mcd=[...d.matchAll(/(\d+\.?\d*)\s*mcg\/day/gi)];
-  if(mcd.length)return parseFloat(mcd[mcd.length-1][1])/1000*7*weeks;
-  // mg/day — take last (handles ranges "3-5 mg/day" → takes 5)
-  var md=[...d.matchAll(/(\d+\.?\d*)\s*mg\/day/gi)];
+  var cd=bysRxAll(d,/(\d+\.?\d*)\s*mcg\/day/i);
+  if(cd.length)return parseFloat(cd[cd.length-1][1])/1000*7*weeks;
+  var md=bysRxAll(d,/(\d+\.?\d*)\s*mg\/day/i);
   if(md.length)return parseFloat(md[md.length-1][1])*7*weeks;
   return null;
 }
@@ -569,16 +601,34 @@ function bysOptimize(totalMg,sizes){
   }
   if(remaining>0.0001){
     var s=sizes[sizes.length-1];
-    var cnt=Math.ceil(remaining/s.mg);
-    result[s.code]=(result[s.code]||0)+cnt;
+    result[s.code]=(result[s.code]||0)+Math.ceil(remaining/s.mg);
   }
   return Object.keys(result).map(function(c){return{code:c,qty:result[c]};});
+}
+
+function bysStackHasStock(stack){
+  if(!inventory||!Object.keys(inventory).length)return true;
+  return stack.peptides.some(function(p){
+    var codes=BYS_CODES[p.name];
+    if(!codes)return false;
+    return codes.some(function(c){return inventory[c.code]&&inventory[c.code].stock>0;});
+  });
+}
+
+function bysUpdateFooter(){
+  var footer=document.getElementById('bysFooter');
+  if(!footer)return;
+  if(bysQueue.length===0){footer.style.display='none';return;}
+  footer.style.display='block';
+  var el=document.getElementById('bysQueueCount');
+  if(el)el.textContent=bysQueue.length+' stack'+(bysQueue.length>1?'s':'')+' selected';
 }
 
 function openStackBuilder(){
   document.getElementById('bysOverlay').classList.add('open');
   document.body.style.overflow='hidden';
   bysRenderSelect();
+  bysUpdateFooter();
 }
 window.openStackBuilder=openStackBuilder;
 
@@ -595,50 +645,81 @@ function bysRenderSelect(){
     html+='<button class="bys-tier-btn'+(bysTier===o.t?' active':'')+'" onclick="bysSetTier(\''+o.t+'\')">'+o.l+'</button>';
   });
   html+='</div>';
-  html+='<div class="bys-note">Select one or more stacks &nbsp;&#183;&nbsp; overlapping compounds are automatically deduplicated (max qty kept)</div>';
+  html+='<div class="bys-note">Tap a card to select · tap <strong>i</strong> to preview doses · overlapping compounds auto-deduplicated (larger qty wins)</div>';
   html+='<div class="bys-stack-grid">';
   BYS_STACKS.forEach(function(s,i){
+    if(!bysStackHasStock(s))return;
     var sel=bysQueue.some(function(q){return q.name===s.name;});
+    var infoOpen=bysInfoIdx===i;
     html+='<div class="bys-stack-card'+(sel?' selected':'')+'" onclick="bysToggleStack('+i+')">';
+    html+='<button class="bys-info-btn'+(infoOpen?' active':'')+'" onclick="bysToggleInfo('+i+',event)" title="View doses">i</button>';
     html+='<div class="bys-stack-emoji">'+s.emoji+'</div>';
     html+='<div class="bys-stack-name">'+s.name+'</div>';
     html+='<div class="bys-stack-goal">'+s.goal+'</div>';
-    html+='<div class="bys-stack-cycle">'+s.cycle+'</div>';
+    html+='<div class="bys-stack-cycle">~'+s.cycle+' wks default</div>';
     html+='</div>';
   });
   html+='</div>';
-  if(bysQueue.length>0){
-    html+='<div class="bys-queue-bar"><span class="bys-queue-label">'+bysQueue.length+' stack'+(bysQueue.length>1?'s':'')+' selected</span>';
-    html+='<button class="bys-calc-btn" onclick="bysShowResult()">Calculate Vials &#8594;</button></div>';
+  // Dose detail panel
+  if(bysInfoIdx>=0&&bysInfoIdx<BYS_STACKS.length){
+    var s=BYS_STACKS[bysInfoIdx];
+    html+='<div class="bys-dose-panel">';
+    html+='<div class="bys-dose-panel-title">'+s.emoji+' '+s.name+' — Dose Guide</div>';
+    html+='<table class="bys-dose-table"><thead><tr><th>Compound</th><th style="color:#2e7d32">LO</th><th style="color:#1565c0">MID</th><th style="color:#b71c1c">HI</th></tr></thead><tbody>';
+    s.peptides.forEach(function(p){
+      html+='<tr><td class="bys-dt-compound">'+p.name+'</td>';
+      html+='<td class="bys-dt-lo">'+p.lo+'</td>';
+      html+='<td class="bys-dt-mid">'+p.mid+'</td>';
+      html+='<td class="bys-dt-hi">'+p.hi+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
   }
   body.innerHTML=html;
 }
 
 window.bysSetTier=function(t){bysTier=t;bysRenderSelect();};
+
+window.bysToggleInfo=function(idx,e){
+  e.stopPropagation();
+  bysInfoIdx=bysInfoIdx===idx?-1:idx;
+  bysRenderSelect();
+};
+
 window.bysToggleStack=function(idx){
   var s=BYS_STACKS[idx];
   var pos=-1;
   bysQueue.forEach(function(q,i){if(q.name===s.name)pos=i;});
   if(pos===-1)bysQueue.push(s);else bysQueue.splice(pos,1);
   bysRenderSelect();
+  bysUpdateFooter();
+};
+
+window.bysAdjWeeks=function(delta){
+  bysWeeks=Math.max(4,Math.min(52,bysWeeks+delta));
+  var el=document.getElementById('bysWeeksVal');
+  if(el)el.textContent=bysWeeks;
+  document.querySelectorAll('.bys-wk-preset').forEach(function(b){b.classList.toggle('active',parseInt(b.textContent)===bysWeeks);});
+};
+
+window.bysSetWeeks=function(w){
+  bysWeeks=w;
+  var el=document.getElementById('bysWeeksVal');
+  if(el)el.textContent=bysWeeks;
+  document.querySelectorAll('.bys-wk-preset').forEach(function(b){b.classList.toggle('active',parseInt(b.textContent)===w);});
 };
 
 function bysShowResult(){
   var merged={};
   bysQueue.forEach(function(stack){
-    var weeks=bysCycleWeeks(stack.cycle);
     stack.peptides.forEach(function(p){
-      var dose=p[bysTier],mg=bysParseMg(dose,weeks);
+      var dose=p[bysTier],mg=bysParseMg(dose,bysWeeks);
       if(merged[p.name]){
         if(mg!==null&&merged[p.name].mg!==null)merged[p.name].mg=Math.max(merged[p.name].mg,mg);
         else if(mg!==null)merged[p.name].mg=mg;
         if(merged[p.name].stacks.indexOf(stack.name)===-1)merged[p.name].stacks.push(stack.name);
-      }else{
-        merged[p.name]={mg:mg,dose:dose,stacks:[stack.name]};
-      }
+      }else{merged[p.name]={mg:mg,dose:dose,stacks:[stack.name]};}
     });
   });
-
   var lines=[];
   Object.keys(merged).forEach(function(name){
     var e=merged[name],codes=BYS_CODES[name];
@@ -648,28 +729,24 @@ function bysShowResult(){
     var sizes=inStock.length>0?inStock:codes;
     lines.push({name:name,vials:bysOptimize(e.mg,sizes),mg:e.mg,stacks:e.stacks,stockOk:inStock.length>0});
   });
-
   var body=document.getElementById('bysBody');
   var stackNames=bysQueue.map(function(s){return s.emoji+' '+s.name;}).join(' + ');
   var html='<div class="bys-result-header">';
-  html+='<button class="bys-back-btn" onclick="bysRenderSelect()">&#8592; Back to stacks</button>';
+  html+='<button class="bys-back-btn" onclick="bysBack()">&#8592; Back to stacks</button>';
   html+='<div class="bys-result-title">'+stackNames+'</div>';
-  html+='<div><span class="bys-result-tier">'+bysTier.toUpperCase()+' DOSE</span></div></div>';
+  html+='<div><span class="bys-result-tier">'+bysTier.toUpperCase()+' DOSE &nbsp;&#183;&nbsp; '+bysWeeks+' WKS</span></div></div>';
   html+='<div class="bys-result-list">';
   lines.forEach(function(line){
     html+='<div class="bys-result-item"><div class="bys-item-left">';
     html+='<div class="bys-item-name">'+line.name+'</div>';
-    if(line.stacks.length>1)html+='<div class="bys-item-shared">&#10003; deduped: '+line.stacks.join(' + ')+'</div>';
-    if(line.mg){
-      var disp=line.mg>=1?Math.round(line.mg*10)/10+' mg total':(line.mg*1000).toFixed(0)+' mcg total';
-      html+='<div class="bys-item-total">'+disp+'</div>';
-    }
+    if(line.stacks.length>1)html+='<div class="bys-item-shared">&#10003; deduped across stacks</div>';
+    if(line.mg!=null){var d=line.mg>=1?Math.round(line.mg*10)/10+' mg total':(line.mg*1000).toFixed(0)+' mcg total';html+='<div class="bys-item-total">'+d+'</div>';}
     html+='</div><div class="bys-item-right">';
     if(line.unavailable){html+='<div class="bys-item-note">Not in current catalog</div>';}
     else if(line.manual){html+='<div class="bys-item-note">'+line.dose+'</div>';}
     else if(!line.vials||!line.vials.length){html+='<div class="bys-item-note">Out of stock</div>';}
     else{
-      if(!line.stockOk)html+='<div class="bys-item-warn">&#9888; Showing all sizes — verify stock</div>';
+      if(!line.stockOk)html+='<div class="bys-item-warn">&#9888; Verify stock availability</div>';
       line.vials.forEach(function(v){
         var prod=typeof ALL_PRODUCTS!=='undefined'?ALL_PRODUCTS.find(function(p){return p.code===v.code;}):null;
         var spec=prod?prod.spec:v.code;
@@ -683,10 +760,15 @@ function bysShowResult(){
   html+='</div>';
   var hasAddable=lines.some(function(l){return l.vials&&l.vials.length;});
   if(hasAddable)html+='<button class="bys-add-all-btn" onclick="bysAddAll()">Add All Items to Order</button>';
-  html+='<div class="bys-disclaimer">Vial quantities estimated from '+bysTier.toUpperCase()+' dose x cycle length. Adjust based on your titration schedule.</div>';
+  html+='<div class="bys-disclaimer">Quantities estimated from '+bysTier.toUpperCase()+' dose x '+bysWeeks+' weeks. Adjust for your actual titration schedule.</div>';
   body.innerHTML=html;
   body._bysLines=lines;
+  var footer=document.getElementById('bysFooter');
+  if(footer)footer.style.display='none';
 }
+window.bysShowResult=bysShowResult;
+
+window.bysBack=function(){bysInfoIdx=-1;bysRenderSelect();bysUpdateFooter();};
 
 window.bysAddOne=function(btn){
   var code=btn.getAttribute('data-code'),qty=parseInt(btn.getAttribute('data-qty'));

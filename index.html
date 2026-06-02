@@ -982,7 +982,12 @@ window.obCalculate=function(){
         var dose=p[q.tier]||p.mid;
         var mg=obParseMg(dose,weeks);
         if(merged[p.name]){
-          if(mg!==null)merged[p.name].totalMg+=mg;
+          // Overlapping compound: take whichever stack needs MORE — running simultaneously
+          // means one injection covers both, so order for the higher-demand stack only
+          if(mg!==null&&merged[p.name].totalMg!==null)
+            merged[p.name].totalMg=Math.max(merged[p.name].totalMg,mg);
+          else if(mg!==null)
+            merged[p.name].totalMg=mg;
           if(!merged[p.name].stacks.includes(stack.name))merged[p.name].stacks.push(stack.name);
         }else{
           merged[p.name]={totalMg:mg,dose:dose,stacks:[stack.name]};
@@ -1007,7 +1012,7 @@ window.obCalculate=function(){
       if(!sizes.length){skipped.push({name:pName,reason:'Out of stock'});return;}
       var vials=obOptimize(req.totalMg,sizes);
       vials.forEach(function(v){
-        orderItems.push({code:v.code,mgPerVial:v.mg,qty:v.qty,price:v.price,peptideName:pName,totalMgNeeded:req.totalMg});
+        orderItems.push({code:v.code,mgPerVial:v.mg,qty:v.qty,price:v.price,peptideName:pName,totalMgNeeded:req.totalMg,stackSources:req.stacks});
       });
     });
 
@@ -1038,11 +1043,13 @@ function obRenderResult(items,skipped){
     var waste=mgHave-mgNeed;
     var vialStr=pItems.map(function(i){return i.code+' ×'+i.qty;}).join(' + ');
     var mgStr=mgNeed.toFixed(1)+'mg needed · '+mgHave.toFixed(1)+'mg ordered'+(waste>0.05?' · '+waste.toFixed(1)+'mg leftover':'');
+    var sources=pItems[0].stackSources||[];
+    var sharedNote=sources.length>1?' · covers '+sources.length+' stacks':'';
     rows+='<div class="ob-result-row">'
       +'<div style="flex:1;min-width:0">'
-      +'<div class="ob-result-name">'+pName+'</div>'
+      +'<div class="ob-result-name">'+pName+(sharedNote?'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--teal);font-weight:500;margin-left:6px;">SHARED</span>':'')+'</div>'
       +'<div class="ob-result-detail">'+vialStr+'</div>'
-      +'<div class="ob-result-detail">'+mgStr+'</div>'
+      +'<div class="ob-result-detail">'+mgStr+sharedNote+'</div>'
       +'</div>'
       +'<div style="text-align:right;flex-shrink:0">'
       +'<div style="font-size:12px;font-weight:600">'+(pTotal>0?'$'+pTotal.toFixed(2):'—')+'</div>'

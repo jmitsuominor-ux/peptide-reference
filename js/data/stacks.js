@@ -240,6 +240,38 @@ export const STACKS = [
     ]
   },
   {
+    name:'BEAUTY STACK',cycle:'12 weeks on / 4 weeks off. Epithalon as 10–20 day burst only.',emoji:'💋',goal:'Skin collagen & elasticity · Hair thickness · Anti-aging · Body composition',color:'#E91E8C',
+    description:'A comprehensive skin, hair, and body composition stack. GHK-Cu drives collagen synthesis and skin regeneration. BPC-157 accelerates healing and reduces systemic inflammation. Epithalon adds telomere-level anti-aging. CJC-1295 + Ipamorelin provide the overnight GH pulse that drives collagen production and body recomposition.',
+    rationale:'GHK-Cu activates over 4,000 genes associated with skin regeneration, collagen production, and anti-aging — the most data-backed skin compound available for injection and topical use. BPC-157 provides systemic healing support and reduces the chronic inflammation that accelerates visible aging. Epithalon activates telomerase and resets circadian gene expression — anti-aging at the cellular level. CJC-1295 + Ipamorelin deliver sustained GH elevation: GH drives collagen synthesis, skin thickness, and the lean body composition that defines the full aesthetic result.',
+    benefits:[
+      'Collagen and elastin production — skin tightening and wrinkle reduction (GHK-Cu)',
+      'Hair thickness and scalp health improvement (GHK-Cu)',
+      'Systemic inflammation reduction and wound healing (BPC-157)',
+      'Telomere support and cellular anti-aging (Epithalon)',
+      'Overnight GH pulse — collagen synthesis and body recomposition (CJC-1295 + Ipamorelin)',
+      'Lean body composition improvement alongside skin quality',
+      'Comprehensive anti-aging from skin surface to cellular level',
+    ],
+    sideEffects:[
+      {text:'GHK-Cu injection site redness — mild and transient',severity:'low'},
+      {text:'Temporary skin darkening possible from copper (GHK-Cu)',severity:'low'},
+      {text:'Water retention from GH peptides at start — resolves in 2–3 weeks',severity:'low'},
+      {text:'Epithalon is a burst cycle only — do not run continuously',severity:'low'},
+    ],
+    note:'GHK-Cu can be used SubQ and applied topically to face and scalp — combine both for maximum effect. CJC-1295 + Ipamorelin injected together before bed on empty stomach. Epithalon runs as a 10–20 day burst then stops. BPC-157 can be injected near areas of concern.',
+    studies:[
+      {title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, increased collagen and glycosaminoglycan synthesis, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'},
+      {title:'Epithalon Activates Telomerase and Extends Lifespan',journal:'Bulletin of Experimental Biology 2003',summary:'Epithalon activated telomerase enzyme in human somatic cells and significantly increased mean lifespan in animal models.',pmid:'12937837',url:'https://pubmed.ncbi.nlm.nih.gov/12937837/'},
+    ],
+    peptides:[
+      {name:'GHK-Cu',schedule:'Daily SubQ + topical to face/scalp',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
+      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
+      {name:'Epithalon',schedule:'Daily SubQ — 10–20 day burst ONLY',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
+      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+    ]
+  },
+  {
     name:'BENJAMIN BUTTON STACK',cycle:'10 weeks on / 2 weeks off for NAD+ and MOTS-c. SS-31 can run longer.',emoji:'🔋',goal:'Mitochondrial health · Cellular energy · Metabolic optimization · Anti-aging',color:'#4A148C',
     description:'The most comprehensive mitochondrial and longevity protocol. Four compounds each targeting a different mitochondrial pathway for complete cellular energy optimization.',
     rationale:'NAD+ replenishes the essential coenzyme declining with age. SS-31 reduces oxidative stress at the inner mitochondrial membrane. MOTS-c mimics exercise by activating AMPK. 5-amino-1mq prevents NAD+ breakdown by NNMT. All four hit completely different targets — no redundancy.',
@@ -373,21 +405,6 @@ export const STACKS = [
       {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
       {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
       {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5 mg/day',hi:'5 mg/day'},
-    ]
-  },
-  {
-    name:"MEN'S WELLNESS STACK",cycle:'12–16 weeks minimum. Bloodwork required at baseline and week 6.',emoji:'🔴',goal:'Natural testosterone · HPG axis restoration · Fertility · Libido',color:'#B71C1C',
-    description:'The full HPG axis restoration stack. Kisspeptin-10 activates the hypothalamus, HCG activates the testes — together they restore the complete testosterone production cascade from the top down.',
-    rationale:'KissPeptin-10 binds KISS1R in the hypothalamus triggering GnRH pulse → LH/FSH → testosterone. HCG directly mimics LH at the testicular level. These two together cover both ends of the HPG axis simultaneously. CJC-1295 + Ipamorelin added for GH axis support, recovery, and overall anabolic environment.',
-    benefits:['Complete HPG axis stimulation at two levels','Testosterone production restoration without TRT shutdown','Testicular function and size maintenance','Fertility preservation','Libido improvement','GH support for recovery and body composition'],
-    sideEffects:[{text:'Estradiol elevation from HCG aromatization — monitor E2',severity:'med'},{text:'LH surge from Kisspeptin may temporarily alter estrogen',severity:'med'},{text:'Bloodwork monitoring required (Total T, Free T, LH, FSH, E2, IGF-1)',severity:'high'},{text:'Water retention from GH peptides',severity:'low'}],
-    note:'BLOODWORK REQUIRED. Get baseline Total T, Free T, LH, FSH, estradiol, and IGF-1 before starting. Recheck at 6 weeks. This is not a beginner stack — consult Defy Medical or Marek Health for supervised protocol.',
-    studies:[{title:'Kisspeptin-10 Stimulates LH and Testosterone in Men',journal:'JCEM 2009',summary:'Significantly increased LH, FSH, and testosterone. Established HPG axis stimulation mechanism.',pmid:'19190100',url:'https://pubmed.ncbi.nlm.nih.gov/19190100/'},{title:'HCG for Testosterone Restoration During TRT',journal:'Journal of Urology 2013',summary:'HCG maintained intratesticular testosterone and spermatogenesis in men on TRT.',pmid:'23260547',url:'https://pubmed.ncbi.nlm.nih.gov/23260547/'}],
-    peptides:[
-      {name:'KissPeptin-10',schedule:'Daily SubQ injection',lo:'50 mcg/day',mid:'100 mcg/day',hi:'200 mcg/day'},
-      {name:'HCG',schedule:'SubQ 3x per week (different days)',lo:'500 IU EOD',mid:'1,000 IU 3x/wk',hi:'1,500 IU 3x/wk'},
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC before bed',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
   },
   {

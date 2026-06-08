@@ -257,13 +257,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .syringe-fill{height:100%;background:linear-gradient(90deg,var(--blue),rgba(23,86,169,0.7));border-radius:2px;transition:width 0.5s ease;min-width:2px;}
 .syringe-markers{display:flex;justify-content:space-between;margin-top:4px;padding:0 2px;}
 .syringe-marker{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);}
-.calc-tool-header{display:flex;align-items:center;gap:12px;padding:14px 0 12px;border-bottom:2px solid var(--blue);cursor:pointer;user-select:none;}
-.calc-tool-chevron{font-size:22px;color:var(--text3);flex-shrink:0;padding-left:4px;line-height:1;transition:transform 0.25s ease;}
-.calc-tool-body{margin-top:16px;overflow:hidden;transition:max-height 0.35s ease,opacity 0.2s ease;max-height:3000px;opacity:1;}
+.calc-tool-header{display:flex;align-items:center;gap:8px;padding:12px 0 11px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.calc-tool-chevron{flex-shrink:0;margin-left:auto;transition:transform 0.25s ease;color:var(--text3);}
+.calc-tool-chevron svg{width:14px;height:14px;display:block;}
+.calc-tool-body{margin-top:14px;overflow:hidden;transition:max-height 0.35s ease,opacity 0.2s ease;max-height:3000px;opacity:1;}
 .calc-tool-body.collapsed{max-height:0;opacity:0;margin-top:0;}
-.calc-tool-icon{width:38px;height:38px;background:var(--blue-mid);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.calc-tool-title{font-size:15px;font-weight:700;color:var(--navy);}
-.calc-tool-sub{font-size:12px;color:var(--text3);margin-top:2px;line-height:1.4;}
+.calc-tool-icon{width:24px;height:24px;background:var(--blue-mid);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.calc-tool-title{font-size:13px;font-weight:600;color:var(--navy);}
 .calc-tool-divider{height:1px;background:var(--border);margin:24px 0 20px;}
 .preset-pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;}
 .preset-pill{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;color:var(--text2);transition:all 0.15s;white-space:nowrap;font-family:'IBM Plex Sans',sans-serif;}
@@ -410,13 +410,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="calc-recon">
     <div class="calc-tool-header" onclick="toggleCalcSection('recon')">
       <div class="calc-tool-icon">💉</div>
-      <div style="flex:1">
-        <div class="calc-tool-title">How Much to Draw</div>
-        <div class="calc-tool-sub">How many units to pull into your syringe after mixing with BAC water</div>
-      </div>
-      <div class="calc-tool-chevron" id="reconChevron">▾</div>
+      <span class="calc-tool-title">Mix &amp; Draw</span>
+      <div class="calc-tool-chevron" id="reconChevron" style="transform:rotate(-90deg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
-    <div class="calc-tool-body" id="reconBody">
+    <div class="calc-tool-body collapsed" id="reconBody">
     <div class="preset-pills">
       <button class="preset-pill" data-name="BPC-157" onclick="presetPeptide('BPC-157')">BPC-157</button>
       <button class="preset-pill" data-name="Ipamorelin" onclick="presetPeptide('Ipamorelin')">Ipamorelin</button>
@@ -500,13 +497,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="calc-vials">
     <div class="calc-tool-header" onclick="toggleCalcSection('vials')">
       <div class="calc-tool-icon">📦</div>
-      <div style="flex:1">
-        <div class="calc-tool-title">Vial Supply Calculator</div>
-        <div class="calc-tool-sub">Plan how many vials to buy, or see how long your supply will last</div>
-      </div>
-      <div class="calc-tool-chevron" id="vialsChevron">▾</div>
+      <span class="calc-tool-title">Vial Supply</span>
+      <div class="calc-tool-chevron" id="vialsChevron" style="transform:rotate(-90deg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
-    <div class="calc-tool-body" id="vialsBody">
+    <div class="calc-tool-body collapsed" id="vialsBody">
     <div class="vial-mode-toggle">
       <div class="vial-mode-btn active" id="vialModeNeedBtn" onclick="switchVialMode('need')">🛒 How many do I need?</div>
       <div class="vial-mode-btn" id="vialModeLastBtn" onclick="switchVialMode('last')">⏱ How long will they last?</div>
@@ -588,13 +582,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="calc-planner">
     <div class="calc-tool-header" onclick="toggleCalcSection('planner')">
       <div class="calc-tool-icon">📋</div>
-      <div style="flex:1">
-        <div class="calc-tool-title">Full Stack Shopping List</div>
-        <div class="calc-tool-sub">Get a complete supply list for any stack — all compounds at once</div>
-      </div>
-      <div class="calc-tool-chevron" id="plannerChevron">▾</div>
+      <span class="calc-tool-title">Stack Planner</span>
+      <div class="calc-tool-chevron" id="plannerChevron" style="transform:rotate(-90deg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
-    <div class="calc-tool-body" id="plannerBody">
+    <div class="calc-tool-body collapsed" id="plannerBody">
     <div class="calc-section">
       <div class="calc-section-title"><div class="sh-icon blue">📋</div>Step 1 — Choose Your Stack</div>
       <div class="calc-field">

@@ -305,7 +305,7 @@ async function qvCopy() {
     `Vials needed: ${vials}`,
     `Total injections: ${totalInj}`,
     `Total mg: ${totalMg}`,
-    `(${mgWk}/week)`,
+    `(${mgWk})`,
   ].join('\n');
   await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Share Result');
 }

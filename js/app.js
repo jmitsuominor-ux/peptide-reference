@@ -17,7 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  reconAutoCalc, vialsAutoCalc, presetPeptide, updateBacSuggestions, applyBacSuggestion, switchVialMode, toggleCalcSection,
+  reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
@@ -264,7 +264,6 @@ function presetPeptide(name) {
     b.classList.toggle('active', b.dataset.name === name)
   );
   reconAutoCalc();
-  updateBacSuggestions();
 }
 
 // ─── Auto-calc wrappers (oninput — silent if any field empty) ──
@@ -299,41 +298,6 @@ function vialsAutoCalc() {
   resultEl.classList.remove('visible');
 }
 
-// ─── Smart BAC suggestions ────────────────────────────────
-function updateBacSuggestions() {
-  const vialMg = parseFloat(document.getElementById('vialMg').value);
-  const desiredDose = parseFloat(document.getElementById('desiredDose').value);
-  const doseUnit = document.getElementById('doseUnit').value;
-  const syringeSize = parseInt(document.getElementById('syringeType').value);
-  const panel = document.getElementById('bacSuggestPanel');
-  if (!vialMg || !desiredDose || vialMg <= 0 || desiredDose <= 0) {
-    panel.style.display = 'none';
-    return;
-  }
-  const doseMcg = doseUnit === 'mg' ? desiredDose * 1000 : desiredDose;
-  const suggestions = [];
-  for (const units of [5, 10, 20, 25, 50]) {
-    const bac = (units * vialMg * 1000) / (doseMcg * syringeSize);
-    if (bac >= 0.5 && bac <= 3.5) {
-      const bacR = Math.round(bac * 10) / 10;
-      if (!suggestions.find(s => s.bac === bacR)) suggestions.push({ units, bac: bacR });
-    }
-  }
-  if (!suggestions.length) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
-  panel.innerHTML =
-    `<div class="bac-suggest-label">💡 Tap to set BAC water for a clean syringe draw:</div>` +
-    `<div class="bac-suggest-pills">` +
-    suggestions.map(s =>
-      `<button class="bac-suggest-btn" onclick="applyBacSuggestion(${s.bac})">${s.bac} ml → <strong>${s.units} units</strong></button>`
-    ).join('') +
-    `</div>`;
-}
-
-function applyBacSuggestion(bac) {
-  document.getElementById('bacWater').value = bac;
-  calculateRecon();
-}
 
 // ─── Calculator section collapse ─────────────────────────
 function toggleCalcSection(id) {

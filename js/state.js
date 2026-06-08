@@ -6,6 +6,7 @@ export const AppState = {
   isDark: false,
   plannerTier: 'mid',
   sdTier: 'mid',
+  vialMode: 'need',
   profileOrigin: null,    // 'stack' | null — where backToList navigates
   originStackIdx: null,   // which stack detail to restore when going back
 };

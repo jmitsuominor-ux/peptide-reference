@@ -17,6 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
+  reconAutoCalc, vialsAutoCalc, presetPeptide, updateBacSuggestions, applyBacSuggestion, switchVialMode,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
@@ -144,12 +145,16 @@ function calculateRecon() {
   document.getElementById('reconSyringe').textContent = syringeSize + ' units (1ml)';
   document.getElementById('syringeFill').style.width = fillPercent + '%';
   const steps = syringeSize === 100 ? [10,20,30,40,50,60,70,80,90,100] : syringeSize === 50 ? [10,20,30,40,50] : [10,20,30];
-  document.getElementById('syringeMarkers').innerHTML = steps.map(s => '<span class="syringe-marker">'+s+'</span>').join('');
+  const unitsInt = Math.round(parseFloat(units));
+  document.getElementById('syringeMarkers').innerHTML = steps.map(s => `<span class="syringe-marker${s === unitsInt ? ' active' : ''}">${s}</span>`).join('');
+  const needleEl = document.getElementById('syringeNeedle');
+  if (needleEl) { needleEl.style.left = fillPercent + '%'; needleEl.style.display = ''; }
   resultEl.classList.add('visible');
 }
 
 // ─── Vial count calculator ────────────────────────────────
 function calculateVials() {
+  if (AppState.vialMode === 'last') { _calcVialsDuration(); return; }
   const dose = parseFloat(document.getElementById('vialDose').value);
   const doseUnit = document.getElementById('vialDoseUnit').value;
   const injectionsPerDay = parseFloat(document.getElementById('injectionsPerDay').value);
@@ -211,6 +216,147 @@ function showCalcError(id, msg) {
   const el = document.getElementById(id);
   el.textContent = '⚠ ' + msg;
   el.classList.add('visible');
+}
+
+// ─── Peptide presets ──────────────────────────────────────
+const CALC_PRESETS = {
+  'BPC-157':     { mg: 5,   dose: 500,  unit: 'mcg' },
+  'Ipamorelin':  { mg: 5,   dose: 200,  unit: 'mcg' },
+  'CJC-1295':    { mg: 2,   dose: 100,  unit: 'mcg' },
+  'TB-500':      { mg: 5,   dose: 2.5,  unit: 'mg'  },
+  'PT-141':      { mg: 10,  dose: 1,    unit: 'mg'  },
+  'GHK-Cu':      { mg: 5,   dose: 1,    unit: 'mg'  },
+  'Semaglutide': { mg: 3,   dose: 0.5,  unit: 'mg'  },
+};
+
+function presetPeptide(name) {
+  const p = CALC_PRESETS[name];
+  if (!p) return;
+  document.getElementById('vialMg').value = p.mg;
+  document.getElementById('desiredDose').value = p.dose;
+  document.getElementById('doseUnit').value = p.unit;
+  document.querySelectorAll('.preset-pill').forEach(b =>
+    b.classList.toggle('active', b.dataset.name === name)
+  );
+  reconAutoCalc();
+  updateBacSuggestions();
+}
+
+// ─── Auto-calc wrappers (oninput — silent if any field empty) ──
+function reconAutoCalc() {
+  const vialMg = parseFloat(document.getElementById('vialMg').value);
+  const bacWater = parseFloat(document.getElementById('bacWater').value);
+  const desiredDose = parseFloat(document.getElementById('desiredDose').value);
+  if (vialMg > 0 && bacWater > 0 && desiredDose > 0) {
+    calculateRecon();
+  } else {
+    document.getElementById('reconError').classList.remove('visible');
+    document.getElementById('reconResult').classList.remove('visible');
+  }
+}
+
+function vialsAutoCalc() {
+  const errorEl = document.getElementById('vialError');
+  const resultEl = document.getElementById('vialResult');
+  const dose = parseFloat(document.getElementById('vialDose').value);
+  const inj = parseFloat(document.getElementById('injectionsPerDay').value);
+  const days = parseFloat(document.getElementById('daysPerWeek').value);
+  const size = parseFloat(document.getElementById('vialSize').value);
+  const allBase = dose > 0 && inj > 0 && days > 0 && size > 0;
+  if (AppState.vialMode === 'last') {
+    const onHand = parseFloat(document.getElementById('vialsOnHand').value);
+    if (allBase && onHand > 0) { calculateVials(); return; }
+  } else {
+    const weeks = parseFloat(document.getElementById('cycleWeeks').value);
+    if (allBase && weeks > 0) { calculateVials(); return; }
+  }
+  errorEl.classList.remove('visible');
+  resultEl.classList.remove('visible');
+}
+
+// ─── Smart BAC suggestions ────────────────────────────────
+function updateBacSuggestions() {
+  const vialMg = parseFloat(document.getElementById('vialMg').value);
+  const desiredDose = parseFloat(document.getElementById('desiredDose').value);
+  const doseUnit = document.getElementById('doseUnit').value;
+  const syringeSize = parseInt(document.getElementById('syringeType').value);
+  const panel = document.getElementById('bacSuggestPanel');
+  if (!vialMg || !desiredDose || vialMg <= 0 || desiredDose <= 0) {
+    panel.style.display = 'none';
+    return;
+  }
+  const doseMcg = doseUnit === 'mg' ? desiredDose * 1000 : desiredDose;
+  const suggestions = [];
+  for (const units of [5, 10, 20, 25, 50]) {
+    const bac = (units * vialMg * 1000) / (doseMcg * syringeSize);
+    if (bac >= 0.5 && bac <= 3.5) {
+      const bacR = Math.round(bac * 10) / 10;
+      if (!suggestions.find(s => s.bac === bacR)) suggestions.push({ units, bac: bacR });
+    }
+  }
+  if (!suggestions.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  panel.innerHTML =
+    `<div class="bac-suggest-label">💡 Tap to set BAC water for a clean syringe draw:</div>` +
+    `<div class="bac-suggest-pills">` +
+    suggestions.map(s =>
+      `<button class="bac-suggest-btn" onclick="applyBacSuggestion(${s.bac})">${s.bac} ml → <strong>${s.units} units</strong></button>`
+    ).join('') +
+    `</div>`;
+}
+
+function applyBacSuggestion(bac) {
+  document.getElementById('bacWater').value = bac;
+  calculateRecon();
+}
+
+// ─── Vial mode toggle ─────────────────────────────────────
+function switchVialMode(mode) {
+  AppState.vialMode = mode;
+  document.getElementById('vialModeNeedBtn').classList.toggle('active', mode === 'need');
+  document.getElementById('vialModeLastBtn').classList.toggle('active', mode === 'last');
+  document.getElementById('vialCycleField').style.display = mode === 'need' ? '' : 'none';
+  document.getElementById('vialOnHandField').style.display = mode === 'last' ? '' : 'none';
+  const lbl = document.getElementById('vialResultLabel');
+  if (lbl) lbl.textContent = mode === 'need' ? 'Vials needed for full cycle' : 'Your supply will last';
+  document.getElementById('vialError').classList.remove('visible');
+  document.getElementById('vialResult').classList.remove('visible');
+}
+
+// ─── Supply duration calculator (vial mode: 'last') ───────
+function _calcVialsDuration() {
+  const dose = parseFloat(document.getElementById('vialDose').value);
+  const doseUnit = document.getElementById('vialDoseUnit').value;
+  const injectionsPerDay = parseFloat(document.getElementById('injectionsPerDay').value);
+  const daysPerWeek = parseFloat(document.getElementById('daysPerWeek').value);
+  const vialsOnHand = parseFloat(document.getElementById('vialsOnHand').value);
+  const vialSize = parseFloat(document.getElementById('vialSize').value);
+  const errorEl = document.getElementById('vialError');
+  const resultEl = document.getElementById('vialResult');
+  errorEl.classList.remove('visible');
+  resultEl.classList.remove('visible');
+  if (!dose || dose <= 0) { showCalcError('vialError', 'Please enter a valid dose.'); return; }
+  if (!injectionsPerDay || injectionsPerDay <= 0) { showCalcError('vialError', 'Please enter injections per day.'); return; }
+  if (!daysPerWeek || daysPerWeek < 1 || daysPerWeek > 7) { showCalcError('vialError', 'Days per week must be 1–7.'); return; }
+  if (!vialsOnHand || vialsOnHand <= 0) { showCalcError('vialError', 'Please enter vials on hand.'); return; }
+  if (!vialSize || vialSize <= 0) { showCalcError('vialError', 'Please enter the vial size (mg).'); return; }
+  const doseMg = doseUnit === 'mcg' ? dose / 1000 : dose;
+  const totalMg = vialsOnHand * vialSize;
+  const mgPerWeek = doseMg * injectionsPerDay * daysPerWeek;
+  const totalDoses = Math.floor(totalMg / doseMg);
+  const weeks = Math.floor(totalMg / mgPerWeek);
+  const remainingMg = totalMg - weeks * mgPerWeek;
+  const extraDays = Math.floor(remainingMg / (doseMg * injectionsPerDay));
+  const durationText = weeks > 0
+    ? weeks + (weeks === 1 ? ' week' : ' weeks') + (extraDays > 0 ? ' + ' + extraDays + 'd' : '')
+    : extraDays + ' days';
+  document.getElementById('vialCount').textContent = durationText;
+  document.getElementById('vialSub').textContent = totalMg.toFixed(2) + 'mg on hand · ' + vialsOnHand + ' × ' + vialSize + 'mg vials';
+  document.getElementById('totalDoses').textContent = totalDoses + ' injections';
+  document.getElementById('totalMg').textContent = totalMg.toFixed(2) + ' mg';
+  document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
+  document.getElementById('vialLeftover').textContent = remainingMg > 0.01 ? remainingMg.toFixed(2) + ' mg unused' : tr('calc_exact_fit');
+  resultEl.classList.add('visible');
 }
 
 // ─── Stack planner (Calculator tab) ──────────────────────

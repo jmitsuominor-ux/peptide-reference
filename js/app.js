@@ -17,7 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  sdSetTier, sdCalculate, switchCalcTab,
+  sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
 
@@ -109,18 +109,6 @@ function sdCalculate(idx) {
   resultEl.classList.add('visible');
 }
 
-// ─── Calculator tab switcher ─────────────────────────────
-function switchCalcTab(tab, el) {
-  document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('calc-recon').style.display = tab === 'recon' ? 'block' : 'none';
-  document.getElementById('calc-vials').style.display = tab === 'vials' ? 'block' : 'none';
-  document.getElementById('calc-planner').style.display = tab === 'planner' ? 'block' : 'none';
-  ['reconResult', 'reconError', 'vialResult', 'vialError'].forEach(id => {
-    const e = document.getElementById(id);
-    if (e) e.classList.remove('visible');
-  });
-}
 
 // ─── Reconstitution calculator ────────────────────────────
 function calculateRecon() {

@@ -247,50 +247,102 @@ function qvAutoCalc() {
   }
 }
 
-function qvCopy() {
+// Extracts injections/week from a dose string like "500mcg/day", "2mg 2x/wk"
+function _parseInjectionsPerWeek(doseStr) {
+  if (!doseStr) return null;
+  const s = doseStr.toLowerCase();
+  if (s.includes('/wk') || s.includes('/week') || s.includes('per week')) {
+    const m = s.match(/(\d+)x\s*\/w/);
+    return m ? parseInt(m[1]) : 1;
+  }
+  if (s.includes('/day') || s.includes('per day')) {
+    const m = s.match(/(\d+)x\s*\/day/);
+    return (m ? parseInt(m[1]) : 1) * 7;
+  }
+  return null;
+}
+
+async function _shareOrCopy(text, title, btn, resetLabel) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text });
+      if (btn) { btn.textContent = '✓ Shared'; setTimeout(() => { btn.textContent = resetLabel; }, 2000); }
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        navigator.clipboard.writeText(text).catch(() => {});
+        if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = resetLabel; }, 2000); }
+      }
+    }
+  } else {
+    navigator.clipboard.writeText(text).catch(() => {});
+    if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = resetLabel; }, 2000); }
+  }
+}
+
+async function qvCopy() {
   const resEl = document.getElementById('qvResult');
   if (!resEl.classList.contains('visible')) { calcQuickVials(); }
   if (!resEl.classList.contains('visible')) return;
-  const name = document.getElementById('detailTitle')?.textContent?.trim() || '';
-  const lines = [
+  const name    = document.getElementById('detailTitle')?.textContent?.trim() || 'Compound';
+  const dose    = document.getElementById('qvDose').value;
+  const unit    = document.getElementById('qvDoseUnit').value;
+  const vialSz  = document.getElementById('qvVialSize').value;
+  const injectD = parseFloat(document.getElementById('qvInjectDay').value) || 1;
+  const daysWk  = parseFloat(document.getElementById('qvDaysWk').value) || 7;
+  const weeks   = document.getElementById('qvWeeks').value;
+  const vials   = document.getElementById('qvCount').textContent;
+  const totalMg = document.getElementById('qvTotalMg').textContent;
+  const mgWk    = document.getElementById('qvMgWk').textContent;
+  const totalInj = document.getElementById('qvTotalDoses').textContent;
+  const schedule = (injectD === 1 && daysWk === 7) ? 'Once daily'
+                 : `${injectD}x/day · ${daysWk} days/week`;
+  const text = [
     name,
-    document.getElementById('qvCount').textContent,
-    document.getElementById('qvSub').textContent,
-    [document.getElementById('qvTotalMg').textContent + ' total',
-     document.getElementById('qvMgWk').textContent + '/wk',
-     document.getElementById('qvTotalDoses').textContent,
-    ].join(' · '),
-  ].filter(Boolean).join('\n');
-  navigator.clipboard.writeText(lines).then(() => {
-    const btn = document.getElementById('qvCopyBtn');
-    if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = 'Copy Result'; }, 2000); }
-  }).catch(() => {});
+    `Dose: ${dose} ${unit}/injection`,
+    `Schedule: ${schedule}`,
+    `Cycle: ${weeks} weeks`,
+    `Vial size: ${vialSz}mg`,
+    `Vials needed: ${vials}`,
+    `Total injections: ${totalInj}`,
+    `Total mg: ${totalMg}`,
+    `(${mgWk}/week)`,
+  ].join('\n');
+  await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Share Result');
 }
 
-function sdCopy(idx) {
+async function sdCopy(idx) {
   const resEl = document.getElementById('sdResult');
   if (!resEl.classList.contains('visible')) { sdCalculate(idx); }
   if (!resEl.classList.contains('visible')) return;
   const stack = getStackData(idx, AppState.lang);
   const weeks = parseFloat(document.getElementById('sdWeeks').value);
   const tierLabel = AppState.sdTier === 'lo' ? 'LOW' : AppState.sdTier === 'mid' ? 'STANDARD' : 'HIGH';
-  const lines = [`${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`];
+  const lines = [
+    `${stack.emoji} ${stack.name}`,
+    `Cycle: ${weeks} weeks · ${tierLabel} dose`,
+    '',
+  ];
   stack.peptides.forEach((p, pi) => {
     const vialSize = parseFloat(document.getElementById('sdVial_' + pi)?.value);
-    const doseStr = p[AppState.sdTier] || p.mid;
+    const doseStr  = p[AppState.sdTier] || p.mid;
     const mgPerWeek = parseDoseToMgPerWeek(doseStr);
+    const injPerWk  = _parseInjectionsPerWeek(doseStr);
+    lines.push(p.name);
+    lines.push(`  Dose schedule: ${doseStr}`);
     if (mgPerWeek !== null && vialSize > 0) {
       const total = mgPerWeek * weeks;
       const vials = Math.ceil(total / vialSize);
-      lines.push(`  ${p.name}: ${vials} vials (${vialSize}mg ea · ${total.toFixed(1)}mg total)`);
-    } else {
-      lines.push(`  ${p.name}: ${doseStr}`);
+      const totalInj = injPerWk !== null ? Math.round(injPerWk * weeks) + ' injections' : null;
+      lines.push(`  Vial size: ${vialSize}mg ea · ${vials} vials needed`);
+      if (totalInj) lines.push(`  Total injections: ${totalInj}`);
+      lines.push(`  Total mg: ${total.toFixed(1)}mg`);
+    } else if (mgPerWeek !== null) {
+      lines.push(`  Total mg needed: ${(mgPerWeek * weeks).toFixed(1)}mg`);
     }
+    lines.push('');
   });
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
-    const btn = document.getElementById('sdCopyBtn');
-    if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = 'Copy List'; }, 2000); }
-  }).catch(() => {});
+  const title = `${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`;
+  await _shareOrCopy(lines.join('\n'), title, document.getElementById('sdCopyBtn'), 'Share List');
 }
 
 function showCalcError(id, msg) {

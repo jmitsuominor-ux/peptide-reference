@@ -257,11 +257,27 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .syringe-fill{height:100%;background:linear-gradient(90deg,var(--blue),rgba(23,86,169,0.7));border-radius:2px;transition:width 0.5s ease;min-width:2px;}
 .syringe-markers{display:flex;justify-content:space-between;margin-top:4px;padding:0 2px;}
 .syringe-marker{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);}
-.calc-tool-header{display:flex;align-items:center;gap:12px;padding:14px 0 12px;border-bottom:2px solid var(--blue);margin-bottom:16px;}
+.calc-tool-header{display:flex;align-items:center;gap:12px;padding:14px 0 12px;border-bottom:2px solid var(--blue);cursor:pointer;user-select:none;}
+.calc-tool-chevron{font-size:22px;color:var(--text3);flex-shrink:0;padding-left:4px;line-height:1;transition:transform 0.25s ease;}
+.calc-tool-body{margin-top:16px;overflow:hidden;transition:max-height 0.35s ease,opacity 0.2s ease;max-height:3000px;opacity:1;}
+.calc-tool-body.collapsed{max-height:0;opacity:0;margin-top:0;}
 .calc-tool-icon{width:38px;height:38px;background:var(--blue-mid);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .calc-tool-title{font-size:15px;font-weight:700;color:var(--navy);}
 .calc-tool-sub{font-size:12px;color:var(--text3);margin-top:2px;line-height:1.4;}
 .calc-tool-divider{height:1px;background:var(--border);margin:24px 0 20px;}
+.preset-pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;}
+.preset-pill{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;color:var(--text2);transition:all 0.15s;white-space:nowrap;font-family:'IBM Plex Sans',sans-serif;}
+.preset-pill:hover,.preset-pill.active{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+#bacSuggestPanel{margin-top:8px;padding:10px 12px;background:var(--blue-mid);border:1px solid rgba(23,86,169,0.15);border-radius:8px;}
+.bac-suggest-label{font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.4;}
+.bac-suggest-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.bac-suggest-btn{background:var(--white);border:1px solid var(--blue);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--blue);transition:all 0.15s;font-family:'IBM Plex Sans',sans-serif;}
+.bac-suggest-btn:hover{background:var(--blue-light);}
+.syringe-needle{position:absolute;top:0;bottom:0;width:2px;background:var(--blue);opacity:0.85;transform:translateX(-50%);transition:left 0.4s ease;pointer-events:none;}
+.syringe-marker.active{color:var(--blue);font-weight:700;}
+.vial-mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;}
+.vial-mode-btn{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;color:var(--text3);}
+.vial-mode-btn.active{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
 .planner-tier-btn{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;color:var(--text3);}
 .planner-tier-btn.active{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
 .planner-peptide-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);}
@@ -392,28 +408,40 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="ch-badge">CALCULATOR</div>
   </div>
   <div id="calc-recon">
-    <div class="calc-tool-header">
+    <div class="calc-tool-header" onclick="toggleCalcSection('recon')">
       <div class="calc-tool-icon">💉</div>
-      <div>
+      <div style="flex:1">
         <div class="calc-tool-title">How Much to Draw</div>
         <div class="calc-tool-sub">How many units to pull into your syringe after mixing with BAC water</div>
       </div>
+      <div class="calc-tool-chevron" id="reconChevron">▾</div>
+    </div>
+    <div class="calc-tool-body" id="reconBody">
+    <div class="preset-pills">
+      <button class="preset-pill" data-name="BPC-157" onclick="presetPeptide('BPC-157')">BPC-157</button>
+      <button class="preset-pill" data-name="Ipamorelin" onclick="presetPeptide('Ipamorelin')">Ipamorelin</button>
+      <button class="preset-pill" data-name="CJC-1295" onclick="presetPeptide('CJC-1295')">CJC-1295</button>
+      <button class="preset-pill" data-name="TB-500" onclick="presetPeptide('TB-500')">TB-500</button>
+      <button class="preset-pill" data-name="PT-141" onclick="presetPeptide('PT-141')">PT-141</button>
+      <button class="preset-pill" data-name="GHK-Cu" onclick="presetPeptide('GHK-Cu')">GHK-Cu</button>
+      <button class="preset-pill" data-name="Semaglutide" onclick="presetPeptide('Semaglutide')">Semaglutide</button>
     </div>
     <div class="calc-section">
       <div class="calc-section-title"><div class="sh-icon blue">⚗️</div><span data-i18n="calc_step1">Step 1 — Your Vial</span></div>
       <div class="calc-field">
         <label class="calc-label"><span data-i18n="calc_vial_size_label">Vial Size</span> <span data-i18n="calc_vial_size_hint">(mg in the vial)</span></label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="vialMg" placeholder="e.g. 5" min="0.1" step="0.1">
+          <input type="number" class="calc-input" id="vialMg" placeholder="e.g. 5" min="0.1" step="0.1" oninput="reconAutoCalc();updateBacSuggestions()">
           <span class="calc-unit">mg</span>
         </div>
       </div>
       <div class="calc-field">
         <label class="calc-label"><span data-i18n="calc_bac_label">BAC Water Added</span> <span>(ml)</span></label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="bacWater" placeholder="e.g. 2" min="0.1" step="0.1" value="2">
+          <input type="number" class="calc-input" id="bacWater" placeholder="e.g. 2" min="0.1" step="0.1" value="2" oninput="reconAutoCalc()">
           <span class="calc-unit">ml</span>
         </div>
+        <div id="bacSuggestPanel" style="display:none"></div>
       </div>
     </div>
     <div class="calc-section">
@@ -421,8 +449,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="calc-field">
         <label class="calc-label"><span data-i18n="calc_dose_label">Desired Dose</span> <span data-i18n="calc_dose_hint">(what you want to inject)</span></label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="desiredDose" placeholder="e.g. 250" min="1">
-          <select class="calc-select" id="doseUnit" style="flex:0;min-width:70px;padding-right:28px;">
+          <input type="number" class="calc-input" id="desiredDose" placeholder="e.g. 250" min="1" oninput="reconAutoCalc();updateBacSuggestions()">
+          <select class="calc-select" id="doseUnit" style="flex:0;min-width:70px;padding-right:28px;" onchange="reconAutoCalc();updateBacSuggestions()">
             <option value="mcg">mcg</option>
             <option value="mg">mg</option>
             <option value="iu">IU</option>
@@ -431,7 +459,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
       <div class="calc-field">
         <label class="calc-label" data-i18n="calc_syringe_label">Syringe Type</label>
-        <select class="calc-select" id="syringeType">
+        <select class="calc-select" id="syringeType" onchange="reconAutoCalc();updateBacSuggestions()">
           <option value="100">100 unit / 1ml insulin syringe</option>
           <option value="50">50 unit / 0.5ml insulin syringe</option>
           <option value="30">30 unit / 0.3ml insulin syringe</option>
@@ -445,7 +473,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div class="calc-result-sub" id="reconMl">— ml</div>
         <div class="syringe-visual">
           <div class="syringe-label" data-i18n="calc_fill_label">SYRINGE FILL LEVEL</div>
-          <div class="syringe-track"><div class="syringe-fill" id="syringeFill" style="width:0%"></div></div>
+          <div class="syringe-track"><div class="syringe-fill" id="syringeFill" style="width:0%"></div><div class="syringe-needle" id="syringeNeedle" style="left:0%;display:none"></div></div>
           <div class="syringe-markers" id="syringeMarkers"></div>
         </div>
         <div class="calc-result-grid">
@@ -467,22 +495,29 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
   </div>
+  </div><!-- /reconBody -->
   <div class="calc-tool-divider"></div>
   <div id="calc-vials">
-    <div class="calc-tool-header">
+    <div class="calc-tool-header" onclick="toggleCalcSection('vials')">
       <div class="calc-tool-icon">📦</div>
-      <div>
-        <div class="calc-tool-title">How Many Vials Do I Need</div>
-        <div class="calc-tool-sub">Plan supply for one compound over a full cycle</div>
+      <div style="flex:1">
+        <div class="calc-tool-title">Vial Supply Calculator</div>
+        <div class="calc-tool-sub">Plan how many vials to buy, or see how long your supply will last</div>
       </div>
+      <div class="calc-tool-chevron" id="vialsChevron">▾</div>
+    </div>
+    <div class="calc-tool-body" id="vialsBody">
+    <div class="vial-mode-toggle">
+      <div class="vial-mode-btn active" id="vialModeNeedBtn" onclick="switchVialMode('need')">🛒 How many do I need?</div>
+      <div class="vial-mode-btn" id="vialModeLastBtn" onclick="switchVialMode('last')">⏱ How long will they last?</div>
     </div>
     <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon amber">📦</div><span data-i18n="calc_vials_title">How Many Vials Do I Need?</span></div>
+      <div class="calc-section-title"><div class="sh-icon amber">📦</div><span id="vialSectionTitle">Vials Needed for Cycle</span></div>
       <div class="calc-field">
         <label class="calc-label"><span data-i18n="calc_dose_inj">Dose per Injection</span> <span data-i18n="calc_dose_inj_hint">(your planned dose)</span></label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="vialDose" placeholder="e.g. 500" min="1">
-          <select class="calc-select" id="vialDoseUnit" style="flex:0;min-width:70px;padding-right:28px;">
+          <input type="number" class="calc-input" id="vialDose" placeholder="e.g. 500" min="1" oninput="vialsAutoCalc()">
+          <select class="calc-select" id="vialDoseUnit" style="flex:0;min-width:70px;padding-right:28px;" onchange="vialsAutoCalc()">
             <option value="mcg">mcg</option>
             <option value="mg">mg</option>
           </select>
@@ -491,35 +526,42 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="calc-field">
         <label class="calc-label" data-i18n="calc_inj_day">Injections per Day</label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="injectionsPerDay" placeholder="e.g. 1" min="1" max="10" value="1">
+          <input type="number" class="calc-input" id="injectionsPerDay" placeholder="e.g. 1" min="1" max="10" value="1" oninput="vialsAutoCalc()">
           <span class="calc-unit">× /day</span>
         </div>
       </div>
       <div class="calc-field">
         <label class="calc-label" data-i18n="calc_days_wk">Days per Week</label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="daysPerWeek" placeholder="e.g. 7" min="1" max="7" value="7">
+          <input type="number" class="calc-input" id="daysPerWeek" placeholder="e.g. 7" min="1" max="7" value="7" oninput="vialsAutoCalc()">
           <span class="calc-unit">days</span>
         </div>
       </div>
-      <div class="calc-field">
+      <div class="calc-field" id="vialCycleField">
         <label class="calc-label" data-i18n="calc_cycle">Cycle Length</label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="cycleWeeks" placeholder="e.g. 10" min="1">
+          <input type="number" class="calc-input" id="cycleWeeks" placeholder="e.g. 10" min="1" oninput="vialsAutoCalc()">
           <span class="calc-unit">weeks</span>
         </div>
       </div>
-      <div class="calc-field">
-        <label class="calc-label"><span data-i18n="calc_vial_buy">Vial Size</span> <span data-i18n="calc_vial_buy_hint">(mg per vial you're buying)</span></label>
+      <div class="calc-field" id="vialOnHandField" style="display:none">
+        <label class="calc-label">Vials on Hand</label>
         <div class="calc-input-row">
-          <input type="number" class="calc-input" id="vialSize" placeholder="e.g. 5" min="0.1" step="0.1">
+          <input type="number" class="calc-input" id="vialsOnHand" placeholder="e.g. 3" min="1" oninput="vialsAutoCalc()">
+          <span class="calc-unit">vials</span>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label class="calc-label"><span data-i18n="calc_vial_buy">Vial Size</span> <span data-i18n="calc_vial_buy_hint">(mg per vial)</span></label>
+        <div class="calc-input-row">
+          <input type="number" class="calc-input" id="vialSize" placeholder="e.g. 5" min="0.1" step="0.1" oninput="vialsAutoCalc()">
           <span class="calc-unit">mg</span>
         </div>
       </div>
-      <button class="calc-btn" onclick="calculateVials()" data-i18n="calc_btn_vials">Calculate Vials Needed →</button>
+      <button class="calc-btn" onclick="calculateVials()" id="vialCalcBtn" data-i18n="calc_btn_vials">Calculate →</button>
       <div class="calc-error" id="vialError"></div>
       <div class="calc-result" id="vialResult">
-        <div class="calc-result-label" data-i18n="calc_vials_result_label">Vials needed for full cycle</div>
+        <div class="calc-result-label" id="vialResultLabel" data-i18n="calc_vials_result_label">Vials needed for full cycle</div>
         <div class="calc-result-main" id="vialCount">— vials</div>
         <div class="calc-result-sub" id="vialSub">—</div>
         <div class="calc-result-grid">
@@ -541,15 +583,18 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
   </div>
+  </div><!-- /vialsBody -->
   <div class="calc-tool-divider"></div>
   <div id="calc-planner">
-    <div class="calc-tool-header">
+    <div class="calc-tool-header" onclick="toggleCalcSection('planner')">
       <div class="calc-tool-icon">📋</div>
-      <div>
+      <div style="flex:1">
         <div class="calc-tool-title">Full Stack Shopping List</div>
         <div class="calc-tool-sub">Get a complete supply list for any stack — all compounds at once</div>
       </div>
+      <div class="calc-tool-chevron" id="plannerChevron">▾</div>
     </div>
+    <div class="calc-tool-body" id="plannerBody">
     <div class="calc-section">
       <div class="calc-section-title"><div class="sh-icon blue">📋</div>Step 1 — Choose Your Stack</div>
       <div class="calc-field">
@@ -592,6 +637,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
   </div>
+  </div><!-- /plannerBody -->
   <div class="disclaimer" style="margin-top:16px;">
     <strong>Research Reference Only.</strong> All calculator results are mathematical estimates only. Always verify independently and consult a licensed healthcare provider before use.
   </div>

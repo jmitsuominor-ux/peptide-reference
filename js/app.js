@@ -220,13 +220,16 @@ function showCalcError(id, msg) {
 
 // ─── Peptide presets ──────────────────────────────────────
 const CALC_PRESETS = {
-  'BPC-157':     { mg: 5,   dose: 500,  unit: 'mcg' },
   'Ipamorelin':  { mg: 5,   dose: 200,  unit: 'mcg' },
+  'BPC-157':     { mg: 5,   dose: 500,  unit: 'mcg' },
   'CJC-1295':    { mg: 2,   dose: 100,  unit: 'mcg' },
-  'TB-500':      { mg: 5,   dose: 2.5,  unit: 'mg'  },
-  'PT-141':      { mg: 10,  dose: 1,    unit: 'mg'  },
+  'Epithalon':   { mg: 10,  dose: 10,   unit: 'mg'  },
   'GHK-Cu':      { mg: 5,   dose: 1,    unit: 'mg'  },
-  'Semaglutide': { mg: 3,   dose: 0.5,  unit: 'mg'  },
+  'TB-500':      { mg: 5,   dose: 2.5,  unit: 'mg'  },
+  'Selank':      { mg: 3,   dose: 300,  unit: 'mcg' },
+  'NAD+':        { mg: 500, dose: 50,   unit: 'mg'  },
+  'SS-31':       { mg: 5,   dose: 5,    unit: 'mg'  },
+  'TA-1':        { mg: 1.5, dose: 1.5,  unit: 'mg'  },
 };
 
 function presetPeptide(name) {

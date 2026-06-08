@@ -17,6 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
+  qvAutoCalc, qvCopy, sdCopy,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
@@ -232,6 +233,64 @@ function calcQuickVials() {
   document.getElementById('qvTotalDoses').textContent = totalDoses + ' injections';
   document.getElementById('qvLeftover').textContent = leftover > 0.01 ? leftover.toFixed(2) + ' mg' : 'None';
   resEl.classList.add('visible');
+}
+
+function qvAutoCalc() {
+  const dose = parseFloat(document.getElementById('qvDose').value);
+  const vialSize = parseFloat(document.getElementById('qvVialSize').value);
+  const weeks = parseFloat(document.getElementById('qvWeeks').value);
+  if (dose > 0 && vialSize > 0 && weeks > 0) {
+    calcQuickVials();
+  } else {
+    document.getElementById('qvError').classList.remove('visible');
+    document.getElementById('qvResult').classList.remove('visible');
+  }
+}
+
+function qvCopy() {
+  const resEl = document.getElementById('qvResult');
+  if (!resEl.classList.contains('visible')) { calcQuickVials(); }
+  if (!resEl.classList.contains('visible')) return;
+  const name = document.getElementById('detailTitle')?.textContent?.trim() || '';
+  const lines = [
+    name,
+    document.getElementById('qvCount').textContent,
+    document.getElementById('qvSub').textContent,
+    [document.getElementById('qvTotalMg').textContent + ' total',
+     document.getElementById('qvMgWk').textContent + '/wk',
+     document.getElementById('qvTotalDoses').textContent,
+    ].join(' · '),
+  ].filter(Boolean).join('\n');
+  navigator.clipboard.writeText(lines).then(() => {
+    const btn = document.getElementById('qvCopyBtn');
+    if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = 'Copy Result'; }, 2000); }
+  }).catch(() => {});
+}
+
+function sdCopy(idx) {
+  const resEl = document.getElementById('sdResult');
+  if (!resEl.classList.contains('visible')) { sdCalculate(idx); }
+  if (!resEl.classList.contains('visible')) return;
+  const stack = getStackData(idx, AppState.lang);
+  const weeks = parseFloat(document.getElementById('sdWeeks').value);
+  const tierLabel = AppState.sdTier === 'lo' ? 'LOW' : AppState.sdTier === 'mid' ? 'STANDARD' : 'HIGH';
+  const lines = [`${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`];
+  stack.peptides.forEach((p, pi) => {
+    const vialSize = parseFloat(document.getElementById('sdVial_' + pi)?.value);
+    const doseStr = p[AppState.sdTier] || p.mid;
+    const mgPerWeek = parseDoseToMgPerWeek(doseStr);
+    if (mgPerWeek !== null && vialSize > 0) {
+      const total = mgPerWeek * weeks;
+      const vials = Math.ceil(total / vialSize);
+      lines.push(`  ${p.name}: ${vials} vials (${vialSize}mg ea · ${total.toFixed(1)}mg total)`);
+    } else {
+      lines.push(`  ${p.name}: ${doseStr}`);
+    }
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.getElementById('sdCopyBtn');
+    if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => { btn.textContent = 'Copy List'; }, 2000); }
+  }).catch(() => {});
 }
 
 function showCalcError(id, msg) {

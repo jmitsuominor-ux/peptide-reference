@@ -46,7 +46,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .logo-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .logo-text{font-size:13px;font-weight:600;color:#fff;letter-spacing:0.05em;}
 .logo-sub{font-size:10px;color:#7a94b8;font-family:'IBM Plex Mono',monospace;}
-.search-bar{flex:1;min-width:0;display:flex;align-items:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:7px 11px;gap:7px;}
+.search-bar{flex:1;min-width:0;display:flex;align-items:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:7px 11px;gap:7px;touch-action:manipulation;}
 .search-bar svg{width:13px;height:13px;color:#7a94b8;flex-shrink:0;}
 #searchInput{background:transparent;border:none;outline:none;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:13px;width:100%;}
 #searchInput::placeholder{color:#7a94b8;}
@@ -297,7 +297,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </a>
   <div class="search-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="search" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" data-i18n-placeholder="search_placeholder" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" data-i18n-placeholder="search_placeholder" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search">
   </div>
   <div class="lang-btn" id="langBtn">EN</div>
   <div class="theme-btn" id="themeBtn">☀️</div>

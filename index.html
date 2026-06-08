@@ -252,11 +252,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .calc-explainer .step:last-child{margin-bottom:0;}
 .calc-explainer .step-num{width:20px;height:20px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:1px;}
 .syringe-visual{margin:14px 0;padding:12px;background:var(--white);border:1px solid var(--border);border-radius:8px;}
-.syringe-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;margin-bottom:8px;}
-.syringe-track{height:28px;background:var(--bg);border:2px solid var(--border2);border-radius:4px;position:relative;overflow:hidden;}
-.syringe-fill{height:100%;background:linear-gradient(90deg,var(--blue),rgba(23,86,169,0.7));border-radius:2px;transition:width 0.5s ease;min-width:2px;}
-.syringe-markers{display:flex;justify-content:space-between;margin-top:4px;padding:0 2px;}
-.syringe-marker{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);}
+.syringe-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;margin-bottom:10px;}
 .calc-tool-header{display:flex;align-items:center;gap:8px;padding:12px 0 11px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
 .calc-tool-chevron{flex-shrink:0;margin-left:auto;transition:transform 0.25s ease;color:var(--text3);}
 .calc-tool-chevron svg{width:14px;height:14px;display:block;}
@@ -273,8 +269,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .bac-suggest-pills{display:flex;flex-wrap:wrap;gap:6px;}
 .bac-suggest-btn{background:var(--white);border:1px solid var(--blue);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--blue);transition:all 0.15s;font-family:'IBM Plex Sans',sans-serif;}
 .bac-suggest-btn:hover{background:var(--blue-light);}
-.syringe-needle{position:absolute;top:0;bottom:0;width:2px;background:var(--blue);opacity:0.85;transform:translateX(-50%);transition:left 0.4s ease;pointer-events:none;}
-.syringe-marker.active{color:var(--blue);font-weight:700;}
 .vial-mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;}
 .vial-mode-btn{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;color:var(--text3);}
 .vial-mode-btn.active{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
@@ -415,15 +409,15 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="calc-tool-body collapsed" id="reconBody">
     <div class="preset-pills">
-      <button class="preset-pill" data-name="Ipamorelin" onclick="presetPeptide('Ipamorelin')">Ipamorelin</button>
-      <button class="preset-pill" data-name="BPC-157" onclick="presetPeptide('BPC-157')">BPC-157</button>
+      <button class="preset-pill" data-name="Retatrutide" onclick="presetPeptide('Retatrutide')">Retatrutide</button>
       <button class="preset-pill" data-name="CJC-1295" onclick="presetPeptide('CJC-1295')">CJC-1295</button>
-      <button class="preset-pill" data-name="Epithalon" onclick="presetPeptide('Epithalon')">Epithalon</button>
-      <button class="preset-pill" data-name="GHK-Cu" onclick="presetPeptide('GHK-Cu')">GHK-Cu</button>
+      <button class="preset-pill" data-name="BPC-157" onclick="presetPeptide('BPC-157')">BPC-157</button>
+      <button class="preset-pill" data-name="Ipamorelin" onclick="presetPeptide('Ipamorelin')">Ipamorelin</button>
       <button class="preset-pill" data-name="TB-500" onclick="presetPeptide('TB-500')">TB-500</button>
-      <button class="preset-pill" data-name="Selank" onclick="presetPeptide('Selank')">Selank</button>
-      <button class="preset-pill" data-name="NAD+" onclick="presetPeptide('NAD+')">NAD+</button>
-      <button class="preset-pill" data-name="SS-31" onclick="presetPeptide('SS-31')">SS-31</button>
+      <button class="preset-pill" data-name="Tesamorelin" onclick="presetPeptide('Tesamorelin')">Tesamorelin</button>
+      <button class="preset-pill" data-name="Sermorelin" onclick="presetPeptide('Sermorelin')">Sermorelin</button>
+      <button class="preset-pill" data-name="GHK-Cu" onclick="presetPeptide('GHK-Cu')">GHK-Cu</button>
+      <button class="preset-pill" data-name="AOD9604" onclick="presetPeptide('AOD9604')">AOD9604</button>
       <button class="preset-pill" data-name="TA-1" onclick="presetPeptide('TA-1')">TA-1</button>
     </div>
     <div class="calc-section">
@@ -473,8 +467,24 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div class="calc-result-sub" id="reconMl">— ml</div>
         <div class="syringe-visual">
           <div class="syringe-label" data-i18n="calc_fill_label">SYRINGE FILL LEVEL</div>
-          <div class="syringe-track"><div class="syringe-fill" id="syringeFill" style="width:0%"></div><div class="syringe-needle" id="syringeNeedle" style="left:0%;display:none"></div></div>
-          <div class="syringe-markers" id="syringeMarkers"></div>
+          <svg id="syringeSVG" viewBox="0 0 300 65" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible">
+            <!-- Needle tip -->
+            <polygon points="4,24 37,17 37,31" fill="var(--border2)"/>
+            <!-- Needle hub -->
+            <rect x="36" y="15" width="11" height="18" rx="1" fill="var(--bg)" stroke="var(--border)" stroke-width="1"/>
+            <!-- Barrel body -->
+            <rect x="45" y="8" width="215" height="32" rx="3" fill="var(--white)" stroke="var(--border2)" stroke-width="1.5"/>
+            <!-- Fluid fill (width driven by JS) -->
+            <rect id="syrFluid" x="47" y="10" width="0" height="28" rx="1" fill="var(--blue)" fill-opacity="0.2"/>
+            <!-- Plunger stopper (x driven by JS) -->
+            <rect id="syrPlunger" x="47" y="6" width="10" height="36" rx="3" fill="var(--blue)"/>
+            <!-- Right barrel flange -->
+            <rect x="258" y="3" width="5" height="42" rx="2" fill="var(--border)"/>
+            <!-- Tick marks -->
+            <g id="syrTicks"/>
+            <!-- Unit labels -->
+            <g id="syrLabels" font-size="8" font-family="'IBM Plex Mono',monospace" text-anchor="middle"/>
+          </svg>
         </div>
         <div class="calc-result-grid">
           <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_conc">Concentration</div><div class="calc-result-item-value" id="reconConc">—</div></div>

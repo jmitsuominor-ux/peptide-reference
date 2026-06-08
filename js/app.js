@@ -111,6 +111,32 @@ function sdCalculate(idx) {
 }
 
 
+// ─── Syringe SVG visual ───────────────────────────────────
+function updateSyringeVisual(fillPercent, syringeSize, activeUnit) {
+  const bX = 47, bW = 211, pW = 10;
+  const rawLeft = bX + (fillPercent / 100) * bW - pW / 2;
+  const plungerLeft = Math.max(bX, Math.min(rawLeft, bX + bW - pW));
+  const fluidW = Math.max(0, plungerLeft - bX);
+  const fluid = document.getElementById('syrFluid');
+  const plunger = document.getElementById('syrPlunger');
+  if (fluid) fluid.setAttribute('width', fluidW.toFixed(1));
+  if (plunger) plunger.setAttribute('x', plungerLeft.toFixed(1));
+  const steps = syringeSize === 100 ? [10,20,30,40,50,60,70,80,90,100]
+              : syringeSize === 50  ? [10,20,30,40,50] : [10,20,30];
+  const ticksEl = document.getElementById('syrTicks');
+  const labelsEl = document.getElementById('syrLabels');
+  if (!ticksEl || !labelsEl) return;
+  let tHtml = '', lHtml = '';
+  steps.forEach(s => {
+    const tx = (bX + (s / syringeSize) * bW).toFixed(1);
+    const on = s === activeUnit;
+    tHtml += `<line x1="${tx}" y1="40" x2="${tx}" y2="${on ? 50 : 47}" stroke="${on ? 'var(--blue)' : 'var(--border2)'}" stroke-width="${on ? 1.5 : 1}"/>`;
+    lHtml += `<text x="${tx}" y="61" fill="${on ? 'var(--blue)' : 'var(--text3)'}" font-weight="${on ? '700' : '400'}">${s}</text>`;
+  });
+  ticksEl.innerHTML = tHtml;
+  labelsEl.innerHTML = lHtml;
+}
+
 // ─── Reconstitution calculator ────────────────────────────
 function calculateRecon() {
   const vialMg = parseFloat(document.getElementById('vialMg').value);
@@ -143,12 +169,8 @@ function calculateRecon() {
   document.getElementById('reconPerUnit').textContent = mcgPerUnit + ' mcg/unit';
   document.getElementById('reconDoses').textContent = dosesPerVial + ' doses';
   document.getElementById('reconSyringe').textContent = syringeSize + ' units (1ml)';
-  document.getElementById('syringeFill').style.width = fillPercent + '%';
-  const steps = syringeSize === 100 ? [10,20,30,40,50,60,70,80,90,100] : syringeSize === 50 ? [10,20,30,40,50] : [10,20,30];
   const unitsInt = Math.round(parseFloat(units));
-  document.getElementById('syringeMarkers').innerHTML = steps.map(s => `<span class="syringe-marker${s === unitsInt ? ' active' : ''}">${s}</span>`).join('');
-  const needleEl = document.getElementById('syringeNeedle');
-  if (needleEl) { needleEl.style.left = fillPercent + '%'; needleEl.style.display = ''; }
+  updateSyringeVisual(fillPercent, syringeSize, unitsInt);
   resultEl.classList.add('visible');
 }
 
@@ -220,15 +242,15 @@ function showCalcError(id, msg) {
 
 // ─── Peptide presets ──────────────────────────────────────
 const CALC_PRESETS = {
-  'Ipamorelin':  { mg: 5,   dose: 200,  unit: 'mcg' },
-  'BPC-157':     { mg: 5,   dose: 500,  unit: 'mcg' },
+  'Retatrutide': { mg: 5,   dose: 0.5,  unit: 'mg'  },
   'CJC-1295':    { mg: 2,   dose: 100,  unit: 'mcg' },
-  'Epithalon':   { mg: 10,  dose: 10,   unit: 'mg'  },
-  'GHK-Cu':      { mg: 5,   dose: 1,    unit: 'mg'  },
+  'BPC-157':     { mg: 5,   dose: 500,  unit: 'mcg' },
+  'Ipamorelin':  { mg: 5,   dose: 200,  unit: 'mcg' },
   'TB-500':      { mg: 5,   dose: 2.5,  unit: 'mg'  },
-  'Selank':      { mg: 3,   dose: 300,  unit: 'mcg' },
-  'NAD+':        { mg: 500, dose: 50,   unit: 'mg'  },
-  'SS-31':       { mg: 5,   dose: 5,    unit: 'mg'  },
+  'Tesamorelin': { mg: 1,   dose: 1,    unit: 'mg'  },
+  'Sermorelin':  { mg: 3,   dose: 300,  unit: 'mcg' },
+  'GHK-Cu':      { mg: 5,   dose: 1,    unit: 'mg'  },
+  'AOD9604':     { mg: 5,   dose: 300,  unit: 'mcg' },
   'TA-1':        { mg: 1.5, dose: 1.5,  unit: 'mg'  },
 };
 

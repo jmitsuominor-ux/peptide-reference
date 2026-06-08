@@ -300,7 +300,7 @@ export function showStackDetail(idx) {
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Side Effects &amp; Monitoring</div></div>
+        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Watch Out For</div></div>
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">

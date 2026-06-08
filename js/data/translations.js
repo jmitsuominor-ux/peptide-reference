@@ -44,12 +44,12 @@ export const TRANSLATIONS = {
     calc_tab_vials: 'Vial Count',
     calc_badge: 'CALCULATOR',
     // Detail sections
-    sec_dosing: 'Dosing Protocol',
-    sec_benefits: 'Clinical Benefits',
-    sec_mechanism: 'Mechanism of Action',
-    sec_adverse: 'Adverse Effects & Safety',
-    sec_compat: 'Pairings & Compatibility',
-    sec_studies: 'Studies & Evidence',
+    sec_dosing: 'How to Use It',
+    sec_benefits: 'What It Does',
+    sec_mechanism: 'How It Works',
+    sec_adverse: 'Watch Out For',
+    sec_compat: 'Pairs Well With',
+    sec_studies: 'The Science',
     sec_timeline: 'Expected Timeline',
     // Dose tiers
     tier_lo: '🟢 LOW',
@@ -68,7 +68,7 @@ export const TRANSLATIONS = {
     label_ev_quality: 'Evidence Quality',
     label_profiles: 'Individual Profiles',
     label_combined_se: 'Combined Stack Side Effects',
-    label_why_together: 'Why These Peptides Together',
+    label_why_together: 'Why This Combo Works',
     // Severity badges
     sev_mild: 'MILD',
     sev_mod: 'MOD',
@@ -85,8 +85,8 @@ export const TRANSLATIONS = {
     // Stack detail
     stack_peptides_badge: 'Peptides',
     stack_research_badge: 'Research Protocol',
-    stack_benefits_title: 'Stack Benefits',
-    stack_dosing_title: 'Per-Peptide Dosing',
+    stack_benefits_title: "What You'll Get",
+    stack_dosing_title: 'Your Dose Plan',
     stack_note_prefix: '⚠ Important:',
     // Profile link
     profile_link: '→ profile',

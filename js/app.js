@@ -17,7 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  reconAutoCalc, vialsAutoCalc, presetPeptide, updateBacSuggestions, applyBacSuggestion, switchVialMode,
+  reconAutoCalc, vialsAutoCalc, presetPeptide, updateBacSuggestions, applyBacSuggestion, switchVialMode, toggleCalcSection,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
@@ -308,6 +308,14 @@ function updateBacSuggestions() {
 function applyBacSuggestion(bac) {
   document.getElementById('bacWater').value = bac;
   calculateRecon();
+}
+
+// ─── Calculator section collapse ─────────────────────────
+function toggleCalcSection(id) {
+  const body = document.getElementById(id + 'Body');
+  const chevron = document.getElementById(id + 'Chevron');
+  const collapsed = body.classList.toggle('collapsed');
+  if (chevron) chevron.style.transform = collapsed ? 'rotate(-90deg)' : '';
 }
 
 // ─── Vial mode toggle ─────────────────────────────────────

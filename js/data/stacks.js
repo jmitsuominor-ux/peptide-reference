@@ -240,35 +240,29 @@ export const STACKS = [
     ]
   },
   {
-    name:'BEAUTY STACK',cycle:'12 weeks on / 4 weeks off. Epithalon as 10–20 day burst only.',emoji:'💋',goal:'Skin collagen & elasticity · Hair thickness · Anti-aging · Body composition',color:'#E91E8C',
-    description:'A comprehensive skin, hair, and body composition stack. GHK-Cu drives collagen synthesis and skin regeneration. BPC-157 accelerates healing and reduces systemic inflammation. Epithalon adds telomere-level anti-aging. CJC-1295 + Ipamorelin provide the overnight GH pulse that drives collagen production and body recomposition.',
-    rationale:'GHK-Cu activates over 4,000 genes associated with skin regeneration, collagen production, and anti-aging — the most data-backed skin compound available for injection and topical use. BPC-157 provides systemic healing support and reduces the chronic inflammation that accelerates visible aging. Epithalon activates telomerase and resets circadian gene expression — anti-aging at the cellular level. CJC-1295 + Ipamorelin deliver sustained GH elevation: GH drives collagen synthesis, skin thickness, and the lean body composition that defines the full aesthetic result.',
+    name:'BEAUTY STACK',cycle:'12 weeks on / 4 weeks off',emoji:'💋',goal:'Skin collagen & elasticity · Hair thickness · Anti-aging · Body composition',color:'#E91E8C',
+    description:'The most focused skin and body composition protocol. GHK-Cu directly drives collagen synthesis and hair growth. CJC-1295 + Ipamorelin deliver the overnight GH pulse that amplifies collagen production and drives body recomposition — two injections a day.',
+    rationale:'GHK-Cu activates over 4,000 genes associated with skin regeneration, collagen production, and anti-aging — the most data-backed beauty compound available. CJC-1295 + Ipamorelin work via two complementary receptor pathways (GHRH + GHS-R1a) to produce a strong, clean GH pulse before sleep. GH is the primary driver of overnight collagen synthesis and tissue repair, which compounds with the direct collagen activation from GHK-Cu.',
     benefits:[
       'Collagen and elastin production — skin tightening and wrinkle reduction (GHK-Cu)',
       'Hair thickness and scalp health improvement (GHK-Cu)',
-      'Systemic inflammation reduction and wound healing (BPC-157)',
-      'Telomere support and cellular anti-aging (Epithalon)',
-      'Overnight GH pulse — collagen synthesis and body recomposition (CJC-1295 + Ipamorelin)',
+      'Overnight GH pulse — amplifies collagen synthesis during sleep (CJC-1295 + Ipamorelin)',
       'Lean body composition improvement alongside skin quality',
-      'Comprehensive anti-aging from skin surface to cellular level',
+      'No cortisol or prolactin elevation — clean GH release only',
     ],
     sideEffects:[
       {text:'GHK-Cu injection site redness — mild and transient',severity:'low'},
       {text:'Temporary skin darkening possible from copper (GHK-Cu)',severity:'low'},
       {text:'Water retention from GH peptides at start — resolves in 2–3 weeks',severity:'low'},
-      {text:'Epithalon is a burst cycle only — do not run continuously',severity:'low'},
     ],
-    note:'GHK-Cu can be used SubQ and applied topically to face and scalp — combine both for maximum effect. CJC-1295 + Ipamorelin injected together before bed on empty stomach. Epithalon runs as a 10–20 day burst then stops. BPC-157 can be injected near areas of concern.',
+    note:'GHK-Cu can be used SubQ and applied topically to face and scalp — combine both for maximum effect. CJC-1295 + Ipamorelin mixed in the same syringe and injected before bed on an empty stomach.',
     studies:[
       {title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, increased collagen and glycosaminoglycan synthesis, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'},
-      {title:'Epithalon Activates Telomerase and Extends Lifespan',journal:'Bulletin of Experimental Biology 2003',summary:'Epithalon activated telomerase enzyme in human somatic cells and significantly increased mean lifespan in animal models.',pmid:'12937837',url:'https://pubmed.ncbi.nlm.nih.gov/12937837/'},
     ],
     peptides:[
       {name:'GHK-Cu',schedule:'Daily SubQ + topical to face/scalp',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
-      {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
-      {name:'Epithalon',schedule:'Daily SubQ — 10–20 day burst ONLY',lo:'5 mg/day × 10 days',mid:'10 mg/day × 10 days',hi:'10 mg/day × 20 days'},
-      {name:'CJC-1295 (no DAC)',schedule:'Daily SubQ before bed — same injection as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
-      {name:'Ipamorelin',schedule:'Same injection as CJC-1295 before bed, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'CJC-1295 (no DAC)',schedule:'Before bed SubQ — same syringe as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
+      {name:'Ipamorelin',schedule:'Before bed SubQ — same syringe as CJC-1295, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
   },
   {

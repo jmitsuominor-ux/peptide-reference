@@ -156,9 +156,9 @@ function calculateRecon() {
   const vialMcg = vialMg * 1000;
   const concMcgPerMl = vialMcg / bacWater;
   const volumeMl = doseMcg / concMcgPerMl;
-  const units = (volumeMl * syringeSize).toFixed(1);
+  const units = (volumeMl * 100).toFixed(1);
   const dosesPerVial = Math.floor(vialMcg / doseMcg);
-  const mcgPerUnit = (concMcgPerMl / syringeSize).toFixed(1);
+  const mcgPerUnit = (concMcgPerMl / 100).toFixed(1);
   const fillPercent = Math.min((parseFloat(units) / syringeSize) * 100, 100);
   if (parseFloat(units) > syringeSize) {
     showCalcError('reconError', 'This dose exceeds syringe capacity. Use a larger syringe, add more BAC water, or split into 2 injections.');

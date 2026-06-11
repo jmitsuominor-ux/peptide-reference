@@ -868,6 +868,11 @@ function init() {
   initEventListeners();
   initSwipeBack();
   initStoreBack();
+  // Deep-link: ?compound=BPC-157
+  const compoundParam = new URLSearchParams(window.location.search).get('compound');
+  if (compoundParam) {
+    setTimeout(() => showDetail(decodeURIComponent(compoundParam)), 100);
+  }
 }
 
 init();

@@ -52,6 +52,7 @@ export function showList(catId) {
 export function showDetail(name) {
   const p = getPeptideData(name, AppState.lang);
   if (!p) return;
+  document.getElementById('catView').style.display = 'none';
   document.getElementById('listView').style.display = 'none';
   const dv = document.getElementById('detailView');
   dv.style.display = 'block';

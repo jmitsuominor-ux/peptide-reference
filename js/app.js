@@ -11,6 +11,14 @@ import {
   renderStacks, showStackDetail,
   activatePage, goToProfile, switchToStack,
 } from './ui.js';
+import { initAuth, signOut } from './auth.js';
+import {
+  renderSchedulePage,
+  openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
+  openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
+  addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
+  toggleInjectionLog, confirmEndProtocol,
+} from './scheduler.js';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 Object.assign(window, {
@@ -21,6 +29,12 @@ Object.assign(window, {
   vialsCopy, reconCopy, plannerCopy,
   calcQuickVials, qvAutoCalc, qvCopy,
   plannerSetTier, plannerLoadStack, plannerCalculate,
+  // Schedule / auth
+  renderSchedulePage,
+  openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
+  openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
+  addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
+  toggleInjectionLog, confirmEndProtocol,
 });
 
 // ─── i18n ────────────────────────────────────────────────
@@ -766,6 +780,18 @@ function init() {
   initEventListeners();
   initSwipeBack();
   initStoreBack();
+
+  // Auth + schedule
+  initAuth(user => {
+    if (document.getElementById('page-schedule')?.classList.contains('active')) {
+      renderSchedulePage();
+    }
+  });
+
+  // Service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
   // Deep-link: ?compound=BPC-157
   const compoundParam = new URLSearchParams(window.location.search).get('compound');
   if (compoundParam) {

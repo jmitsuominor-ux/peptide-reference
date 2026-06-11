@@ -344,6 +344,9 @@ export function activatePage(pageId) {
   pg.classList.add('active');
   pg.style.display = 'block';
   window.scrollTo(0, 0);
+  if (pageId === 'schedule' && typeof window.renderSchedulePage === 'function') {
+    window.renderSchedulePage();
+  }
 }
 
 export function goToProfile(name, fromStack) {

@@ -279,6 +279,62 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .planner-result-detail{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
 .planner-result-vials{font-size:22px;font-weight:600;color:var(--blue);text-align:right;}
 .planner-result-vials-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);text-align:right;}
+
+/* ── Schedule page ──────────────────────────────────────── */
+.sched-hero{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px 20px;margin-bottom:12px;text-align:center;}
+.sched-hero-icon{font-size:36px;margin-bottom:10px;}
+.sched-hero-title{font-size:16px;font-weight:600;margin-bottom:6px;}
+.sched-hero-sub{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:18px;}
+.sched-section{margin-bottom:16px;}
+.sched-section-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.sched-section-title{font-size:15px;font-weight:600;}
+.sched-progress{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:2px 8px;}
+.sched-time-group{margin-bottom:10px;}
+.sched-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;padding:0 2px;}
+.sched-entry-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:10px;transition:all 0.2s;}
+.sched-entry-card.done{opacity:0.55;}
+.sched-entry-card.done .sched-entry-name{text-decoration:line-through;}
+.sched-entry-info{flex:1;min-width:0;}
+.sched-entry-name{font-size:14px;font-weight:600;margin-bottom:2px;}
+.sched-entry-dose{font-size:12px;color:var(--text3);}
+.sched-check-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;font-weight:700;color:var(--teal);flex-shrink:0;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.sched-check-btn.done{border-color:var(--teal);background:var(--teal-light);}
+.sched-check-btn:active{transform:scale(0.88);}
+.sched-proto-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.sched-proto-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.sched-proto-emoji{font-size:20px;flex-shrink:0;margin-top:1px;}
+.sched-proto-name{font-size:14px;font-weight:600;}
+.sched-proto-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
+.sched-proto-compounds{font-size:12px;color:var(--text2);line-height:1.5;}
+.sched-proto-end-btn{margin-left:auto;background:var(--red-light);border:1px solid var(--hi-border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--red);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:600;flex-shrink:0;transition:all 0.15s;}
+.sched-add-btn{width:100%;background:var(--blue-light);border:2px dashed var(--mid-border);border-radius:8px;padding:14px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-top:4px;font-family:'IBM Plex Sans',sans-serif;}
+.sched-add-btn:active{transform:scale(0.98);}
+.sched-text-btn{background:none;border:none;color:var(--blue);font-size:13px;cursor:pointer;padding:4px;font-family:'IBM Plex Sans',sans-serif;}
+.sched-text-btn:hover{text-decoration:underline;}
+.sched-signout-btn{background:none;border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text3);cursor:pointer;padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-weight:500;transition:all 0.15s;}
+.sched-signout-btn:hover{background:var(--bg);}
+.sched-empty{text-align:center;padding:32px 20px;color:var(--text3);}
+.sched-empty-icon{font-size:36px;margin-bottom:10px;}
+.sched-empty-text{font-size:14px;color:var(--text2);margin-bottom:4px;font-weight:500;}
+.sched-empty-sub{font-size:12px;color:var(--text3);}
+
+/* ── Modals ─────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity 0.2s;}
+.modal-overlay.open{opacity:1;}
+.modal-card{background:var(--white);border-radius:16px 16px 0 0;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform 0.25s cubic-bezier(0.32,0.72,0,1);}
+.modal-overlay.open .modal-card{transform:translateY(0);}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1;}
+.modal-title{font-size:16px;font-weight:600;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background 0.15s;}
+.modal-close:hover{background:var(--bg);}
+.modal-body{padding:16px;}
+.modal-switch-link{text-align:center;margin-top:14px;font-size:13px;color:var(--text3);}
+.proto-step-header{font-size:10px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
+.proto-compound-row{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
+.proto-compound-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.proto-compound-dose{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:9px;}
+.proto-time-row{display:flex;align-items:center;gap:8px;}
+.proto-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;}
 </style>
 <script data-goatcounter="https://peptiderefrenceapp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>if(new URLSearchParams(location.search).get('compound'))document.documentElement.style.setProperty('--cat-view-display','none');</script>
@@ -310,6 +366,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="nav-tab active" data-page="browse" data-i18n="nav_browse">Browse</div>
   <div class="nav-tab" data-page="stacks" data-i18n="nav_stacks">Stacks</div>
   <div class="nav-tab" data-page="calc" data-i18n="nav_calc">Calculator</div>
+  <div class="nav-tab" data-page="schedule">Schedule 🔔</div>
 </div>
 
 <!-- BROWSE PAGE -->
@@ -599,6 +656,49 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div><!-- /plannerBody -->
   <div class="disclaimer" style="margin-top:16px;">
     <strong>Research Reference Only.</strong> All calculator results are mathematical estimates only. Always verify independently and consult a licensed healthcare provider before use.
+  </div>
+</div>
+
+<!-- SCHEDULE PAGE -->
+<div class="page" id="page-schedule">
+  <div id="schedAuth"></div>
+  <div id="schedMain" style="display:none"></div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" style="display:none" onclick="closeAuthModal(event)">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <div class="modal-title" id="authModalTitle">Create Account</div>
+      <button class="modal-close" onclick="closeAuthModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="calc-field">
+        <label class="calc-label">Email</label>
+        <input type="email" class="calc-input" id="authEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="calc-field">
+        <label class="calc-label">Password</label>
+        <input type="password" class="calc-input" id="authPassword" placeholder="8+ characters" autocomplete="current-password">
+      </div>
+      <div class="calc-error" id="authError"></div>
+      <button class="calc-btn" id="authSubmitBtn" onclick="submitAuth()" style="margin-top:8px;">Create Account</button>
+      <div class="modal-switch-link">
+        <span id="authSwitchText">Already have an account?</span>
+        <button class="sched-text-btn" id="authSwitchLabel" onclick="toggleAuthMode()">Sign In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PROTOCOL MODAL -->
+<div class="modal-overlay" id="addProtoModal" style="display:none" onclick="closeAddProtoModal(event)">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <div class="modal-title">Add Protocol</div>
+      <button class="modal-close" onclick="closeAddProtoModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="addProtoBody"></div>
   </div>
 </div>
 

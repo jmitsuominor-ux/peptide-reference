@@ -1,0 +1,604 @@
+import { supabase } from './supabase-client.js';
+import { currentUser, signOut } from './auth.js';
+import { STACKS } from './utils.js';
+
+// ─── Frequency helpers ────────────────────────────────────
+function parseFrequency(txt) {
+  const s = (txt || '').toLowerCase();
+  if (s.includes('as-needed') || s.includes('as needed')) return 'as_needed';
+  if (s.includes('once weekly') || s.includes('once per week') || (s.includes('weekly') && !s.includes('2x') && !s.includes('3x'))) return 'weekly';
+  if (s.includes('3x') || s.includes('three times')) return 'three_weekly';
+  if (s.includes('2x') || s.includes('twice') || s.includes('two times')) return 'twice_weekly';
+  return 'daily';
+}
+
+function defaultDays(freq) {
+  if (freq === 'twice_weekly')  return [1, 4]; // Mon, Thu
+  if (freq === 'three_weekly')  return [1, 3, 5]; // Mon, Wed, Fri
+  if (freq === 'weekly')        return [1]; // Mon
+  return null;
+}
+
+function parseReminderTime(txt) {
+  const s = (txt || '').toLowerCase();
+  if (s.includes('before bed') || s.includes('bedtime') || s.includes('evening') || s.includes('night')) return '21:00';
+  if (s.includes('am') || s.includes('morning')) return '08:00';
+  if (s.includes('midday') || s.includes('noon')) return '12:00';
+  if (s.includes('pre-workout') || s.includes('post-workout')) return '17:00';
+  return '20:00';
+}
+
+function isDueToday(entry) {
+  if (entry.frequency === 'as_needed') return false;
+  if (entry.frequency === 'daily') return true;
+  const dow = new Date().getDay();
+  return (entry.days_of_week || []).includes(dow);
+}
+
+function daysBetween(dateStr) {
+  const start = new Date(dateStr);
+  const today = new Date();
+  start.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  return Math.floor((today - start) / 86400000) + 1;
+}
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function todayLabel() {
+  return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+}
+
+function freqLabel(freq, days) {
+  if (freq === 'daily') return 'Daily';
+  if (freq === 'as_needed') return 'As needed';
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const d = (days || []).map(i => dayNames[i]).join(', ');
+  return d || freq;
+}
+
+// ─── Supabase CRUD ────────────────────────────────────────
+export async function createProtocol(stackIdx, tier) {
+  const stack = STACKS[parseInt(stackIdx)];
+  if (!stack || !currentUser) throw new Error('Invalid stack or not signed in');
+
+  const { data: sched, error: sErr } = await supabase
+    .from('schedules')
+    .insert({
+      user_id: currentUser.id,
+      name: stack.name,
+      stack_name: stack.name,
+      tier,
+      start_date: todayStr(),
+      cycle_weeks: parseInt(stack.cycle) || 12,
+    })
+    .select().single();
+  if (sErr) throw sErr;
+
+  const entries = stack.peptides.map(p => {
+    const freq = parseFrequency(p.schedule || '');
+    return {
+      schedule_id: sched.id,
+      user_id: currentUser.id,
+      compound_name: p.name,
+      dose: p[tier] || p.mid,
+      schedule_text: p.schedule || '',
+      frequency: freq,
+      days_of_week: defaultDays(freq),
+      reminder_time: parseReminderTime(p.schedule || ''),
+    };
+  });
+
+  const { error: eErr } = await supabase.from('schedule_entries').insert(entries);
+  if (eErr) throw eErr;
+  return sched;
+}
+
+async function loadTodayData() {
+  const [entriesRes, logsRes] = await Promise.all([
+    supabase
+      .from('schedule_entries')
+      .select('*, schedules!inner(name, stack_name, start_date, is_active, emoji)')
+      .eq('user_id', currentUser.id)
+      .eq('is_active', true)
+      .eq('schedules.is_active', true),
+    supabase
+      .from('injection_log')
+      .select('entry_id')
+      .eq('user_id', currentUser.id)
+      .eq('scheduled_for', todayStr()),
+  ]);
+  const entries = (entriesRes.data || []).filter(isDueToday);
+  const loggedIds = new Set((logsRes.data || []).map(l => l.entry_id));
+  return { entries, loggedIds };
+}
+
+async function loadProtocols() {
+  const { data, error } = await supabase
+    .from('schedules')
+    .select('*, schedule_entries(compound_name, frequency, dose, is_active)')
+    .eq('user_id', currentUser.id)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function logInjection(entryId, compoundName, dose) {
+  const { error } = await supabase.from('injection_log').insert({
+    user_id: currentUser.id,
+    entry_id: entryId,
+    compound_name: compoundName,
+    dose,
+    scheduled_for: todayStr(),
+  });
+  if (error) throw error;
+}
+
+export async function unlogInjection(entryId) {
+  const { error } = await supabase
+    .from('injection_log')
+    .delete()
+    .eq('user_id', currentUser.id)
+    .eq('entry_id', entryId)
+    .eq('scheduled_for', todayStr());
+  if (error) throw error;
+}
+
+export async function endProtocol(scheduleId) {
+  const { error } = await supabase
+    .from('schedules')
+    .update({ is_active: false })
+    .eq('id', scheduleId)
+    .eq('user_id', currentUser.id);
+  if (error) throw error;
+}
+
+// ─── Rendering ────────────────────────────────────────────
+export async function renderSchedulePage() {
+  const authDiv  = document.getElementById('schedAuth');
+  const mainDiv  = document.getElementById('schedMain');
+  if (!authDiv || !mainDiv) return;
+
+  if (!currentUser) {
+    authDiv.style.display  = '';
+    mainDiv.style.display  = 'none';
+    renderAuthPrompt();
+    return;
+  }
+
+  authDiv.style.display = 'none';
+  mainDiv.style.display = '';
+  await refreshScheduleMain();
+}
+
+function renderAuthPrompt() {
+  const el = document.getElementById('schedAuth');
+  el.innerHTML = `
+    <div class="clin-header" style="margin-bottom:12px;">
+      <div>
+        <div class="ch-title">My Schedule</div>
+        <div class="ch-sub">Track injections · Log doses · Stay on protocol</div>
+      </div>
+      <div class="ch-badge">SCHEDULE</div>
+    </div>
+    <div class="sched-hero">
+      <div class="sched-hero-icon">🔔</div>
+      <div class="sched-hero-title">Track Your Protocol</div>
+      <div class="sched-hero-sub">Create an account to save your injection schedule, log your doses, and track your cycle progress.</div>
+      <button class="calc-btn" onclick="openAuthModal('signup')">Create Free Account</button>
+      <div style="margin-top:10px;">
+        <button class="sched-text-btn" onclick="openAuthModal('signin')">Already have an account? Sign in</button>
+      </div>
+    </div>
+  `;
+}
+
+async function refreshScheduleMain() {
+  const mainDiv = document.getElementById('schedMain');
+  mainDiv.innerHTML = `
+    <div class="clin-header" style="margin-bottom:12px;">
+      <div>
+        <div class="ch-title">My Schedule</div>
+        <div class="ch-sub" style="font-family:'IBM Plex Mono',monospace;">${currentUser.email}</div>
+      </div>
+      <button class="sched-signout-btn" onclick="schedSignOut()">Sign out</button>
+    </div>
+    <div id="schedTodaySection"></div>
+    <div id="schedProtosSection"></div>
+    <button class="sched-add-btn" onclick="openAddProtoModal()">＋ Add Protocol</button>
+    <div class="disclaimer" style="margin-top:12px;">
+      <strong>Reminders:</strong> Push notifications are coming in the next update. For now, bookmark this page and check daily.
+    </div>
+  `;
+  await Promise.all([renderToday(), renderProtocols()]);
+}
+
+async function renderToday() {
+  const el = document.getElementById('schedTodaySection');
+  if (!el) return;
+  el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Loading...</div>`;
+  try {
+    const { entries, loggedIds } = await loadTodayData();
+    if (entries.length === 0) {
+      el.innerHTML = `
+        <div class="sched-section">
+          <div class="sched-section-hdr">
+            <div class="sched-section-title">Today · ${todayLabel()}</div>
+          </div>
+          <div class="sched-empty">
+            <div class="sched-empty-icon">✅</div>
+            <div class="sched-empty-text">Nothing scheduled today</div>
+            <div class="sched-empty-sub">Add a protocol to start tracking</div>
+          </div>
+        </div>`;
+      return;
+    }
+    const doneCount = entries.filter(e => loggedIds.has(e.id)).length;
+
+    // Group by reminder_time
+    const groups = {};
+    entries.forEach(e => {
+      const t = e.reminder_time || '20:00';
+      if (!groups[t]) groups[t] = [];
+      groups[t].push(e);
+    });
+    const sortedTimes = Object.keys(groups).sort();
+
+    const timeLabel = t => {
+      const [h, m] = t.split(':').map(Number);
+      const suffix = h < 12 ? 'AM' : 'PM';
+      const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+      const labels = { 8:'🌅 Morning', 12:'☀️ Midday', 17:'🏋️ Pre-workout', 20:'🌙 Evening', 21:'🌙 Before bed' };
+      return labels[h] || `🕐 ${h12}:${m.toString().padStart(2,'0')} ${suffix}`;
+    };
+
+    let html = `
+      <div class="sched-section">
+        <div class="sched-section-hdr">
+          <div class="sched-section-title">Today · ${todayLabel()}</div>
+          <div class="sched-progress">${doneCount} / ${entries.length} done</div>
+        </div>`;
+
+    sortedTimes.forEach(t => {
+      html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${t}</div>`;
+      groups[t].forEach(e => {
+        const done = loggedIds.has(e.id);
+        const stackName = e.schedules?.name || '';
+        html += `
+          <div class="sched-entry-card${done ? ' done' : ''}" id="entry-card-${e.id}">
+            <div class="sched-entry-info">
+              <div class="sched-entry-name">${e.compound_name}</div>
+              <div class="sched-entry-dose">${e.dose}${stackName ? ' · ' + stackName : ''}</div>
+            </div>
+            <button class="sched-check-btn${done ? ' done' : ''}" id="check-${e.id}"
+              onclick="toggleInjectionLog('${e.id}','${e.compound_name.replace(/'/g,"\\'")}','${(e.dose||'').replace(/'/g,"\\'")}',${done})">
+              ${done ? '✓' : ''}
+            </button>
+          </div>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div>`;
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div style="color:var(--red);font-size:12px;padding:10px;">Error loading today's schedule</div>`;
+  }
+}
+
+async function renderProtocols() {
+  const el = document.getElementById('schedProtosSection');
+  if (!el) return;
+  try {
+    const protocols = await loadProtocols();
+    if (protocols.length === 0) {
+      el.innerHTML = `
+        <div class="sched-section">
+          <div class="sched-section-hdr"><div class="sched-section-title">My Protocols</div></div>
+          <div class="sched-empty" style="padding:24px 20px;">
+            <div class="sched-empty-text">No active protocols</div>
+            <div class="sched-empty-sub">Tap "+ Add Protocol" to get started</div>
+          </div>
+        </div>`;
+      return;
+    }
+    let html = `<div class="sched-section"><div class="sched-section-hdr"><div class="sched-section-title">My Protocols</div></div>`;
+    protocols.forEach(p => {
+      const day = daysBetween(p.start_date);
+      const total = (p.cycle_weeks || 12) * 7;
+      const compounds = (p.schedule_entries || [])
+        .filter(e => e.is_active)
+        .map(e => e.compound_name)
+        .join(', ');
+      const tierLabel = p.tier === 'lo' ? '🟢 Low' : p.tier === 'hi' ? '🔴 High' : '🔵 Standard';
+      const stack = STACKS.find(s => s.name === p.stack_name);
+      const emoji = stack?.emoji || '💉';
+      html += `
+        <div class="sched-proto-card">
+          <div class="sched-proto-hdr">
+            <span class="sched-proto-emoji">${emoji}</span>
+            <div style="flex:1;min-width:0;">
+              <div class="sched-proto-name">${p.name}</div>
+              <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
+            </div>
+            <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">End</button>
+          </div>
+          <div class="sched-proto-compounds">${compounds}</div>
+        </div>`;
+    });
+    html += `</div>`;
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = '';
+  }
+}
+
+// ─── Auth modal ───────────────────────────────────────────
+let _authMode = 'signup';
+
+export function openAuthModal(mode = 'signup') {
+  _authMode = mode;
+  const modal = document.getElementById('authModal');
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authError').classList.remove('visible');
+  _updateAuthModalText();
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('open'), 10);
+}
+
+function _updateAuthModalText() {
+  const isSignup = _authMode === 'signup';
+  document.getElementById('authModalTitle').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('authSubmitBtn').textContent  = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('authSwitchText').textContent = isSignup ? 'Already have an account?' : "Don't have an account?";
+  document.getElementById('authSwitchLabel').textContent = isSignup ? 'Sign In' : 'Create Account';
+}
+
+export function toggleAuthMode() {
+  _authMode = _authMode === 'signup' ? 'signin' : 'signup';
+  _updateAuthModalText();
+}
+
+export function closeAuthModal(e) {
+  if (e && e.target !== document.getElementById('authModal')) return;
+  _closeAuthModal();
+}
+
+export function closeAuthModalDirect() { _closeAuthModal(); }
+
+function _closeAuthModal() {
+  const modal = document.getElementById('authModal');
+  modal.classList.remove('open');
+  setTimeout(() => { modal.style.display = 'none'; }, 200);
+}
+
+export async function submitAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authError');
+  const btn = document.getElementById('authSubmitBtn');
+  errEl.classList.remove('visible');
+  if (!email || !password) {
+    errEl.textContent = '⚠ Please enter email and password.';
+    errEl.classList.add('visible');
+    return;
+  }
+  btn.textContent = '...';
+  btn.disabled = true;
+  try {
+    if (_authMode === 'signup') {
+      await import('./auth.js').then(m => m.signUp(email, password));
+      errEl.textContent = '✓ Check your email to confirm your account, then sign in.';
+      errEl.style.background = 'var(--teal-light)';
+      errEl.style.color = 'var(--teal)';
+      errEl.style.border = '1px solid var(--lo-border)';
+      errEl.classList.add('visible');
+      btn.textContent = 'Create Account';
+      btn.disabled = false;
+    } else {
+      await import('./auth.js').then(m => m.signIn(email, password));
+      _closeAuthModal();
+    }
+  } catch (err) {
+    errEl.style.background = '';
+    errEl.style.color = '';
+    errEl.style.border = '';
+    errEl.textContent = '⚠ ' + (err.message || 'Authentication failed.');
+    errEl.classList.add('visible');
+    btn.textContent = _authMode === 'signup' ? 'Create Account' : 'Sign In';
+    btn.disabled = false;
+  }
+}
+
+export async function schedSignOut() {
+  await signOut();
+}
+
+// ─── Add Protocol modal ───────────────────────────────────
+let _addStep = 1;
+let _addStackIdx = '';
+let _addTier = 'mid';
+
+export function openAddProtoModal() {
+  _addStep = 1;
+  _addStackIdx = '';
+  _addTier = 'mid';
+  renderAddProtoStep();
+  const modal = document.getElementById('addProtoModal');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('open'), 10);
+}
+
+export function closeAddProtoModal(e) {
+  if (e && e.target !== document.getElementById('addProtoModal')) return;
+  _closeAddProto();
+}
+
+export function closeAddProtoModalDirect() { _closeAddProto(); }
+
+function _closeAddProto() {
+  const modal = document.getElementById('addProtoModal');
+  modal.classList.remove('open');
+  setTimeout(() => { modal.style.display = 'none'; }, 200);
+}
+
+function renderAddProtoStep() {
+  const body = document.getElementById('addProtoBody');
+  if (_addStep === 1) {
+    const options = STACKS.map((s, i) => `<option value="${i}">${s.emoji} ${s.name}</option>`).join('');
+    body.innerHTML = `
+      <div class="proto-step-header">Step 1 of 2 — Choose a Stack</div>
+      <div class="calc-field">
+        <label class="calc-label">Stack</label>
+        <select class="calc-select" id="addProtoStackSel" onchange="addProtoStackChanged()">
+          <option value="">— Select a stack —</option>
+          ${options}
+        </select>
+      </div>
+      <div id="addProtoStackPreview" style="display:none;background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px;"></div>
+      <div class="calc-field" style="margin-bottom:16px;">
+        <label class="calc-label">Dose Tier</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;" id="addProtoTierBtns">
+          <div class="planner-tier-btn" onclick="addProtoSetTier('lo',this)">🟢 Low</div>
+          <div class="planner-tier-btn active" onclick="addProtoSetTier('mid',this)">🔵 Standard</div>
+          <div class="planner-tier-btn" onclick="addProtoSetTier('hi',this)">🔴 High</div>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="addProtoNext()" disabled id="addProtoNextBtn">Review Protocol →</button>
+    `;
+  } else {
+    const stack = STACKS[parseInt(_addStackIdx)];
+    const compounds = stack.peptides.map(p => {
+      const dose = p[_addTier] || p.mid;
+      const freq = parseFrequency(p.schedule || '');
+      const time = parseReminderTime(p.schedule || '');
+      return `
+        <div class="proto-compound-row">
+          <div class="proto-compound-name">${p.name}</div>
+          <div class="proto-compound-dose">${dose} · ${freqLabel(freq, defaultDays(freq))}</div>
+          <div class="proto-time-row">
+            <span class="proto-time-label">Reminder time:</span>
+            <input type="time" class="calc-input" value="${time}"
+              style="flex:1;font-size:13px;padding:7px 10px;"
+              id="time-${p.name.replace(/\s+/g,'-').replace(/[()]/g,'')}">
+          </div>
+        </div>`;
+    }).join('');
+    body.innerHTML = `
+      <div class="proto-step-header">Step 2 of 2 — Review & Start</div>
+      <div style="background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px;">
+        <strong>${stack.emoji} ${stack.name}</strong> · ${stack.cycle || '12 weeks'}<br>
+        <span style="color:var(--text3);">Starting today — ${todayLabel()}</span>
+      </div>
+      <div style="max-height:40vh;overflow-y:auto;margin-bottom:16px;">${compounds}</div>
+      <div class="calc-error" id="addProtoError"></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:8px;">
+        <button class="calc-btn" style="background:var(--bg);color:var(--text2);border:1px solid var(--border);" onclick="addProtoBack()">← Back</button>
+        <button class="calc-btn" id="addProtoSaveBtn" onclick="addProtoSave()">Start Protocol ✓</button>
+      </div>
+    `;
+  }
+}
+
+export function addProtoStackChanged() {
+  const sel = document.getElementById('addProtoStackSel');
+  _addStackIdx = sel.value;
+  const preview = document.getElementById('addProtoStackPreview');
+  const btn = document.getElementById('addProtoNextBtn');
+  if (_addStackIdx === '') {
+    preview.style.display = 'none';
+    btn.disabled = true;
+    return;
+  }
+  const stack = STACKS[parseInt(_addStackIdx)];
+  preview.textContent = stack.description || stack.goal;
+  preview.style.display = 'block';
+  btn.disabled = false;
+}
+
+export function addProtoSetTier(tier, el) {
+  _addTier = tier;
+  document.querySelectorAll('#addProtoTierBtns .planner-tier-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+export function addProtoNext() {
+  if (!_addStackIdx) return;
+  _addStep = 2;
+  renderAddProtoStep();
+}
+
+export function addProtoBack() {
+  _addStep = 1;
+  renderAddProtoStep();
+  // Restore previous selections
+  setTimeout(() => {
+    const sel = document.getElementById('addProtoStackSel');
+    if (sel) { sel.value = _addStackIdx; addProtoStackChanged(); }
+    const btns = document.querySelectorAll('#addProtoTierBtns .planner-tier-btn');
+    btns.forEach(b => {
+      const t = b.textContent.includes('Low') ? 'lo' : b.textContent.includes('High') ? 'hi' : 'mid';
+      b.classList.toggle('active', t === _addTier);
+    });
+  }, 10);
+}
+
+export async function addProtoSave() {
+  const btn = document.getElementById('addProtoSaveBtn');
+  const errEl = document.getElementById('addProtoError');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+  errEl.classList.remove('visible');
+  try {
+    await createProtocol(_addStackIdx, _addTier);
+    _closeAddProto();
+    await refreshScheduleMain();
+  } catch (err) {
+    errEl.textContent = '⚠ ' + (err.message || 'Failed to save protocol.');
+    errEl.classList.add('visible');
+    btn.textContent = 'Start Protocol ✓';
+    btn.disabled = false;
+  }
+}
+
+// ─── Inline handlers ──────────────────────────────────────
+export async function toggleInjectionLog(entryId, name, dose, wasDone) {
+  const card = document.getElementById(`entry-card-${entryId}`);
+  const btn  = document.getElementById(`check-${entryId}`);
+  if (!card || !btn) return;
+  // Optimistic UI update
+  const nowDone = !wasDone;
+  card.classList.toggle('done', nowDone);
+  btn.classList.toggle('done', nowDone);
+  btn.textContent = nowDone ? '✓' : '';
+  btn.setAttribute('onclick', `toggleInjectionLog('${entryId}','${name.replace(/'/g,"\\'")}','${dose.replace(/'/g,"\\'")}',${nowDone})`);
+  try {
+    if (nowDone) {
+      await logInjection(entryId, name, dose);
+    } else {
+      await unlogInjection(entryId);
+    }
+    // Update progress counter
+    const section = document.getElementById('schedTodaySection');
+    if (section) {
+      const cards = section.querySelectorAll('.sched-entry-card');
+      const doneCards = section.querySelectorAll('.sched-entry-card.done');
+      const prog = section.querySelector('.sched-progress');
+      if (prog) prog.textContent = `${doneCards.length} / ${cards.length} done`;
+    }
+  } catch (err) {
+    // Revert on error
+    card.classList.toggle('done', wasDone);
+    btn.classList.toggle('done', wasDone);
+    btn.textContent = wasDone ? '✓' : '';
+    btn.setAttribute('onclick', `toggleInjectionLog('${entryId}','${name.replace(/'/g,"\\'")}','${dose.replace(/'/g,"\\'")}',${wasDone})`);
+  }
+}
+
+export function confirmEndProtocol(id, name) {
+  if (!confirm(`End "${name}"?\n\nThis will remove it from your active protocols. Your injection history will be kept.`)) return;
+  endProtocol(id).then(() => refreshScheduleMain()).catch(() => {});
+}

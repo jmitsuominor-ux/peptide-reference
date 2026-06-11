@@ -473,12 +473,12 @@ async function vialsCopy() {
   const lines = [];
   if (AppState.vialMode === 'need') {
     const weeks = document.getElementById('cycleWeeks').value;
-    lines.push(`Vial Supply — ${dose} ${unit}`);
+    lines.push(`Dose: ${dose} ${unit}`);
     lines.push(`Schedule: ${schedule}`);
     lines.push(`Cycle: ${weeks} weeks`);
   } else {
     const onHand = document.getElementById('vialsOnHand').value;
-    lines.push(`Vial Supply — ${dose} ${unit}`);
+    lines.push(`Dose: ${dose} ${unit}`);
     lines.push(`Schedule: ${schedule}`);
     lines.push(`Vials on hand: ${onHand} × ${vialSz}mg`);
   }

@@ -215,6 +215,8 @@ function calculateVials() {
   const resultEl = document.getElementById('vialResult');
   errorEl.classList.remove('visible');
   resultEl.classList.remove('visible');
+  const bacGuideEl = document.getElementById('bacGuide');
+  if (bacGuideEl) bacGuideEl.style.display = 'none';
   if (!dose || dose <= 0) { showCalcError('vialError', 'Please enter a valid dose.'); return; }
   if (!injectionsPerDay || injectionsPerDay <= 0) { showCalcError('vialError', 'Please enter injections per day.'); return; }
   if (!daysPerWeek || daysPerWeek < 1 || daysPerWeek > 7) { showCalcError('vialError', 'Days per week must be 1–7.'); return; }
@@ -231,6 +233,13 @@ function calculateVials() {
   document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('vialLeftover').textContent = leftover > 0 ? leftover.toFixed(2) + ' mg' : tr('calc_exact_fit');
   resultEl.classList.add('visible');
+  const bacGuide = document.getElementById('bacGuide');
+  if (bacGuide) {
+    document.getElementById('bacVialCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
+    document.getElementById('bac1ml').textContent = vialsNeeded + ' ml';
+    document.getElementById('bac2ml').textContent = (vialsNeeded * 2) + ' ml';
+    bacGuide.style.display = '';
+  }
 }
 
 // ─── Quick vial calculator (inside compound detail) ───────

@@ -155,6 +155,53 @@ export function showDetail(name) {
         ${studiesHTML}
       </div>
     </div>
+    <div class="calc-section" style="margin-top:8px;">
+      <div class="calc-section-title" style="margin-bottom:14px;"><div class="sh-icon amber">📦</div>Quick Vial Calculator</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div class="calc-field" style="margin:0">
+            <label class="calc-label">Dose per injection</label>
+            <div class="calc-input-row">
+              <input type="number" class="calc-input" id="qvDose" placeholder="e.g. 500" min="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
+              <select class="calc-select" id="qvDoseUnit" style="flex:0;min-width:65px;padding-right:24px;font-size:13px;" onchange="qvAutoCalc()">
+                <option value="mcg">mcg</option>
+                <option value="mg">mg</option>
+              </select>
+            </div>
+          </div>
+          <div class="calc-field" style="margin:0">
+            <label class="calc-label">Vial size</label>
+            <div class="calc-input-row">
+              <input type="number" class="calc-input" id="qvVialSize" placeholder="e.g. 5" min="0.1" step="0.1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
+              <span class="calc-unit">mg</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div class="calc-field" style="margin:0">
+            <label class="calc-label">Injections/day</label>
+            <input type="number" class="calc-input" id="qvInjectDay" placeholder="1" min="1" max="10" value="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
+          </div>
+          <div class="calc-field" style="margin:0">
+            <label class="calc-label">Days/week</label>
+            <input type="number" class="calc-input" id="qvDaysWk" placeholder="7" min="1" max="7" value="7" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
+          </div>
+          <div class="calc-field" style="margin:0">
+            <label class="calc-label">Cycle (weeks)</label>
+            <input type="number" class="calc-input" id="qvWeeks" placeholder="12" min="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
+          </div>
+        </div>
+        <button class="calc-btn" id="qvCopyBtn" style="padding:11px" onclick="qvCopy()">Export Info</button>
+        <div class="calc-result" id="qvResult" style="margin-top:10px;padding:14px;">
+          <div class="calc-result-label">Vials needed</div>
+          <div class="calc-result-main" id="qvCount">—</div>
+          <div class="calc-result-sub" id="qvSub">—</div>
+          <div class="calc-result-grid" style="margin-top:10px;padding-top:10px;">
+            <div class="calc-result-item"><div class="calc-result-item-label">Total doses</div><div class="calc-result-item-value" id="qvTotalDoses">—</div></div>
+            <div class="calc-result-item"><div class="calc-result-item-label">Leftover</div><div class="calc-result-item-value" id="qvLeftover">—</div></div>
+          </div>
+        </div>
+        <div class="calc-error" id="qvError"></div>
+    </div>
     <div class="disclaimer">${tr('research_note')}</div>
   `;
   window.scrollTo(0, 0);

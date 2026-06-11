@@ -19,6 +19,7 @@ Object.assign(window, {
   calculateRecon, calculateVials, showCalcError,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   vialsCopy, reconCopy, plannerCopy,
+  calcQuickVials, qvAutoCalc, qvCopy,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
 
@@ -54,6 +55,72 @@ function toggleLang() {
   if (document.getElementById('stackDetailView').style.display !== 'none') {
     if (AppState.originStackIdx !== null) showStackDetail(AppState.originStackIdx);
   }
+}
+
+// ─── Quick vial calculator (inside compound detail) ───────
+function calcQuickVials() {
+  const dose = parseFloat(document.getElementById('qvDose').value);
+  const doseUnit = document.getElementById('qvDoseUnit').value;
+  const vialSize = parseFloat(document.getElementById('qvVialSize').value);
+  const injectDay = parseFloat(document.getElementById('qvInjectDay').value) || 1;
+  const daysWk = parseFloat(document.getElementById('qvDaysWk').value) || 7;
+  const weeks = parseFloat(document.getElementById('qvWeeks').value);
+  const errEl = document.getElementById('qvError');
+  const resEl = document.getElementById('qvResult');
+  errEl.textContent = '';
+  errEl.classList.remove('visible');
+  resEl.classList.remove('visible');
+  if (!dose || dose <= 0) { errEl.textContent = '⚠ Enter a dose.'; errEl.classList.add('visible'); return; }
+  if (!vialSize || vialSize <= 0) { errEl.textContent = '⚠ Enter vial size (mg).'; errEl.classList.add('visible'); return; }
+  if (!weeks || weeks <= 0) { errEl.textContent = '⚠ Enter cycle length.'; errEl.classList.add('visible'); return; }
+  const doseMg = doseUnit === 'mcg' ? dose / 1000 : dose;
+  const { totalDoses, totalMg, vialsNeeded, leftover } = computeVialCount({
+    doseMg, injectionsPerDay: injectDay, daysPerWeek: daysWk, weeks, vialSizeMg: vialSize,
+  });
+  document.getElementById('qvCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
+  document.getElementById('qvSub').textContent = totalMg.toFixed(2) + 'mg total · ' + vialSize + 'mg vials';
+  document.getElementById('qvTotalDoses').textContent = totalDoses + ' injections';
+  document.getElementById('qvLeftover').textContent = leftover > 0.01 ? leftover.toFixed(2) + ' mg' : 'None';
+  resEl.classList.add('visible');
+}
+
+function qvAutoCalc() {
+  const dose = parseFloat(document.getElementById('qvDose').value);
+  const vialSize = parseFloat(document.getElementById('qvVialSize').value);
+  const weeks = parseFloat(document.getElementById('qvWeeks').value);
+  if (dose > 0 && vialSize > 0 && weeks > 0) {
+    calcQuickVials();
+  } else {
+    document.getElementById('qvError').classList.remove('visible');
+    document.getElementById('qvResult').classList.remove('visible');
+  }
+}
+
+async function qvCopy() {
+  const resEl = document.getElementById('qvResult');
+  if (!resEl.classList.contains('visible')) { calcQuickVials(); }
+  if (!resEl.classList.contains('visible')) return;
+  const name    = document.getElementById('detailTitle')?.textContent?.trim() || 'Compound';
+  const dose    = document.getElementById('qvDose').value;
+  const unit    = document.getElementById('qvDoseUnit').value;
+  const vialSz  = document.getElementById('qvVialSize').value;
+  const injectD = parseFloat(document.getElementById('qvInjectDay').value) || 1;
+  const daysWk  = parseFloat(document.getElementById('qvDaysWk').value) || 7;
+  const weeks   = document.getElementById('qvWeeks').value;
+  const vials   = document.getElementById('qvCount').textContent;
+  const totalInj = document.getElementById('qvTotalDoses').textContent;
+  const schedule = (injectD === 1 && daysWk === 7) ? 'Once daily'
+                 : `${injectD}x/day · ${daysWk} days/week`;
+  const text = [
+    name,
+    `Dose: ${dose} ${unit}/injection`,
+    `Schedule: ${schedule}`,
+    `Cycle: ${weeks} weeks`,
+    `Vial size: ${vialSz}mg`,
+    `Vials needed: ${vials}`,
+    `Total injections: ${totalInj}`,
+  ].filter(Boolean).join('\n');
+  await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
 }
 
 // ─── Syringe SVG visual ───────────────────────────────────

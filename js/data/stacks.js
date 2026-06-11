@@ -152,7 +152,7 @@ export const STACKS = [
     studies:[{title:'Retatrutide Phase 2 Trial: 24.2% Weight Loss',journal:'NEJM 2023',summary:'338 participants. 24.2% weight loss at 48 weeks with no plateau. 100% on 8–12mg achieved ≥5% loss. Historic efficacy data.',pmid:'37389765',url:'https://pubmed.ncbi.nlm.nih.gov/37389765/'}],
     peptides:[
       {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
-      {name:'NAD+',schedule:'Daily SubQ AM',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+      {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
       {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
@@ -274,7 +274,7 @@ export const STACKS = [
     note:'All AM dosing preferred. NAD+ may cause flushing — always start LOW. Add each peptide one week apart to isolate reactions.',
     studies:[{title:'NAD+ and Aging: Therapeutic Review',journal:'Cell Metabolism 2018',summary:'Established NAD+ as longevity intervention target.',pmid:'29719682',url:'https://pubmed.ncbi.nlm.nih.gov/29719682/'}],
     peptides:[
-      {name:'NAD+',schedule:'Daily SubQ AM or IV infusion',lo:'100 mg/day',mid:'500 mg/day',hi:'1,000 mg/day'},
+      {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
       {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'5 mg/day',hi:'10 mg/day'},
       {name:'MOTS-c',schedule:'SubQ 2–3x per week (AM or pre-workout)',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
       {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
@@ -305,7 +305,7 @@ export const STACKS = [
     peptides:[
       {name:'Semax',schedule:'Daily SubQ or intranasal — morning',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
       {name:'Selank',schedule:'Daily SubQ or intranasal — midday or AM',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
-      {name:'NAD+',schedule:'Daily SubQ AM (can continue year-round)',lo:'100 mg/day',mid:'250 mg/day',hi:'500 mg/day'},
+      {name:'NAD+',schedule:'Daily SubQ AM (can continue year-round)',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {

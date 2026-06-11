@@ -91,7 +91,7 @@ function sdCalculate(idx) {
     } else if (!vialSize || isNaN(vialSize)) {
       const total = (mgPerWeek * weeks).toFixed(2);
       right = '<span style="font-size:13px;font-weight:600;color:var(--text3);">— vials</span>';
-      detail = total + 'mg total needed · enter vial size';
+      detail = total + 'mg BAC water needed · enter vial size';
     } else {
       const total = mgPerWeek * weeks;
       const vials = Math.ceil(total / vialSize);
@@ -621,7 +621,7 @@ function plannerCalculate() {
     } else if (!vialSize || isNaN(vialSize) || vialSize <= 0) {
       const totalMg = mgPerWeek * weeks;
       vialsHtml = `<div><div class="planner-result-vials" style="font-size:14px;color:var(--text3)">—</div><div class="planner-result-vials-label">enter vial size</div></div>`;
-      detailHtml = `${totalMg.toFixed(2)}mg total needed`;
+      detailHtml = `${totalMg.toFixed(2)}mg BAC water needed`;
     } else {
       const totalMg = mgPerWeek * weeks;
       const vialsNeeded = Math.ceil(totalMg / vialSize);

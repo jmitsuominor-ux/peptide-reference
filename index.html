@@ -679,7 +679,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
       <div class="calc-field">
         <label class="calc-label">Password</label>
-        <input type="password" class="calc-input" id="authPassword" placeholder="8+ characters" autocomplete="current-password">
+        <div style="position:relative;">
+          <input type="password" class="calc-input" id="authPassword" placeholder="8+ characters" autocomplete="current-password" style="padding-right:44px;">
+          <button type="button" onclick="toggleAuthPw()" id="authPwEye" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px;line-height:1;">👁</button>
+        </div>
       </div>
       <div class="calc-error" id="authError"></div>
       <button class="calc-btn" id="authSubmitBtn" onclick="submitAuth()" style="margin-top:8px;">Create Account</button>

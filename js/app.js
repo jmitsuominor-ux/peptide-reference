@@ -865,7 +865,7 @@ function init() {
       showDetail(name);
       // Check if detail view became visible
       const dv = document.getElementById('detailView');
-      if (dv && dv.style.display !== 'none') return;
+      if (dv && dv.style.display === 'block') return;
       if (attempts < 10) setTimeout(tryOpen, 200);
     };
     setTimeout(tryOpen, 300);

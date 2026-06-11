@@ -195,8 +195,6 @@ export function showDetail(name) {
           <div class="calc-result-main" id="qvCount">—</div>
           <div class="calc-result-sub" id="qvSub">—</div>
           <div class="calc-result-grid" style="margin-top:10px;padding-top:10px;">
-            <div class="calc-result-item"><div class="calc-result-item-label">BAC Water mg Needed</div><div class="calc-result-item-value" id="qvTotalMg">—</div></div>
-            <div class="calc-result-item"><div class="calc-result-item-label">mg per week</div><div class="calc-result-item-value" id="qvMgWk">—</div></div>
             <div class="calc-result-item"><div class="calc-result-item-label">Total doses</div><div class="calc-result-item-value" id="qvTotalDoses">—</div></div>
             <div class="calc-result-item"><div class="calc-result-item-label">Leftover</div><div class="calc-result-item-value" id="qvLeftover">—</div></div>
           </div>

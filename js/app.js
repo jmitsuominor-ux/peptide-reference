@@ -229,8 +229,6 @@ function calculateVials() {
   document.getElementById('vialCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
   document.getElementById('vialSub').textContent = totalMg.toFixed(2) + 'mg total across ' + Math.round(daysPerWeek * cycleWeeks) + ' days';
   document.getElementById('totalDoses').textContent = totalDoses + ' injections';
-  document.getElementById('totalMg').textContent = totalMg.toFixed(2) + ' mg';
-  document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('vialLeftover').textContent = leftover > 0 ? leftover.toFixed(2) + ' mg' : tr('calc_exact_fit');
   resultEl.classList.add('visible');
   const bacGuide = document.getElementById('bacGuide');
@@ -264,8 +262,6 @@ function calcQuickVials() {
   });
   document.getElementById('qvCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
   document.getElementById('qvSub').textContent = totalMg.toFixed(2) + 'mg total · ' + vialSize + 'mg vials';
-  document.getElementById('qvTotalMg').textContent = totalMg.toFixed(2) + ' mg';
-  document.getElementById('qvMgWk').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('qvTotalDoses').textContent = totalDoses + ' injections';
   document.getElementById('qvLeftover').textContent = leftover > 0.01 ? leftover.toFixed(2) + ' mg' : 'None';
   resEl.classList.add('visible');
@@ -327,8 +323,6 @@ async function qvCopy() {
   const daysWk  = parseFloat(document.getElementById('qvDaysWk').value) || 7;
   const weeks   = document.getElementById('qvWeeks').value;
   const vials   = document.getElementById('qvCount').textContent;
-  const mgWk    = document.getElementById('qvMgWk').textContent;
-  const totalMg = document.getElementById('qvTotalMg').textContent;
   const totalInj = document.getElementById('qvTotalDoses').textContent;
   const schedule = (injectD === 1 && daysWk === 7) ? 'Once daily'
                  : `${injectD}x/day · ${daysWk} days/week`;
@@ -340,8 +334,6 @@ async function qvCopy() {
     `Vial size: ${vialSz}mg`,
     `Vials needed: ${vials}`,
     `Total injections: ${totalInj}`,
-    `Total mg: ${totalMg}`,
-    `(${mgWk})`,
   ].filter(Boolean).join('\n');
   await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
 }
@@ -458,9 +450,7 @@ async function vialsCopy() {
   const days    = document.getElementById('daysPerWeek').value;
   const vialSz  = document.getElementById('vialSize').value;
   const result  = document.getElementById('vialCount').textContent;
-  const totalMg = document.getElementById('totalMg').textContent;
   const totalInj = document.getElementById('totalDoses').textContent;
-  const mgWk    = document.getElementById('mgPerWeek').textContent;
   const vialsNum = parseInt(result);
   const schedule = (parseFloat(inj) === 1 && parseFloat(days) === 7) ? 'Once daily'
                  : `${inj}x/day · ${days} days/week`;
@@ -479,8 +469,6 @@ async function vialsCopy() {
   lines.push(`Vial size: ${vialSz}mg`);
   lines.push(`Result: ${result}`);
   lines.push(`Total injections: ${totalInj}`);
-  lines.push(`Total mg: ${totalMg}`);
-  lines.push(`(${mgWk})`);
   if (!isNaN(vialsNum) && vialsNum > 0) {
   }
   const btn = document.getElementById('vialCalcBtn');
@@ -538,8 +526,6 @@ function _calcVialsDuration() {
   document.getElementById('vialCount').textContent = durationText;
   document.getElementById('vialSub').textContent = totalMg.toFixed(2) + 'mg on hand · ' + vialsOnHand + ' × ' + vialSize + 'mg vials';
   document.getElementById('totalDoses').textContent = totalDoses + ' injections';
-  document.getElementById('totalMg').textContent = totalMg.toFixed(2) + ' mg';
-  document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('vialLeftover').textContent = remainingMg > 0.01 ? remainingMg.toFixed(2) + ' mg unused' : tr('calc_exact_fit');
   resultEl.classList.add('visible');
 }

@@ -17,7 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  qvAutoCalc, qvCopy, sdCopy,
+  qvAutoCalc, qvCopy, sdCopy, vialsCopy,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
@@ -419,6 +419,46 @@ function updateBacRecommendation(vialsNeeded) {
   el.style.display = 'block';
 }
 
+
+async function vialsCopy() {
+  const resEl = document.getElementById('vialResult');
+  if (!resEl.classList.contains('visible')) { calculateVials(); }
+  if (!resEl.classList.contains('visible')) return;
+  const dose    = document.getElementById('vialDose').value;
+  const unit    = document.getElementById('vialDoseUnit').value;
+  const inj     = document.getElementById('injectionsPerDay').value;
+  const days    = document.getElementById('daysPerWeek').value;
+  const vialSz  = document.getElementById('vialSize').value;
+  const result  = document.getElementById('vialCount').textContent;
+  const totalMg = document.getElementById('totalMg').textContent;
+  const totalInj = document.getElementById('totalDoses').textContent;
+  const mgWk    = document.getElementById('mgPerWeek').textContent;
+  const vialsNum = parseInt(result);
+  const schedule = (parseFloat(inj) === 1 && parseFloat(days) === 7) ? 'Once daily'
+                 : `${inj}x/day · ${days} days/week`;
+  const lines = [];
+  if (AppState.vialMode === 'need') {
+    const weeks = document.getElementById('cycleWeeks').value;
+    lines.push(`Vial Supply — ${dose} ${unit}`);
+    lines.push(`Schedule: ${schedule}`);
+    lines.push(`Cycle: ${weeks} weeks`);
+  } else {
+    const onHand = document.getElementById('vialsOnHand').value;
+    lines.push(`Vial Supply — ${dose} ${unit}`);
+    lines.push(`Schedule: ${schedule}`);
+    lines.push(`Vials on hand: ${onHand} × ${vialSz}mg`);
+  }
+  lines.push(`Vial size: ${vialSz}mg`);
+  lines.push(`Result: ${result}`);
+  lines.push(`Total injections: ${totalInj}`);
+  lines.push(`Total mg: ${totalMg}`);
+  lines.push(`(${mgWk}/week)`);
+  if (!isNaN(vialsNum) && vialsNum > 0) {
+    lines.push(`BAC water needed: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)`);
+  }
+  const btn = document.getElementById('vialCalcBtn');
+  await _shareOrCopy(lines.join('\n'), 'Vial Supply', btn, 'Share Result');
+}
 
 // ─── Calculator section collapse ─────────────────────────
 function toggleCalcSection(id) {

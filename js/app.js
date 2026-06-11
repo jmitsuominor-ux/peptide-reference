@@ -398,6 +398,7 @@ function vialsAutoCalc() {
   const days = parseFloat(document.getElementById('daysPerWeek').value);
   const size = parseFloat(document.getElementById('vialSize').value);
   const allBase = dose > 0 && inj > 0 && days > 0 && size > 0;
+  updateBacRecommendation();
   if (AppState.vialMode === 'last') {
     const onHand = parseFloat(document.getElementById('vialsOnHand').value);
     if (allBase && onHand > 0) { calculateVials(); return; }
@@ -407,6 +408,45 @@ function vialsAutoCalc() {
   }
   errorEl.classList.remove('visible');
   resultEl.classList.remove('visible');
+}
+
+function updateBacRecommendation() {
+  const dose = parseFloat(document.getElementById('vialDose').value);
+  const doseUnit = document.getElementById('vialDoseUnit').value;
+  const vialSize = parseFloat(document.getElementById('vialSize').value);
+  const el = document.getElementById('bacRec');
+  if (!el) return;
+  if (!dose || dose <= 0 || !vialSize || vialSize <= 0) { el.style.display = 'none'; return; }
+  const doseMg = doseUnit === 'mcg' ? dose / 1000 : dose;
+  const units1 = parseFloat(((doseMg / vialSize) * 100).toFixed(1));
+  const units2 = parseFloat(((doseMg / vialSize) * 200).toFixed(1));
+  const recommend2 = units2 <= 100;
+  document.getElementById('bacRecVial').textContent = vialSize;
+  document.getElementById('bacRec1mlUnits').textContent = Number.isInteger(units1) ? units1 : units1.toFixed(1);
+  document.getElementById('bacRec2mlUnits').textContent = Number.isInteger(units2) ? units2 : units2.toFixed(1);
+  const box1 = document.getElementById('bacRec1mlBox');
+  const box2 = document.getElementById('bacRec2mlBox');
+  const lbl1 = document.getElementById('bacRec1mlLabel');
+  const lbl2 = document.getElementById('bacRec2mlLabel');
+  const recStyle = 'border-radius:6px;padding:10px;text-align:center;background:var(--blue-light);border:1px solid var(--blue);';
+  const defStyle = 'border-radius:6px;padding:10px;text-align:center;background:var(--bg);border:1px solid var(--border);';
+  box1.style.cssText = recommend2 ? defStyle : recStyle;
+  box2.style.cssText = recommend2 ? recStyle : defStyle;
+  lbl1.style.color = recommend2 ? 'var(--text3)' : 'var(--blue)';
+  lbl2.style.color = recommend2 ? 'var(--blue)' : 'var(--text3)';
+  lbl1.textContent = recommend2 ? '1 ml' : '★ 1 ml';
+  lbl2.textContent = recommend2 ? '★ 2 ml' : '2 ml';
+  const note = document.getElementById('bacRecNote');
+  if (units2 > 100 && units1 > 100) {
+    note.textContent = 'Dose exceeds a single syringe draw — split into 2 injections.';
+  } else if (recommend2) {
+    note.textContent = units1 < 5
+      ? 'Use 2ml — the 1ml draw is too small to measure accurately.'
+      : '2ml gives a larger, easier-to-read draw on the syringe.';
+  } else {
+    note.textContent = '1ml recommended — 2ml would exceed 100-unit syringe capacity.';
+  }
+  el.style.display = 'block';
 }
 
 

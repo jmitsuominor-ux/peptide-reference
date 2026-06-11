@@ -35,7 +35,16 @@ Object.assign(window, {
   openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
   toggleInjectionLog, confirmEndProtocol,
+  toggleAuthPw,
 });
+
+function toggleAuthPw() {
+  const input = document.getElementById('authPassword');
+  const btn = document.getElementById('authPwEye');
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+}
 
 // ─── i18n ────────────────────────────────────────────────
 function tr(key) { return t(key, AppState.lang); }

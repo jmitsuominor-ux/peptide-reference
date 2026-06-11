@@ -688,6 +688,10 @@ function initStoreBack() {
 
 // ─── Bootstrap ────────────────────────────────────────────
 function init() {
+  // Hide catView immediately if deep-linking to a compound to prevent blip
+  if (new URLSearchParams(window.location.search).get('compound')) {
+    document.getElementById('catView').style.display = 'none';
+  }
   renderCategories();
   renderStacks();
   initPlanner();

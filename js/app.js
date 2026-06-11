@@ -231,7 +231,7 @@ function calculateVials() {
   document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('vialLeftover').textContent = leftover > 0 ? leftover.toFixed(2) + ' mg' : tr('calc_exact_fit');
   resultEl.classList.add('visible');
-  updateBacRecommendation(vialsNeeded);
+  updateBacRecommendation();
 }
 
 // ─── Quick vial calculator (inside compound detail) ───────
@@ -256,7 +256,7 @@ function calcQuickVials() {
   });
   document.getElementById('qvCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
   document.getElementById('qvSub').textContent = totalMg.toFixed(2) + 'mg total · ' + vialSize + 'mg vials';
-  document.getElementById('qvTotalMg').textContent = totalMg.toFixed(2) + ' mg';
+  document.getElementById('qvBacWater').innerHTML = vialsNeeded + 'ml <span style="color:var(--text3)">(1ml/vial)</span><br>' + (vialsNeeded * 2) + 'ml <span style="color:var(--text3)">(2ml/vial)</span>';
   document.getElementById('qvMgWk').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('qvTotalDoses').textContent = totalDoses + ' injections';
   document.getElementById('qvLeftover').textContent = leftover > 0.01 ? leftover.toFixed(2) + ' mg' : 'None';
@@ -319,7 +319,9 @@ async function qvCopy() {
   const daysWk  = parseFloat(document.getElementById('qvDaysWk').value) || 7;
   const weeks   = document.getElementById('qvWeeks').value;
   const vials   = document.getElementById('qvCount').textContent;
-  const totalMg = document.getElementById('qvTotalMg').textContent;
+  const vialsNum = parseInt(vials);
+  const doseMg  = unit === 'mcg' ? parseFloat(dose) / 1000 : parseFloat(dose);
+  const totalMg = (doseMg * injectD * daysWk * parseFloat(weeks)).toFixed(2) + ' mg';
   const mgWk    = document.getElementById('qvMgWk').textContent;
   const totalInj = document.getElementById('qvTotalDoses').textContent;
   const schedule = (injectD === 1 && daysWk === 7) ? 'Once daily'
@@ -334,7 +336,8 @@ async function qvCopy() {
     `Total injections: ${totalInj}`,
     `Total mg: ${totalMg}`,
     `(${mgWk})`,
-  ].join('\n');
+    !isNaN(vialsNum) && vialsNum > 0 ? `BAC water: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)` : null,
+  ].filter(Boolean).join('\n');
   await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
 }
 
@@ -437,12 +440,16 @@ function vialsAutoCalc() {
   resultEl.classList.remove('visible');
 }
 
-function updateBacRecommendation(vialsNeeded) {
+function updateBacRecommendation() {
   const el = document.getElementById('bacRec');
-  if (!el || !vialsNeeded || vialsNeeded <= 0) { if (el) el.style.display = 'none'; return; }
-  document.getElementById('bacRecVials').textContent = vialsNeeded;
-  document.getElementById('bacRec1mlTotal').textContent = vialsNeeded + ' ml';
-  document.getElementById('bacRec2mlTotal').textContent = (vialsNeeded * 2) + ' ml';
+  const resEl = document.getElementById('vialResult');
+  if (!el) return;
+  if (!resEl || !resEl.classList.contains('visible')) { el.style.display = 'none'; return; }
+  const vials = parseInt(document.getElementById('vialCount').textContent);
+  if (!vials || vials <= 0) { el.style.display = 'none'; return; }
+  document.getElementById('bacRecVials').textContent = vials;
+  document.getElementById('bacRec1mlTotal').textContent = vials + ' ml';
+  document.getElementById('bacRec2mlTotal').textContent = (vials * 2) + ' ml';
   el.style.display = 'block';
 }
 
@@ -479,7 +486,7 @@ async function vialsCopy() {
   lines.push(`Result: ${result}`);
   lines.push(`Total injections: ${totalInj}`);
   lines.push(`Total mg: ${totalMg}`);
-  lines.push(`(${mgWk}/week)`);
+  lines.push(`(${mgWk})`);
   if (!isNaN(vialsNum) && vialsNum > 0) {
     lines.push(`BAC water needed: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)`);
   }
@@ -542,7 +549,7 @@ function _calcVialsDuration() {
   document.getElementById('mgPerWeek').textContent = mgPerWeek.toFixed(2) + ' mg/wk';
   document.getElementById('vialLeftover').textContent = remainingMg > 0.01 ? remainingMg.toFixed(2) + ' mg unused' : tr('calc_exact_fit');
   resultEl.classList.add('visible');
-  updateBacRecommendation(vialsOnHand);
+  updateBacRecommendation();
 }
 
 // ─── Stack planner (Calculator tab) ──────────────────────

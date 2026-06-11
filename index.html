@@ -308,7 +308,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="nav" id="mainNav">
   <div class="nav-tab active" data-page="browse" data-i18n="nav_browse">Browse</div>
   <div class="nav-tab" data-page="stacks" data-i18n="nav_stacks">Stacks</div>
-  <div class="nav-tab" data-page="az" data-i18n="nav_az">A–Z Index</div>
   <div class="nav-tab" data-page="calc" data-i18n="nav_calc">Calculator</div>
 </div>
 
@@ -362,33 +361,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- AZ INDEX PAGE -->
-<div class="page" id="page-az">
-  <div class="clin-header">
-    <div><div class="ch-title" data-i18n="az_title">A–Z Compound Index</div><div class="ch-sub">All 100 peptides — tap any for full profile</div></div>
-    <div class="ch-badge">125 COMPOUNDS</div>
-  </div>
-  <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:10px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;" data-i18n="ev_key">EVIDENCE RATING KEY</div>
-    <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text2);">
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9734;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_1">Anecdotal / Community use only</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_2">Preclinical / Animal studies</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9734;&#9734;</span> <span data-i18n="ev_3">Early human data / Phase 1–2</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <span data-i18n="ev_4">Phase 3 clinical trial data</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span data-i18n="ev_5">FDA approved indication</span></div>
-    </div>
-  </div>
-  <div class="az-wrap">
-    <div class="az-main">
-      <div class="az-search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="search" id="azSearch" placeholder="Filter compounds…" data-i18n-placeholder="az_filter" autocomplete="off">
-      </div>
-      <div id="azList"></div>
-    </div>
-    <div class="az-sidebar" id="azSidebar"></div>
-  </div>
-</div>
 
 <!-- CALCULATOR PAGE -->
 <div class="page" id="page-calc">

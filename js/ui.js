@@ -155,53 +155,6 @@ export function showDetail(name) {
         ${studiesHTML}
       </div>
     </div>
-    <div class="calc-section" style="margin-top:8px;">
-      <div class="calc-section-title" style="margin-bottom:14px;"><div class="sh-icon amber">📦</div>Quick Vial Calculator</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div class="calc-field" style="margin:0">
-            <label class="calc-label">Dose per injection</label>
-            <div class="calc-input-row">
-              <input type="number" class="calc-input" id="qvDose" placeholder="e.g. 500" min="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
-              <select class="calc-select" id="qvDoseUnit" style="flex:0;min-width:65px;padding-right:24px;font-size:13px;" onchange="qvAutoCalc()">
-                <option value="mcg">mcg</option>
-                <option value="mg">mg</option>
-              </select>
-            </div>
-          </div>
-          <div class="calc-field" style="margin:0">
-            <label class="calc-label">Vial size</label>
-            <div class="calc-input-row">
-              <input type="number" class="calc-input" id="qvVialSize" placeholder="e.g. 5" min="0.1" step="0.1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
-              <span class="calc-unit">mg</span>
-            </div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div class="calc-field" style="margin:0">
-            <label class="calc-label">Injections/day</label>
-            <input type="number" class="calc-input" id="qvInjectDay" placeholder="1" min="1" max="10" value="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
-          </div>
-          <div class="calc-field" style="margin:0">
-            <label class="calc-label">Days/week</label>
-            <input type="number" class="calc-input" id="qvDaysWk" placeholder="7" min="1" max="7" value="7" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
-          </div>
-          <div class="calc-field" style="margin:0">
-            <label class="calc-label">Cycle (weeks)</label>
-            <input type="number" class="calc-input" id="qvWeeks" placeholder="12" min="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
-          </div>
-        </div>
-        <button class="calc-btn" id="qvCopyBtn" style="padding:11px" onclick="qvCopy()">Export Info</button>
-        <div class="calc-result" id="qvResult" style="margin-top:10px;padding:14px;">
-          <div class="calc-result-label">Vials needed</div>
-          <div class="calc-result-main" id="qvCount">—</div>
-          <div class="calc-result-sub" id="qvSub">—</div>
-          <div class="calc-result-grid" style="margin-top:10px;padding-top:10px;">
-            <div class="calc-result-item"><div class="calc-result-item-label">Total doses</div><div class="calc-result-item-value" id="qvTotalDoses">—</div></div>
-            <div class="calc-result-item"><div class="calc-result-item-label">Leftover</div><div class="calc-result-item-value" id="qvLeftover">—</div></div>
-          </div>
-        </div>
-        <div class="calc-error" id="qvError"></div>
-    </div>
     <div class="disclaimer">${tr('research_note')}</div>
   `;
   window.scrollTo(0, 0);
@@ -326,90 +279,11 @@ export function showStackDetail(idx) {
       </div>
       <div class="section-body">${studiesHTML}</div>
     </div>
-    <div class="calc-section" style="margin-top:8px;">
-      <div class="calc-section-title" style="margin-bottom:14px;"><div class="sh-icon amber">📦</div>Vial Planner — ${stack.emoji} ${stack.name}</div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Enter your cycle length and vial sizes to get a shopping list for this stack.</div>
-      <div class="calc-field">
-        <label class="calc-label">Cycle Length</label>
-        <div class="calc-input-row">
-          <input type="number" class="calc-input" id="sdWeeks" placeholder="e.g. 12" min="1" max="52" value="12" oninput="sdCalculate(${idx})">
-          <span class="calc-unit">weeks</span>
-        </div>
-      </div>
-      <div class="calc-field">
-        <label class="calc-label">Dose Tier</label>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
-          <div class="planner-tier-btn" onclick="sdSetTier('lo',this,${idx})">🟢 LOW</div>
-          <div class="planner-tier-btn active" onclick="sdSetTier('mid',this,${idx})">🔵 STANDARD</div>
-          <div class="planner-tier-btn" onclick="sdSetTier('hi',this,${idx})">🔴 HIGH</div>
-        </div>
-      </div>
-      <div id="sdPeptideInputs">
-        ${stack.peptides.map((p,pi) => `
-          <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
-            <div>
-              <div style="font-size:13px;font-weight:600;color:var(--navy);">${p.name}</div>
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;" id="sdDose_${pi}">${p.mid}</div>
-            </div>
-            <input type="number" class="calc-input" id="sdVial_${pi}"
-              placeholder="${getCommonVialSize(p.name)}" min="0.1" step="0.1"
-              style="width:72px;font-size:13px;padding:8px 10px;"
-              oninput="sdCalculate(${idx})">
-            <span class="calc-unit">mg</span>
-          </div>`).join('')}
-      </div>
-      <button class="calc-btn" id="sdCopyBtn" style="margin-top:12px;padding:11px" onclick="sdCopy(${idx})">Export Info</button>
-      <div class="calc-result" id="sdResult" style="margin-top:12px;">
-        <div class="calc-result-label">Vials Needed</div>
-        <div id="sdResultContent"></div>
-        <div style="margin-top:10px;font-size:11px;color:var(--text2);">💡 Buy 1 extra vial per peptide as a waste buffer.</div>
-      </div>
-    </div>
     <div class="disclaimer">${tr('stack_research_note')}</div>
   `;
   window.scrollTo(0, 0);
 }
 
-// ─── A–Z index ────────────────────────────────────────────
-export function renderAZ(filter = '') {
-  const all = Object.entries(PEPTIDES)
-    .filter(([n]) => n !== 'BAC Water' && n !== 'Acetic Acid Water')
-    .sort(([a], [b]) => a.localeCompare(b));
-  const filtered = filter
-    ? all.filter(([n, p]) => {
-        const pd = getPeptideData(n, AppState.lang) || p;
-        return n.toLowerCase().includes(filter) ||
-               (pd.category||'').toLowerCase().includes(filter) ||
-               (pd.tagline||'').toLowerCase().includes(filter);
-      })
-    : all;
-  const groups = {};
-  filtered.forEach(([n]) => {
-    const p = getPeptideData(n, AppState.lang);
-    const l = n[0].toUpperCase();
-    if (!groups[l]) groups[l] = [];
-    groups[l].push([n, p]);
-  });
-  document.getElementById('azList').innerHTML = Object.entries(groups).map(([letter, items]) => `
-    <div class="az-section" id="az-${letter}">
-      <div class="az-section-hdr">${letter}</div>
-      ${items.map(([n, p], i) => `
-        <div class="az-item" style="animation-delay:${i*0.02}s" onclick="goToProfile('${n.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
-          <div><div class="az-item-name">${n}</div><div class="az-item-meta">${p.category} · ${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)}</div></div>
-          <div class="az-item-arrow">›</div>
-        </div>`).join('')}
-    </div>`).join('')
-    || `<div style="color:var(--text3);padding:20px 0;text-align:center;">${tr('no_results_az')}</div>`;
-  const letters = Object.keys(groups);
-  document.getElementById('azSidebar').innerHTML = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l =>
-    `<div class="az-letter-btn" onclick="${letters.includes(l) ? 'scrollToLetter(\''+l+'\')' : ''}" style="${letters.includes(l) ? '' : 'opacity:0.25;cursor:default'}">${l}</div>`
-  ).join('');
-}
-
-export function scrollToLetter(l) {
-  const el = document.getElementById('az-' + l);
-  if (el) el.scrollIntoView({ behavior: 'smooth' });
-}
 
 // ─── Navigation helpers ───────────────────────────────────
 export function activatePage(pageId) {

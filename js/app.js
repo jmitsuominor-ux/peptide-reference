@@ -8,18 +8,17 @@ import { STACKS } from './utils.js';
 import { t, parseDoseToMgPerWeek, getCommonVialSize, computeVialCount, getStackData, PEPTIDES } from './utils.js';
 import {
   renderCategories, showList, showDetail, toggleSec,
-  renderStacks, showStackDetail, renderAZ, scrollToLetter,
+  renderStacks, showStackDetail,
   activatePage, goToProfile, switchToStack,
 } from './ui.js';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
-  goToProfile, switchToStack, activatePage, scrollToLetter,
-  calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  qvAutoCalc, qvCopy, sdCopy, vialsCopy, reconCopy, plannerCopy,
+  goToProfile, switchToStack, activatePage,
+  calculateRecon, calculateVials, showCalcError,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
-  sdSetTier, sdCalculate,
+  vialsCopy, reconCopy, plannerCopy,
   plannerSetTier, plannerLoadStack, plannerCalculate,
 });
 
@@ -43,7 +42,6 @@ function applyTranslations() {
   document.documentElement.lang = AppState.lang;
   renderCategories();
   renderStacks();
-  renderAZ();
 }
 
 function toggleLang() {
@@ -57,60 +55,6 @@ function toggleLang() {
     if (AppState.originStackIdx !== null) showStackDetail(AppState.originStackIdx);
   }
 }
-
-// ─── Stack detail inline vial planner ────────────────────
-function sdSetTier(tier, btn, idx) {
-  AppState.sdTier = tier;
-  document.querySelectorAll('.planner-tier-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const stack = getStackData(idx, AppState.lang);
-  stack.peptides.forEach((p, pi) => {
-    const el = document.getElementById('sdDose_' + pi);
-    if (el) el.textContent = p[tier] || p.mid;
-  });
-  sdCalculate(idx);
-}
-
-function sdCalculate(idx) {
-  const stack = getStackData(idx, AppState.lang);
-  const weeks = parseFloat(document.getElementById('sdWeeks').value);
-  if (!weeks || weeks <= 0) return;
-  const resultEl = document.getElementById('sdResult');
-  const contentEl = document.getElementById('sdResultContent');
-  if (!resultEl || !contentEl) return;
-  let rows = '';
-  stack.peptides.forEach((p, pi) => {
-    const vialInput = document.getElementById('sdVial_' + pi);
-    const vialSize = vialInput ? parseFloat(vialInput.value) : NaN;
-    const doseStr = p[AppState.sdTier] || p.mid;
-    const mgPerWeek = parseDoseToMgPerWeek(doseStr);
-    let right = '';
-    let detail = doseStr;
-    if (mgPerWeek === null) {
-      right = '<span style="font-size:13px;font-weight:600;color:var(--amber);">As-needed</span>';
-    } else if (!vialSize || isNaN(vialSize)) {
-      const total = (mgPerWeek * weeks).toFixed(2);
-      right = '<span style="font-size:13px;font-weight:600;color:var(--text3);">— vials</span>';
-      detail = total + 'mg BAC water needed · enter vial size';
-    } else {
-      const total = mgPerWeek * weeks;
-      const vials = Math.ceil(total / vialSize);
-      const leftover = (vials * vialSize) - total;
-      right = '<span style="font-size:22px;font-weight:600;color:var(--blue);">' + vials + '</span><div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--text3);">' + (vials === 1 ? 'VIAL' : 'VIALS') + '</div>';
-      detail = total.toFixed(2) + 'mg total · ' + vialSize + 'mg vials' + (leftover > 0.01 ? ' · ' + leftover.toFixed(2) + 'mg left' : '');
-    }
-    rows += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--mid-border);">
-      <div style="flex:1;">
-        <div style="font-size:13px;font-weight:600;color:var(--navy);">${p.name}</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;">${detail}</div>
-      </div>
-      <div style="text-align:right;">${right}</div>
-    </div>`;
-  });
-  contentEl.innerHTML = rows;
-  resultEl.classList.add('visible');
-}
-
 
 // ─── Syringe SVG visual ───────────────────────────────────
 function updateSyringeVisual(fillPercent, syringeSize, activeUnit) {
@@ -240,44 +184,6 @@ function calculateVials() {
   }
 }
 
-// ─── Quick vial calculator (inside compound detail) ───────
-function calcQuickVials() {
-  const dose = parseFloat(document.getElementById('qvDose').value);
-  const doseUnit = document.getElementById('qvDoseUnit').value;
-  const vialSize = parseFloat(document.getElementById('qvVialSize').value);
-  const injectDay = parseFloat(document.getElementById('qvInjectDay').value) || 1;
-  const daysWk = parseFloat(document.getElementById('qvDaysWk').value) || 7;
-  const weeks = parseFloat(document.getElementById('qvWeeks').value);
-  const errEl = document.getElementById('qvError');
-  const resEl = document.getElementById('qvResult');
-  errEl.textContent = '';
-  errEl.classList.remove('visible');
-  resEl.classList.remove('visible');
-  if (!dose || dose <= 0) { errEl.textContent = '⚠ Enter a dose.'; errEl.classList.add('visible'); return; }
-  if (!vialSize || vialSize <= 0) { errEl.textContent = '⚠ Enter vial size (mg).'; errEl.classList.add('visible'); return; }
-  if (!weeks || weeks <= 0) { errEl.textContent = '⚠ Enter cycle length.'; errEl.classList.add('visible'); return; }
-  const doseMg = doseUnit === 'mcg' ? dose / 1000 : dose;
-  const { totalDoses, totalMg, vialsNeeded, mgPerWeek, leftover } = computeVialCount({
-    doseMg, injectionsPerDay: injectDay, daysPerWeek: daysWk, weeks, vialSizeMg: vialSize,
-  });
-  document.getElementById('qvCount').textContent = vialsNeeded + (vialsNeeded === 1 ? ' vial' : ' vials');
-  document.getElementById('qvSub').textContent = totalMg.toFixed(2) + 'mg total · ' + vialSize + 'mg vials';
-  document.getElementById('qvTotalDoses').textContent = totalDoses + ' injections';
-  document.getElementById('qvLeftover').textContent = leftover > 0.01 ? leftover.toFixed(2) + ' mg' : 'None';
-  resEl.classList.add('visible');
-}
-
-function qvAutoCalc() {
-  const dose = parseFloat(document.getElementById('qvDose').value);
-  const vialSize = parseFloat(document.getElementById('qvVialSize').value);
-  const weeks = parseFloat(document.getElementById('qvWeeks').value);
-  if (dose > 0 && vialSize > 0 && weeks > 0) {
-    calcQuickVials();
-  } else {
-    document.getElementById('qvError').classList.remove('visible');
-    document.getElementById('qvResult').classList.remove('visible');
-  }
-}
 
 // Extracts injections/week from a dose string like "500mcg/day", "2mg 2x/wk"
 function _parseInjectionsPerWeek(doseStr) {
@@ -311,67 +217,6 @@ async function _shareOrCopy(text, title, btn, resetLabel) {
   }
 }
 
-async function qvCopy() {
-  const resEl = document.getElementById('qvResult');
-  if (!resEl.classList.contains('visible')) { calcQuickVials(); }
-  if (!resEl.classList.contains('visible')) return;
-  const name    = document.getElementById('detailTitle')?.textContent?.trim() || 'Compound';
-  const dose    = document.getElementById('qvDose').value;
-  const unit    = document.getElementById('qvDoseUnit').value;
-  const vialSz  = document.getElementById('qvVialSize').value;
-  const injectD = parseFloat(document.getElementById('qvInjectDay').value) || 1;
-  const daysWk  = parseFloat(document.getElementById('qvDaysWk').value) || 7;
-  const weeks   = document.getElementById('qvWeeks').value;
-  const vials   = document.getElementById('qvCount').textContent;
-  const totalInj = document.getElementById('qvTotalDoses').textContent;
-  const schedule = (injectD === 1 && daysWk === 7) ? 'Once daily'
-                 : `${injectD}x/day · ${daysWk} days/week`;
-  const text = [
-    name,
-    `Dose: ${dose} ${unit}/injection`,
-    `Schedule: ${schedule}`,
-    `Cycle: ${weeks} weeks`,
-    `Vial size: ${vialSz}mg`,
-    `Vials needed: ${vials}`,
-    `Total injections: ${totalInj}`,
-  ].filter(Boolean).join('\n');
-  await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
-}
-
-async function sdCopy(idx) {
-  const resEl = document.getElementById('sdResult');
-  if (!resEl.classList.contains('visible')) { sdCalculate(idx); }
-  if (!resEl.classList.contains('visible')) return;
-  const stack = getStackData(idx, AppState.lang);
-  const weeks = parseFloat(document.getElementById('sdWeeks').value);
-  const tierLabel = AppState.sdTier === 'lo' ? 'LOW' : AppState.sdTier === 'mid' ? 'STANDARD' : 'HIGH';
-  const lines = [
-    `${stack.emoji} ${stack.name}`,
-    `Cycle: ${weeks} weeks · ${tierLabel} dose`,
-    '',
-  ];
-  stack.peptides.forEach((p, pi) => {
-    const vialSize = parseFloat(document.getElementById('sdVial_' + pi)?.value);
-    const doseStr  = p[AppState.sdTier] || p.mid;
-    const mgPerWeek = parseDoseToMgPerWeek(doseStr);
-    const injPerWk  = _parseInjectionsPerWeek(doseStr);
-    lines.push(p.name);
-    lines.push(`  Dose schedule: ${doseStr}`);
-    if (mgPerWeek !== null && vialSize > 0) {
-      const total = mgPerWeek * weeks;
-      const vials = Math.ceil(total / vialSize);
-      const totalInj = injPerWk !== null ? Math.round(injPerWk * weeks) + ' injections' : null;
-      lines.push(`  Vial size: ${vialSize}mg ea · ${vials} vials needed`);
-      if (totalInj) lines.push(`  Total injections: ${totalInj}`);
-      lines.push(`  Total mg: ${total.toFixed(1)}mg`);
-    } else if (mgPerWeek !== null) {
-      lines.push(`  Total mg needed: ${(mgPerWeek * weeks).toFixed(1)}mg`);
-    }
-    lines.push('');
-  });
-  const title = `${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`;
-  await _shareOrCopy(lines.join('\n'), title, document.getElementById('sdCopyBtn'), 'Export Info');
-}
 
 function showCalcError(id, msg) {
   const el = document.getElementById(id);
@@ -741,9 +586,6 @@ function initEventListeners() {
     window.scrollTo(0, 0);
   });
 
-  document.getElementById('azSearch').addEventListener('input', function () {
-    renderAZ(this.value.trim().toLowerCase());
-  });
 
   // Debounced global search
   let searchTimer;
@@ -848,7 +690,6 @@ function initStoreBack() {
 function init() {
   renderCategories();
   renderStacks();
-  renderAZ();
   initPlanner();
   applyTranslations();
   initEventListeners();

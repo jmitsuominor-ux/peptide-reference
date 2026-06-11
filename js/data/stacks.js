@@ -231,10 +231,10 @@ export const STACKS = [
     rationale:'GHK-Cu activates collagen synthesis genes and resets gene expression toward youthful patterns. BPC-157 and TB-500 provide the underlying tissue repair and anti-inflammatory foundation. All three work on different but complementary aspects of skin and tissue regeneration.',
     benefits:['Skin tightening and wrinkle reduction','Systemic anti-aging via gene expression reset','Collagen and elastin production','Inflammation reduction','Improved flexibility'],
     sideEffects:[{text:'Injection site redness from GHK-Cu (mild, transient)',severity:'low'},{text:'Possible temporary skin darkening (copper effect)',severity:'low'}],
-    note:'GHK-Cu can also be applied topically to face/skin in addition to SubQ. Inject BPC-157 and TB-500 separately.',
+    note:'Inject BPC-157 and TB-500 separately.',
     studies:[{title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and clarity, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
     peptides:[
-      {name:'GHK-Cu',schedule:'Daily SubQ or topical',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
+      {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
       {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
     ]
@@ -255,12 +255,12 @@ export const STACKS = [
       {text:'Temporary skin darkening possible from copper (GHK-Cu)',severity:'low'},
       {text:'Water retention from GH peptides at start — resolves in 2–3 weeks',severity:'low'},
     ],
-    note:'GHK-Cu can be used SubQ and applied topically to face and scalp — combine both for maximum effect. CJC-1295 + Ipamorelin mixed in the same syringe and injected before bed on an empty stomach.',
+    note:'CJC-1295 + Ipamorelin mixed in the same syringe and injected before bed on an empty stomach.',
     studies:[
       {title:'GHK-Cu Anti-Aging Mechanisms: 42 Human Study Review',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, increased collagen and glycosaminoglycan synthesis, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'},
     ],
     peptides:[
-      {name:'GHK-Cu',schedule:'Daily SubQ + topical to face/scalp',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
+      {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'CJC-1295 (no DAC)',schedule:'Before bed SubQ — same syringe as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
       {name:'Ipamorelin',schedule:'Before bed SubQ — same syringe as CJC-1295, empty stomach',lo:'100 mcg/night',mid:'200 mcg/night',hi:'300 mcg/night'},
     ]
@@ -303,8 +303,8 @@ export const STACKS = [
     note:'Semax and Selank are complementary — Semax is activating (take AM), Selank is calming (take midday or before stressful tasks). Both cycle 6 weeks on / 2 off. NAD+ can run continuously.',
     studies:[{title:'Semax and BDNF: Neuroprotective Mechanisms',journal:'Doklady Biochemistry 2001',summary:'Significantly increased BDNF expression and demonstrated neuroprotection in ischemia models.',pmid:'',url:'https://link.springer.com/article/10.1023/A:1011373916522'},{title:'Selank Anxiolytic Effects vs Diazepam',journal:'Bulletin of Experimental Biology 2008',summary:'Significant anxiolytic effects comparable to diazepam without sedation or memory impairment.',pmid:'19145268',url:'https://pubmed.ncbi.nlm.nih.gov/19145268/'}],
     peptides:[
-      {name:'Semax',schedule:'Daily SubQ or intranasal — morning',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
-      {name:'Selank',schedule:'Daily SubQ or intranasal — midday or AM',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
+      {name:'Semax',schedule:'Daily SubQ — morning',lo:'200 mcg/day',mid:'400 mcg/day',hi:'600 mcg/day'},
+      {name:'Selank',schedule:'Daily SubQ — midday or AM',lo:'250 mcg/day',mid:'500 mcg/day',hi:'750 mcg/day'},
       {name:'NAD+',schedule:'Daily SubQ AM (can continue year-round)',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
@@ -314,12 +314,12 @@ export const STACKS = [
     rationale:'PT-141 activates MC4R in the hypothalamus — the neural desire circuit — working even when PDE5 inhibitors (Viagra/Cialis) fail because it operates at the brain level not the vascular level. Oxytocin enhances trust, bonding, and emotional connection — amplifying the experience beyond physical arousal alone. Selank modulates GABA-A to remove anxiety and self-consciousness without sedation — the calm, present state where intimacy is most natural. Three different mechanisms, genuine synergy, no redundancy.',
     benefits:['Increased sexual desire at the neural level — works for both men and women','Emotional bonding and connection enhancement (Oxytocin)','Performance anxiety elimination without sedation or grogginess (Selank)','Effective even when conventional medications fail','Works on psychological and physiological arousal simultaneously','Simple as-needed protocol — all three taken together 45–60 min before'],
     sideEffects:[{text:'PT-141 nausea — most common; always take on empty stomach and start LOW',severity:'med'},{text:'Flushing and headache from PT-141',severity:'low'},{text:'Transient blood pressure increase from PT-141',severity:'med'},{text:'Oxytocin may cause paradoxical anxiety in rare individuals',severity:'low'},{text:'Do not exceed PT-141 2x per week',severity:'high'},{text:'Avoid Oxytocin during pregnancy',severity:'high'}],
-    note:'All three compounds can be taken together at the same time — 45–60 minutes before. No need to stagger them. PT-141 SubQ, Oxytocin intranasal spray, Selank intranasal or SubQ — all at once. Never exceed PT-141 more than 2x per week. Women are often more sensitive to PT-141 — always start at LOW dose. Do not use Oxytocin during pregnancy.',
+    note:'All three compounds can be taken together at the same time — 45–60 minutes before. No need to stagger them. PT-141, Oxytocin, and Selank all SubQ at once. Never exceed PT-141 more than 2x per week. Women are often more sensitive to PT-141 — always start at LOW dose. Do not use Oxytocin during pregnancy.',
     studies:[{title:'PT-141 for Female Sexual Dysfunction: Phase 3',journal:'JAMA 2019',summary:'Bremelanotide significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi.',pmid:'31116916',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'Intranasal Oxytocin Increases Trust and Bonding',journal:'Nature 2005',summary:'Intranasal oxytocin significantly increased trust behavior. Landmark demonstration of oxytocin modulating human social behavior.',pmid:'15931222',url:'https://pubmed.ncbi.nlm.nih.gov/15931222/'},{title:'Selank Anxiolytic Effects vs Diazepam',journal:'Bulletin of Experimental Biology 2008',summary:'Significant anxiolytic effects comparable to diazepam without sedation or memory impairment. No dependency risk.',pmid:'19145268',url:'https://pubmed.ncbi.nlm.nih.gov/19145268/'}],
     peptides:[
       {name:'PT-141',schedule:'SubQ 45–60 min before — empty stomach. 2x/week MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
-      {name:'Oxytocin',schedule:'Intranasal spray or SubQ — take at same time as PT-141. For SubQ: reconstitute 10mg in 2ml BAC water = 5,000 IU/ml',lo:'10 IU intranasal OR 0.05ml SubQ',mid:'20–40 IU intranasal OR 0.1ml SubQ',hi:'50 IU intranasal OR 0.15ml SubQ'},
-      {name:'Selank',schedule:'Intranasal or SubQ — take at same time as PT-141',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'},
+      {name:'Oxytocin',schedule:'SubQ — take at same time as PT-141. Reconstitute 10mg in 2ml BAC water = 5,000 IU/ml',lo:'0.05ml SubQ (10 IU)',mid:'0.1ml SubQ (20–40 IU)',hi:'0.15ml SubQ (50 IU)'},
+      {name:'Selank',schedule:'SubQ — take at same time as PT-141',lo:'250 mcg as needed',mid:'500 mcg as needed',hi:'750 mcg as needed'},
     ]
   },
   {
@@ -334,7 +334,7 @@ export const STACKS = [
       {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3–5 mg/day'},
       {name:'BPC-157',schedule:'Daily SubQ',lo:'250 mcg/day',mid:'500 mcg/day',hi:'500 mcg 2x/day'},
       {name:'TB-500',schedule:'2x/week SubQ loading phase, then once/week maintenance',lo:'2 mg/wk maintenance',mid:'2 mg 2x/wk × 4–6 wks loading, then 2 mg/wk',hi:'2.5 mg 2x/wk × 4–6 wks loading, then 2.5 mg/wk'},
-      {name:'KPV',schedule:'Daily SubQ or oral',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'},
+      {name:'KPV',schedule:'Daily SubQ',lo:'500 mcg/day',mid:'1 mg/day',hi:'2 mg/day'},
     ]
   },
   {
@@ -422,11 +422,11 @@ export const STACKS = [
     rationale:"PT-141 has FDA approval specifically for female sexual dysfunction (Vyleesi) — the only peptide with that distinction. GHK-Cu directly activates over 4,000 genes for skin regeneration and collagen production. CJC-1295 + Ipamorelin deliver the overnight GH pulse that drives body recomposition and deep sleep quality — both of which decline significantly with age in women.",
     benefits:["Improved libido and sexual desire (PT-141 — FDA approved for HSDD in women)","Skin collagen, elasticity, and hair thickness (GHK-Cu)","Lean body composition and improved sleep quality (CJC-1295 + Ipamorelin)","No direct hormonal interference"],
     sideEffects:[{text:'PT-141 nausea — always start at LOW and take on empty stomach',severity:'med'},{text:'Water retention from GH peptides at start — resolves in 2–3 weeks',severity:'low'},{text:'GHK-Cu injection site redness (mild, brief)',severity:'low'}],
-    note:"PT-141 as-needed only — maximum 2x/week. GHK-Cu SubQ and topical to face and scalp. CJC-1295 + Ipamorelin in the same syringe before bed on an empty stomach. Women are often more GH-sensitive — start at LOW dose.",
+    note:"PT-141 as-needed only — maximum 2x/week. CJC-1295 + Ipamorelin in the same syringe before bed on an empty stomach. Women are often more GH-sensitive — start at LOW dose.",
     studies:[{title:'PT-141 (Bremelanotide) for Female HSDD: Phase 3',journal:'NEJM/JAMA 2019',summary:'PT-141 significantly improved sexual desire and reduced distress in premenopausal women with HSDD. FDA approved as Vyleesi.',pmid:'',url:'https://pubmed.ncbi.nlm.nih.gov/31116916/'},{title:'GHK-Cu Skin Benefits: 42 Human Studies',journal:'Cosmetics 2015',summary:'GHK-Cu tightened loose skin, improved elasticity and thickness, reduced fine lines.',pmid:'26090526',url:'https://pubmed.ncbi.nlm.nih.gov/26090526/'}],
     peptides:[
       {name:'PT-141',schedule:'SubQ as needed, 45 min before — 2x/wk MAX',lo:'0.5 mg as needed',mid:'1 mg as needed',hi:'1.75 mg as needed'},
-      {name:'GHK-Cu',schedule:'Daily SubQ + topical to face/scalp',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
+      {name:'GHK-Cu',schedule:'Daily SubQ',lo:'1 mg/day',mid:'2 mg/day',hi:'3 mg/day'},
       {name:'CJC-1295 (no DAC)',schedule:'Before bed SubQ — same syringe as Ipamorelin, empty stomach',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
       {name:'Ipamorelin',schedule:'Before bed SubQ — same syringe as CJC-1295, empty stomach',lo:'100 mcg/night',mid:'150 mcg/night',hi:'200 mcg/night'},
     ]

@@ -857,7 +857,18 @@ function init() {
   // Deep-link: ?compound=BPC-157
   const compoundParam = new URLSearchParams(window.location.search).get('compound');
   if (compoundParam) {
-    setTimeout(() => showDetail(decodeURIComponent(compoundParam)), 100);
+    // Wait for full render then retry until compound detail opens
+    const name = decodeURIComponent(compoundParam);
+    let attempts = 0;
+    const tryOpen = () => {
+      attempts++;
+      showDetail(name);
+      // Check if detail view became visible
+      const dv = document.getElementById('detailView');
+      if (dv && dv.style.display !== 'none') return;
+      if (attempts < 10) setTimeout(tryOpen, 200);
+    };
+    setTimeout(tryOpen, 300);
   }
 }
 

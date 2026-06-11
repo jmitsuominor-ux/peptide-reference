@@ -453,7 +453,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <option value="30">30 unit / 0.3ml insulin syringe</option>
         </select>
       </div>
-      <button class="calc-btn" onclick="calculateRecon()" data-i18n="calc_btn_recon">Calculate Draw Volume →</button>
+      <button class="calc-btn" id="reconExportBtn" onclick="reconCopy()" style="padding:11px">Export Info</button>
       <div class="calc-error" id="reconError"></div>
       <div class="calc-result" id="reconResult">
         <div class="calc-result-label" data-i18n="calc_result_label">Draw to this line on your syringe</div>
@@ -559,7 +559,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <span class="calc-unit">mg</span>
         </div>
       </div>
-      <button class="calc-btn" id="vialCalcBtn" onclick="vialsCopy()" style="padding:11px">Share Result</button>
+      <button class="calc-btn" id="vialCalcBtn" onclick="vialsCopy()" style="padding:11px">Export Info</button>
       <div class="calc-error" id="vialError"></div>
       <div class="calc-result" id="vialResult">
         <div class="calc-result-label" id="vialResultLabel" data-i18n="calc_vials_result_label">Vials needed for full cycle</div>
@@ -642,7 +642,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="calc-section-title"><div class="sh-icon amber">💉</div>Step 3 — Vial Sizes</div>
       <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">Enter the mg per vial you plan to buy for each peptide.</div>
       <div id="plannerPeptideInputs"></div>
-      <button class="calc-btn" style="margin-top:8px" onclick="plannerCalculate()">Calculate Shopping List →</button>
+      <button class="calc-btn" id="plannerExportBtn" style="margin-top:8px;padding:11px" onclick="plannerCopy()">Export Info</button>
     </div>
     <div class="calc-result" id="plannerResult" style="margin-top:0">
       <div class="calc-result-label">Your Shopping List</div>

@@ -17,7 +17,7 @@ Object.assign(window, {
   showList, showDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage, scrollToLetter,
   calcQuickVials, calculateRecon, calculateVials, showCalcError,
-  qvAutoCalc, qvCopy, sdCopy, vialsCopy,
+  qvAutoCalc, qvCopy, sdCopy, vialsCopy, reconCopy, plannerCopy,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   sdSetTier, sdCalculate,
   plannerSetTier, plannerLoadStack, plannerCalculate,
@@ -175,6 +175,33 @@ function calculateRecon() {
   resultEl.classList.add('visible');
 }
 
+async function reconCopy() {
+  const resEl = document.getElementById('reconResult');
+  if (!resEl.classList.contains('visible')) { calculateRecon(); }
+  if (!resEl.classList.contains('visible')) return;
+  const vialMg  = document.getElementById('vialMg').value;
+  const bacWater = document.getElementById('bacWater').value;
+  const dose    = document.getElementById('desiredDose').value;
+  const unit    = document.getElementById('doseUnit').value;
+  const syringe = document.getElementById('syringeType').value;
+  const drawUnits = document.getElementById('reconUnits').textContent;
+  const drawMl    = document.getElementById('reconMl').textContent;
+  const conc      = document.getElementById('reconConc').textContent;
+  const perUnit   = document.getElementById('reconPerUnit').textContent;
+  const doses     = document.getElementById('reconDoses').textContent;
+  const text = [
+    `Mix & Draw — ${vialMg}mg vial`,
+    `BAC water: ${bacWater}ml`,
+    `Dose: ${dose} ${unit}`,
+    `Syringe: ${syringe}-unit`,
+    `Draw to: ${drawUnits} (${drawMl.split('—')[0].trim()})`,
+    `Concentration: ${conc}`,
+    `Per unit: ${perUnit}`,
+    `Doses per vial: ${doses}`,
+  ].join('\n');
+  await _shareOrCopy(text, 'Mix & Draw', document.getElementById('reconExportBtn'), 'Export Info');
+}
+
 // ─── Vial count calculator ────────────────────────────────
 function calculateVials() {
   if (AppState.vialMode === 'last') { _calcVialsDuration(); return; }
@@ -308,7 +335,7 @@ async function qvCopy() {
     `Total mg: ${totalMg}`,
     `(${mgWk})`,
   ].join('\n');
-  await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Share Result');
+  await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
 }
 
 async function sdCopy(idx) {
@@ -343,7 +370,7 @@ async function sdCopy(idx) {
     lines.push('');
   });
   const title = `${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`;
-  await _shareOrCopy(lines.join('\n'), title, document.getElementById('sdCopyBtn'), 'Share List');
+  await _shareOrCopy(lines.join('\n'), title, document.getElementById('sdCopyBtn'), 'Export Info');
 }
 
 function showCalcError(id, msg) {
@@ -457,7 +484,7 @@ async function vialsCopy() {
     lines.push(`BAC water needed: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)`);
   }
   const btn = document.getElementById('vialCalcBtn');
-  await _shareOrCopy(lines.join('\n'), 'Vial Supply', btn, 'Share Result');
+  await _shareOrCopy(lines.join('\n'), 'Vial Supply', btn, 'Export Info');
 }
 
 // ─── Calculator section collapse ─────────────────────────
@@ -642,6 +669,38 @@ function plannerCalculate() {
     ${rows}
   `;
   resultEl.classList.add('visible');
+}
+
+async function plannerCopy() {
+  const resEl = document.getElementById('plannerResult');
+  if (!resEl.classList.contains('visible')) { plannerCalculate(); }
+  if (!resEl.classList.contains('visible')) return;
+  const idx = document.getElementById('plannerStackSelect').value;
+  if (idx === '') return;
+  const stack = STACKS[parseInt(idx)];
+  const weeks = document.getElementById('plannerWeeks').value;
+  const tierLabel = AppState.plannerTier === 'lo' ? 'LOW' : AppState.plannerTier === 'mid' ? 'STANDARD' : 'HIGH';
+  const lines = [`${stack.emoji} ${stack.name}`, `Cycle: ${weeks} weeks · ${tierLabel} dose`, ''];
+  stack.peptides.forEach((p, i) => {
+    const vialSize = parseFloat(document.getElementById('plannerVial_' + i)?.value);
+    const doseStr  = p[AppState.plannerTier] || p.mid;
+    const mgPerWeek = parseDoseToMgPerWeek(doseStr);
+    const injPerWk  = _parseInjectionsPerWeek(doseStr);
+    lines.push(p.name);
+    lines.push(`  Dose: ${doseStr}`);
+    if (mgPerWeek !== null && vialSize > 0) {
+      const total = mgPerWeek * parseFloat(weeks);
+      const vials = Math.ceil(total / vialSize);
+      if (injPerWk) lines.push(`  Total injections: ${Math.round(injPerWk * parseFloat(weeks))}`);
+      lines.push(`  Vial: ${vialSize}mg ea · ${vials} vials needed`);
+      lines.push(`  Total mg: ${total.toFixed(1)}mg`);
+    } else if (mgPerWeek !== null) {
+      lines.push(`  Total mg needed: ${(mgPerWeek * parseFloat(weeks)).toFixed(1)}mg`);
+    }
+    lines.push('');
+  });
+  const title = `${stack.emoji} ${stack.name} — ${weeks} weeks (${tierLabel})`;
+  await _shareOrCopy(lines.join('\n'), title, document.getElementById('plannerExportBtn'), 'Export Info');
 }
 
 // ─── Event listeners ──────────────────────────────────────

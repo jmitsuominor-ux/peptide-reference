@@ -189,7 +189,7 @@ export function showDetail(name) {
             <input type="number" class="calc-input" id="qvWeeks" placeholder="12" min="1" style="font-size:14px;padding:9px 10px;" oninput="qvAutoCalc()">
           </div>
         </div>
-        <button class="calc-btn" id="qvCopyBtn" style="padding:11px" onclick="qvCopy()">Share Result</button>
+        <button class="calc-btn" id="qvCopyBtn" style="padding:11px" onclick="qvCopy()">Export Info</button>
         <div class="calc-result" id="qvResult" style="margin-top:10px;padding:14px;">
           <div class="calc-result-label">Vials needed</div>
           <div class="calc-result-main" id="qvCount">—</div>
@@ -359,7 +359,7 @@ export function showStackDetail(idx) {
             <span class="calc-unit">mg</span>
           </div>`).join('')}
       </div>
-      <button class="calc-btn" id="sdCopyBtn" style="margin-top:12px;" onclick="sdCopy(${idx})">Share List</button>
+      <button class="calc-btn" id="sdCopyBtn" style="margin-top:12px;padding:11px" onclick="sdCopy(${idx})">Export Info</button>
       <div class="calc-result" id="sdResult" style="margin-top:12px;">
         <div class="calc-result-label">Vials Needed</div>
         <div id="sdResultContent"></div>

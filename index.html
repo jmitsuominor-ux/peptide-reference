@@ -281,6 +281,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .planner-result-vials-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);text-align:right;}
 </style>
 <script data-goatcounter="https://peptiderefrenceapp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>if(new URLSearchParams(location.search).get('compound'))document.documentElement.style.setProperty('--cat-view-display','none');</script>
 </head>
 <body>
 <div class="topbar">
@@ -313,7 +314,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <!-- BROWSE PAGE -->
 <div class="page active" id="page-browse">
-  <div id="catView">
+  <div id="catView" style="display:var(--cat-view-display,block)">
     <div class="clin-header">
       <div><div class="ch-title" data-i18n="browse_title">Peptide Compound Library</div><div class="ch-sub">125 compounds · 19 therapeutic stacks · Research reference only</div></div>
       <div class="ch-badge">REF v2.2</div>

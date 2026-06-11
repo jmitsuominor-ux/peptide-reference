@@ -336,7 +336,8 @@ async function qvCopy() {
     `Total injections: ${totalInj}`,
     `Total mg: ${totalMg}`,
     `(${mgWk})`,
-    !isNaN(vialsNum) && vialsNum > 0 ? `BAC water: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)` : null,
+    !isNaN(vialsNum) && vialsNum > 0 ? `BAC water (1ml/vial): ${vialsNum}ml needed` : null,
+    !isNaN(vialsNum) && vialsNum > 0 ? `BAC water (2ml/vial): ${vialsNum * 2}ml needed` : null,
   ].filter(Boolean).join('\n');
   await _shareOrCopy(text, `${name} — Vial Supply`, document.getElementById('qvCopyBtn'), 'Export Info');
 }
@@ -488,7 +489,8 @@ async function vialsCopy() {
   lines.push(`Total mg: ${totalMg}`);
   lines.push(`(${mgWk})`);
   if (!isNaN(vialsNum) && vialsNum > 0) {
-    lines.push(`BAC water needed: ${vialsNum}ml (1ml/vial) or ${vialsNum * 2}ml (2ml/vial)`);
+    lines.push(`BAC water (1ml/vial): ${vialsNum}ml needed`);
+    lines.push(`BAC water (2ml/vial): ${vialsNum * 2}ml needed`);
   }
   const btn = document.getElementById('vialCalcBtn');
   await _shareOrCopy(lines.join('\n'), 'Vial Supply', btn, 'Export Info');

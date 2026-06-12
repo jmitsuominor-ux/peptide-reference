@@ -244,20 +244,23 @@ const ONESIGNAL_APP_ID = 'c058b067-4b57-4a04-a776-72acb7cd0c35';
 let _osReady = null;
 function _initOneSignal() {
   if (_osReady) return _osReady;
-  _osReady = new Promise(resolve => {
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    window.OneSignalDeferred.push(async function(OneSignal) {
-      try {
-        await OneSignal.init({
-          appId: ONESIGNAL_APP_ID,
-          serviceWorkerPath: '/peptide-reference/sw.js',
-          serviceWorkerParam: { scope: '/peptide-reference/' },
-          notifyButton: { enable: false },
-        });
-      } catch (e) { /* not in supported context */ }
-      resolve(OneSignal);
-    });
-  });
+  _osReady = Promise.race([
+    new Promise(resolve => {
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function(OneSignal) {
+        try {
+          await OneSignal.init({
+            appId: ONESIGNAL_APP_ID,
+            serviceWorkerPath: '/peptide-reference/sw.js',
+            serviceWorkerParam: { scope: '/peptide-reference/' },
+            notifyButton: { enable: false },
+          });
+        } catch (e) { /* not in supported context */ }
+        resolve(OneSignal);
+      });
+    }),
+    new Promise(resolve => setTimeout(() => resolve(null), 8000)),
+  ]);
   return _osReady;
 }
 
@@ -306,7 +309,7 @@ export async function enableReminders() {
   try {
     const OS = await _initOneSignal();
     if (!OS) {
-      alert('Push notifications are not supported.\n\nOn iPhone, add this page to your Home Screen first, then try again.');
+      alert('Notification service failed to load.\n\nMake sure you are using the Home Screen app (not Safari), then try again. If the problem persists, delete and reinstall the app.');
       return;
     }
     await OS.Notifications.requestPermission();

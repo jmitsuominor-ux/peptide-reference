@@ -64,16 +64,6 @@ async function main() {
     console.log(`\nUser ${sub.user_id}: tz_offset=${sub.timezone_offset} → local time ${localTimeStr} (${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][localDow]})`);
     console.log(`  Endpoint: ${subscriptionObj.endpoint?.slice(0, 60)}...`);
 
-    if (TEST_MODE) {
-      try {
-        await sendPush(subscriptionObj, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
-        console.log(`  ✅ Test notification sent`);
-      } catch (err) {
-        console.error(`  ❌ Push failed: ${err.statusCode ?? ''} ${err.message}`);
-      }
-      continue;
-    }
-
     const { data: entries, error: entErr } = await supabase
       .from('schedule_entries')
       .select('id, compound_name, dose, reminder_time, reminder_time_2, frequency, days_of_week, schedules!inner(is_active)')
@@ -83,8 +73,28 @@ async function main() {
 
     if (entErr) { console.log(`  Error loading entries: ${entErr.message}`); continue; }
     if (!entries?.length) { console.log(`  No active schedule entries`); continue; }
+    console.log(`  Found ${entries.length} active entry/entries`);
 
-    const WINDOW = 15;
+    // Test mode: send all due-today entries regardless of time window
+    if (TEST_MODE) {
+      const dueToday = entries.filter(e => isDueToday(e, localDow));
+      if (!dueToday.length) {
+        console.log(`  No entries due today (day ${localDow})`);
+        entries.forEach(e => console.log(`    - ${e.compound_name}: freq=${e.frequency} days=${JSON.stringify(e.days_of_week)}`));
+        continue;
+      }
+      const doses = dueToday.map(e => `${e.compound_name}: ${e.dose}`).join(' · ');
+      try {
+        await sendPush(subscriptionObj, `💉 PeptideRef – Today's doses`, doses, `peptideref-test-${Date.now()}`);
+        console.log(`  ✅ Test sent: ${doses}`);
+      } catch (err) {
+        console.error(`  ❌ Push failed: ${err.statusCode ?? ''} ${err.message}`);
+      }
+      continue;
+    }
+
+    // GitHub Actions cron is unreliable — use a 30-min window to avoid missed runs
+    const WINDOW = 30;
     const nowTotalMin = localHour * 60 + localMinute;
     const slots = [];
     entries.forEach(e => {

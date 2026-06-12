@@ -785,6 +785,9 @@ function init() {
     document.getElementById('catView').style.display = 'none';
   }
   document.getElementById('searchInput').value = '';
+  // Chrome autofill fires asynchronously — clear at multiple points to catch it
+  setTimeout(() => { document.getElementById('searchInput').value = ''; }, 100);
+  setTimeout(() => { document.getElementById('searchInput').value = ''; }, 500);
   renderCategories();
   renderStacks();
   initPlanner();

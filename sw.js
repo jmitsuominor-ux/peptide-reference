@@ -1,4 +1,4 @@
-const CACHE = 'peptideref-v3';
+const CACHE = 'peptideref-v4';
 const PRECACHE = ['/index.html', '/js/app.js', '/js/ui.js', '/js/utils.js', '/js/state.js'];
 
 self.addEventListener('install', e => {

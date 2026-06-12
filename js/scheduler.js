@@ -305,6 +305,10 @@ export async function enableReminders() {
 
   try {
     const reg = await navigator.serviceWorker.ready;
+    // Always unsubscribe first so a fresh subscription is created with the current VAPID key.
+    // Stale subscriptions from old keys cause 403 rejections from Apple's push server.
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) await existing.unsubscribe();
     const subscription = await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),

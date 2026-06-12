@@ -132,7 +132,7 @@ async function loadTodayData() {
   const [entriesRes, logsRes] = await Promise.all([
     supabase
       .from('schedule_entries')
-      .select('*, schedules!inner(name, stack_name, start_date, is_active, emoji)')
+      .select('*, schedules!inner(name, stack_name, start_date, is_active)')
       .eq('user_id', currentUser.id)
       .eq('is_active', true)
       .eq('schedules.is_active', true),

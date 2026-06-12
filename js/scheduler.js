@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js';
 import { currentUser, signOut } from './auth.js';
-import { STACKS } from './utils.js';
+import { STACKS, PEPTIDES } from './utils.js';
 
 // ─── Frequency helpers ────────────────────────────────────
 function parseFrequency(txt) {
@@ -432,6 +432,7 @@ async function renderProtocols() {
               <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
+              <button class="sched-proto-end-btn" style="background:var(--blue-light);border-color:var(--blue);color:var(--blue);" onclick="openEditProtoModal('${p.id}')">Edit</button>
               <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${safeName}')">End</button>
               <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${safeName}')">Delete</button>
             </div>
@@ -566,15 +567,17 @@ function _renderCustomListInPlace() {
 function _renderCustomList() {
   const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   const DEFAULT_DAYS = { twice_weekly:[1,4], three_weekly:[1,3,5], weekly:[1] };
+  const datalist = `<datalist id="peptide-names">${Object.keys(PEPTIDES).map(n => `<option value="${n}">`).join('')}</datalist>`;
   if (_customCompounds.length === 0) {
-    return '<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">No compounds added yet.</div>';
+    return datalist + '<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">No compounds added yet.</div>';
   }
-  return _customCompounds.map((c, i) => {
+  return datalist + _customCompounds.map((c, i) => {
     const isScheduled = c.freq !== 'daily' && c.freq !== 'as_needed';
     const defDays = c.days || DEFAULT_DAYS[c.freq] || [1];
     return `<div class="proto-compound-row" style="margin-bottom:8px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <input type="text" class="calc-input" placeholder="Compound name" value="${c.name}"
+          list="peptide-names"
           style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;"
           oninput="_customCompounds[${i}].name=this.value" id="cf-name-${i}">
         <button type="button" onclick="removeCustomCompound(${i})"
@@ -906,4 +909,99 @@ export function confirmDeleteProtocol(id, name) {
 export function confirmEndProtocol(id, name) {
   if (!confirm(`End "${name}"?\n\nThis will remove it from your active protocols. Your injection history will be kept.`)) return;
   endProtocol(id).then(() => refreshScheduleMain()).catch(() => {});
+}
+
+// ─── Edit Protocol modal ──────────────────────────────────
+let _editScheduleId = null;
+let _editEntries = [];
+
+export async function openEditProtoModal(scheduleId) {
+  _editScheduleId = scheduleId;
+  const { data } = await supabase
+    .from('schedule_entries')
+    .select('id, compound_name, dose, frequency, reminder_time, days_of_week')
+    .eq('schedule_id', scheduleId)
+    .eq('is_active', true)
+    .order('compound_name');
+  _editEntries = data || [];
+
+  const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const rows = _editEntries.map((e, i) => {
+    const isScheduled = e.frequency !== 'daily' && e.frequency !== 'as_needed';
+    const days = e.days_of_week || [];
+    return `
+      <div style="border-bottom:1px solid var(--border2);padding:14px 0;">
+        <div style="font-weight:600;font-size:14px;color:var(--text1);margin-bottom:10px;">${e.compound_name}</div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;">
+          <input type="text" class="calc-input" id="edit-dose-${i}" value="${e.dose||''}"
+            placeholder="Dose" style="flex:1;font-size:13px;padding:7px 10px;">
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:${isScheduled ? '8' : '0'}px;">
+          <span class="proto-time-label" style="flex-shrink:0;">Reminder:</span>
+          <input type="time" class="calc-input" id="edit-time-${i}" value="${e.reminder_time||'20:00'}"
+            style="flex:1;font-size:13px;padding:7px 10px;">
+        </div>
+        ${isScheduled ? `
+        <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+          <span class="proto-time-label" style="flex-shrink:0;">Days:</span>
+          <div id="edit-days-${i}" style="display:flex;gap:4px;flex-wrap:wrap;">
+            ${DAY_LABELS.map((d, di) => `<button type="button" class="day-pill${days.includes(di)?' active':''}" data-day="${di}" onclick="this.classList.toggle('active')">${d}</button>`).join('')}
+          </div>
+        </div>` : ''}
+      </div>`;
+  }).join('');
+
+  const existing = document.getElementById('editProtoModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'editProtoModal';
+  modal.className = 'modal-overlay';
+  modal.style.cssText = 'display:flex;align-items:flex-end;';
+  modal.innerHTML = `
+    <div class="modal-box" style="max-height:80vh;overflow-y:auto;border-radius:20px 20px 0 0;">
+      <div class="modal-header">
+        <div class="modal-title">Edit Protocol</div>
+        <button class="modal-close" onclick="closeEditProtoModal()">✕</button>
+      </div>
+      <div style="padding:0 20px 24px;">
+        ${rows || '<div style="padding:16px;color:var(--text3);text-align:center;">No compounds found.</div>'}
+        <button class="calc-btn" style="width:100%;margin-top:16px;" onclick="saveEditProto()">Save Changes</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(() => modal.classList.add('open'), 10);
+}
+
+export function closeEditProtoModal() {
+  const modal = document.getElementById('editProtoModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  setTimeout(() => modal.remove(), 250);
+}
+
+export async function saveEditProto() {
+  const btn = document.querySelector('#editProtoModal .calc-btn');
+  if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
+  try {
+    for (let i = 0; i < _editEntries.length; i++) {
+      const entry = _editEntries[i];
+      const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;
+      const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
+      const isScheduled = entry.frequency !== 'daily' && entry.frequency !== 'as_needed';
+      let days = entry.days_of_week;
+      if (isScheduled) {
+        const container = document.getElementById(`edit-days-${i}`);
+        if (container) days = Array.from(container.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
+      }
+      await supabase.from('schedule_entries')
+        .update({ dose, reminder_time: time, days_of_week: days })
+        .eq('id', entry.id)
+        .eq('user_id', currentUser.id);
+    }
+    closeEditProtoModal();
+    await refreshScheduleMain();
+  } catch (err) {
+    alert('Save failed: ' + (err.message || err));
+    if (btn) { btn.textContent = 'Save Changes'; btn.disabled = false; }
+  }
 }

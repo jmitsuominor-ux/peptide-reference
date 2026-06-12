@@ -19,6 +19,7 @@ import {
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
   addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
+  openEditProtoModal, closeEditProtoModal, saveEditProto,
 } from './scheduler.js';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
@@ -37,6 +38,7 @@ Object.assign(window, {
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
   addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
+  openEditProtoModal, closeEditProtoModal, saveEditProto,
   toggleAuthPw,
 });
 

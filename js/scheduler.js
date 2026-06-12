@@ -239,31 +239,38 @@ function renderAuthPrompt() {
   `;
 }
 
-const VAPID_PUBLIC_KEY = 'BHhylnDa-WAQZHSgdYBo3z9Tds6SEvWSoa_9DGkZAiySRkPqVrFfcxDUMrTRJlEWHZb9JXRu-1v0p4R0yo74OFg';
+const ONESIGNAL_APP_ID = 'c058b067-4b57-4a04-a776-72acb7cd0c35';
 
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const raw = atob(base64);
-  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+let _osReady = null;
+function _initOneSignal() {
+  if (_osReady) return _osReady;
+  _osReady = new Promise(resolve => {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    window.OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        await OneSignal.init({
+          appId: ONESIGNAL_APP_ID,
+          serviceWorkerPath: '/peptide-reference/sw.js',
+          serviceWorkerParam: { scope: '/peptide-reference/' },
+          notifyButton: { enable: false },
+        });
+      } catch (e) { /* not in supported context */ }
+      resolve(OneSignal);
+    });
+  });
+  return _osReady;
 }
 
 async function getSubscriptionStatus() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return 'unsupported';
-  if (Notification.permission === 'denied') return 'denied';
-  if (Notification.permission !== 'granted') return 'default';
-  // Only wait for SW if permission was already granted
   try {
-    const reg = await Promise.race([
-      navigator.serviceWorker.ready,
-      new Promise((_, rej) => setTimeout(() => rej(), 2000)),
-    ]);
-    const existing = await reg.pushManager.getSubscription().catch(() => null);
-    return existing ? 'subscribed' : 'default';
+    const OS = await _initOneSignal();
+    if (!OS) return 'unsupported';
+    if (OS.Notifications.permission === false) return 'default';
+    if (Notification?.permission === 'denied') return 'denied';
+    const optedIn = OS.User.PushSubscription.optedIn;
+    return optedIn ? 'subscribed' : 'default';
   } catch {
-    // SW not ready yet (still installing/activating) — APIs exist, just can't check subscription status.
-    // Return 'default' so user sees the Enable Reminders button rather than a false "not supported" message.
-    return 'default';
+    return 'unsupported';
   }
 }
 
@@ -296,32 +303,29 @@ async function refreshScheduleMain() {
 }
 
 export async function enableReminders() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    alert('Push notifications are not supported.\n\nOn iPhone, add this page to your Home Screen first, then try again.');
-    return;
-  }
-  const perm = await Notification.requestPermission();
-  if (perm !== 'granted') { await refreshScheduleMain(); return; }
-
   try {
-    const reg = await navigator.serviceWorker.ready;
-    // Always unsubscribe first so a fresh subscription is created with the current VAPID key.
-    // Stale subscriptions from old keys cause 403 rejections from Apple's push server.
-    const existing = await reg.pushManager.getSubscription();
-    if (existing) await existing.unsubscribe();
-    const subscription = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-    });
-    const tzOffset = new Date().getTimezoneOffset(); // minutes behind UTC
+    const OS = await _initOneSignal();
+    if (!OS) {
+      alert('Push notifications are not supported.\n\nOn iPhone, add this page to your Home Screen first, then try again.');
+      return;
+    }
+    await OS.Notifications.requestPermission();
+    if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
+
+    // Wait for subscription to be created
+    await new Promise(r => setTimeout(r, 1500));
+    const subId = OS.User.PushSubscription.id;
+    if (!subId) throw new Error('No subscription ID — try again in a moment.');
+
+    const tzOffset = new Date().getTimezoneOffset();
     const { error } = await supabase.from('push_subscriptions').upsert({
       user_id: currentUser.id,
-      subscription: subscription.toJSON(),
+      subscription: subId,
       timezone_offset: tzOffset,
       is_active: true,
     }, { onConflict: 'user_id' });
     if (error) throw error;
-    alert('✅ Reminders enabled! You\'ll get a notification at each dose time.\n\nMake sure this app stays installed on your Home Screen.');
+    alert('✅ Reminders enabled! You\'ll get a notification at each dose time.');
   } catch (err) {
     alert('Could not enable reminders: ' + (err.message || err));
   }

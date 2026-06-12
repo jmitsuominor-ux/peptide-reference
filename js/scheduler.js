@@ -313,6 +313,7 @@ export async function enableReminders() {
       is_active: true,
     }, { onConflict: 'user_id' });
     if (error) throw error;
+    alert('✅ Reminders enabled! You\'ll get a notification at each dose time.\n\nMake sure this app stays installed on your Home Screen.');
   } catch (err) {
     alert('Could not enable reminders: ' + (err.message || err));
   }

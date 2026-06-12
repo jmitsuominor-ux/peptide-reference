@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: '*/15 * * * *'  # every 15 minutes
   workflow_dispatch:         # allow manual trigger for testing
+    inputs:
+      test_mode:
+        description: 'Send a test notification to all active subscriptions immediately (ignores time window)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 jobs:
   notify:
@@ -28,3 +37,4 @@ jobs:
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_EMAIL: ${{ secrets.VAPID_EMAIL }}
+          TEST_MODE: ${{ github.event.inputs.test_mode || 'false' }}

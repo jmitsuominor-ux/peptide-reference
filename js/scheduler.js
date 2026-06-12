@@ -379,7 +379,7 @@ async function renderProtocols() {
     html += `</div>`;
     el.innerHTML = html;
   } catch (err) {
-    el.innerHTML = '';
+    el.innerHTML = `<div style="color:var(--red);font-size:12px;padding:10px;">Protocol load error: ${err.message || err}</div>`;
   }
 }
 

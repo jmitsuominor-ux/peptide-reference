@@ -27,8 +27,8 @@ async function sendPush(userId, title, body, tag) {
     }),
   });
   const data = await res.json();
+  console.log(`    OneSignal raw response (${res.status}): ${JSON.stringify(data)}`);
   if (data.errors?.length) throw new Error(data.errors.join(', '));
-  console.log(`    OneSignal response: id=${data.id} recipients=${data.recipients ?? 'unknown'}`);
   return data;
 }
 

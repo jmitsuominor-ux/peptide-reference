@@ -1,6 +1,4 @@
-importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-
-const CACHE = 'peptideref-v6';
+const CACHE = 'peptideref-v7';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
@@ -19,7 +17,6 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if (url.hostname.includes('supabase.co')) return;
-  if (url.hostname.includes('onesignal.com')) return;
   const isAppFile = /\.(html|js)$/.test(url.pathname) || url.pathname.endsWith('/');
   if (isAppFile) {
     e.respondWith(
@@ -41,5 +38,27 @@ self.addEventListener('fetch', e => {
       }
       return res;
     }).catch(() => cached))
+  );
+});
+
+self.addEventListener('push', e => {
+  let data = {};
+  try { data = e.data?.json() || {}; } catch {}
+  e.waitUntil(
+    self.registration.showNotification(data.title || 'PeptideRef', {
+      body: data.body || '',
+      icon: '/peptide-reference/icon-192.png',
+      tag: data.tag || 'peptideref',
+    })
+  );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
+      const c = cs.find(w => w.url.includes('peptide-reference'));
+      return c ? c.focus() : clients.openWindow('/peptide-reference/');
+    })
   );
 });

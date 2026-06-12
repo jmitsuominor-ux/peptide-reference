@@ -239,39 +239,27 @@ function renderAuthPrompt() {
   `;
 }
 
-const ONESIGNAL_APP_ID = 'c058b067-4b57-4a04-a776-72acb7cd0c35';
+const VAPID_PUBLIC_KEY = 'BI3DhU1wdxTuEFcElc682JaeCY0MxbqFMlXE24dttdgJDsNSFuwkb4LUqT8reiYzz-Am2XJwR8BSER6eixWLFP0';
 
-let _osReady = null;
-function _initOneSignal() {
-  if (_osReady) return _osReady;
-  _osReady = Promise.race([
-    new Promise(resolve => {
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      window.OneSignalDeferred.push(async function(OneSignal) {
-        try {
-          await OneSignal.init({
-            appId: ONESIGNAL_APP_ID,
-            serviceWorkerPath: '/peptide-reference/sw.js',
-            serviceWorkerParam: { scope: '/peptide-reference/' },
-            notifyButton: { enable: false },
-          });
-        } catch (e) { /* not in supported context */ }
-        resolve(OneSignal);
-      });
-    }),
-    new Promise(resolve => setTimeout(() => resolve(null), 8000)),
-  ]);
-  return _osReady;
+function _urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+async function _getPushReg() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
+  return navigator.serviceWorker.getRegistration('/peptide-reference/');
 }
 
 async function getSubscriptionStatus() {
   try {
-    const OS = await _initOneSignal();
-    if (!OS) return 'unsupported';
-    if (OS.Notifications.permission === false) return 'default';
     if (Notification?.permission === 'denied') return 'denied';
-    const optedIn = OS.User.PushSubscription.optedIn;
-    return optedIn ? 'subscribed' : 'default';
+    const reg = await _getPushReg();
+    if (!reg) return 'unsupported';
+    const sub = await reg.pushManager.getSubscription();
+    return sub ? 'subscribed' : 'default';
   } catch {
     return 'unsupported';
   }
@@ -307,43 +295,24 @@ async function refreshScheduleMain() {
 
 export async function enableReminders() {
   try {
-    const OS = await _initOneSignal();
-    if (!OS) {
-      alert('Notification service failed to load.\n\nMake sure you are using the Home Screen app (not Safari), then try again.');
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert('Push notifications not supported.\n\nMake sure you are using the Home Screen app (not Safari).');
       return;
     }
 
-    await OS.login(currentUser.id);
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') { await refreshScheduleMain(); return; }
 
-    // Ensure service worker is active before requesting push permission
-    if (navigator.serviceWorker) await navigator.serviceWorker.ready;
-
-    await OS.Notifications.requestPermission();
-    if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
-
-    // Wait up to 15s for a subscription ID to appear — the ID is our delivery target
-    let subId = null;
-    for (let i = 0; i < 30; i++) {
-      subId = OS.User?.PushSubscription?.id;
-      if (subId) break;
-      await new Promise(r => setTimeout(r, 500));
-    }
-
-    if (!subId) {
-      const regs = await navigator.serviceWorker?.getRegistrations?.() || [];
-      const swInfo = regs.length
-        ? regs.map(r => `${r.scope}:${r.active?.state ?? 'none'}`).join(', ')
-        : 'none';
-      alert(`Push subscription not created after 15s.\n\nService workers: ${swInfo}\n\nTry:\n1. iPhone Settings → Notifications → this app → toggle OFF then ON\n2. Come back and tap Enable again`);
-      await refreshScheduleMain();
-      return;
-    }
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: _urlB64ToUint8Array(VAPID_PUBLIC_KEY),
+    });
 
     const tzOffset = new Date().getTimezoneOffset();
-    // Store the OneSignal subscription ID so we can target it directly
     const { error } = await supabase.from('push_subscriptions').upsert({
       user_id: currentUser.id,
-      subscription: `onesignal-sub:${subId}`,
+      subscription: JSON.stringify(sub.toJSON()),
       timezone_offset: tzOffset,
       is_active: true,
     }, { onConflict: 'user_id' });

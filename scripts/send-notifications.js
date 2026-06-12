@@ -1,49 +1,23 @@
-// Runs on GitHub Actions cron — queries Supabase for due reminders and sends push notifications via OneSignal.
+// Runs on GitHub Actions cron — queries Supabase for due reminders and sends push notifications via web-push (VAPID).
 const { createClient } = require('@supabase/supabase-js');
+const webpush = require('web-push');
 
 const TEST_MODE = process.env.TEST_MODE === 'true';
-const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY;
+
+webpush.setVapidDetails(
+  'https://jmitsuominor-ux.github.io/peptide-reference/',
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+);
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function sendPush(subscriptionField, title, body, tag) {
-  // Support both onesignal-sub:<id> (direct subscription ID) and onesignal:<userId> (external_id fallback)
-  let targeting;
-  if (subscriptionField.startsWith('onesignal-sub:')) {
-    const subId = subscriptionField.replace('onesignal-sub:', '');
-    targeting = { include_subscription_ids: [subId] };
-  } else {
-    const userId = subscriptionField.replace('onesignal:', '');
-    targeting = { include_aliases: { external_id: [userId] }, target_channel: 'push' };
-  }
-
-  const res = await fetch('https://onesignal.com/api/v1/notifications', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Key ${ONESIGNAL_API_KEY}`,
-    },
-    body: JSON.stringify({
-      app_id: ONESIGNAL_APP_ID,
-      ...targeting,
-      contents: { en: body },
-      headings: { en: title },
-      web_push_topic: tag,
-    }),
-  });
-  const data = await res.json();
-  console.log(`    OneSignal raw response (${res.status}): ${JSON.stringify(data)}`);
-  if (data.errors?.length && !Array.isArray(data.errors)) {
-    const errStr = JSON.stringify(data.errors);
-    if (errStr.includes('invalid')) throw new Error('No valid subscribers: ' + errStr);
-  } else if (Array.isArray(data.errors) && data.errors.length) {
-    throw new Error(data.errors.join(', '));
-  }
-  return data;
+async function sendPush(subscriptionJson, title, body, tag) {
+  const payload = JSON.stringify({ title, body, tag });
+  await webpush.sendNotification(subscriptionJson, payload);
 }
 
 function isDueToday(entry, localDow) {
@@ -68,11 +42,18 @@ async function main() {
   if (subsErr) { console.error('Failed to load subscriptions:', subsErr.message); process.exit(1); }
   if (!subs?.length) { console.log('No active subscriptions found.'); return; }
 
-  // Only process OneSignal-enabled subscriptions (marked with 'onesignal:' prefix or plain UUID strings)
-  const validSubs = subs.filter(s => typeof s.subscription === 'string' && s.subscription.length > 10);
+  // Only process subscriptions that are valid push subscription JSON objects
+  const validSubs = subs.filter(s => {
+    if (typeof s.subscription !== 'string') return false;
+    try {
+      const p = JSON.parse(s.subscription);
+      return !!p.endpoint;
+    } catch { return false; }
+  });
   console.log(`Found ${validSubs.length} valid subscription(s) (${subs.length} total)`);
 
   for (const sub of validSubs) {
+    const subscriptionObj = JSON.parse(sub.subscription);
     const localNow = new Date(nowUtc.getTime() - sub.timezone_offset * 60 * 1000);
     const localHour = localNow.getUTCHours();
     const localMinute = localNow.getUTCMinutes();
@@ -81,15 +62,14 @@ async function main() {
     const localTimeStr = `${String(localHour).padStart(2,'0')}:${String(localMinute).padStart(2,'0')}`;
 
     console.log(`\nUser ${sub.user_id}: tz_offset=${sub.timezone_offset} → local time ${localTimeStr} (${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][localDow]})`);
-
-    console.log(`  Subscription: ${sub.subscription}`);
+    console.log(`  Endpoint: ${subscriptionObj.endpoint?.slice(0, 60)}...`);
 
     if (TEST_MODE) {
       try {
-        await sendPush(sub.subscription, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
+        await sendPush(subscriptionObj, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
         console.log(`  ✅ Test notification sent`);
       } catch (err) {
-        console.error(`  ❌ Push failed: ${err.message}`);
+        console.error(`  ❌ Push failed: ${err.statusCode ?? ''} ${err.message}`);
       }
       continue;
     }
@@ -131,13 +111,17 @@ async function main() {
     for (const [time, groupSlots] of Object.entries(groups)) {
       const doses = groupSlots.map(s => `${s.entry.compound_name}: ${s.entry.dose}`).join(' · ');
       try {
-        await sendPush(sub.subscription, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
+        await sendPush(subscriptionObj, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
         console.log(`  ✅ Sent: ${doses}`);
         await supabase.from('notification_log').insert(
           groupSlots.map(s => ({ user_id: sub.user_id, entry_id: s.entry.id, sent_date: localDate, reminder_slot: s.slot }))
         );
       } catch (err) {
-        console.error(`  ❌ Push failed: ${err.message}`);
+        console.error(`  ❌ Push failed: ${err.statusCode ?? ''} ${err.message}`);
+        if (err.statusCode === 410) {
+          await supabase.from('push_subscriptions').update({ is_active: false }).eq('user_id', sub.user_id);
+          console.log(`  Subscription expired — marked inactive`);
+        }
       }
     }
   }

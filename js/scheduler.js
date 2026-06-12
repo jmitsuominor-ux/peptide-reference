@@ -60,7 +60,7 @@ function freqLabel(freq, days) {
 }
 
 // ─── Supabase CRUD ────────────────────────────────────────
-export async function createProtocol(stackIdx, tier) {
+export async function createProtocol(stackIdx, tier, overrides = {}) {
   const stack = STACKS[parseInt(stackIdx)];
   if (!stack || !currentUser) throw new Error('Invalid stack or not signed in');
 
@@ -79,6 +79,7 @@ export async function createProtocol(stackIdx, tier) {
 
   const entries = stack.peptides.map(p => {
     const freq = parseFrequency(p.schedule || '');
+    const ov = overrides[p.name] || {};
     return {
       schedule_id: sched.id,
       user_id: currentUser.id,
@@ -86,10 +87,41 @@ export async function createProtocol(stackIdx, tier) {
       dose: p[tier] || p.mid,
       schedule_text: p.schedule || '',
       frequency: freq,
-      days_of_week: defaultDays(freq),
-      reminder_time: parseReminderTime(p.schedule || ''),
+      days_of_week: ov.daysOfWeek !== undefined ? ov.daysOfWeek : defaultDays(freq),
+      reminder_time: ov.reminderTime || parseReminderTime(p.schedule || ''),
     };
   });
+
+  const { error: eErr } = await supabase.from('schedule_entries').insert(entries);
+  if (eErr) throw eErr;
+  return sched;
+}
+
+async function createCustomProtocol(name, compounds) {
+  if (!currentUser) throw new Error('Not signed in');
+  const { data: sched, error: sErr } = await supabase
+    .from('schedules')
+    .insert({
+      user_id: currentUser.id,
+      name: name || 'Custom Protocol',
+      stack_name: null,
+      tier: 'mid',
+      start_date: todayStr(),
+      cycle_weeks: 12,
+    })
+    .select().single();
+  if (sErr) throw sErr;
+
+  const entries = compounds.map(c => ({
+    schedule_id: sched.id,
+    user_id: currentUser.id,
+    compound_name: c.name,
+    dose: `${c.dose} ${c.unit}`,
+    schedule_text: c.freq,
+    frequency: c.freq,
+    days_of_week: (c.freq !== 'daily' && c.freq !== 'as_needed') ? c.days : null,
+    reminder_time: c.reminderTime || '20:00',
+  }));
 
   const { error: eErr } = await supabase.from('schedule_entries').insert(entries);
   if (eErr) throw eErr;
@@ -421,11 +453,100 @@ export async function schedSignOut() {
 let _addStep = 1;
 let _addStackIdx = '';
 let _addTier = 'mid';
+let _addMode = 'stack'; // 'stack' | 'custom'
+let _customCompounds = []; // [{name,dose,unit,freq,reminderTime}]
+let _customProtoName = '';
+
+export function addProtoSwitchMode(mode) {
+  _addMode = mode;
+  _addStep = 1;
+  renderAddProtoStep();
+}
+
+export function addCustomCompound() {
+  _customCompounds.push({ name:'', dose:'', unit:'mcg', freq:'daily', reminderTime:'20:00', days:[1,4] });
+  _renderCustomListInPlace();
+}
+
+export function removeCustomCompound(idx) {
+  _customCompounds.splice(idx, 1);
+  _renderCustomListInPlace();
+}
+
+export function customFreqChanged(idx) {
+  const freq = document.getElementById(`cf-freq-${idx}`)?.value;
+  const daysRow = document.getElementById(`cf-days-row-${idx}`);
+  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
+}
+
+function _renderCustomListInPlace() {
+  const el = document.getElementById('customCompoundList');
+  if (el) el.innerHTML = _renderCustomList();
+}
+
+function _renderCustomList() {
+  const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const DEFAULT_DAYS = { twice_weekly:[1,4], three_weekly:[1,3,5], weekly:[1] };
+  if (_customCompounds.length === 0) {
+    return '<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">No compounds added yet.</div>';
+  }
+  return _customCompounds.map((c, i) => {
+    const isScheduled = c.freq !== 'daily' && c.freq !== 'as_needed';
+    const defDays = c.days || DEFAULT_DAYS[c.freq] || [1];
+    return `<div class="proto-compound-row" style="margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <input type="text" class="calc-input" placeholder="Compound name" value="${c.name}"
+          style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;"
+          oninput="_customCompounds[${i}].name=this.value" id="cf-name-${i}">
+        <button type="button" onclick="removeCustomCompound(${i})"
+          style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px;line-height:1;flex-shrink:0;">✕</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <input type="text" class="calc-input" placeholder="Dose" value="${c.dose}"
+          style="flex:1;font-size:13px;padding:7px 10px;"
+          oninput="_customCompounds[${i}].dose=this.value" id="cf-dose-${i}">
+        <select class="calc-select" style="width:80px;font-size:12px;padding:7px 6px;"
+          onchange="_customCompounds[${i}].unit=this.value" id="cf-unit-${i}">
+          <option value="mcg" ${c.unit==='mcg'?'selected':''}>mcg</option>
+          <option value="mg" ${c.unit==='mg'?'selected':''}>mg</option>
+          <option value="IU" ${c.unit==='IU'?'selected':''}>IU</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
+        <span class="proto-time-label" style="flex-shrink:0;">Frequency:</span>
+        <select class="calc-select" style="flex:1;font-size:12px;padding:7px 8px;"
+          onchange="_customCompounds[${i}].freq=this.value;customFreqChanged(${i})" id="cf-freq-${i}">
+          <option value="daily" ${c.freq==='daily'?'selected':''}>Daily</option>
+          <option value="twice_weekly" ${c.freq==='twice_weekly'?'selected':''}>2x / week</option>
+          <option value="three_weekly" ${c.freq==='three_weekly'?'selected':''}>3x / week</option>
+          <option value="weekly" ${c.freq==='weekly'?'selected':''}>Once / week</option>
+          <option value="as_needed" ${c.freq==='as_needed'?'selected':''}>As needed</option>
+        </select>
+      </div>
+      <div id="cf-days-row-${i}" class="proto-time-row" style="display:${isScheduled?'flex':'none'};gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
+        <span class="proto-time-label">Days:</span>
+        <div id="cf-days-${i}" style="display:flex;gap:4px;flex-wrap:wrap;">
+          ${DAY_LABELS.map((d,di) =>
+            `<button type="button" class="day-pill${defDays.includes(di)?' active':''}" data-day="${di}" onclick="this.classList.toggle('active')">${d}</button>`
+          ).join('')}
+        </div>
+      </div>
+      <div class="proto-time-row" style="gap:6px;">
+        <span class="proto-time-label">Reminder:</span>
+        <input type="time" class="calc-input" value="${c.reminderTime||'20:00'}"
+          style="flex:1;font-size:13px;padding:7px 10px;"
+          onchange="_customCompounds[${i}].reminderTime=this.value" id="cf-time-${i}">
+      </div>
+    </div>`;
+  }).join('');
+}
 
 export function openAddProtoModal() {
   _addStep = 1;
   _addStackIdx = '';
   _addTier = 'mid';
+  _addMode = 'stack';
+  _customCompounds = [];
   renderAddProtoStep();
   const modal = document.getElementById('addProtoModal');
   modal.style.display = 'flex';
@@ -447,44 +568,88 @@ function _closeAddProto() {
 
 function renderAddProtoStep() {
   const body = document.getElementById('addProtoBody');
+  const modeToggle = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;">
+      <button type="button" class="planner-tier-btn${_addMode==='stack'?' active':''}" onclick="addProtoSwitchMode('stack')">📦 Stack</button>
+      <button type="button" class="planner-tier-btn${_addMode==='custom'?' active':''}" onclick="addProtoSwitchMode('custom')">✏️ Custom</button>
+    </div>`;
+
   if (_addStep === 1) {
-    const options = STACKS.map((s, i) => `<option value="${i}">${s.emoji} ${s.name}</option>`).join('');
-    body.innerHTML = `
-      <div class="proto-step-header">Step 1 of 2 — Choose a Stack</div>
-      <div class="calc-field">
-        <label class="calc-label">Stack</label>
-        <select class="calc-select" id="addProtoStackSel" onchange="addProtoStackChanged()">
-          <option value="">— Select a stack —</option>
-          ${options}
-        </select>
-      </div>
-      <div id="addProtoStackPreview" style="display:none;background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px;"></div>
-      <div class="calc-field" style="margin-bottom:16px;">
-        <label class="calc-label">Dose Tier</label>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;" id="addProtoTierBtns">
-          <div class="planner-tier-btn" onclick="addProtoSetTier('lo',this)">🟢 Low</div>
-          <div class="planner-tier-btn active" onclick="addProtoSetTier('mid',this)">🔵 Standard</div>
-          <div class="planner-tier-btn" onclick="addProtoSetTier('hi',this)">🔴 High</div>
+    if (_addMode === 'stack') {
+      const options = STACKS.map((s, i) => `<option value="${i}">${s.emoji} ${s.name}</option>`).join('');
+      body.innerHTML = `
+        <div class="proto-step-header">Add Protocol</div>
+        ${modeToggle}
+        <div class="calc-field">
+          <label class="calc-label">Stack</label>
+          <select class="calc-select" id="addProtoStackSel" onchange="addProtoStackChanged()">
+            <option value="">— Select a stack —</option>
+            ${options}
+          </select>
         </div>
-      </div>
-      <button class="calc-btn" onclick="addProtoNext()" disabled id="addProtoNextBtn">Review Protocol →</button>
-    `;
+        <div id="addProtoStackPreview" style="display:none;background:var(--blue-mid);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px;"></div>
+        <div class="calc-field" style="margin-bottom:16px;">
+          <label class="calc-label">Dose Tier</label>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;" id="addProtoTierBtns">
+            <div class="planner-tier-btn${_addTier==='lo'?' active':''}" onclick="addProtoSetTier('lo',this)">🟢 Low</div>
+            <div class="planner-tier-btn${_addTier==='mid'?' active':''}" onclick="addProtoSetTier('mid',this)">🔵 Standard</div>
+            <div class="planner-tier-btn${_addTier==='hi'?' active':''}" onclick="addProtoSetTier('hi',this)">🔴 High</div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="addProtoNext()" ${_addStackIdx?'':'disabled'} id="addProtoNextBtn">Review Protocol →</button>
+      `;
+      if (_addStackIdx) {
+        const sel = document.getElementById('addProtoStackSel');
+        if (sel) sel.value = _addStackIdx;
+        const stack = STACKS[parseInt(_addStackIdx)];
+        const preview = document.getElementById('addProtoStackPreview');
+        if (preview && stack) { preview.textContent = stack.description || stack.goal; preview.style.display = 'block'; }
+      }
+    } else {
+      // Custom mode
+      body.innerHTML = `
+        <div class="proto-step-header">Add Protocol</div>
+        ${modeToggle}
+        <div class="calc-field">
+          <label class="calc-label">Protocol Name</label>
+          <input type="text" class="calc-input" id="customProtoName" placeholder="e.g. My Recovery Stack" value="${_customProtoName||''}">
+        </div>
+        <div id="customCompoundList" style="margin-bottom:12px;">${_renderCustomList()}</div>
+        <button type="button" class="sched-add-btn" style="margin-bottom:16px;" onclick="addCustomCompound()">+ Add Compound</button>
+        <div class="calc-error" id="addProtoError"></div>
+        <button class="calc-btn" onclick="addProtoSaveCustom()">Start Protocol ✓</button>
+      `;
+    }
   } else {
     const stack = STACKS[parseInt(_addStackIdx)];
+    const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
     const compounds = stack.peptides.map(p => {
       const dose = p[_addTier] || p.mid;
       const freq = parseFrequency(p.schedule || '');
       const time = parseReminderTime(p.schedule || '');
+      const id = p.name.replace(/\s+/g,'-').replace(/[()]/g,'');
+      const defDays = defaultDays(freq);
+      const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+      const dayPicker = isScheduled ? `
+        <div class="proto-time-row" style="margin-top:8px;gap:4px;flex-wrap:wrap;align-items:center;">
+          <span class="proto-time-label">Days:</span>
+          <div id="days-${id}" style="display:flex;gap:4px;flex-wrap:wrap;">
+            ${DAY_LABELS.map((d,i) =>
+              `<button type="button" class="day-pill${defDays && defDays.includes(i) ? ' active' : ''}" data-day="${i}" onclick="this.classList.toggle('active')">${d}</button>`
+            ).join('')}
+          </div>
+        </div>` : '';
       return `
         <div class="proto-compound-row">
           <div class="proto-compound-name">${p.name}</div>
-          <div class="proto-compound-dose">${dose} · ${freqLabel(freq, defaultDays(freq))}</div>
+          <div class="proto-compound-dose">${dose} · ${freqLabel(freq, defDays)}</div>
           <div class="proto-time-row">
-            <span class="proto-time-label">Reminder time:</span>
+            <span class="proto-time-label">Reminder:</span>
             <input type="time" class="calc-input" value="${time}"
               style="flex:1;font-size:13px;padding:7px 10px;"
-              id="time-${p.name.replace(/\s+/g,'-').replace(/[()]/g,'')}">
+              id="time-${id}">
           </div>
+          ${dayPicker}
         </div>`;
     }).join('');
     body.innerHTML = `
@@ -553,7 +718,22 @@ export async function addProtoSave() {
   btn.disabled = true;
   errEl.classList.remove('visible');
   try {
-    await createProtocol(_addStackIdx, _addTier);
+    const stack = STACKS[parseInt(_addStackIdx)];
+    const overrides = {};
+    stack.peptides.forEach(p => {
+      const id = p.name.replace(/\s+/g,'-').replace(/[()]/g,'');
+      const timeEl = document.getElementById(`time-${id}`);
+      const daysContainer = document.getElementById(`days-${id}`);
+      const freq = parseFrequency(p.schedule || '');
+      const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+      overrides[p.name] = {
+        reminderTime: timeEl ? timeEl.value : null,
+        daysOfWeek: isScheduled && daysContainer
+          ? Array.from(daysContainer.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day))
+          : null,
+      };
+    });
+    await createProtocol(_addStackIdx, _addTier, overrides);
     _closeAddProto();
     await refreshScheduleMain();
   } catch (err) {
@@ -561,6 +741,47 @@ export async function addProtoSave() {
     errEl.classList.add('visible');
     btn.textContent = 'Start Protocol ✓';
     btn.disabled = false;
+  }
+}
+
+export async function addProtoSaveCustom() {
+  const nameEl = document.getElementById('customProtoName');
+  const errEl = document.getElementById('addProtoError');
+  errEl.classList.remove('visible');
+  const protoName = nameEl ? nameEl.value.trim() : '';
+  // Collect current field values
+  _customCompounds.forEach((c, i) => {
+    const nameF = document.getElementById(`cf-name-${i}`);
+    const doseF = document.getElementById(`cf-dose-${i}`);
+    const unitF = document.getElementById(`cf-unit-${i}`);
+    const freqF = document.getElementById(`cf-freq-${i}`);
+    const timeF = document.getElementById(`cf-time-${i}`);
+    const daysC = document.getElementById(`cf-days-${i}`);
+    if (nameF) c.name = nameF.value.trim();
+    if (doseF) c.dose = doseF.value.trim();
+    if (unitF) c.unit = unitF.value;
+    if (freqF) c.freq = freqF.value;
+    if (timeF) c.reminderTime = timeF.value;
+    if (daysC) c.days = Array.from(daysC.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
+  });
+  const valid = _customCompounds.filter(c => c.name && c.dose);
+  if (valid.length === 0) {
+    errEl.textContent = '⚠ Add at least one compound with a name and dose.';
+    errEl.classList.add('visible');
+    return;
+  }
+  const btn = document.querySelector('#addProtoBody .calc-btn:last-child');
+  if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
+  try {
+    await createCustomProtocol(protoName, valid);
+    _customProtoName = '';
+    _customCompounds = [];
+    _closeAddProto();
+    await refreshScheduleMain();
+  } catch (err) {
+    errEl.textContent = '⚠ ' + (err.message || 'Failed to save protocol.');
+    errEl.classList.add('visible');
+    if (btn) { btn.textContent = 'Start Protocol ✓'; btn.disabled = false; }
   }
 }
 

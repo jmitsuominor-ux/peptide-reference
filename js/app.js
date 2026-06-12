@@ -17,6 +17,7 @@ import {
   openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
   openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
+  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol,
 } from './scheduler.js';
 
@@ -34,6 +35,7 @@ Object.assign(window, {
   openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
   openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
+  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol,
   toggleAuthPw,
 });

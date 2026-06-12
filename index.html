@@ -335,6 +335,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .proto-compound-dose{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:9px;}
 .proto-time-row{display:flex;align-items:center;gap:8px;}
 .proto-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;}
+.day-pill{width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);background:var(--white);font-size:10px;font-family:'IBM Plex Mono',monospace;font-weight:500;color:var(--text3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;padding:0;}
+.day-pill.active{border-color:var(--blue);background:var(--blue-light);color:var(--blue);font-weight:700;}
+.day-pill:active{transform:scale(0.88);}
 </style>
 <script data-goatcounter="https://peptiderefrenceapp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>if(new URLSearchParams(location.search).get('compound'))document.documentElement.style.setProperty('--cat-view-display','none');</script>

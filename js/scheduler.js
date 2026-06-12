@@ -89,6 +89,7 @@ export async function createProtocol(stackIdx, tier, overrides = {}) {
       frequency: freq,
       days_of_week: ov.daysOfWeek !== undefined ? ov.daysOfWeek : defaultDays(freq),
       reminder_time: ov.reminderTime || parseReminderTime(p.schedule || ''),
+      reminder_time_2: ov.reminderTime2 || null,
     };
   });
 
@@ -121,6 +122,7 @@ async function createCustomProtocol(name, compounds) {
     frequency: c.freq,
     days_of_week: (c.freq !== 'daily' && c.freq !== 'as_needed') ? c.days : null,
     reminder_time: c.reminderTime || '20:00',
+    reminder_time_2: c.reminderTime2 || null,
   }));
 
   const { error: eErr } = await supabase.from('schedule_entries').insert(entries);
@@ -558,12 +560,15 @@ function _syncCustomFromDOM() {
     const unitF = document.getElementById(`cf-unit-${i}`);
     const freqF = document.getElementById(`cf-freq-${i}`);
     const timeF = document.getElementById(`cf-time-${i}`);
+    const time2Row = document.getElementById(`cf-t2-row-${i}`);
+    const time2F = document.getElementById(`cf-time2-${i}`);
     const daysC = document.getElementById(`cf-days-${i}`);
     if (nameF) c.name = nameF.value;
     if (doseF) c.dose = doseF.value;
     if (unitF) c.unit = unitF.value;
     if (freqF) c.freq = freqF.value;
     if (timeF) c.reminderTime = timeF.value;
+    c.reminderTime2 = (time2Row?.style.display !== 'none' && time2F?.value) ? time2F.value : null;
     if (daysC) c.days = Array.from(daysC.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
   });
 }
@@ -640,11 +645,22 @@ function _renderCustomList() {
           ).join('')}
         </div>
       </div>
-      <div class="proto-time-row" style="gap:6px;">
-        <span class="proto-time-label">Reminder:</span>
+      <div class="proto-time-row" style="gap:6px;margin-bottom:4px;">
+        <span class="proto-time-label">Reminder 1:</span>
         <input type="time" class="calc-input" value="${c.reminderTime||'20:00'}"
           style="flex:1;font-size:13px;padding:7px 10px;"
           id="cf-time-${i}">
+      </div>
+      <div id="cf-t2-row-${i}" style="display:${c.reminderTime2 ? 'flex' : 'none'};gap:6px;align-items:center;margin-bottom:4px;">
+        <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
+        <input type="time" class="calc-input" id="cf-time2-${i}" value="${c.reminderTime2||'20:00'}"
+          style="flex:1;font-size:13px;padding:7px 10px;">
+        <button type="button" onclick="document.getElementById('cf-t2-row-${i}').style.display='none';document.getElementById('cf-t2-add-${i}').style.display='block';document.getElementById('cf-time2-${i}').value=''"
+          style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
+      </div>
+      <div id="cf-t2-add-${i}" style="display:${c.reminderTime2 ? 'none' : 'block'};margin-bottom:4px;">
+        <button type="button" onclick="document.getElementById('cf-t2-row-${i}').style.display='flex';document.getElementById('cf-t2-add-${i}').style.display='none'"
+          style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
       </div>
     </div>`;
   }).join('');
@@ -752,11 +768,22 @@ function renderAddProtoStep() {
         <div class="proto-compound-row">
           <div class="proto-compound-name">${p.name}</div>
           <div class="proto-compound-dose">${dose} · ${freqLabel(freq, defDays)}</div>
-          <div class="proto-time-row">
-            <span class="proto-time-label">Reminder:</span>
+          <div class="proto-time-row" style="margin-bottom:4px;">
+            <span class="proto-time-label">Reminder 1:</span>
             <input type="time" class="calc-input" value="${time}"
               style="flex:1;font-size:13px;padding:7px 10px;"
               id="time-${id}">
+          </div>
+          <div id="time2-row-${id}" style="display:none;gap:6px;align-items:center;margin-bottom:4px;">
+            <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
+            <input type="time" class="calc-input" id="time2-${id}" value="${time}"
+              style="flex:1;font-size:13px;padding:7px 10px;">
+            <button type="button" onclick="document.getElementById('time2-row-${id}').style.display='none';document.getElementById('time2-add-${id}').style.display='block'"
+              style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
+          </div>
+          <div id="time2-add-${id}" style="margin-bottom:4px;">
+            <button type="button" onclick="document.getElementById('time2-row-${id}').style.display='flex';document.getElementById('time2-add-${id}').style.display='none'"
+              style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
           </div>
           ${dayPicker}
         </div>`;
@@ -832,11 +859,14 @@ export async function addProtoSave() {
     stack.peptides.forEach(p => {
       const id = p.name.replace(/\s+/g,'-').replace(/[()]/g,'');
       const timeEl = document.getElementById(`time-${id}`);
+      const time2Row = document.getElementById(`time2-row-${id}`);
+      const time2El = document.getElementById(`time2-${id}`);
       const daysContainer = document.getElementById(`days-${id}`);
       const freq = parseFrequency(p.schedule || '');
       const isScheduled = freq !== 'daily' && freq !== 'as_needed';
       overrides[p.name] = {
         reminderTime: timeEl ? timeEl.value : null,
+        reminderTime2: (time2Row?.style.display !== 'none' && time2El?.value) ? time2El.value : null,
         daysOfWeek: isScheduled && daysContainer
           ? Array.from(daysContainer.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day))
           : null,

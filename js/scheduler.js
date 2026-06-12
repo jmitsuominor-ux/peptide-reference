@@ -259,7 +259,9 @@ async function getSubscriptionStatus() {
     const existing = await reg.pushManager.getSubscription().catch(() => null);
     return existing ? 'subscribed' : 'default';
   } catch {
-    return 'unsupported';
+    // SW not ready yet (still installing/activating) — APIs exist, just can't check subscription status.
+    // Return 'default' so user sees the Enable Reminders button rather than a false "not supported" message.
+    return 'default';
   }
 }
 

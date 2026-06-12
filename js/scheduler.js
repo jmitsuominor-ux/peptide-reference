@@ -271,7 +271,7 @@ async function refreshScheduleMain() {
   const mainDiv = document.getElementById('schedMain');
   const status = await getSubscriptionStatus();
   const notifHtml = status === 'subscribed'
-    ? `<span style="color:var(--green);font-weight:600;">✅ Reminders on</span> — you'll be notified at each dose time.`
+    ? `<span style="color:var(--green);font-weight:600;">✅ Reminders on</span> — you'll be notified at each dose time. <button class="sched-text-btn" style="font-size:11px;padding:3px 8px;border:1px solid var(--border2);border-radius:6px;background:var(--bg2);margin-left:6px;" onclick="enableReminders()">Re-enable</button>`
     : status === 'denied'
     ? `<span style="color:var(--text3);">Notifications blocked — allow them in browser/OS settings to enable reminders.</span>`
     : status === 'unsupported'

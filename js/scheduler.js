@@ -313,13 +313,24 @@ export async function enableReminders() {
       return;
     }
 
-    // Link this device to the user's account so we can target by user ID
     await OS.login(currentUser.id);
-
     await OS.Notifications.requestPermission();
     if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
 
-    // Store a marker in Supabase so the cron knows this user has OneSignal enabled
+    // Wait for OneSignal to register the push subscription with APNs (async after permission grant)
+    let subId = null;
+    for (let i = 0; i < 20; i++) {
+      subId = OS.User?.PushSubscription?.id;
+      if (subId) break;
+      await new Promise(r => setTimeout(r, 500));
+    }
+
+    if (!subId) {
+      alert('Notifications permission was granted but the push subscription didn\'t register.\n\nTry: Settings → Notifications → find this app → make sure notifications are ON, then tap Enable again.');
+      await refreshScheduleMain();
+      return;
+    }
+
     const tzOffset = new Date().getTimezoneOffset();
     const { error } = await supabase.from('push_subscriptions').upsert({
       user_id: currentUser.id,

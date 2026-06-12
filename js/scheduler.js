@@ -391,7 +391,7 @@ async function renderToday() {
               <div class="sched-entry-dose">${e.dose}${stackName ? ' · ' + stackName : ''}</div>
             </div>
             <button class="sched-check-btn${done ? ' done' : ''}" id="check-${cardId}"
-              onclick="toggleInjectionLog('${e.id}','${e.compound_name.replace(/'/g,"\\'")}','${(e.dose||'').replace(/'/g,"\\'")}',${done})">
+              onclick="toggleInjectionLog('${e.id}','${e.compound_name.replace(/'/g,"\\'")}','${(e.dose||'').replace(/'/g,"\\'")}',${done},'${cardId}')">
               ${done ? '✓' : ''}
             </button>
           </div>`;
@@ -925,36 +925,47 @@ export async function addProtoSaveCustom() {
 }
 
 // ─── Inline handlers ──────────────────────────────────────
-export async function toggleInjectionLog(entryId, name, dose, wasDone) {
-  const card = document.getElementById(`entry-card-${entryId}`);
-  const btn  = document.getElementById(`check-${entryId}`);
+export async function toggleInjectionLog(entryId, name, dose, wasDone, cardId) {
+  const resolvedCardId = cardId || entryId;
+  const card = document.getElementById(`entry-card-${resolvedCardId}`);
+  const btn  = document.getElementById(`check-${resolvedCardId}`);
   if (!card || !btn) return;
-  // Optimistic UI update
   const nowDone = !wasDone;
-  card.classList.toggle('done', nowDone);
-  btn.classList.toggle('done', nowDone);
-  btn.textContent = nowDone ? '✓' : '';
-  btn.setAttribute('onclick', `toggleInjectionLog('${entryId}','${name.replace(/'/g,"\\'")}','${dose.replace(/'/g,"\\'")}',${nowDone})`);
+  const safeName = name.replace(/'/g, "\\'");
+  const safeDose = dose.replace(/'/g, "\\'");
+
+  const applyState = (cid, done) => {
+    const c = document.getElementById(`entry-card-${cid}`);
+    const b = document.getElementById(`check-${cid}`);
+    if (c) c.classList.toggle('done', done);
+    if (b) {
+      b.classList.toggle('done', done);
+      b.textContent = done ? '✓' : '';
+      b.setAttribute('onclick', `toggleInjectionLog('${entryId}','${safeName}','${safeDose}',${done},'${cid}')`);
+    }
+  };
+
+  // Update this card and its companion slot (slot1↔slot2 share same entryId)
+  const altCardId = resolvedCardId.endsWith('-2') ? entryId : `${entryId}-2`;
+  applyState(resolvedCardId, nowDone);
+  applyState(altCardId, nowDone);
+
   try {
     if (nowDone) {
       await logInjection(entryId, name, dose);
     } else {
       await unlogInjection(entryId);
     }
-    // Update progress counter
     const section = document.getElementById('schedTodaySection');
     if (section) {
-      const cards = section.querySelectorAll('.sched-entry-card');
       const doneCards = section.querySelectorAll('.sched-entry-card.done');
+      const allCards  = section.querySelectorAll('.sched-entry-card');
       const prog = section.querySelector('.sched-progress');
-      if (prog) prog.textContent = `${doneCards.length} / ${cards.length} done`;
+      if (prog) prog.textContent = `${doneCards.length} / ${allCards.length} done`;
     }
   } catch (err) {
-    // Revert on error
-    card.classList.toggle('done', wasDone);
-    btn.classList.toggle('done', wasDone);
-    btn.textContent = wasDone ? '✓' : '';
-    btn.setAttribute('onclick', `toggleInjectionLog('${entryId}','${name.replace(/'/g,"\\'")}','${dose.replace(/'/g,"\\'")}',${wasDone})`);
+    applyState(resolvedCardId, wasDone);
+    applyState(altCardId, wasDone);
   }
 }
 

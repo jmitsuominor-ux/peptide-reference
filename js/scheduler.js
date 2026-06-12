@@ -312,10 +312,14 @@ export async function enableReminders() {
     await OS.Notifications.requestPermission();
     if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
 
-    // Wait for subscription to be created
-    await new Promise(r => setTimeout(r, 1500));
-    const subId = OS.User.PushSubscription.id;
-    if (!subId) throw new Error('No subscription ID — try again in a moment.');
+    // Poll for subscription ID — can take a few seconds after permission is granted
+    let subId = null;
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 1000));
+      subId = OS.User.PushSubscription.id;
+      if (subId) break;
+    }
+    if (!subId) throw new Error('Subscription not ready — please try again.');
 
     const tzOffset = new Date().getTimezoneOffset();
     const { error } = await supabase.from('push_subscriptions').upsert({

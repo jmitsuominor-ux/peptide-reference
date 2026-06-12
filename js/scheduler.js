@@ -188,6 +188,15 @@ export async function endProtocol(scheduleId) {
   if (error) throw error;
 }
 
+export async function deleteProtocol(scheduleId) {
+  // Delete entries first, then the schedule
+  await supabase.from('injection_log').delete().eq('user_id', currentUser.id)
+    .in('entry_id', (await supabase.from('schedule_entries').select('id').eq('schedule_id', scheduleId)).data?.map(e => e.id) || []);
+  await supabase.from('schedule_entries').delete().eq('schedule_id', scheduleId).eq('user_id', currentUser.id);
+  const { error } = await supabase.from('schedules').delete().eq('id', scheduleId).eq('user_id', currentUser.id);
+  if (error) throw error;
+}
+
 // ─── Rendering ────────────────────────────────────────────
 export async function renderSchedulePage() {
   const authDiv  = document.getElementById('schedAuth');
@@ -279,12 +288,16 @@ async function renderToday() {
     });
     const sortedTimes = Object.keys(groups).sort();
 
-    const timeLabel = t => {
+    const fmt12 = t => {
       const [h, m] = t.split(':').map(Number);
       const suffix = h < 12 ? 'AM' : 'PM';
       const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+      return `${h12}:${m.toString().padStart(2,'0')} ${suffix}`;
+    };
+    const timeLabel = t => {
+      const [h] = t.split(':').map(Number);
       const labels = { 8:'🌅 Morning', 12:'☀️ Midday', 17:'🏋️ Pre-workout', 20:'🌙 Evening', 21:'🌙 Before bed' };
-      return labels[h] || `🕐 ${h12}:${m.toString().padStart(2,'0')} ${suffix}`;
+      return labels[h] || `🕐 ${fmt12(t)}`;
     };
 
     let html = `
@@ -295,7 +308,7 @@ async function renderToday() {
         </div>`;
 
     sortedTimes.forEach(t => {
-      html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${t}</div>`;
+      html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${fmt12(t)}</div>`;
       groups[t].forEach(e => {
         const done = loggedIds.has(e.id);
         const stackName = e.schedules?.name || '';
@@ -355,7 +368,10 @@ async function renderProtocols() {
               <div class="sched-proto-name">${p.name}</div>
               <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
             </div>
-            <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">End</button>
+            <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
+              <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">End</button>
+              <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">Delete</button>
+            </div>
           </div>
           <div class="sched-proto-compounds">${compounds}</div>
         </div>`;
@@ -817,6 +833,11 @@ export async function toggleInjectionLog(entryId, name, dose, wasDone) {
     btn.textContent = wasDone ? '✓' : '';
     btn.setAttribute('onclick', `toggleInjectionLog('${entryId}','${name.replace(/'/g,"\\'")}','${dose.replace(/'/g,"\\'")}',${wasDone})`);
   }
+}
+
+export function confirmDeleteProtocol(id, name) {
+  if (!confirm(`Permanently delete "${name}"?\n\nThis will delete the protocol and all its injection history. This cannot be undone.`)) return;
+  deleteProtocol(id).then(() => refreshScheduleMain()).catch(err => alert('Delete failed: ' + (err.message || err)));
 }
 
 export function confirmEndProtocol(id, name) {

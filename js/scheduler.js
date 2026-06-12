@@ -247,13 +247,20 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 async function getSubscriptionStatus() {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return 'unsupported';
-  if (!('Notification' in window)) return 'unsupported';
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return 'unsupported';
   if (Notification.permission === 'denied') return 'denied';
-  const reg = await navigator.serviceWorker.ready.catch(() => null);
-  if (!reg) return 'unsupported';
-  const existing = await reg.pushManager.getSubscription().catch(() => null);
-  return existing ? 'subscribed' : 'default';
+  if (Notification.permission !== 'granted') return 'default';
+  // Only wait for SW if permission was already granted
+  try {
+    const reg = await Promise.race([
+      navigator.serviceWorker.ready,
+      new Promise((_, rej) => setTimeout(() => rej(), 2000)),
+    ]);
+    const existing = await reg.pushManager.getSubscription().catch(() => null);
+    return existing ? 'subscribed' : 'default';
+  } catch {
+    return 'unsupported';
+  }
 }
 
 async function refreshScheduleMain() {

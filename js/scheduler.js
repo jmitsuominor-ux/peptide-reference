@@ -551,12 +551,31 @@ export function addProtoSwitchMode(mode) {
   renderAddProtoStep();
 }
 
+function _syncCustomFromDOM() {
+  _customCompounds.forEach((c, i) => {
+    const nameF = document.getElementById(`cf-name-${i}`);
+    const doseF = document.getElementById(`cf-dose-${i}`);
+    const unitF = document.getElementById(`cf-unit-${i}`);
+    const freqF = document.getElementById(`cf-freq-${i}`);
+    const timeF = document.getElementById(`cf-time-${i}`);
+    const daysC = document.getElementById(`cf-days-${i}`);
+    if (nameF) c.name = nameF.value;
+    if (doseF) c.dose = doseF.value;
+    if (unitF) c.unit = unitF.value;
+    if (freqF) c.freq = freqF.value;
+    if (timeF) c.reminderTime = timeF.value;
+    if (daysC) c.days = Array.from(daysC.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
+  });
+}
+
 export function addCustomCompound() {
+  _syncCustomFromDOM();
   _customCompounds.push({ name:'', dose:'', unit:'mcg', freq:'daily', reminderTime:'20:00', days:[1,4] });
   _renderCustomListInPlace();
 }
 
 export function removeCustomCompound(idx) {
+  _syncCustomFromDOM();
   _customCompounds.splice(idx, 1);
   _renderCustomListInPlace();
 }

@@ -737,7 +737,10 @@ export async function addProtoSave() {
     _closeAddProto();
     await refreshScheduleMain();
   } catch (err) {
-    errEl.textContent = '⚠ ' + (err.message || 'Failed to save protocol.');
+    console.error('addProtoSave error:', err);
+    const msg = err.message || err.details || err.hint || JSON.stringify(err);
+    alert('Save error: ' + msg);
+    errEl.textContent = '⚠ ' + msg;
     errEl.classList.add('visible');
     btn.textContent = 'Start Protocol ✓';
     btn.disabled = false;

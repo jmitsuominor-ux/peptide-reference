@@ -444,7 +444,7 @@ async function renderProtocols() {
               <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
-              <button class="sched-proto-end-btn" style="background:var(--blue-light);border-color:var(--blue);color:var(--blue);" onclick="openEditProtoModal('${p.id}')">Edit</button>
+              <button class="sched-proto-end-btn" style="background:var(--blue-light);border-color:var(--blue);color:var(--blue);" onclick="openEditProtoModal('${p.id}','${safeName}')">Edit</button>
               <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${safeName}')">End</button>
               <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${safeName}')">Delete</button>
             </div>
@@ -981,10 +981,12 @@ export function confirmEndProtocol(id, name) {
 
 // ─── Edit Protocol modal ──────────────────────────────────
 let _editScheduleId = null;
+let _editScheduleName = '';
 let _editEntries = [];
 
-export async function openEditProtoModal(scheduleId) {
+export async function openEditProtoModal(scheduleId, scheduleName = '') {
   _editScheduleId = scheduleId;
+  _editScheduleName = scheduleName;
   const { data } = await supabase
     .from('schedule_entries')
     .select('id, compound_name, dose, frequency, reminder_time, reminder_time_2, days_of_week')
@@ -1043,6 +1045,11 @@ export async function openEditProtoModal(scheduleId) {
         <button class="modal-close" onclick="closeEditProtoModal()">✕</button>
       </div>
       <div style="padding:0 20px 24px;">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;display:block;">Protocol Name</label>
+          <input type="text" class="calc-input" id="edit-proto-name" value="${_editScheduleName}"
+            placeholder="Protocol name" style="width:100%;font-size:13px;padding:7px 10px;box-sizing:border-box;">
+        </div>
         ${rows || '<div style="padding:16px;color:var(--text3);text-align:center;">No compounds found.</div>'}
         <button class="calc-btn" style="width:100%;margin-top:16px;" onclick="saveEditProto()">Save Changes</button>
       </div>
@@ -1062,6 +1069,13 @@ export async function saveEditProto() {
   const btn = document.querySelector('#editProtoModal .calc-btn');
   if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
   try {
+    const newName = document.getElementById('edit-proto-name')?.value?.trim();
+    if (newName) {
+      await supabase.from('schedules')
+        .update({ name: newName })
+        .eq('id', _editScheduleId)
+        .eq('user_id', currentUser.id);
+    }
     for (let i = 0; i < _editEntries.length; i++) {
       const entry = _editEntries[i];
       const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;

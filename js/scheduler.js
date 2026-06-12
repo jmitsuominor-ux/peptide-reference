@@ -239,6 +239,14 @@ function renderAuthPrompt() {
 
 async function refreshScheduleMain() {
   const mainDiv = document.getElementById('schedMain');
+  const notifPerm = ('Notification' in window) ? Notification.permission : 'unsupported';
+  const notifHtml = notifPerm === 'granted'
+    ? `<span style="color:var(--green);font-weight:600;">✅ Reminders on</span> — you'll be notified at each dose time today.`
+    : notifPerm === 'denied'
+    ? `<span style="color:var(--text3);">Notifications blocked — allow them in browser settings to get reminders.</span>`
+    : notifPerm === 'unsupported'
+    ? `<span style="color:var(--text3);">Notifications not supported in this browser.</span>`
+    : `<button class="sched-text-btn" style="font-size:13px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;background:var(--bg2);" onclick="enableReminders()">🔔 Enable Reminders</button><span style="color:var(--text3);font-size:12px;margin-left:8px;">Get notified at each dose time</span>`;
   mainDiv.innerHTML = `
     <div class="clin-header" style="margin-bottom:12px;">
       <div>
@@ -251,10 +259,45 @@ async function refreshScheduleMain() {
     <div id="schedProtosSection"></div>
     <button class="sched-add-btn" onclick="openAddProtoModal()">＋ Add Protocol</button>
     <div class="disclaimer" style="margin-top:12px;">
-      <strong>Reminders:</strong> Push notifications are coming in the next update. For now, bookmark this page and check daily.
+      <strong>Reminders:</strong> ${notifHtml}
     </div>
   `;
   await Promise.all([renderToday(), renderProtocols()]);
+  if (notifPerm === 'granted') scheduleLocalNotifications();
+}
+
+let _notifTimeouts = [];
+
+async function scheduleLocalNotifications() {
+  _notifTimeouts.forEach(id => clearTimeout(id));
+  _notifTimeouts = [];
+  if (!currentUser) return;
+  try {
+    const { entries } = await loadTodayData();
+    const now = new Date();
+    for (const entry of entries) {
+      const [h, m] = (entry.reminder_time || '20:00').split(':').map(Number);
+      const fireAt = new Date();
+      fireAt.setHours(h, m, 0, 0);
+      const delay = fireAt.getTime() - now.getTime();
+      if (delay <= 0) continue;
+      const id = setTimeout(async () => {
+        const title = `Time for ${entry.compound_name}`;
+        const opts = { body: entry.dose || '', tag: `pr-${entry.id}` };
+        const reg = await navigator.serviceWorker?.ready.catch(() => null);
+        if (reg) reg.showNotification(title, opts);
+        else new Notification(title, opts);
+      }, delay);
+      _notifTimeouts.push(id);
+    }
+  } catch (_) {}
+}
+
+export async function enableReminders() {
+  if (!('Notification' in window)) { alert('Notifications not supported in this browser.'); return; }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') await scheduleLocalNotifications();
+  await refreshScheduleMain();
 }
 
 async function renderToday() {
@@ -351,26 +394,27 @@ async function renderProtocols() {
     }
     let html = `<div class="sched-section"><div class="sched-section-hdr"><div class="sched-section-title">My Protocols</div></div>`;
     protocols.forEach(p => {
+      if (!p) return;
       const day = daysBetween(p.start_date);
       const total = (p.cycle_weeks || 12) * 7;
-      const compounds = (p.schedule_entries || [])
-        .filter(e => e.is_active)
-        .map(e => e.compound_name)
-        .join(', ');
+      const compounds = Array.isArray(p.schedule_entries)
+        ? p.schedule_entries.filter(e => e && e.is_active).map(e => e.compound_name).join(', ')
+        : '';
       const tierLabel = p.tier === 'lo' ? '🟢 Low' : p.tier === 'hi' ? '🔴 High' : '🔵 Standard';
-      const stack = STACKS.find(s => s.name === p.stack_name);
+      const stack = STACKS.find(s => s && s.name === p.stack_name);
       const emoji = stack?.emoji || '💉';
+      const safeName = (p.name || 'Unnamed').replace(/'/g, "\\'");
       html += `
         <div class="sched-proto-card">
           <div class="sched-proto-hdr">
             <span class="sched-proto-emoji">${emoji}</span>
             <div style="flex:1;min-width:0;">
-              <div class="sched-proto-name">${p.name}</div>
+              <div class="sched-proto-name">${p.name || 'Unnamed'}</div>
               <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
-              <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">End</button>
-              <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${p.name.replace(/'/g,"\\'")}')">Delete</button>
+              <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${safeName}')">End</button>
+              <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${safeName}')">Delete</button>
             </div>
           </div>
           <div class="sched-proto-compounds">${compounds}</div>

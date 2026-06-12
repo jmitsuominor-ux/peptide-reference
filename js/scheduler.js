@@ -945,10 +945,8 @@ export async function toggleInjectionLog(entryId, name, dose, wasDone, cardId) {
     }
   };
 
-  // Update this card and its companion slot (slot1↔slot2 share same entryId)
-  const altCardId = resolvedCardId.endsWith('-2') ? entryId : `${entryId}-2`;
+  // Update only this card — each slot is independently checkable
   applyState(resolvedCardId, nowDone);
-  applyState(altCardId, nowDone);
 
   try {
     if (nowDone) {

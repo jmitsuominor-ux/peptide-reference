@@ -36,11 +36,10 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   const data = e.data?.json() ?? {};
   e.waitUntil(
-    self.registration.showNotification(data.title || 'PeptideRef', {
+    self.registration.showNotification(data.title || 'PeptideRef 💉', {
       body: data.body || 'Time for your injection',
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
       tag: data.tag || 'peptideref-reminder',
+      renotify: true,
       data,
     })
   );
@@ -48,5 +47,10 @@ self.addEventListener('push', e => {
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  e.waitUntil(clients.openWindow('/'));
+  e.waitUntil(
+    clients.matchAll({ type: 'window' }).then(list => {
+      const existing = list.find(c => c.url.includes('peptide-reference') && 'focus' in c);
+      return existing ? existing.focus() : clients.openWindow('/peptide-reference/');
+    })
+  );
 });

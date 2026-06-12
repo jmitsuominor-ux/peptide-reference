@@ -237,15 +237,34 @@ function renderAuthPrompt() {
   `;
 }
 
+const VAPID_PUBLIC_KEY = 'BMLdIZJowZXPOiSRrawEBFr3ol2h03ZLvdffRc5rQZGmHyhqjsQS85EiwnX2j4UEVQyHYWbqLACQ2DBbUpP3wog';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+async function getSubscriptionStatus() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return 'unsupported';
+  if (!('Notification' in window)) return 'unsupported';
+  if (Notification.permission === 'denied') return 'denied';
+  const reg = await navigator.serviceWorker.ready.catch(() => null);
+  if (!reg) return 'unsupported';
+  const existing = await reg.pushManager.getSubscription().catch(() => null);
+  return existing ? 'subscribed' : 'default';
+}
+
 async function refreshScheduleMain() {
   const mainDiv = document.getElementById('schedMain');
-  const notifPerm = ('Notification' in window) ? Notification.permission : 'unsupported';
-  const notifHtml = notifPerm === 'granted'
-    ? `<span style="color:var(--green);font-weight:600;">✅ Reminders on</span> — you'll be notified at each dose time today.`
-    : notifPerm === 'denied'
-    ? `<span style="color:var(--text3);">Notifications blocked — allow them in browser settings to get reminders.</span>`
-    : notifPerm === 'unsupported'
-    ? `<span style="color:var(--text3);">Notifications not supported in this browser.</span>`
+  const status = await getSubscriptionStatus();
+  const notifHtml = status === 'subscribed'
+    ? `<span style="color:var(--green);font-weight:600;">✅ Reminders on</span> — you'll be notified at each dose time.`
+    : status === 'denied'
+    ? `<span style="color:var(--text3);">Notifications blocked — allow them in browser/OS settings to enable reminders.</span>`
+    : status === 'unsupported'
+    ? `<span style="color:var(--text3);">Push notifications not supported. On iPhone, add this page to your Home Screen first.</span>`
     : `<button class="sched-text-btn" style="font-size:13px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;background:var(--bg2);" onclick="enableReminders()">🔔 Enable Reminders</button><span style="color:var(--text3);font-size:12px;margin-left:8px;">Get notified at each dose time</span>`;
   mainDiv.innerHTML = `
     <div class="clin-header" style="margin-bottom:12px;">
@@ -263,40 +282,33 @@ async function refreshScheduleMain() {
     </div>
   `;
   await Promise.all([renderToday(), renderProtocols()]);
-  if (notifPerm === 'granted') scheduleLocalNotifications();
-}
-
-let _notifTimeouts = [];
-
-async function scheduleLocalNotifications() {
-  _notifTimeouts.forEach(id => clearTimeout(id));
-  _notifTimeouts = [];
-  if (!currentUser) return;
-  try {
-    const { entries } = await loadTodayData();
-    const now = new Date();
-    for (const entry of entries) {
-      const [h, m] = (entry.reminder_time || '20:00').split(':').map(Number);
-      const fireAt = new Date();
-      fireAt.setHours(h, m, 0, 0);
-      const delay = fireAt.getTime() - now.getTime();
-      if (delay <= 0) continue;
-      const id = setTimeout(async () => {
-        const title = `Time for ${entry.compound_name}`;
-        const opts = { body: entry.dose || '', tag: `pr-${entry.id}` };
-        const reg = await navigator.serviceWorker?.ready.catch(() => null);
-        if (reg) reg.showNotification(title, opts);
-        else new Notification(title, opts);
-      }, delay);
-      _notifTimeouts.push(id);
-    }
-  } catch (_) {}
 }
 
 export async function enableReminders() {
-  if (!('Notification' in window)) { alert('Notifications not supported in this browser.'); return; }
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    alert('Push notifications are not supported.\n\nOn iPhone, add this page to your Home Screen first, then try again.');
+    return;
+  }
   const perm = await Notification.requestPermission();
-  if (perm === 'granted') await scheduleLocalNotifications();
+  if (perm !== 'granted') { await refreshScheduleMain(); return; }
+
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    const subscription = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+    });
+    const tzOffset = new Date().getTimezoneOffset(); // minutes behind UTC
+    const { error } = await supabase.from('push_subscriptions').upsert({
+      user_id: currentUser.id,
+      subscription: subscription.toJSON(),
+      timezone_offset: tzOffset,
+      is_active: true,
+    }, { onConflict: 'user_id' });
+    if (error) throw error;
+  } catch (err) {
+    alert('Could not enable reminders: ' + (err.message || err));
+  }
   await refreshScheduleMain();
 }
 

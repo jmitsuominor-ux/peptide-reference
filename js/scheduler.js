@@ -237,7 +237,7 @@ function renderAuthPrompt() {
   `;
 }
 
-const VAPID_PUBLIC_KEY = 'BMLdIZJowZXPOiSRrawEBFr3ol2h03ZLvdffRc5rQZGmHyhqjsQS85EiwnX2j4UEVQyHYWbqLACQ2DBbUpP3wog';
+const VAPID_PUBLIC_KEY = 'BKAWDFUDS2WRzQ01CGUFqkn4fNELNKvUKFOwibVQ4DVnpGEiHxCbvKhm5nPXwHwUNbXjxL0OnY5kH57AJGgpB8E';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -344,12 +344,16 @@ async function renderToday() {
     }
     const doneCount = entries.filter(e => loggedIds.has(e.id)).length;
 
-    // Group by reminder_time
+    // Group by reminder_time (and reminder_time_2 for twice-daily entries)
     const groups = {};
     entries.forEach(e => {
       const t = e.reminder_time || '20:00';
       if (!groups[t]) groups[t] = [];
-      groups[t].push(e);
+      groups[t].push({ ...e, _slot: 1 });
+      if (e.reminder_time_2) {
+        if (!groups[e.reminder_time_2]) groups[e.reminder_time_2] = [];
+        groups[e.reminder_time_2].push({ ...e, _slot: 2 });
+      }
     });
     const sortedTimes = Object.keys(groups).sort();
 
@@ -377,13 +381,14 @@ async function renderToday() {
       groups[t].forEach(e => {
         const done = loggedIds.has(e.id);
         const stackName = e.schedules?.name || '';
+        const cardId = e._slot === 2 ? `${e.id}-2` : e.id;
         html += `
-          <div class="sched-entry-card${done ? ' done' : ''}" id="entry-card-${e.id}">
+          <div class="sched-entry-card${done ? ' done' : ''}" id="entry-card-${cardId}">
             <div class="sched-entry-info">
-              <div class="sched-entry-name">${e.compound_name}</div>
+              <div class="sched-entry-name">${e.compound_name}${e._slot === 2 ? ' <span style="font-size:11px;color:var(--text3);">(2nd dose)</span>' : ''}</div>
               <div class="sched-entry-dose">${e.dose}${stackName ? ' · ' + stackName : ''}</div>
             </div>
-            <button class="sched-check-btn${done ? ' done' : ''}" id="check-${e.id}"
+            <button class="sched-check-btn${done ? ' done' : ''}" id="check-${cardId}"
               onclick="toggleInjectionLog('${e.id}','${e.compound_name.replace(/'/g,"\\'")}','${(e.dose||'').replace(/'/g,"\\'")}',${done})">
               ${done ? '✓' : ''}
             </button>
@@ -922,7 +927,7 @@ export async function openEditProtoModal(scheduleId) {
   _editScheduleId = scheduleId;
   const { data } = await supabase
     .from('schedule_entries')
-    .select('id, compound_name, dose, frequency, reminder_time, days_of_week')
+    .select('id, compound_name, dose, frequency, reminder_time, reminder_time_2, days_of_week')
     .eq('schedule_id', scheduleId)
     .eq('is_active', true)
     .order('compound_name');
@@ -939,10 +944,21 @@ export async function openEditProtoModal(scheduleId) {
           <input type="text" class="calc-input" id="edit-dose-${i}" value="${e.dose||''}"
             placeholder="Dose" style="flex:1;font-size:13px;padding:7px 10px;">
         </div>
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:${isScheduled ? '8' : '0'}px;">
-          <span class="proto-time-label" style="flex-shrink:0;">Reminder:</span>
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">
+          <span class="proto-time-label" style="flex-shrink:0;">Reminder 1:</span>
           <input type="time" class="calc-input" id="edit-time-${i}" value="${e.reminder_time||'20:00'}"
             style="flex:1;font-size:13px;padding:7px 10px;">
+        </div>
+        <div id="edit-t2-row-${i}" style="display:${e.reminder_time_2 ? 'flex' : 'none'};gap:6px;align-items:center;margin-bottom:4px;">
+          <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
+          <input type="time" class="calc-input" id="edit-time2-${i}" value="${e.reminder_time_2||'20:00'}"
+            style="flex:1;font-size:13px;padding:7px 10px;">
+          <button type="button" onclick="document.getElementById('edit-t2-row-${i}').style.display='none';document.getElementById('edit-time2-${i}').value=''"
+            style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
+        </div>
+        <div id="edit-t2-add-${i}" style="display:${e.reminder_time_2 ? 'none' : 'block'};margin-bottom:${isScheduled ? '8' : '4'}px;">
+          <button type="button" onclick="document.getElementById('edit-t2-row-${i}').style.display='flex';document.getElementById('edit-t2-add-${i}').style.display='none'"
+            style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
         </div>
         ${isScheduled ? `
         <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
@@ -990,6 +1006,9 @@ export async function saveEditProto() {
       const entry = _editEntries[i];
       const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;
       const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
+      const t2Row = document.getElementById(`edit-t2-row-${i}`);
+      const t2Val = document.getElementById(`edit-time2-${i}`)?.value;
+      const time2 = (t2Row?.style.display !== 'none' && t2Val) ? t2Val : null;
       const isScheduled = entry.frequency !== 'daily' && entry.frequency !== 'as_needed';
       let days = entry.days_of_week;
       if (isScheduled) {
@@ -997,7 +1016,7 @@ export async function saveEditProto() {
         if (container) days = Array.from(container.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
       }
       await supabase.from('schedule_entries')
-        .update({ dose, reminder_time: time, days_of_week: days })
+        .update({ dose, reminder_time: time, reminder_time_2: time2, days_of_week: days })
         .eq('id', entry.id)
         .eq('user_id', currentUser.id);
     }

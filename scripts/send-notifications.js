@@ -54,8 +54,8 @@ async function main() {
     if (TEST_MODE) {
       // In test mode, send a test ping immediately regardless of schedule
       const payload = JSON.stringify({
-        title: 'PeptideRef Test 🧪',
-        body: `Notifications are working! It's ${localTimeStr} your time.`,
+        title: '💉 PeptideRef Test',
+        body: `Notifications are working! Local time: ${localTimeStr}`,
         tag: `peptideref-test-${Date.now()}`,
       });
       try {
@@ -75,7 +75,7 @@ async function main() {
     // Load this user's active schedule entries (with schedule active check)
     const { data: entries, error: entErr } = await supabase
       .from('schedule_entries')
-      .select('id, compound_name, dose, reminder_time, frequency, days_of_week, schedules!inner(is_active)')
+      .select('id, compound_name, dose, reminder_time, reminder_time_2, frequency, days_of_week, schedules!inner(is_active)')
       .eq('user_id', sub.user_id)
       .eq('is_active', true)
       .eq('schedules.is_active', true);
@@ -85,47 +85,45 @@ async function main() {
 
     console.log(`  ${entries.length} active schedule entries`);
 
-    // Find entries whose reminder_time falls within a 15-minute window starting now
+    // Expand entries with reminder_time_2 into separate slots
     const WINDOW = 15;
     const nowTotalMin = localHour * 60 + localMinute;
-    const due = entries.filter(e => {
-      const dueToday = isDueToday(e, localDow);
-      const [h, m] = (e.reminder_time || '20:00').split(':').map(Number);
-      const entryMin = h * 60 + m;
-      const inWindow = entryMin >= nowTotalMin && entryMin < nowTotalMin + WINDOW;
-      if (dueToday) {
-        console.log(`    ${e.compound_name}: reminder=${e.reminder_time} (${entryMin}min) | window=${nowTotalMin}-${nowTotalMin+WINDOW} | inWindow=${inWindow}`);
-      }
-      return dueToday && inWindow;
+    const slots = [];
+    entries.forEach(e => {
+      if (!isDueToday(e, localDow)) return;
+      [e.reminder_time || '20:00', e.reminder_time_2].filter(Boolean).forEach((rt, slotIdx) => {
+        const [h, m] = rt.split(':').map(Number);
+        const entryMin = h * 60 + m;
+        const inWindow = entryMin >= nowTotalMin && entryMin < nowTotalMin + WINDOW;
+        console.log(`    ${e.compound_name} slot${slotIdx+1}: reminder=${rt} (${entryMin}min) | window=${nowTotalMin}-${nowTotalMin+WINDOW} | inWindow=${inWindow}`);
+        if (inWindow) slots.push({ entry: e, reminder_time: rt, slot: slotIdx + 1 });
+      });
     });
 
-    if (!due.length) { console.log(`  No entries due in current 15-min window`); continue; }
+    if (!slots.length) { console.log(`  No entries due in current 15-min window`); continue; }
 
-    console.log(`  ${due.length} entry(ies) due now`);
+    console.log(`  ${slots.length} slot(s) due now`);
 
-    // Deduplicate against already-sent today
-    const entryIds = due.map(e => e.id);
+    // Deduplicate: check which (entry_id, slot) combos were already sent today
     const { data: alreadySent } = await supabase
       .from('notification_log')
-      .select('entry_id')
+      .select('entry_id, reminder_slot')
       .eq('user_id', sub.user_id)
-      .eq('sent_date', localDate)
-      .in('entry_id', entryIds);
+      .eq('sent_date', localDate);
 
-    const sentSet = new Set((alreadySent || []).map(r => r.entry_id));
-    const toSend = due.filter(e => !sentSet.has(e.id));
-    if (!toSend.length) { console.log(`  All due entries already notified today`); continue; }
+    const sentSet = new Set((alreadySent || []).map(r => `${r.entry_id}:${r.reminder_slot ?? 1}`));
+    const toSend = slots.filter(s => !sentSet.has(`${s.entry.id}:${s.slot}`));
+    if (!toSend.length) { console.log(`  All due slots already notified today`); continue; }
 
     // Group by reminder_time
     const groups = {};
-    toSend.forEach(e => {
-      const key = e.reminder_time || '20:00';
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(e);
+    toSend.forEach(s => {
+      if (!groups[s.reminder_time]) groups[s.reminder_time] = [];
+      groups[s.reminder_time].push(s);
     });
 
-    for (const [time, groupEntries] of Object.entries(groups)) {
-      const doses = groupEntries.map(e => `${e.compound_name}: ${e.dose}`).join(' · ');
+    for (const [time, groupSlots] of Object.entries(groups)) {
+      const doses = groupSlots.map(s => `${s.entry.compound_name}: ${s.entry.dose}`).join(' · ');
       const payload = JSON.stringify({
         title: `Time for your peptides 💉`,
         body: doses,
@@ -137,7 +135,7 @@ async function main() {
         console.log(`  ✅ Sent: ${doses}`);
 
         await supabase.from('notification_log').insert(
-          groupEntries.map(e => ({ user_id: sub.user_id, entry_id: e.id, sent_date: localDate }))
+          groupSlots.map(s => ({ user_id: sub.user_id, entry_id: s.entry.id, sent_date: localDate, reminder_slot: s.slot }))
         );
       } catch (err) {
         if (err.statusCode === 410 || err.statusCode === 404) {

@@ -784,10 +784,10 @@ function init() {
   if (new URLSearchParams(window.location.search).get('compound')) {
     document.getElementById('catView').style.display = 'none';
   }
-  document.getElementById('searchInput').value = '';
-  // Chrome autofill fires asynchronously — clear at multiple points to catch it
-  setTimeout(() => { document.getElementById('searchInput').value = ''; }, 100);
-  setTimeout(() => { document.getElementById('searchInput').value = ''; }, 500);
+  // Chrome won't autofill readonly inputs — remove readonly on first user interaction
+  const _si = document.getElementById('searchInput');
+  _si.value = '';
+  _si.addEventListener('focus', () => _si.removeAttribute('readonly'), { once: true });
   renderCategories();
   renderStacks();
   initPlanner();

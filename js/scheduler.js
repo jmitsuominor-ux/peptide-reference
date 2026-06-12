@@ -140,12 +140,12 @@ async function loadTodayData() {
       .eq('schedules.is_active', true),
     supabase
       .from('injection_log')
-      .select('entry_id')
+      .select('entry_id, slot')
       .eq('user_id', currentUser.id)
       .eq('scheduled_for', todayStr()),
   ]);
   const entries = (entriesRes.data || []).filter(isDueToday);
-  const loggedIds = new Set((logsRes.data || []).map(l => l.entry_id));
+  const loggedIds = new Set((logsRes.data || []).map(l => `${l.entry_id}:${l.slot ?? 1}`));
   return { entries, loggedIds };
 }
 
@@ -160,24 +160,26 @@ async function loadProtocols() {
   return data || [];
 }
 
-export async function logInjection(entryId, compoundName, dose) {
+export async function logInjection(entryId, compoundName, dose, slot = 1) {
   const { error } = await supabase.from('injection_log').insert({
     user_id: currentUser.id,
     entry_id: entryId,
     compound_name: compoundName,
     dose,
     scheduled_for: todayStr(),
+    slot,
   });
   if (error) throw error;
 }
 
-export async function unlogInjection(entryId) {
+export async function unlogInjection(entryId, slot = 1) {
   const { error } = await supabase
     .from('injection_log')
     .delete()
     .eq('user_id', currentUser.id)
     .eq('entry_id', entryId)
-    .eq('scheduled_for', todayStr());
+    .eq('scheduled_for', todayStr())
+    .eq('slot', slot);
   if (error) throw error;
 }
 
@@ -344,8 +346,6 @@ async function renderToday() {
         </div>`;
       return;
     }
-    const doneCount = entries.filter(e => loggedIds.has(e.id)).length;
-
     // Group by reminder_time (and reminder_time_2 for twice-daily entries)
     const groups = {};
     entries.forEach(e => {
@@ -358,6 +358,8 @@ async function renderToday() {
       }
     });
     const sortedTimes = Object.keys(groups).sort();
+    const allCards = Object.values(groups).flat();
+    const doneCount = allCards.filter(e => loggedIds.has(`${e.id}:${e._slot}`)).length;
 
     const fmt12 = t => {
       const [h, m] = t.split(':').map(Number);
@@ -375,13 +377,13 @@ async function renderToday() {
       <div class="sched-section">
         <div class="sched-section-hdr">
           <div class="sched-section-title">Today · ${todayLabel()}</div>
-          <div class="sched-progress">${doneCount} / ${entries.length} done</div>
+          <div class="sched-progress">${doneCount} / ${allCards.length} done</div>
         </div>`;
 
     sortedTimes.forEach(t => {
       html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${fmt12(t)}</div>`;
       groups[t].forEach(e => {
-        const done = loggedIds.has(e.id);
+        const done = loggedIds.has(`${e.id}:${e._slot}`);
         const stackName = e.schedules?.name || '';
         const cardId = e._slot === 2 ? `${e.id}-2` : e.id;
         html += `
@@ -927,6 +929,7 @@ export async function addProtoSaveCustom() {
 // ─── Inline handlers ──────────────────────────────────────
 export async function toggleInjectionLog(entryId, name, dose, wasDone, cardId) {
   const resolvedCardId = cardId || entryId;
+  const slot = String(resolvedCardId).endsWith('-2') ? 2 : 1;
   const card = document.getElementById(`entry-card-${resolvedCardId}`);
   const btn  = document.getElementById(`check-${resolvedCardId}`);
   if (!card || !btn) return;
@@ -950,9 +953,9 @@ export async function toggleInjectionLog(entryId, name, dose, wasDone, cardId) {
 
   try {
     if (nowDone) {
-      await logInjection(entryId, name, dose);
+      await logInjection(entryId, name, dose, slot);
     } else {
-      await unlogInjection(entryId);
+      await unlogInjection(entryId, slot);
     }
     const section = document.getElementById('schedTodaySection');
     if (section) {
@@ -963,7 +966,6 @@ export async function toggleInjectionLog(entryId, name, dose, wasDone, cardId) {
     }
   } catch (err) {
     applyState(resolvedCardId, wasDone);
-    applyState(altCardId, wasDone);
   }
 }
 

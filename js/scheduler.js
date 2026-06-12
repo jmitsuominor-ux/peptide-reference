@@ -1091,3 +1091,17 @@ export async function saveEditProto() {
     if (btn) { btn.textContent = 'Save Changes'; btn.disabled = false; }
   }
 }
+
+// ─── Auto-refresh today section on new day ────────────────
+let _lastRenderedDate = todayStr();
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  const today = todayStr();
+  if (today !== _lastRenderedDate) {
+    _lastRenderedDate = today;
+    const schedMain = document.getElementById('schedMain');
+    if (schedMain && schedMain.style.display !== 'none') {
+      renderToday();
+    }
+  }
+});

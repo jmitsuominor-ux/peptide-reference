@@ -309,25 +309,21 @@ export async function enableReminders() {
   try {
     const OS = await _initOneSignal();
     if (!OS) {
-      alert('Notification service failed to load.\n\nMake sure you are using the Home Screen app (not Safari), then try again. If the problem persists, delete and reinstall the app.');
+      alert('Notification service failed to load.\n\nMake sure you are using the Home Screen app (not Safari), then try again.');
       return;
     }
+
+    // Link this device to the user's account so we can target by user ID
+    await OS.login(currentUser.id);
+
     await OS.Notifications.requestPermission();
     if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
 
-    // Poll for subscription ID — can take a few seconds after permission is granted
-    let subId = null;
-    for (let i = 0; i < 15; i++) {
-      await new Promise(r => setTimeout(r, 1000));
-      subId = OS.User.PushSubscription.id;
-      if (subId) break;
-    }
-    if (!subId) throw new Error('Subscription not ready — please try again.');
-
+    // Store a marker in Supabase so the cron knows this user has OneSignal enabled
     const tzOffset = new Date().getTimezoneOffset();
     const { error } = await supabase.from('push_subscriptions').upsert({
       user_id: currentUser.id,
-      subscription: subId,
+      subscription: `onesignal:${currentUser.id}`,
       timezone_offset: tzOffset,
       is_active: true,
     }, { onConflict: 'user_id' });

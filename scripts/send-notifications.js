@@ -10,7 +10,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function sendPush(subscriptionId, title, body, tag) {
+async function sendPush(userId, title, body, tag) {
   const res = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: {
@@ -19,7 +19,8 @@ async function sendPush(subscriptionId, title, body, tag) {
     },
     body: JSON.stringify({
       app_id: ONESIGNAL_APP_ID,
-      include_subscription_uuids: [subscriptionId],
+      include_aliases: { external_id: [userId] },
+      target_channel: 'push',
       contents: { en: body },
       headings: { en: title },
       web_push_topic: tag,
@@ -52,7 +53,7 @@ async function main() {
   if (subsErr) { console.error('Failed to load subscriptions:', subsErr.message); process.exit(1); }
   if (!subs?.length) { console.log('No active subscriptions found.'); return; }
 
-  // Only process OneSignal subscription UUIDs (strings), skip legacy raw push subscription objects
+  // Only process OneSignal-enabled subscriptions (marked with 'onesignal:' prefix or plain UUID strings)
   const validSubs = subs.filter(s => typeof s.subscription === 'string' && s.subscription.length > 10);
   console.log(`Found ${validSubs.length} valid subscription(s) (${subs.length} total)`);
 
@@ -68,7 +69,7 @@ async function main() {
 
     if (TEST_MODE) {
       try {
-        await sendPush(sub.subscription, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
+        await sendPush(sub.user_id, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
         console.log(`  ✅ Test notification sent`);
       } catch (err) {
         console.error(`  ❌ Push failed: ${err.message}`);
@@ -113,7 +114,7 @@ async function main() {
     for (const [time, groupSlots] of Object.entries(groups)) {
       const doses = groupSlots.map(s => `${s.entry.compound_name}: ${s.entry.dose}`).join(' · ');
       try {
-        await sendPush(sub.subscription, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
+        await sendPush(sub.user_id, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
         console.log(`  ✅ Sent: ${doses}`);
         await supabase.from('notification_log').insert(
           groupSlots.map(s => ({ user_id: sub.user_id, entry_id: s.entry.id, sent_date: localDate, reminder_slot: s.slot }))

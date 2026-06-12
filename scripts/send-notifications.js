@@ -10,7 +10,17 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function sendPush(userId, title, body, tag) {
+async function sendPush(subscriptionField, title, body, tag) {
+  // Support both onesignal-sub:<id> (direct subscription ID) and onesignal:<userId> (external_id fallback)
+  let targeting;
+  if (subscriptionField.startsWith('onesignal-sub:')) {
+    const subId = subscriptionField.replace('onesignal-sub:', '');
+    targeting = { include_subscription_ids: [subId] };
+  } else {
+    const userId = subscriptionField.replace('onesignal:', '');
+    targeting = { include_aliases: { external_id: [userId] }, target_channel: 'push' };
+  }
+
   const res = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: {
@@ -19,8 +29,7 @@ async function sendPush(userId, title, body, tag) {
     },
     body: JSON.stringify({
       app_id: ONESIGNAL_APP_ID,
-      include_aliases: { external_id: [userId] },
-      target_channel: 'push',
+      ...targeting,
       contents: { en: body },
       headings: { en: title },
       web_push_topic: tag,
@@ -28,7 +37,12 @@ async function sendPush(userId, title, body, tag) {
   });
   const data = await res.json();
   console.log(`    OneSignal raw response (${res.status}): ${JSON.stringify(data)}`);
-  if (data.errors?.length) throw new Error(data.errors.join(', '));
+  if (data.errors?.length && !Array.isArray(data.errors)) {
+    const errStr = JSON.stringify(data.errors);
+    if (errStr.includes('invalid')) throw new Error('No valid subscribers: ' + errStr);
+  } else if (Array.isArray(data.errors) && data.errors.length) {
+    throw new Error(data.errors.join(', '));
+  }
   return data;
 }
 
@@ -68,9 +82,11 @@ async function main() {
 
     console.log(`\nUser ${sub.user_id}: tz_offset=${sub.timezone_offset} → local time ${localTimeStr} (${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][localDow]})`);
 
+    console.log(`  Subscription: ${sub.subscription}`);
+
     if (TEST_MODE) {
       try {
-        await sendPush(sub.user_id, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
+        await sendPush(sub.subscription, '💉 PeptideRef Test', `Notifications are working! Local time: ${localTimeStr}`, `peptideref-test-${Date.now()}`);
         console.log(`  ✅ Test notification sent`);
       } catch (err) {
         console.error(`  ❌ Push failed: ${err.message}`);
@@ -115,7 +131,7 @@ async function main() {
     for (const [time, groupSlots] of Object.entries(groups)) {
       const doses = groupSlots.map(s => `${s.entry.compound_name}: ${s.entry.dose}`).join(' · ');
       try {
-        await sendPush(sub.user_id, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
+        await sendPush(sub.subscription, `Time for your peptides 💉`, doses, `peptideref-${localDate}-${time.replace(':', '')}`);
         console.log(`  ✅ Sent: ${doses}`);
         await supabase.from('notification_log').insert(
           groupSlots.map(s => ({ user_id: sub.user_id, entry_id: s.entry.id, sent_date: localDate, reminder_slot: s.slot }))

@@ -321,29 +321,29 @@ export async function enableReminders() {
     await OS.Notifications.requestPermission();
     if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
 
-    // optedIn requires BOTH permission AND a valid APNs push token — wait up to 10s
-    let optedIn = false;
-    for (let i = 0; i < 20; i++) {
-      optedIn = OS.User?.PushSubscription?.optedIn;
-      if (optedIn) break;
+    // Wait up to 15s for a subscription ID to appear — the ID is our delivery target
+    let subId = null;
+    for (let i = 0; i < 30; i++) {
+      subId = OS.User?.PushSubscription?.id;
+      if (subId) break;
       await new Promise(r => setTimeout(r, 500));
     }
 
-    if (!optedIn) {
-      // Gather SW debug info for the error message
+    if (!subId) {
       const regs = await navigator.serviceWorker?.getRegistrations?.() || [];
       const swInfo = regs.length
         ? regs.map(r => `${r.scope}:${r.active?.state ?? 'none'}`).join(', ')
         : 'none';
-      alert(`Push token not received from Apple after 10s.\n\nService workers: ${swInfo}\n\nTry:\n1. iPhone Settings → Notifications → this app → toggle OFF then ON\n2. Come back and tap Enable again`);
+      alert(`Push subscription not created after 15s.\n\nService workers: ${swInfo}\n\nTry:\n1. iPhone Settings → Notifications → this app → toggle OFF then ON\n2. Come back and tap Enable again`);
       await refreshScheduleMain();
       return;
     }
 
     const tzOffset = new Date().getTimezoneOffset();
+    // Store the OneSignal subscription ID so we can target it directly
     const { error } = await supabase.from('push_subscriptions').upsert({
       user_id: currentUser.id,
-      subscription: `onesignal:${currentUser.id}`,
+      subscription: `onesignal-sub:${subId}`,
       timezone_offset: tzOffset,
       is_active: true,
     }, { onConflict: 'user_id' });

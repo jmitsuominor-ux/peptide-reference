@@ -606,16 +606,16 @@ function _renderCustomList() {
         <input type="text" class="calc-input" placeholder="Compound name" value="${c.name}"
           list="peptide-names"
           style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;"
-          oninput="_customCompounds[${i}].name=this.value" id="cf-name-${i}">
+          id="cf-name-${i}">
         <button type="button" onclick="removeCustomCompound(${i})"
           style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px;line-height:1;flex-shrink:0;">✕</button>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:8px;">
         <input type="text" class="calc-input" placeholder="Dose" value="${c.dose}"
           style="flex:1;font-size:13px;padding:7px 10px;"
-          oninput="_customCompounds[${i}].dose=this.value" id="cf-dose-${i}">
+          id="cf-dose-${i}">
         <select class="calc-select" style="width:80px;font-size:12px;padding:7px 6px;"
-          onchange="_customCompounds[${i}].unit=this.value" id="cf-unit-${i}">
+          id="cf-unit-${i}">
           <option value="mcg" ${c.unit==='mcg'?'selected':''}>mcg</option>
           <option value="mg" ${c.unit==='mg'?'selected':''}>mg</option>
           <option value="IU" ${c.unit==='IU'?'selected':''}>IU</option>
@@ -624,7 +624,7 @@ function _renderCustomList() {
       <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
         <span class="proto-time-label" style="flex-shrink:0;">Frequency:</span>
         <select class="calc-select" style="flex:1;font-size:12px;padding:7px 8px;"
-          onchange="_customCompounds[${i}].freq=this.value;customFreqChanged(${i})" id="cf-freq-${i}">
+          onchange="customFreqChanged(${i})" id="cf-freq-${i}">
           <option value="daily" ${c.freq==='daily'?'selected':''}>Daily</option>
           <option value="twice_weekly" ${c.freq==='twice_weekly'?'selected':''}>2x / week</option>
           <option value="three_weekly" ${c.freq==='three_weekly'?'selected':''}>3x / week</option>
@@ -644,7 +644,7 @@ function _renderCustomList() {
         <span class="proto-time-label">Reminder:</span>
         <input type="time" class="calc-input" value="${c.reminderTime||'20:00'}"
           style="flex:1;font-size:13px;padding:7px 10px;"
-          onchange="_customCompounds[${i}].reminderTime=this.value" id="cf-time-${i}">
+          id="cf-time-${i}">
       </div>
     </div>`;
   }).join('');

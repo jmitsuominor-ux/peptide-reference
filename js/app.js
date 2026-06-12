@@ -807,7 +807,7 @@ function init() {
 
   // Service worker
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/peptide-reference/sw.js').catch(() => {});
   }
   // Deep-link: ?compound=BPC-157
   const compoundParam = new URLSearchParams(window.location.search).get('compound');

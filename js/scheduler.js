@@ -314,19 +314,28 @@ export async function enableReminders() {
     }
 
     await OS.login(currentUser.id);
+
+    // Ensure service worker is active before requesting push permission
+    if (navigator.serviceWorker) await navigator.serviceWorker.ready;
+
     await OS.Notifications.requestPermission();
     if (!OS.Notifications.permission) { await refreshScheduleMain(); return; }
 
-    // Wait for OneSignal to register the push subscription with APNs (async after permission grant)
-    let subId = null;
+    // optedIn requires BOTH permission AND a valid APNs push token — wait up to 10s
+    let optedIn = false;
     for (let i = 0; i < 20; i++) {
-      subId = OS.User?.PushSubscription?.id;
-      if (subId) break;
+      optedIn = OS.User?.PushSubscription?.optedIn;
+      if (optedIn) break;
       await new Promise(r => setTimeout(r, 500));
     }
 
-    if (!subId) {
-      alert('Notifications permission was granted but the push subscription didn\'t register.\n\nTry: Settings → Notifications → find this app → make sure notifications are ON, then tap Enable again.');
+    if (!optedIn) {
+      // Gather SW debug info for the error message
+      const regs = await navigator.serviceWorker?.getRegistrations?.() || [];
+      const swInfo = regs.length
+        ? regs.map(r => `${r.scope}:${r.active?.state ?? 'none'}`).join(', ')
+        : 'none';
+      alert(`Push token not received from Apple after 10s.\n\nService workers: ${swInfo}\n\nTry:\n1. iPhone Settings → Notifications → this app → toggle OFF then ON\n2. Come back and tap Enable again`);
       await refreshScheduleMain();
       return;
     }

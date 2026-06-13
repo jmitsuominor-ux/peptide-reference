@@ -25,9 +25,12 @@ function isDueToday(entry: Record<string, unknown>, localDow: number): boolean {
 }
 
 Deno.serve(async (req: Request) => {
-  // Verify caller is our QStash CRON (or cron-job.org)
-  if (CRON_SECRET && req.headers.get("Authorization") !== `Bearer ${CRON_SECRET}`) {
-    return new Response("Unauthorized", { status: 401 });
+  // Verify caller via query param (QStash can't send custom auth headers)
+  if (CRON_SECRET) {
+    const url = new URL(req.url);
+    if (url.searchParams.get("secret") !== CRON_SECRET) {
+      return new Response("Unauthorized", { status: 401 });
+    }
   }
 
   const nowUtc = new Date();

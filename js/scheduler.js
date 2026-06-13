@@ -899,11 +899,14 @@ export async function addProtoSaveCustom() {
     const freqF = document.getElementById(`cf-freq-${i}`);
     const timeF = document.getElementById(`cf-time-${i}`);
     const daysC = document.getElementById(`cf-days-${i}`);
+    const time2Row = document.getElementById(`cf-t2-row-${i}`);
+    const time2F = document.getElementById(`cf-time2-${i}`);
     if (nameF) c.name = nameF.value.trim();
     if (doseF) c.dose = doseF.value.trim();
     if (unitF) c.unit = unitF.value;
     if (freqF) c.freq = freqF.value;
     if (timeF) c.reminderTime = timeF.value;
+    c.reminderTime2 = (time2Row?.style.display !== 'none' && time2F?.value) ? time2F.value : null;
     if (daysC) c.days = Array.from(daysC.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
   });
   const valid = _customCompounds.filter(c => c.name && c.dose);
@@ -1090,10 +1093,11 @@ export async function saveEditProto() {
         const container = document.getElementById(`edit-days-${i}`);
         if (container) days = Array.from(container.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
       }
-      await supabase.from('schedule_entries')
+      const { error: updErr } = await supabase.from('schedule_entries')
         .update({ dose, reminder_time: time, reminder_time_2: time2, days_of_week: days })
         .eq('id', entry.id)
         .eq('user_id', currentUser.id);
+      if (updErr) throw updErr;
     }
     closeEditProtoModal();
     await refreshScheduleMain();

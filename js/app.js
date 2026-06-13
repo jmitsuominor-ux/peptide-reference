@@ -127,7 +127,7 @@ async function qvCopy() {
   const resEl = document.getElementById('qvResult');
   if (!resEl.classList.contains('visible')) { calcQuickVials(); }
   if (!resEl.classList.contains('visible')) return;
-  const name    = document.getElementById('detailTitle')?.textContent?.trim() || 'Compound';
+  const name    = (document.getElementById('detailTitle') || document.getElementById('stackDetailTitle'))?.textContent?.trim() || 'Compound';
   const dose    = document.getElementById('qvDose').value;
   const unit    = document.getElementById('qvDoseUnit').value;
   const vialSz  = document.getElementById('qvVialSize').value;

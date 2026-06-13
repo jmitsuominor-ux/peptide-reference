@@ -8,8 +8,10 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
-const VAPID_PUBLIC_KEY = (Deno.env.get("VAPID_PUBLIC_KEY") ?? "").trim();
-const VAPID_PRIVATE_KEY = (Deno.env.get("VAPID_PRIVATE_KEY") ?? "").trim();
+// Normalize to URL-safe base64url: convert +→- /→_ and strip all = padding
+const toBase64url = (s: string) => s.trim().replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+const VAPID_PUBLIC_KEY = toBase64url(Deno.env.get("VAPID_PUBLIC_KEY") ?? "");
+const VAPID_PRIVATE_KEY = toBase64url(Deno.env.get("VAPID_PRIVATE_KEY") ?? "");
 const VAPID_SUBJECT = "https://jmitsuominor-ux.github.io/peptide-reference/";
 
 console.log(`[init] pub=${VAPID_PUBLIC_KEY.length}c priv=${VAPID_PRIVATE_KEY.length}c`);

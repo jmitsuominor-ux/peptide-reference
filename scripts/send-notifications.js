@@ -93,8 +93,10 @@ async function main() {
       continue;
     }
 
-    // GitHub Actions cron is unreliable — use a wide window with lookback to avoid missed runs
-    const LOOKBACK = 20; // account for cron latency — Actions often fires 5-15 min late
+    // GitHub Actions cron fires every ~1.5-2 hours in practice despite */15 config.
+    // Use a 2-hour lookback so the next run always catches missed windows.
+    // Deduplication via notification_log prevents double-sends.
+    const LOOKBACK = 120;
     const WINDOW = 30;
     const nowTotalMin = localHour * 60 + localMinute;
     const slots = [];

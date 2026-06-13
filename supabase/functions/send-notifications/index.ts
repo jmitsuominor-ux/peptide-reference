@@ -14,8 +14,6 @@ webpush.setVapidDetails(
   Deno.env.get("VAPID_PRIVATE_KEY")!,
 );
 
-const CRON_SECRET = Deno.env.get("CRON_SECRET") ?? "";
-
 function isDueToday(entry: Record<string, unknown>, localDow: number): boolean {
   const freq = entry.frequency as string;
   if (freq === "as_needed") return false;
@@ -25,14 +23,6 @@ function isDueToday(entry: Record<string, unknown>, localDow: number): boolean {
 }
 
 Deno.serve(async (req: Request) => {
-  // Verify caller via query param (QStash can't send custom auth headers)
-  if (CRON_SECRET) {
-    const url = new URL(req.url);
-    if (url.searchParams.get("secret") !== CRON_SECRET) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-  }
-
   const nowUtc = new Date();
   console.log(`Run: ${nowUtc.toISOString()}`);
 

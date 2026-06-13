@@ -1,6 +1,6 @@
 // Supabase Edge Function — called by QStash CRON every 5 minutes.
 // Sends push notifications for any dose reminders due in the current window.
-// Uses native Web Crypto API for VAPID + payload encryption (no npm:web-push).
+// Uses native Web Crypto API for VAPID + payload encryption (no npm dependencies).
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const supabase = createClient(

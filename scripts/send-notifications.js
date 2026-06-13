@@ -93,7 +93,8 @@ async function main() {
       continue;
     }
 
-    // GitHub Actions cron is unreliable — use a 30-min window to avoid missed runs
+    // GitHub Actions cron is unreliable — use a wide window with lookback to avoid missed runs
+    const LOOKBACK = 20; // account for cron latency — Actions often fires 5-15 min late
     const WINDOW = 30;
     const nowTotalMin = localHour * 60 + localMinute;
     const slots = [];
@@ -101,7 +102,8 @@ async function main() {
       if (!isDueToday(e, localDow)) return;
       [e.reminder_time || '20:00', e.reminder_time_2].filter(Boolean).forEach((rt, slotIdx) => {
         const [h, m] = rt.split(':').map(Number);
-        const inWindow = (h * 60 + m) >= nowTotalMin && (h * 60 + m) < nowTotalMin + WINDOW;
+        const reminderMin = h * 60 + m;
+        const inWindow = reminderMin >= nowTotalMin - LOOKBACK && reminderMin < nowTotalMin + WINDOW;
         if (inWindow) slots.push({ entry: e, reminder_time: rt, slot: slotIdx + 1 });
       });
     });

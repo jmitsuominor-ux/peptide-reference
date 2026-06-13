@@ -15,7 +15,13 @@ export async function initAuth(onAuthChange) {
 }
 
 export async function signUp(email, password) {
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: 'https://jmitsuominor-ux.github.io/peptide-reference/',
+    },
+  });
   if (error) throw error;
   return data;
 }

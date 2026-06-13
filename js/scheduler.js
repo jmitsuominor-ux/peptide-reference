@@ -1015,16 +1015,11 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
           <input type="time" class="calc-input" id="edit-time-${i}" value="${e.reminder_time||'20:00'}"
             style="flex:1;font-size:13px;padding:7px 10px;">
         </div>
-        <div id="edit-t2-row-${i}" style="display:${e.reminder_time_2 ? 'flex' : 'none'};gap:6px;align-items:center;margin-bottom:4px;">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:${isScheduled ? '8' : '4'}px;">
           <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
-          <input type="time" class="calc-input" id="edit-time2-${i}" value="${e.reminder_time_2||'20:00'}"
+          <input type="time" class="calc-input" id="edit-time2-${i}" value="${e.reminder_time_2||''}"
             style="flex:1;font-size:13px;padding:7px 10px;">
-          <button type="button" onclick="document.getElementById('edit-t2-row-${i}').style.display='none';document.getElementById('edit-time2-${i}').value=''"
-            style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
-        </div>
-        <div id="edit-t2-add-${i}" style="display:${e.reminder_time_2 ? 'none' : 'block'};margin-bottom:${isScheduled ? '8' : '4'}px;">
-          <button type="button" onclick="document.getElementById('edit-t2-row-${i}').style.display='flex';document.getElementById('edit-t2-add-${i}').style.display='none'"
-            style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
+          <span style="font-size:11px;color:var(--text3);flex-shrink:0;">optional</span>
         </div>
         ${isScheduled ? `
         <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
@@ -1084,9 +1079,7 @@ export async function saveEditProto() {
       const entry = _editEntries[i];
       const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;
       const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
-      const t2Row = document.getElementById(`edit-t2-row-${i}`);
-      const t2Val = document.getElementById(`edit-time2-${i}`)?.value;
-      const time2 = (t2Row?.style.display !== 'none' && t2Val) ? t2Val : null;
+      const time2 = document.getElementById(`edit-time2-${i}`)?.value || null;
       const isScheduled = entry.frequency !== 'daily' && entry.frequency !== 'as_needed';
       let days = entry.days_of_week;
       if (isScheduled) {

@@ -8,13 +8,19 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
-// Normalize to URL-safe base64url: convert +→- /→_ and strip all = padding
-const toBase64url = (s: string) => s.trim().replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
-const VAPID_PUBLIC_KEY = toBase64url(Deno.env.get("VAPID_PUBLIC_KEY") ?? "");
-const VAPID_PRIVATE_KEY = toBase64url(Deno.env.get("VAPID_PRIVATE_KEY") ?? "");
+// Normalize to URL-safe base64url. Handles standard base64 (+/=), embedded
+// whitespace (common copy-paste artifact), and any other stray chars.
+const toBase64url = (s: string) => s
+  .replace(/\+/g, "-").replace(/\//g, "_") // standard base64 → URL-safe
+  .replace(/[^A-Za-z0-9\-_]/g, "");        // strip = padding + whitespace + garbage
+
+const rawPub = Deno.env.get("VAPID_PUBLIC_KEY") ?? "";
+const rawPriv = Deno.env.get("VAPID_PRIVATE_KEY") ?? "";
+const VAPID_PUBLIC_KEY = toBase64url(rawPub);
+const VAPID_PRIVATE_KEY = toBase64url(rawPriv);
 const VAPID_SUBJECT = "https://jmitsuominor-ux.github.io/peptide-reference/";
 
-console.log(`[init] pub=${VAPID_PUBLIC_KEY.length}c priv=${VAPID_PRIVATE_KEY.length}c`);
+console.log(`[init] pub=${VAPID_PUBLIC_KEY.length}c priv=${VAPID_PRIVATE_KEY.length}c (raw pub=${rawPub.length}c priv=${rawPriv.length}c)`);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

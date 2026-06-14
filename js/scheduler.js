@@ -307,6 +307,8 @@ export async function enableReminders() {
     if (permission !== 'granted') { await refreshScheduleMain(); return; }
 
     const reg = await navigator.serviceWorker.ready;
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) await existing.unsubscribe();
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: _urlB64ToUint8Array(VAPID_PUBLIC_KEY),

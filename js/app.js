@@ -831,7 +831,16 @@ function init() {
     const tryOpenStack = () => {
       sAttempts++;
       const idx = STACKS.findIndex(s => s.name.toUpperCase() === sName);
-      if (idx >= 0) { switchToStack(idx); return; }
+      if (idx >= 0) {
+        switchToStack(idx);
+        const cover = document.getElementById('stackDeepLinkCover');
+        if (cover) {
+          cover.style.transition = 'opacity 0.2s';
+          cover.style.opacity = '0';
+          setTimeout(() => { if (cover.parentNode) cover.parentNode.removeChild(cover); }, 220);
+        }
+        return;
+      }
       if (sAttempts < 10) setTimeout(tryOpenStack, 200);
     };
     setTimeout(tryOpenStack, 300);

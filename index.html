@@ -734,6 +734,17 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 })();
 </script>
 
+<!-- DEEP LINK HANDLER: ?stack=NAME — covers page until stack detail is ready -->
+<script>
+(function(){
+  if(!new URLSearchParams(location.search).get('stack'))return;
+  var cover=document.createElement('div');
+  cover.id='stackDeepLinkCover';
+  cover.style.cssText='position:fixed;inset:0;background:#f7f9fc;z-index:9999;';
+  document.body.appendChild(cover);
+})();
+</script>
+
 <!-- DEEP LINK HANDLER: routes #category hashes from PSW market sites -->
 <script>
 (function(){

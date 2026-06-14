@@ -1,9 +1,7 @@
 name: Send Push Notifications
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'  # every 15 minutes
-  workflow_dispatch:         # allow manual trigger for testing
+  workflow_dispatch:         # manual trigger only — Edge Function handles automated delivery
     inputs:
       test_mode:
         description: 'Send a test notification to all active subscriptions immediately (ignores time window)'

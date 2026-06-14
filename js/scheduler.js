@@ -242,7 +242,7 @@ function renderAuthPrompt() {
   `;
 }
 
-const VAPID_PUBLIC_KEY = 'BI3DhU1wdxTuEFcElc682JaeCY0MxbqFMlXE24dttdgJDsNSFuwkb4LUqT8reiYzz-Am2XJwR8BSER6eixWLFP0';
+const VAPID_PUBLIC_KEY = 'BK6F1yxg0-NkYEsy9p-Z5eoNAyZZzBOeB8iOb-qC_TAPEG7rDyKz3nwTpT5USmPYqXK370iA1jljYULoZ7QMTVI';
 
 function _urlB64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);

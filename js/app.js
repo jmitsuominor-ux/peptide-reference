@@ -823,7 +823,6 @@ function init() {
     };
     setTimeout(tryOpen, 300);
   }
-
   // Deep-link: ?stack=FAT+STACK
   const stackParam = new URLSearchParams(window.location.search).get('stack');
   if (stackParam) {

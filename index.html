@@ -46,7 +46,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .logo-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .logo-text{font-size:13px;font-weight:600;color:#fff;letter-spacing:0.05em;}
 .logo-sub{font-size:10px;color:#7a94b8;font-family:'IBM Plex Mono',monospace;}
-.search-bar{flex:1;min-width:0;display:flex;align-items:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:7px 11px;gap:7px;}
+.search-bar{flex:1;min-width:0;display:flex;align-items:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:7px 11px;gap:7px;touch-action:manipulation;}
 .search-bar svg{width:13px;height:13px;color:#7a94b8;flex-shrink:0;}
 #searchInput{background:transparent;border:none;outline:none;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:13px;width:100%;}
 #searchInput::placeholder{color:#7a94b8;}
@@ -59,7 +59,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .store-back-btn svg{width:12px;height:12px;flex-shrink:0;}
 .nav{background:var(--white);border-bottom:1px solid var(--border);display:flex;padding:0 14px;overflow-x:auto;scrollbar-width:none;position:relative;z-index:1;}
 .nav::-webkit-scrollbar{display:none;}
-.nav-tab{padding:13px 16px 11px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;letter-spacing:0.01em;}
+.nav-tab{display:flex;align-items:center;padding:0 16px;height:42px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;letter-spacing:0.01em;}
 .nav-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 .nav-count{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--blue-light);color:var(--blue);border-radius:10px;padding:1px 6px;margin-left:4px;}
 #searchResults{display:none;padding:14px;position:relative;z-index:1;}
@@ -279,8 +279,68 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .planner-result-detail{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
 .planner-result-vials{font-size:22px;font-weight:600;color:var(--blue);text-align:right;}
 .planner-result-vials-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);text-align:right;}
+
+/* ── Schedule page ──────────────────────────────────────── */
+.sched-hero{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px 20px;margin-bottom:12px;text-align:center;}
+.sched-hero-icon{font-size:36px;margin-bottom:10px;}
+.sched-hero-title{font-size:16px;font-weight:600;margin-bottom:6px;}
+.sched-hero-sub{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:18px;}
+.sched-section{margin-bottom:16px;}
+.sched-section-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.sched-section-title{font-size:15px;font-weight:600;}
+.sched-progress{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:2px 8px;}
+.sched-time-group{margin-bottom:10px;}
+.sched-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;padding:0 2px;}
+.sched-entry-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:10px;transition:all 0.2s;}
+.sched-entry-card.done{opacity:0.55;}
+.sched-entry-card.done .sched-entry-name{text-decoration:line-through;}
+.sched-entry-info{flex:1;min-width:0;}
+.sched-entry-name{font-size:14px;font-weight:600;margin-bottom:2px;}
+.sched-entry-dose{font-size:12px;color:var(--text3);}
+.sched-check-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;font-weight:700;color:var(--teal);flex-shrink:0;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.sched-check-btn.done{border-color:var(--teal);background:var(--teal-light);}
+.sched-check-btn:active{transform:scale(0.88);}
+.sched-proto-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.sched-proto-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.sched-proto-emoji{font-size:20px;flex-shrink:0;margin-top:1px;}
+.sched-proto-name{font-size:14px;font-weight:600;}
+.sched-proto-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
+.sched-proto-compounds{font-size:12px;color:var(--text2);line-height:1.5;}
+.sched-proto-end-btn{margin-left:auto;background:var(--red-light);border:1px solid var(--hi-border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--red);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:600;flex-shrink:0;transition:all 0.15s;}
+.sched-add-btn{width:100%;background:var(--blue-light);border:2px dashed var(--mid-border);border-radius:8px;padding:14px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-top:4px;font-family:'IBM Plex Sans',sans-serif;}
+.sched-add-btn:active{transform:scale(0.98);}
+.sched-text-btn{background:none;border:none;color:var(--blue);font-size:13px;cursor:pointer;padding:4px;font-family:'IBM Plex Sans',sans-serif;}
+.sched-text-btn:hover{text-decoration:underline;}
+.sched-signout-btn{background:none;border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text3);cursor:pointer;padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-weight:500;transition:all 0.15s;}
+.sched-signout-btn:hover{background:var(--bg);}
+.sched-empty{text-align:center;padding:32px 20px;color:var(--text3);}
+.sched-empty-icon{font-size:36px;margin-bottom:10px;}
+.sched-empty-text{font-size:14px;color:var(--text2);margin-bottom:4px;font-weight:500;}
+.sched-empty-sub{font-size:12px;color:var(--text3);}
+
+/* ── Modals ─────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity 0.2s;}
+.modal-overlay.open{opacity:1;}
+.modal-card{background:var(--white);border-radius:16px 16px 0 0;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform 0.25s cubic-bezier(0.32,0.72,0,1);}
+.modal-overlay.open .modal-card{transform:translateY(0);}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1;}
+.modal-title{font-size:16px;font-weight:600;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background 0.15s;}
+.modal-close:hover{background:var(--bg);}
+.modal-body{padding:16px;}
+.modal-switch-link{text-align:center;margin-top:14px;font-size:13px;color:var(--text3);}
+.proto-step-header{font-size:10px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
+.proto-compound-row{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
+.proto-compound-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.proto-compound-dose{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:9px;}
+.proto-time-row{display:flex;align-items:center;gap:8px;}
+.proto-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;}
+.day-pill{width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);background:var(--white);font-size:10px;font-family:'IBM Plex Mono',monospace;font-weight:500;color:var(--text3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;padding:0;}
+.day-pill.active{border-color:var(--blue);background:var(--blue-light);color:var(--blue);font-weight:700;}
+.day-pill:active{transform:scale(0.88);}
 </style>
 <script data-goatcounter="https://peptiderefrenceapp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>if(new URLSearchParams(location.search).get('compound'))document.documentElement.style.setProperty('--cat-view-display','none');</script>
 </head>
 <body>
 <div class="topbar">
@@ -297,7 +357,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </a>
   <div class="search-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="search" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" data-i18n-placeholder="search_placeholder" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="Search compounds, mechanisms, stacks…" data-i18n-placeholder="search_placeholder" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" name="compound-search" readonly>
   </div>
   <div class="lang-btn" id="langBtn">EN</div>
   <div class="theme-btn" id="themeBtn">☀️</div>
@@ -308,13 +368,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="nav" id="mainNav">
   <div class="nav-tab active" data-page="browse" data-i18n="nav_browse">Browse</div>
   <div class="nav-tab" data-page="stacks" data-i18n="nav_stacks">Stacks</div>
-  <div class="nav-tab" data-page="az" data-i18n="nav_az">A–Z Index</div>
   <div class="nav-tab" data-page="calc" data-i18n="nav_calc">Calculator</div>
+  <div class="nav-tab" data-page="schedule">Dose Tracker 💉</div>
 </div>
 
 <!-- BROWSE PAGE -->
 <div class="page active" id="page-browse">
-  <div id="catView">
+  <div id="catView" style="display:var(--cat-view-display,block)">
     <div class="clin-header">
       <div><div class="ch-title" data-i18n="browse_title">Peptide Compound Library</div><div class="ch-sub">125 compounds · 19 therapeutic stacks · Research reference only</div></div>
       <div class="ch-badge">REF v2.2</div>
@@ -362,33 +422,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- AZ INDEX PAGE -->
-<div class="page" id="page-az">
-  <div class="clin-header">
-    <div><div class="ch-title" data-i18n="az_title">A–Z Compound Index</div><div class="ch-sub">All 100 peptides — tap any for full profile</div></div>
-    <div class="ch-badge">125 COMPOUNDS</div>
-  </div>
-  <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:10px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;" data-i18n="ev_key">EVIDENCE RATING KEY</div>
-    <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text2);">
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9734;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_1">Anecdotal / Community use only</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9734;&#9734;&#9734;</span> <span data-i18n="ev_2">Preclinical / Animal studies</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9734;&#9734;</span> <span data-i18n="ev_3">Early human data / Phase 1–2</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <span data-i18n="ev_4">Phase 3 clinical trial data</span></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--blue);letter-spacing:1px;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span data-i18n="ev_5">FDA approved indication</span></div>
-    </div>
-  </div>
-  <div class="az-wrap">
-    <div class="az-main">
-      <div class="az-search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="search" id="azSearch" placeholder="Filter compounds…" data-i18n-placeholder="az_filter" autocomplete="off">
-      </div>
-      <div id="azList"></div>
-    </div>
-    <div class="az-sidebar" id="azSidebar"></div>
-  </div>
-</div>
 
 <!-- CALCULATOR PAGE -->
 <div class="page" id="page-calc">
@@ -453,7 +486,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <option value="30">30 unit / 0.3ml insulin syringe</option>
         </select>
       </div>
-      <button class="calc-btn" onclick="calculateRecon()" data-i18n="calc_btn_recon">Calculate Draw Volume →</button>
+      <button class="calc-btn" id="reconExportBtn" onclick="reconCopy()" style="padding:11px">Export Info</button>
       <div class="calc-error" id="reconError"></div>
       <div class="calc-result" id="reconResult">
         <div class="calc-result-label" data-i18n="calc_result_label">Draw to this line on your syringe</div>
@@ -486,16 +519,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_doses">Doses per Vial</div><div class="calc-result-item-value" id="reconDoses">—</div></div>
           <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_syringe_cap">Syringe Capacity</div><div class="calc-result-item-value" id="reconSyringe">—</div></div>
         </div>
-      </div>
-    </div>
-    <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon blue">📖</div><span data-i18n="calc_how">How Reconstitution Works</span></div>
-      <div class="calc-explainer" id="reconExplainer">
-        <div class="step"><div class="step-num">1</div><div data-i18n="calc_exp_1">Your peptide vial contains <strong>lyophilized (freeze-dried) powder</strong> — e.g. 5mg of BPC-157.</div></div>
-        <div class="step"><div class="step-num">2</div><div data-i18n="calc_exp_2">You add <strong>BAC water</strong> to dissolve it. Adding 2ml to a 5mg vial = <strong>2,500 mcg per ml</strong>.</div></div>
-        <div class="step"><div class="step-num">3</div><div data-i18n="calc_exp_3">A 100-unit insulin syringe holds <strong>1ml total</strong> — 100 units = 1ml = 2,500 mcg in this example.</div></div>
-        <div class="step"><div class="step-num">4</div><div data-i18n="calc_exp_4">To inject 250 mcg: 250 ÷ 2,500 × 100 = <strong>10 units on the syringe</strong>.</div></div>
-        <div class="step"><div class="step-num">5</div><div data-i18n="calc_exp_5"><strong>Always inject slowly</strong> into SubQ fat. Rotate sites. Keep reconstituted vials refrigerated.</div></div>
       </div>
     </div>
   </div>
@@ -559,7 +582,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <span class="calc-unit">mg</span>
         </div>
       </div>
-      <button class="calc-btn" onclick="calculateVials()" id="vialCalcBtn" data-i18n="calc_btn_vials">Calculate →</button>
+      <button class="calc-btn" id="vialCalcBtn" onclick="vialsCopy()" style="padding:11px">Export Info</button>
       <div class="calc-error" id="vialError"></div>
       <div class="calc-result" id="vialResult">
         <div class="calc-result-label" id="vialResultLabel" data-i18n="calc_vials_result_label">Vials needed for full cycle</div>
@@ -567,22 +590,20 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div class="calc-result-sub" id="vialSub">—</div>
         <div class="calc-result-grid">
           <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_total_doses">Total Doses</div><div class="calc-result-item-value" id="totalDoses">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_total_mg">Total mg Needed</div><div class="calc-result-item-value" id="totalMg">—</div></div>
-          <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_mg_wk">mg Per Week</div><div class="calc-result-item-value" id="mgPerWeek">—</div></div>
           <div class="calc-result-item"><div class="calc-result-item-label" data-i18n="calc_leftover">Leftover in Last Vial</div><div class="calc-result-item-value" id="vialLeftover">—</div></div>
         </div>
       </div>
     </div>
-    <div class="calc-section">
-      <div class="calc-section-title"><div class="sh-icon blue">📖</div><span data-i18n="calc_how_vials">How to Use This</span></div>
-      <div class="calc-explainer" id="vialExplainer">
-        <div class="step"><div class="step-num">1</div><div data-i18n="calc_vexp_1">Enter your planned <strong>dose per injection</strong> — e.g. 500 mcg of BPC-157.</div></div>
-        <div class="step"><div class="step-num">2</div><div data-i18n="calc_vexp_2">Enter how many times per day and days per week you inject.</div></div>
-        <div class="step"><div class="step-num">3</div><div data-i18n="calc_vexp_3">Enter your <strong>cycle length</strong> in weeks — e.g. 10 weeks.</div></div>
-        <div class="step"><div class="step-num">4</div><div data-i18n="calc_vexp_4">Enter the <strong>vial size</strong> you plan to buy — e.g. 5mg vials. Rounds up to whole vials.</div></div>
-        <div class="step"><div class="step-num">5</div><div data-i18n="calc_vexp_5">Always buy <strong>1 extra vial</strong> as a buffer for waste.</div></div>
+
+    <div class="calc-section" id="bacGuide" style="display:none">
+      <div class="calc-section-title"><div class="sh-icon blue">💧</div><span>BAC Water Needed</span></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:10px;">For all <span id="bacVialCount">—</span> vials:</div>
+      <div class="calc-result-grid">
+        <div class="calc-result-item"><div class="calc-result-item-label">At 1ml / vial</div><div class="calc-result-item-value" id="bac1ml">—</div></div>
+        <div class="calc-result-item"><div class="calc-result-item-label">At 2ml / vial</div><div class="calc-result-item-value" id="bac2ml">—</div></div>
       </div>
     </div>
+
   </div>
   </div><!-- /vialsBody -->
   <div class="calc-tool-divider"></div>
@@ -625,7 +646,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="calc-section-title"><div class="sh-icon amber">💉</div>Step 3 — Vial Sizes</div>
       <div style="font-size:12px;color:var(--text3);margin-bottom:10px;">Enter the mg per vial you plan to buy for each peptide.</div>
       <div id="plannerPeptideInputs"></div>
-      <button class="calc-btn" style="margin-top:8px" onclick="plannerCalculate()">Calculate Shopping List →</button>
+      <button class="calc-btn" id="plannerExportBtn" style="margin-top:8px;padding:11px" onclick="plannerCopy()">Export Info</button>
     </div>
     <div class="calc-result" id="plannerResult" style="margin-top:0">
       <div class="calc-result-label">Your Shopping List</div>
@@ -638,6 +659,52 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div><!-- /plannerBody -->
   <div class="disclaimer" style="margin-top:16px;">
     <strong>Research Reference Only.</strong> All calculator results are mathematical estimates only. Always verify independently and consult a licensed healthcare provider before use.
+  </div>
+</div>
+
+<!-- SCHEDULE PAGE -->
+<div class="page" id="page-schedule">
+  <div id="schedAuth"></div>
+  <div id="schedMain" style="display:none"></div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" style="display:none" onclick="closeAuthModal(event)">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <div class="modal-title" id="authModalTitle">Create Account</div>
+      <button class="modal-close" onclick="closeAuthModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="calc-field">
+        <label class="calc-label">Email</label>
+        <input type="email" class="calc-input" id="authEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="calc-field">
+        <label class="calc-label">Password</label>
+        <div style="position:relative;">
+          <input type="password" class="calc-input" id="authPassword" placeholder="8+ characters" autocomplete="current-password" style="padding-right:44px;">
+          <button type="button" onclick="toggleAuthPw()" id="authPwEye" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px;line-height:1;">👁</button>
+        </div>
+      </div>
+      <div class="calc-error" id="authError"></div>
+      <button class="calc-btn" id="authSubmitBtn" onclick="submitAuth()" style="margin-top:8px;">Create Account</button>
+      <div class="modal-switch-link">
+        <span id="authSwitchText">Already have an account?</span>
+        <button class="sched-text-btn" id="authSwitchLabel" onclick="toggleAuthMode()">Sign In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PROTOCOL MODAL -->
+<div class="modal-overlay" id="addProtoModal" style="display:none" onclick="closeAddProtoModal(event)">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <div class="modal-title">Add Protocol</div>
+      <button class="modal-close" onclick="closeAddProtoModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="addProtoBody"></div>
   </div>
 </div>
 

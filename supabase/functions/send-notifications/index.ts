@@ -158,13 +158,14 @@ Deno.serve(async (_req: Request) => {
               tag: `peptideref-${localDate}-${time.replace(":", "")}`,
             }),
           );
-          await supabase.from("notification_log").insert(
+          await supabase.from("notification_log").upsert(
             groupSlots.map((s) => ({
               user_id: sub.user_id,
               entry_id: s.entry.id,
               sent_date: localDate,
               reminder_slot: s.slot,
             })),
+            { onConflict: "user_id,entry_id,sent_date,reminder_slot", ignoreDuplicates: true },
           );
           console.log(`[push] ✅ sent+logged`);
           totalSent++;

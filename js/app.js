@@ -719,9 +719,7 @@ function handleSearch(q) {
   });
   sr.innerHTML = results.length
     ? results.map(r => `
-        <div class="sr-item" onclick="${r.isStack ? 'switchToStack('+r.idx+')' : 'goToProfile(\''+r.name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")+'\')'}">
-          <div class="sr-name">${r.name}</div><div class="sr-sub">${r.sub}</div>
-        </div>`).join('')
+        <div class="sr-item" onclick="${r.isStack ? 'switchToStack('+r.idx+')' : 'goToProfile(\''+r.name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")+'\')'}">\n          <div class="sr-name">${r.name}</div><div class="sr-sub">${r.sub}</div>\n        </div>`).join('')
     : `<div style="padding:20px;text-align:center;color:var(--text3)">${tr('no_results_for')} "${q}"</div>`;
 }
 
@@ -824,6 +822,19 @@ function init() {
       if (attempts < 10) setTimeout(tryOpen, 200);
     };
     setTimeout(tryOpen, 300);
+  }
+  // Deep-link: ?stack=FAT+STACK
+  const stackParam = new URLSearchParams(window.location.search).get('stack');
+  if (stackParam) {
+    const sName = decodeURIComponent(stackParam).trim().toUpperCase();
+    let sAttempts = 0;
+    const tryOpenStack = () => {
+      sAttempts++;
+      const idx = STACKS.findIndex(s => s.name.toUpperCase() === sName);
+      if (idx >= 0) { switchToStack(idx); return; }
+      if (sAttempts < 10) setTimeout(tryOpenStack, 200);
+    };
+    setTimeout(tryOpenStack, 300);
   }
 }
 

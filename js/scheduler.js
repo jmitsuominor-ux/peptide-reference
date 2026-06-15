@@ -1105,6 +1105,7 @@ export async function saveEditProto() {
     }
     for (let i = 0; i < _editEntries.length; i++) {
       const entry = _editEntries[i];
+      if (!entry) continue;
       const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;
       const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
       const time2 = document.getElementById(`edit-time2-${i}`)?.value || null;

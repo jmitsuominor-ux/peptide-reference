@@ -1015,8 +1015,12 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
     const isScheduled = e.frequency !== 'daily' && e.frequency !== 'as_needed';
     const days = e.days_of_week || [];
     return `
-      <div style="border-bottom:1px solid var(--border2);padding:14px 0;">
-        <div style="font-weight:600;font-size:14px;color:var(--text1);margin-bottom:10px;">${e.compound_name}</div>
+      <div style="border-bottom:1px solid var(--border2);padding:14px 0;" id="edit-row-${i}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-weight:600;font-size:14px;color:var(--text1);">${e.compound_name}</div>
+          <button type="button" onclick="deleteEditEntry(${i})"
+            style="font-size:11px;color:var(--red,#e05);background:none;border:none;cursor:pointer;padding:2px 6px;">Remove</button>
+        </div>
         <div style="display:flex;gap:6px;margin-bottom:8px;">
           <input type="text" class="calc-input" id="edit-dose-${i}" value="${e.dose||''}"
             placeholder="Dose" style="flex:1;font-size:13px;padding:7px 10px;">
@@ -1066,6 +1070,19 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
     </div>`;
   document.body.appendChild(modal);
   setTimeout(() => modal.classList.add('open'), 10);
+}
+
+export async function deleteEditEntry(index) {
+  const entry = _editEntries[index];
+  if (!entry) return;
+  if (!confirm(`Remove "${entry.compound_name}" from this protocol?`)) return;
+  const { error } = await supabase.from('schedule_entries')
+    .update({ is_active: false })
+    .eq('id', entry.id)
+    .eq('user_id', currentUser.id);
+  if (error) { alert('Could not remove: ' + error.message); return; }
+  document.getElementById(`edit-row-${index}`)?.remove();
+  _editEntries[index] = null;
 }
 
 export function closeEditProtoModal() {

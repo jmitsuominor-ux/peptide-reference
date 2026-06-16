@@ -153,7 +153,7 @@ export const STACKS = [
     peptides:[
       {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
       {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'10 mg/day',mid:'25 mg/day',hi:'50 mg/day'},
     ]
   },
   {
@@ -277,7 +277,7 @@ export const STACKS = [
       {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
       {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5–5 mg/day',hi:'10 mg/day'},
       {name:'MOTS-c',schedule:'SubQ 2–3x per week (AM or pre-workout)',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'10 mg/day',mid:'25 mg/day',hi:'50 mg/day'},
     ]
   },
   {

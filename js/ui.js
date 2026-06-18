@@ -137,7 +137,7 @@ export function showDetail(name) {
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
-        ${p.pairsWith.map(pair => `<div class="compat-row"><div class="compat-ind ok">✓</div>${pair}</div>`).join('')}
+        ${p.pairsWith.map(pair => `<div class="compat-row"><div class="compat-ind ok">✓</div>${PEPTIDES[pair] ? `<span onclick="goToProfile('${pair.replace(/'/g, "\\'")}')" style="color:var(--accent);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">${pair}</span>` : pair}</div>`).join('')}
         ${p.avoid.map(av => `<div class="compat-row"><div class="compat-ind no">✗</div>${av}</div>`).join('')}
       </div>
     </div>

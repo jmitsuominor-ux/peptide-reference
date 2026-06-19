@@ -1147,7 +1147,8 @@ document.addEventListener('visibilitychange', () => {
 
 export function closeAddToProtoSheet() {
   document.getElementById('atpOverlay').style.display = 'none';
-  document.getElementById('atpSheet').style.display = 'none';
+  document.getElementById('atpSheet').style.display   = 'none';
+  document.getElementById('atpFooter').innerHTML = '';
 }
 
 export async function openAddToProtoSheet(compoundName, defaultDose, scheduleText) {
@@ -1156,8 +1157,9 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
   const body    = document.getElementById('atpBody');
   document.getElementById('atpTitle').textContent = `Add ${compoundName} to Protocol`;
   body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">Loading protocols…</div>';
+  document.getElementById('atpFooter').innerHTML = '';
   overlay.style.display = 'block';
-  sheet.style.display   = 'block';
+  sheet.style.display   = 'flex';
 
   if (!currentUser) {
     body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">Sign in to add compounds to a protocol.</div>';
@@ -1171,13 +1173,24 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
     .eq('is_active', true)
     .order('created_at', { ascending: false });
 
+  const safeCompound = compoundName.replace(/'/g,"\\'");
+  const safeDose     = defaultDose.replace(/'/g,"\\'");
+  const safeSchedule = scheduleText.replace(/'/g,"\\'");
+
+  const newProtoBtn = `
+    <div onclick="closeAddToProtoSheet();openAddProtoModal();"
+      style="display:flex;align-items:center;gap:10px;padding:13px 0;cursor:pointer;">
+      <div style="width:32px;height:32px;border-radius:50%;border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue);font-size:18px;line-height:1;">＋</div>
+      <div style="font-size:13px;font-weight:600;color:var(--blue);">Start new protocol</div>
+    </div>`;
+
   if (error || !schedules?.length) {
-    body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">No active protocols found. Create one in the Dose Tracker tab first.</div>';
+    body.innerHTML = `<div style="color:var(--text3);font-size:13px;padding:12px 0 4px;">No active protocols yet.</div>${newProtoBtn}`;
     return;
   }
 
   const listHTML = schedules.map(s => `
-    <div onclick="atpPickProtocol('${s.id}','${(s.name||s.stack_name||'Protocol').replace(/'/g,"\\'")}','${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}',this)"
+    <div onclick="atpPickProtocol('${s.id}','${(s.name||s.stack_name||'Protocol').replace(/'/g,"\\'")}','${safeCompound}','${safeDose}','${safeSchedule}')"
       style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text1);">${s.name || s.stack_name || 'Protocol'}</div>
@@ -1186,7 +1199,8 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </div>`).join('');
 
-  body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}`;
+  body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}${newProtoBtn}`;
+  document.getElementById('atpFooter').innerHTML = '';
 }
 
 window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose, scheduleText) {
@@ -1265,10 +1279,12 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
           style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
       </div>
     </div>
+  `;
+  document.getElementById('atpFooter').innerHTML = `
     <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
-      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;">Add to Protocol</button>
+      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;">Add to Protocol</button>
     <button onclick="openAddToProtoSheet('${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
-      style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:8px;padding:6px;">← Back</button>
+      style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:6px;padding:4px;">← Back</button>
   `;
 };
 

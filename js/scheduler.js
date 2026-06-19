@@ -1189,43 +1189,110 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
   body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}`;
 }
 
-window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose, scheduleText, row) {
+window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose, scheduleText) {
   const body = document.getElementById('atpBody');
-  const freq = scheduleText.toLowerCase().includes('2x') || scheduleText.toLowerCase().includes('twice') ? 'twice_weekly'
-    : scheduleText.toLowerCase().includes('3x') || scheduleText.toLowerCase().includes('three') ? 'three_weekly'
-    : scheduleText.toLowerCase().includes('week') ? 'weekly' : 'daily';
-  const defaultTime = scheduleText.toLowerCase().includes('am') || scheduleText.toLowerCase().includes('morning') ? '08:00'
-    : scheduleText.toLowerCase().includes('bed') || scheduleText.toLowerCase().includes('night') ? '21:00' : '20:00';
+  const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+  // Parse a simplified dose and unit from the compound's mid value
+  const doseMatch = defaultDose.match(/^([\d.,–\-]+\s*(?:–[\d.,]+)?)\s*(mcg|mg|IU|ml|g)/i);
+  const doseVal  = doseMatch ? doseMatch[1].trim() : '';
+  const unitVal  = doseMatch ? doseMatch[2].toLowerCase() : 'mcg';
+
+  // Parse default frequency from schedule text
+  const st = (scheduleText || '').toLowerCase();
+  const defFreq = st.includes('3x') || st.includes('three') ? 'three_weekly'
+    : st.includes('2x') || st.includes('twice') ? 'twice_weekly'
+    : st.includes('week') && !st.includes('2x') && !st.includes('3x') ? 'weekly'
+    : st.includes('as needed') || st.includes('as-needed') ? 'as_needed'
+    : 'daily';
+
+  const defTime = st.includes('am') || st.includes('morning') ? '08:00'
+    : st.includes('bed') || st.includes('night') || st.includes('evening') ? '21:00' : '20:00';
+
+  const isScheduled = defFreq !== 'daily' && defFreq !== 'as_needed';
+  const defDays = defaultDays(defFreq) || [1, 4];
 
   body.innerHTML = `
-    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Adding to <strong style="color:var(--text1);">${schedName}</strong></div>
-    <div style="margin-bottom:12px;">
-      <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:5px;">Dose</label>
-      <input id="atpDose" type="text" value="${defaultDose}" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:14px;background:var(--bg);color:var(--text1);">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">
+      Adding <strong style="color:var(--text1);">${compoundName}</strong> to <strong style="color:var(--text1);">${schedName}</strong>
     </div>
-    <div style="margin-bottom:20px;">
-      <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:5px;">Reminder time</label>
-      <input id="atpTime" type="time" value="${defaultTime}" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:14px;background:var(--bg);color:var(--text1);">
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <input type="text" class="calc-input" id="atpDose" placeholder="Dose" value="${doseVal}"
+        style="flex:1;font-size:13px;padding:7px 10px;">
+      <select class="calc-select" id="atpUnit" style="width:72px;font-size:12px;padding:7px 6px;">
+        <option value="mcg" ${unitVal==='mcg'?'selected':''}>mcg</option>
+        <option value="mg"  ${unitVal==='mg'?'selected':''}>mg</option>
+        <option value="IU"  ${unitVal==='iu'?'selected':''}>IU</option>
+        <option value="ml"  ${unitVal==='ml'?'selected':''}>ml</option>
+      </select>
     </div>
-    <button onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
+      <span class="proto-time-label" style="flex-shrink:0;">Frequency:</span>
+      <select class="calc-select" id="atpFreq" style="flex:1;font-size:12px;padding:7px 8px;"
+        onchange="atpFreqChanged()">
+        <option value="daily"         ${defFreq==='daily'?'selected':''}>Daily</option>
+        <option value="twice_weekly"  ${defFreq==='twice_weekly'?'selected':''}>2x / week</option>
+        <option value="three_weekly"  ${defFreq==='three_weekly'?'selected':''}>3x / week</option>
+        <option value="weekly"        ${defFreq==='weekly'?'selected':''}>Once / week</option>
+        <option value="as_needed"     ${defFreq==='as_needed'?'selected':''}>As needed</option>
+      </select>
+    </div>
+    <div id="atpDaysRow" style="display:${isScheduled?'flex':'none'};gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
+      <span class="proto-time-label">Days:</span>
+      <div id="atpDays" style="display:flex;gap:4px;flex-wrap:wrap;">
+        ${DAY_LABELS.map((d,di) =>
+          `<button type="button" class="day-pill${defDays.includes(di)?' active':''}" data-day="${di}"
+            onclick="this.classList.toggle('active')">${d}</button>`
+        ).join('')}
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
+      <span class="proto-time-label" style="flex-shrink:0;">Reminder 1:</span>
+      <input type="time" class="calc-input" id="atpTime" value="${defTime}"
+        style="flex:1;font-size:13px;padding:7px 10px;">
+    </div>
+    <div id="atpTime2Row" style="display:none;gap:6px;align-items:center;margin-bottom:6px;">
+      <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
+      <input type="time" class="calc-input" id="atpTime2" value=""
+        style="flex:1;font-size:13px;padding:7px 10px;">
+      <button type="button" onclick="document.getElementById('atpTime2Row').style.display='none';document.getElementById('atpTime2').value='';document.getElementById('atpTime2Add').style.display='block'"
+        style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
+    </div>
+    <div id="atpTime2Add" style="margin-bottom:12px;">
+      <button type="button" onclick="document.getElementById('atpTime2Row').style.display='flex';document.getElementById('atpTime2Add').style.display='none'"
+        style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder</button>
+    </div>
+    <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
       style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;">Add to Protocol</button>
     <button onclick="openAddToProtoSheet('${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
       style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:8px;padding:6px;">← Back</button>
   `;
 };
 
+window.atpFreqChanged = function() {
+  const freq = document.getElementById('atpFreq')?.value;
+  const daysRow = document.getElementById('atpDaysRow');
+  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
+};
+
 window.atpSave = async function(schedId, compoundName, scheduleText) {
-  const dose = document.getElementById('atpDose')?.value?.trim();
-  const time = document.getElementById('atpTime')?.value || '20:00';
-  if (!dose) { alert('Please enter a dose.'); return; }
+  const doseNum = document.getElementById('atpDose')?.value?.trim();
+  const unit    = document.getElementById('atpUnit')?.value || 'mcg';
+  const freq    = document.getElementById('atpFreq')?.value || 'daily';
+  const time    = document.getElementById('atpTime')?.value || '20:00';
+  const time2   = document.getElementById('atpTime2')?.value || null;
+
+  if (!doseNum) { alert('Please enter a dose.'); return; }
   if (!currentUser) { alert('Not signed in.'); return; }
 
-  const freq = scheduleText.toLowerCase().includes('2x') || scheduleText.toLowerCase().includes('twice') ? 'twice_weekly'
-    : scheduleText.toLowerCase().includes('3x') || scheduleText.toLowerCase().includes('three') ? 'three_weekly'
-    : scheduleText.toLowerCase().includes('week') ? 'weekly' : 'daily';
+  const dose = `${doseNum} ${unit}`;
+  const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+  const days = isScheduled
+    ? Array.from(document.querySelectorAll('#atpDays .day-pill.active')).map(el => parseInt(el.dataset.day))
+    : null;
 
-  const btn = document.querySelector('#atpBody button');
-  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  const saveBtn = document.getElementById('atpSaveBtn');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
 
   const { error } = await supabase.from('schedule_entries').insert({
     schedule_id: schedId,
@@ -1234,18 +1301,18 @@ window.atpSave = async function(schedId, compoundName, scheduleText) {
     dose,
     schedule_text: scheduleText,
     frequency: freq,
-    days_of_week: freq !== 'daily' && freq !== 'as_needed' ? defaultDays(freq) : null,
+    days_of_week: days,
     reminder_time: time,
+    reminder_time_2: time2 || null,
     is_active: true,
   });
 
   if (error) {
     alert('Could not save: ' + error.message);
-    if (btn) { btn.disabled = false; btn.textContent = 'Add to Protocol'; }
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Add to Protocol'; }
     return;
   }
 
   closeAddToProtoSheet();
-  // Refresh dose tracker if visible
   if (typeof renderSchedulePage === 'function') renderSchedulePage();
 };

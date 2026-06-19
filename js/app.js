@@ -11,7 +11,9 @@ import {
   renderStacks, showStackDetail,
   activatePage, goToProfile, switchToStack,
   navBack, navForward, navToDetail, captureNavState, restoreNavState,
+  renderRecentFav,
 } from './ui.js';
+import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
 import {
   renderSchedulePage,
@@ -24,6 +26,14 @@ import {
 } from './scheduler.js';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
+// tapFavorite: toggles, updates the star button inline, refreshes the chips
+window.tapFavorite = function(name, btn) {
+  const nowFav = toggleFavorite(name);
+  btn.textContent = nowFav ? '⭐' : '☆';
+  btn.classList.toggle('active', nowFav);
+  renderRecentFav();
+};
+
 Object.assign(window, {
   showList, showDetail, navToDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage,
@@ -756,6 +766,7 @@ function init() {
   _si.value = '';
   _si.addEventListener('focus', () => _si.removeAttribute('readonly'), { once: true });
   renderCategories();
+  renderRecentFav();
   renderStacks();
   initPlanner();
   applyTranslations();

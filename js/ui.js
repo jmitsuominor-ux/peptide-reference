@@ -5,9 +5,39 @@ import { CATEGORIES, CAT_COLORS, CAT_BG, EVIDENCE_LABELS, EVIDENCE_BADGE_CLASS }
 import { CAT_I18N_KEYS } from './data/translations.js';
 import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize } from './utils.js';
 import { AppState } from './state.js';
+import { getRecent, getFavorites, isFavorite, addToRecent, toggleFavorite } from './storage.js';
 
 // Shorthand using current language — avoids threading lang everywhere in templates
 function tr(key) { return t(key, AppState.lang); }
+
+// ─── Browse: recently viewed & favourites ─────────────────
+export function renderRecentFav() {
+  const favs   = getFavorites();
+  const recent = getRecent();
+
+  const favSec = document.getElementById('favSection');
+  const recSec = document.getElementById('recentSection');
+  if (!favSec || !recSec) return;
+
+  if (favs.length) {
+    favSec.style.display = 'block';
+    document.getElementById('favChips').innerHTML = favs.map(n =>
+      `<div class="browse-chip fav" onclick="navToDetail('${n.replace(/'/g,"\\'")}')">⭐ ${n}</div>`
+    ).join('');
+  } else {
+    favSec.style.display = 'none';
+  }
+
+  const filteredRecent = recent.filter(n => !favs.includes(n));
+  if (filteredRecent.length) {
+    recSec.style.display = 'block';
+    document.getElementById('recentChips').innerHTML = filteredRecent.map(n =>
+      `<div class="browse-chip" onclick="navToDetail('${n.replace(/'/g,"\\'")}')">🕐 ${n}</div>`
+    ).join('');
+  } else {
+    recSec.style.display = 'none';
+  }
+}
 
 // ─── Browse: categories ──────────────────────────────────
 export function renderCategories() {
@@ -53,6 +83,8 @@ export function showList(catId) {
 export function showDetail(name) {
   const p = getPeptideData(name, AppState.lang);
   if (!p) return;
+  addToRecent(name);
+  renderRecentFav();
   document.getElementById('catView').style.display = 'none';
   document.getElementById('listView').style.display = 'none';
   const dv = document.getElementById('detailView');
@@ -71,9 +103,14 @@ export function showDetail(name) {
 
   document.getElementById('detailContent').innerHTML = `
     <div class="detail-hero">
-      <div class="dh-cat">${p.category}</div>
-      <div class="dh-name">${name}</div>
-      <div class="dh-tagline">${p.tagline}</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div>
+          <div class="dh-cat">${p.category}</div>
+          <div class="dh-name">${name}</div>
+          <div class="dh-tagline">${p.tagline}</div>
+        </div>
+        <button class="fav-btn${isFavorite(name) ? ' active' : ''}" onclick="tapFavorite('${name.replace(/'/g,"\\'")}',this)" title="Favourite">${isFavorite(name) ? '⭐' : '☆'}</button>
+      </div>
       <div class="dh-badges"><span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span></div>
     </div>
     <div class="section-card">

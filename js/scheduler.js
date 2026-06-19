@@ -1142,3 +1142,110 @@ document.addEventListener('visibilitychange', () => {
     }
   }
 });
+
+// ─── Add compound to existing protocol ───────────────────
+
+export function closeAddToProtoSheet() {
+  document.getElementById('atpOverlay').style.display = 'none';
+  document.getElementById('atpSheet').style.display = 'none';
+}
+
+export async function openAddToProtoSheet(compoundName, defaultDose, scheduleText) {
+  const overlay = document.getElementById('atpOverlay');
+  const sheet   = document.getElementById('atpSheet');
+  const body    = document.getElementById('atpBody');
+  document.getElementById('atpTitle').textContent = `Add ${compoundName} to Protocol`;
+  body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">Loading protocols…</div>';
+  overlay.style.display = 'block';
+  sheet.style.display   = 'block';
+
+  if (!currentUser) {
+    body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">Sign in to add compounds to a protocol.</div>';
+    return;
+  }
+
+  const { data: schedules, error } = await supabase
+    .from('schedules')
+    .select('id, name, stack_name')
+    .eq('user_id', currentUser.id)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
+
+  if (error || !schedules?.length) {
+    body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0;">No active protocols found. Create one in the Dose Tracker tab first.</div>';
+    return;
+  }
+
+  const listHTML = schedules.map(s => `
+    <div onclick="atpPickProtocol('${s.id}','${(s.name||s.stack_name||'Protocol').replace(/'/g,"\\'")}','${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}',this)"
+      style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text1);">${s.name || s.stack_name || 'Protocol'}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">Active protocol</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>`).join('');
+
+  body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}`;
+}
+
+window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose, scheduleText, row) {
+  const body = document.getElementById('atpBody');
+  const freq = scheduleText.toLowerCase().includes('2x') || scheduleText.toLowerCase().includes('twice') ? 'twice_weekly'
+    : scheduleText.toLowerCase().includes('3x') || scheduleText.toLowerCase().includes('three') ? 'three_weekly'
+    : scheduleText.toLowerCase().includes('week') ? 'weekly' : 'daily';
+  const defaultTime = scheduleText.toLowerCase().includes('am') || scheduleText.toLowerCase().includes('morning') ? '08:00'
+    : scheduleText.toLowerCase().includes('bed') || scheduleText.toLowerCase().includes('night') ? '21:00' : '20:00';
+
+  body.innerHTML = `
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Adding to <strong style="color:var(--text1);">${schedName}</strong></div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:5px;">Dose</label>
+      <input id="atpDose" type="text" value="${defaultDose}" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:14px;background:var(--bg);color:var(--text1);">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:5px;">Reminder time</label>
+      <input id="atpTime" type="time" value="${defaultTime}" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:14px;background:var(--bg);color:var(--text1);">
+    </div>
+    <button onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
+      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;">Add to Protocol</button>
+    <button onclick="openAddToProtoSheet('${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
+      style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:8px;padding:6px;">← Back</button>
+  `;
+};
+
+window.atpSave = async function(schedId, compoundName, scheduleText) {
+  const dose = document.getElementById('atpDose')?.value?.trim();
+  const time = document.getElementById('atpTime')?.value || '20:00';
+  if (!dose) { alert('Please enter a dose.'); return; }
+  if (!currentUser) { alert('Not signed in.'); return; }
+
+  const freq = scheduleText.toLowerCase().includes('2x') || scheduleText.toLowerCase().includes('twice') ? 'twice_weekly'
+    : scheduleText.toLowerCase().includes('3x') || scheduleText.toLowerCase().includes('three') ? 'three_weekly'
+    : scheduleText.toLowerCase().includes('week') ? 'weekly' : 'daily';
+
+  const btn = document.querySelector('#atpBody button');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const { error } = await supabase.from('schedule_entries').insert({
+    schedule_id: schedId,
+    user_id: currentUser.id,
+    compound_name: compoundName,
+    dose,
+    schedule_text: scheduleText,
+    frequency: freq,
+    days_of_week: freq !== 'daily' && freq !== 'as_needed' ? defaultDays(freq) : null,
+    reminder_time: time,
+    is_active: true,
+  });
+
+  if (error) {
+    alert('Could not save: ' + error.message);
+    if (btn) { btn.disabled = false; btn.textContent = 'Add to Protocol'; }
+    return;
+  }
+
+  closeAddToProtoSheet();
+  // Refresh dose tracker if visible
+  if (typeof renderSchedulePage === 'function') renderSchedulePage();
+};

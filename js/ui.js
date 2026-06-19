@@ -111,7 +111,10 @@ export function showDetail(name) {
         </div>
         <button class="fav-btn${isFavorite(name) ? ' active' : ''}" onclick="tapFavorite('${name.replace(/'/g,"\\'")}',this)" title="Favourite">${isFavorite(name) ? '⭐' : '☆'}</button>
       </div>
-      <div class="dh-badges"><span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span></div>
+      <div class="dh-badges" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span>
+        <button onclick="openAddToProtoSheet('${name.replace(/'/g,"\\'")}','${(p.mid||'').replace(/'/g,"\\'")}','${(p.schedule||'').replace(/'/g,"\\'")}')" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.03em;">＋ Add to Protocol</button>
+      </div>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">

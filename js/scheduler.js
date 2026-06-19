@@ -1193,12 +1193,10 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
   const body = document.getElementById('atpBody');
   const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
-  // Parse a simplified dose and unit from the compound's mid value
   const doseMatch = defaultDose.match(/^([\d.,–\-]+\s*(?:–[\d.,]+)?)\s*(mcg|mg|IU|ml|g)/i);
   const doseVal  = doseMatch ? doseMatch[1].trim() : '';
   const unitVal  = doseMatch ? doseMatch[2].toLowerCase() : 'mcg';
 
-  // Parse default frequency from schedule text
   const st = (scheduleText || '').toLowerCase();
   const defFreq = st.includes('3x') || st.includes('three') ? 'three_weekly'
     : st.includes('2x') || st.includes('twice') ? 'twice_weekly'
@@ -1213,57 +1211,62 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
   const defDays = defaultDays(defFreq) || [1, 4];
 
   body.innerHTML = `
-    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">
-      Adding <strong style="color:var(--text1);">${compoundName}</strong> to <strong style="color:var(--text1);">${schedName}</strong>
-    </div>
-    <div style="display:flex;gap:6px;margin-bottom:8px;">
-      <input type="text" class="calc-input" id="atpDose" placeholder="Dose" value="${doseVal}"
-        style="flex:1;font-size:13px;padding:7px 10px;">
-      <select class="calc-select" id="atpUnit" style="width:72px;font-size:12px;padding:7px 6px;">
-        <option value="mcg" ${unitVal==='mcg'?'selected':''}>mcg</option>
-        <option value="mg"  ${unitVal==='mg'?'selected':''}>mg</option>
-        <option value="IU"  ${unitVal==='iu'?'selected':''}>IU</option>
-        <option value="ml"  ${unitVal==='ml'?'selected':''}>ml</option>
-      </select>
-    </div>
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
-      <span class="proto-time-label" style="flex-shrink:0;">Frequency:</span>
-      <select class="calc-select" id="atpFreq" style="flex:1;font-size:12px;padding:7px 8px;"
-        onchange="atpFreqChanged()">
-        <option value="daily"         ${defFreq==='daily'?'selected':''}>Daily</option>
-        <option value="twice_weekly"  ${defFreq==='twice_weekly'?'selected':''}>2x / week</option>
-        <option value="three_weekly"  ${defFreq==='three_weekly'?'selected':''}>3x / week</option>
-        <option value="weekly"        ${defFreq==='weekly'?'selected':''}>Once / week</option>
-        <option value="as_needed"     ${defFreq==='as_needed'?'selected':''}>As needed</option>
-      </select>
-    </div>
-    <div id="atpDaysRow" style="display:${isScheduled?'flex':'none'};gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
-      <span class="proto-time-label">Days:</span>
-      <div id="atpDays" style="display:flex;gap:4px;flex-wrap:wrap;">
-        ${DAY_LABELS.map((d,di) =>
-          `<button type="button" class="day-pill${defDays.includes(di)?' active':''}" data-day="${di}"
-            onclick="this.classList.toggle('active')">${d}</button>`
-        ).join('')}
+    <div class="proto-compound-row" style="margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <input type="text" class="calc-input" value="${compoundName}" readonly
+          style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;background:var(--surface);color:var(--text1);">
+        <button type="button" onclick="closeAddToProtoSheet()"
+          style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px;line-height:1;flex-shrink:0;">✕</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <input type="text" class="calc-input" placeholder="Dose" id="atpDose" value="${doseVal}"
+          style="flex:1;font-size:13px;padding:7px 10px;">
+        <select class="calc-select" id="atpUnit" style="width:80px;font-size:12px;padding:7px 6px;">
+          <option value="mcg" ${unitVal==='mcg'?'selected':''}>mcg</option>
+          <option value="mg"  ${unitVal==='mg'?'selected':''}>mg</option>
+          <option value="IU"  ${unitVal==='iu'?'selected':''}>IU</option>
+          <option value="ml"  ${unitVal==='ml'?'selected':''}>ml</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
+        <span class="proto-time-label" style="flex-shrink:0;">Frequency:</span>
+        <select class="calc-select" id="atpFreq" style="flex:1;font-size:12px;padding:7px 8px;"
+          onchange="atpFreqChanged()">
+          <option value="daily"         ${defFreq==='daily'?'selected':''}>Daily</option>
+          <option value="twice_weekly"  ${defFreq==='twice_weekly'?'selected':''}>2x / week</option>
+          <option value="three_weekly"  ${defFreq==='three_weekly'?'selected':''}>3x / week</option>
+          <option value="weekly"        ${defFreq==='weekly'?'selected':''}>Once / week</option>
+          <option value="as_needed"     ${defFreq==='as_needed'?'selected':''}>As needed</option>
+        </select>
+      </div>
+      <div id="atpDaysRow" style="display:${isScheduled?'flex':'none'};gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">
+        <span class="proto-time-label">Days:</span>
+        <div id="atpDays" style="display:flex;gap:4px;flex-wrap:wrap;">
+          ${DAY_LABELS.map((d,di) =>
+            `<button type="button" class="day-pill${defDays.includes(di)?' active':''}" data-day="${di}"
+              onclick="this.classList.toggle('active')">${d}</button>`
+          ).join('')}
+        </div>
+      </div>
+      <div class="proto-time-row" style="gap:6px;margin-bottom:4px;">
+        <span class="proto-time-label">Reminder 1:</span>
+        <input type="time" class="calc-input" id="atpTime" value="${defTime}"
+          style="flex:1;font-size:13px;padding:7px 10px;">
+      </div>
+      <div id="atpTime2Row" style="display:none;gap:6px;align-items:center;margin-bottom:4px;">
+        <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
+        <input type="time" class="calc-input" id="atpTime2" value=""
+          style="flex:1;font-size:13px;padding:7px 10px;">
+        <button type="button" onclick="document.getElementById('atpTime2Row').style.display='none';document.getElementById('atpTime2').value='';document.getElementById('atpTime2Add').style.display='block'"
+          style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
+      </div>
+      <div id="atpTime2Add" style="display:block;margin-bottom:4px;">
+        <button type="button" onclick="document.getElementById('atpTime2Row').style.display='flex';document.getElementById('atpTime2Add').style.display='none'"
+          style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
       </div>
     </div>
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
-      <span class="proto-time-label" style="flex-shrink:0;">Reminder 1:</span>
-      <input type="time" class="calc-input" id="atpTime" value="${defTime}"
-        style="flex:1;font-size:13px;padding:7px 10px;">
-    </div>
-    <div id="atpTime2Row" style="display:none;gap:6px;align-items:center;margin-bottom:6px;">
-      <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
-      <input type="time" class="calc-input" id="atpTime2" value=""
-        style="flex:1;font-size:13px;padding:7px 10px;">
-      <button type="button" onclick="document.getElementById('atpTime2Row').style.display='none';document.getElementById('atpTime2').value='';document.getElementById('atpTime2Add').style.display='block'"
-        style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:4px;">✕</button>
-    </div>
-    <div id="atpTime2Add" style="margin-bottom:12px;">
-      <button type="button" onclick="document.getElementById('atpTime2Row').style.display='flex';document.getElementById('atpTime2Add').style.display='none'"
-        style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder</button>
-    </div>
     <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
-      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;">Add to Protocol</button>
+      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;">Add to Protocol</button>
     <button onclick="openAddToProtoSheet('${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
       style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:8px;padding:6px;">← Back</button>
   `;

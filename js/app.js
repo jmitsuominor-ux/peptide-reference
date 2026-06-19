@@ -10,6 +10,7 @@ import {
   renderCategories, showList, showDetail, toggleSec,
   renderStacks, showStackDetail,
   activatePage, goToProfile, switchToStack,
+  navBack, navForward, navToDetail, captureNavState, restoreNavState,
 } from './ui.js';
 import { initAuth, signOut } from './auth.js';
 import {
@@ -24,7 +25,7 @@ import {
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 Object.assign(window, {
-  showList, showDetail, toggleSec, showStackDetail,
+  showList, showDetail, navToDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage,
   calculateRecon, calculateVials, showCalcError,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
@@ -80,7 +81,7 @@ function toggleLang() {
     if (name) showDetail(name);
   }
   if (document.getElementById('stackDetailView').style.display !== 'none') {
-    if (AppState.originStackIdx !== null) showStackDetail(AppState.originStackIdx);
+    if (AppState.originStackIdx !== null) showStackDetail(AppState.originStackIdx, true);
   }
 }
 
@@ -644,41 +645,9 @@ function initEventListeners() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   );
 
-  document.getElementById('backToStacks').addEventListener('click', () => {
-    document.getElementById('stackDetailView').style.display = 'none';
-    document.getElementById('stacksListView').style.display = 'block';
-    window.scrollTo(0, 0);
-  });
-
-  document.getElementById('backToCat').addEventListener('click', () => {
-    document.getElementById('listView').style.display = 'none';
-    document.getElementById('catView').style.display = 'block';
-    window.scrollTo(0, 0);
-  });
-
-  document.getElementById('backToList').addEventListener('click', () => {
-    document.getElementById('detailView').style.display = 'none';
-    if (AppState.profileOrigin === 'stack' && AppState.originStackIdx !== null) {
-      AppState.profileOrigin = null;
-      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelector('[data-page="stacks"]').classList.add('active');
-      document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-        p.style.display = 'none';
-      });
-      const sp = document.getElementById('page-stacks');
-      sp.classList.add('active');
-      sp.style.display = 'block';
-      document.getElementById('stackDetailView').style.display = 'block';
-      document.getElementById('stacksListView').style.display = 'none';
-    } else {
-      const lv = document.getElementById('listView');
-      lv.dataset.catId
-        ? (lv.style.display = 'block')
-        : (document.getElementById('catView').style.display = 'block');
-    }
-    window.scrollTo(0, 0);
-  });
+  document.getElementById('backToStacks').addEventListener('click', navBack);
+  document.getElementById('backToCat').addEventListener('click', navBack);
+  document.getElementById('backToList').addEventListener('click', navBack);
 
 
   // Debounced global search
@@ -689,7 +658,15 @@ function initEventListeners() {
   });
 
   document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', function () { activatePage(this.dataset.page); });
+    tab.addEventListener('click', function () {
+      const leaving = document.querySelector('.nav-tab.active')?.dataset.page;
+      if (leaving && leaving !== this.dataset.page) {
+        AppState.tabMemory[leaving] = captureNavState();
+      }
+      activatePage(this.dataset.page);
+      const saved = AppState.tabMemory[this.dataset.page];
+      if (saved && saved.page === this.dataset.page) restoreNavState(saved);
+    });
   });
 }
 
@@ -723,12 +700,12 @@ function handleSearch(q) {
     : `<div style="padding:20px;text-align:center;color:var(--text3)">${tr('no_results_for')} "${q}"</div>`;
 }
 
-// ─── Swipe-back gesture ───────────────────────────────────
+// ─── Swipe back/forward gestures ─────────────────────────
 function initSwipeBack() {
   let touchStartX = 0;
   let touchStartY = 0;
   const SWIPE_THRESHOLD = 80;
-  const EDGE_ZONE = 40;
+  const EDGE_ZONE = 44;
   const VERTICAL_LIMIT = 60;
 
   document.addEventListener('touchstart', e => {
@@ -737,21 +714,11 @@ function initSwipeBack() {
   }, { passive: true });
 
   document.addEventListener('touchend', e => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    const dx = touchEndX - touchStartX;
-    const dy = Math.abs(touchEndY - touchStartY);
-    if (touchStartX > EDGE_ZONE || dx < SWIPE_THRESHOLD || dy > VERTICAL_LIMIT) return;
-    const browseActive = document.getElementById('page-browse').classList.contains('active');
-    const stacksActive = document.getElementById('page-stacks').classList.contains('active');
-    if (browseActive) {
-      if (document.getElementById('detailView').style.display !== 'none')
-        document.getElementById('backToList').click();
-      else if (document.getElementById('listView').style.display !== 'none')
-        document.getElementById('backToCat').click();
-    }
-    if (stacksActive && document.getElementById('stackDetailView').style.display !== 'none')
-      document.getElementById('backToStacks').click();
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    if (dy > VERTICAL_LIMIT || Math.abs(dx) < SWIPE_THRESHOLD) return;
+    if (dx > 0 && touchStartX < EDGE_ZONE) navBack();
+    else if (dx < 0 && touchStartX > window.innerWidth - EDGE_ZONE) navForward();
   }, { passive: true });
 }
 

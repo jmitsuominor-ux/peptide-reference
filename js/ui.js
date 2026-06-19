@@ -23,6 +23,7 @@ export function renderCategories() {
 
 // ─── Browse: peptide list ─────────────────────────────────
 export function showList(catId) {
+  pushNav();
   const cat = CATEGORIES.find(c => c.id === catId);
   document.getElementById('catView').style.display = 'none';
   const lv = document.getElementById('listView');
@@ -33,7 +34,7 @@ export function showList(catId) {
   const evLabels = ['', 'Anecdotal', 'Preclinical', 'Early Human', 'Phase 3', 'FDA Approved'];
   document.getElementById('peptideList').innerHTML = cat.peptides.map((name, i) => {
     const p = getPeptideData(name, AppState.lang);
-    return `<div class="peptide-card" style="animation-delay:${i*0.04}s" onclick="showDetail('${name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
+    return `<div class="peptide-card" style="animation-delay:${i*0.04}s" onclick="navToDetail('${name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
       <div class="pc-idx">${String(i+1).padStart(2,'0')}</div>
       <div class="pc-content">
         <div class="pc-name">${name}</div>
@@ -234,7 +235,8 @@ export function renderStacks() {
 }
 
 // ─── Stacks: detail view ─────────────────────────────────
-export function showStackDetail(idx) {
+export function showStackDetail(idx, skipHistory = false) {
+  if (!skipHistory) pushNav();
   AppState.originStackIdx = idx;
   const stack = getStackData(idx, AppState.lang);
   document.getElementById('stacksListView').style.display = 'none';
@@ -379,6 +381,76 @@ export function showStackDetail(idx) {
 }
 
 
+// ─── Navigation history engine ────────────────────────────
+
+export function captureNavState() {
+  const page = document.querySelector('.nav-tab.active')?.dataset.page || 'browse';
+  if (page === 'stacks') {
+    return document.getElementById('stackDetailView')?.style.display !== 'none'
+      ? { page: 'stacks', view: 'stackDetail' }
+      : { page: 'stacks', view: 'stacksList' };
+  }
+  if (page === 'browse') {
+    if (document.getElementById('detailView')?.style.display !== 'none')
+      return { page: 'browse', view: 'detail', name: document.getElementById('detailTitle')?.textContent };
+    if (document.getElementById('listView')?.style.display !== 'none')
+      return { page: 'browse', view: 'list', catId: document.getElementById('listView').dataset.catId };
+    return { page: 'browse', view: 'cat' };
+  }
+  return { page };
+}
+
+export function restoreNavState(state) {
+  const page = state.page || 'browse';
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.querySelector(`[data-page="${page}"]`);
+  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  const pg = document.getElementById(`page-${page}`);
+  if (pg) { pg.classList.add('active'); pg.style.display = 'block'; }
+
+  if (page === 'stacks') {
+    const isList = state.view === 'stacksList';
+    document.getElementById('stacksListView').style.display = isList ? 'block' : 'none';
+    document.getElementById('stackDetailView').style.display = isList ? 'none' : 'block';
+  } else if (page === 'browse') {
+    document.getElementById('catView').style.display = 'none';
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('detailView').style.display = 'none';
+    if (state.view === 'detail') {
+      document.getElementById('detailView').style.display = 'block';
+      showDetail(state.name);
+    } else if (state.view === 'list') {
+      document.getElementById('listView').style.display = 'block';
+    } else {
+      document.getElementById('catView').style.display = 'block';
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function pushNav() {
+  AppState.navHistory.push(captureNavState());
+  AppState.navForward = [];
+}
+
+export function navBack() {
+  if (!AppState.navHistory.length) return;
+  AppState.navForward.push(captureNavState());
+  restoreNavState(AppState.navHistory.pop());
+}
+
+export function navForward() {
+  if (!AppState.navForward.length) return;
+  AppState.navHistory.push(captureNavState());
+  restoreNavState(AppState.navForward.pop());
+}
+
+export function navToDetail(name) {
+  pushNav();
+  showDetail(name);
+}
+
 // ─── Navigation helpers ───────────────────────────────────
 export function activatePage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -396,8 +468,8 @@ export function activatePage(pageId) {
   }
 }
 
-export function goToProfile(name, fromStack) {
-  AppState.profileOrigin = fromStack ? 'stack' : null;
+export function goToProfile(name) {
+  pushNav();
   document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
   document.querySelector('[data-page="browse"]').classList.add('active');
   document.querySelectorAll('.page').forEach(p => {

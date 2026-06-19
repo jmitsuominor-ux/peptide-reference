@@ -7,6 +7,8 @@ export const AppState = {
   plannerTier: 'mid',
   sdTier: 'mid',
   vialMode: 'need',
-  profileOrigin: null,    // 'stack' | null — where backToList navigates
-  originStackIdx: null,   // which stack detail to restore when going back
+  originStackIdx: null,   // which stack is currently open (for re-render on lang switch)
+  navHistory: [],         // back stack — array of nav state snapshots
+  navForward: [],         // forward stack — populated when going back
+  tabMemory: { browse: null, stacks: null, calculate: null, schedule: null },
 };

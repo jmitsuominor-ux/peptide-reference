@@ -82,7 +82,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .browse-chip{flex-shrink:0;background:var(--white);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:500;color:var(--text1);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
 .browse-chip:active{transform:scale(0.95);}
 .browse-chip.fav{border-color:var(--accent);color:var(--accent);}
-.fav-btn{background:none;border:none;font-size:22px;cursor:pointer;line-height:1;padding:10px;margin:-10px -10px 0 0;opacity:0.6;transition:opacity 0.15s;-webkit-tap-highlight-color:transparent;}
+.fav-btn{background:none;border:none;font-size:22px;cursor:pointer;line-height:1;padding:10px;margin:-10px -10px 0 0;opacity:0.6;transition:opacity 0.15s;-webkit-tap-highlight-color:transparent;position:relative;z-index:2;}
 .fav-btn.active{opacity:1;}
 .cat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:13px 13px 13px 16px;cursor:pointer;transition:all 0.15s;position:relative;}
 .cat-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cat-color,var(--blue));border-radius:8px 0 0 8px;}
@@ -110,7 +110,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .pc-arrow{color:var(--text3);font-size:18px;flex-shrink:0;margin-top:-2px;}
 .detail-hero{background:var(--navy);border-radius:8px;padding:18px;margin-bottom:10px;position:relative;overflow:hidden;}
 .dark .detail-hero{background:#161b22;border:1px solid var(--border);}
-.detail-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(23,86,169,0.25) 0%,transparent 70%);}
+.detail-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(23,86,169,0.25) 0%,transparent 70%);pointer-events:none;}
 .dh-cat{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a94b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
 .dh-name{font-size:22px;font-weight:600;color:#fff;margin-bottom:5px;line-height:1.2;position:relative;z-index:1;}
 .dh-tagline{font-size:13px;color:#a8c0d8;line-height:1.5;position:relative;z-index:1;}

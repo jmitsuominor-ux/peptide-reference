@@ -11,4 +11,6 @@ export const AppState = {
   navHistory: [],         // back stack — array of nav state snapshots
   navForward: [],         // forward stack — populated when going back
   tabMemory: { browse: null, stacks: null, calculate: null, schedule: null },
+  compoundList: [],       // ordered compound names for prev/next navigation
+  currentDetailName: '',  // which compound detail is currently open
 };

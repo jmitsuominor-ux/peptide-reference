@@ -2,7 +2,7 @@
 // APP — event handlers, calculators, init
 // Entry point: imported as <script type="module" src="js/app.js">
 // ═══════════════════════════════════════════════════════
-import { AppState } from './state.js';
+import { AppState } from './state.js?v=2';
 import { TRANSLATIONS } from './data/translations.js';
 import { STACKS } from './utils.js';
 import { t, parseDoseToMgPerWeek, getCommonVialSize, computeVialCount, getStackData, PEPTIDES } from './utils.js';
@@ -13,7 +13,8 @@ import {
   navBack, navForward, navToDetail, captureNavState, restoreNavState,
   renderRecentFav,
   toggleCompare, clearCompare, openCompare, closeCompare,
-} from './ui.js';
+  swipeNextCompound, swipePrevCompound,
+} from './ui.js?v=2';
 import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
 import {
@@ -40,6 +41,7 @@ Object.assign(window, {
   showList, showDetail, navToDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage,
   toggleCompare, clearCompare, openCompare, closeCompare,
+  swipeNextCompound, swipePrevCompound,
   calculateRecon, calculateVials, showCalcError,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   vialsCopy, reconCopy, plannerCopy,
@@ -720,6 +722,8 @@ function initSwipeBack() {
   let touchStartY = 0;
   const SWIPE_THRESHOLD = 80;
   const EDGE_ZONE = 44;
+  const CENTER_ZONE_START = 60;
+  const CENTER_ZONE_END_OFFSET = 60;
   const VERTICAL_LIMIT = 60;
 
   document.addEventListener('touchstart', e => {
@@ -731,8 +735,16 @@ function initSwipeBack() {
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
     if (dy > VERTICAL_LIMIT || Math.abs(dx) < SWIPE_THRESHOLD) return;
-    if (dx > 0 && touchStartX < EDGE_ZONE) navBack();
-    else if (dx < 0 && touchStartX > window.innerWidth - EDGE_ZONE) navForward();
+    const isDetailOpen = document.getElementById('detailView')?.style.display === 'block';
+    const inCenter = touchStartX >= CENTER_ZONE_START && touchStartX <= window.innerWidth - CENTER_ZONE_END_OFFSET;
+    if (isDetailOpen && inCenter && AppState.compoundList.length > 1) {
+      if (dx < 0) swipeNextCompound();
+      else swipePrevCompound();
+    } else if (dx > 0 && touchStartX < EDGE_ZONE) {
+      navBack();
+    } else if (dx < 0 && touchStartX > window.innerWidth - EDGE_ZONE) {
+      navForward();
+    }
   }, { passive: true });
 }
 

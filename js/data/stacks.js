@@ -153,7 +153,7 @@ export const STACKS = [
     peptides:[
       {name:'Retatrutide',schedule:'Once weekly SubQ — titrate very slowly',lo:'2 mg/wk × 8 wks → 4 mg/wk',mid:'2→4→6→8 mg/wk (6–8 wks per step)',hi:'Up to 12 mg/wk maximum — experienced only'},
       {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'10 mg/day',mid:'25 mg/day',hi:'50 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
@@ -275,9 +275,9 @@ export const STACKS = [
     studies:[{title:'NAD+ and Aging: Therapeutic Review',journal:'Cell Metabolism 2018',summary:'Established NAD+ as longevity intervention target.',pmid:'29719682',url:'https://pubmed.ncbi.nlm.nih.gov/29719682/'}],
     peptides:[
       {name:'NAD+',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
-      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5–5 mg/day',hi:'10 mg/day'},
+      {name:'SS-31',schedule:'Daily SubQ AM',lo:'4 mg/day',mid:'10–20 mg/day',hi:'40 mg/day'},
       {name:'MOTS-c',schedule:'SubQ 2–3x per week (AM or pre-workout)',lo:'2 mg 2x/wk',mid:'5 mg 3x/wk',hi:'10 mg 3x/wk'},
-      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'10 mg/day',mid:'25 mg/day',hi:'50 mg/day'},
+      {name:'5-amino-1mq',schedule:'Daily SubQ AM',lo:'25 mg/day',mid:'50 mg/day',hi:'100 mg/day'},
     ]
   },
   {
@@ -398,7 +398,7 @@ export const STACKS = [
       {name:'Epithalon',schedule:'Daily SubQ — 20-day burst cycle ONLY',lo:'5 mg/day x 20 days',mid:'10 mg/day x 20 days',hi:'10 mg/day x 20 days'},
       {name:'Thymosin Alpha-1',schedule:'SubQ 2x per week',lo:'0.5 mg 2x/wk',mid:'1 mg 2x/wk',hi:'1.5 mg 2x/wk'},
       {name:'IGF-1 LR3',schedule:'Daily post-workout SubQ — eat carbs within 30 min. 4 weeks MAX',lo:'20 mcg/day',mid:'50 mcg/day',hi:'100 mcg/day'},
-      {name:'SS-31',schedule:'Daily SubQ AM',lo:'1 mg/day',mid:'2.5–5 mg/day',hi:'10 mg/day'},
+      {name:'SS-31',schedule:'Daily SubQ AM',lo:'4 mg/day',mid:'10–20 mg/day',hi:'40 mg/day'},
     ]
   },
   {

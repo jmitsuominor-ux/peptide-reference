@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════════════════
 import { CATEGORIES, CAT_COLORS, CAT_BG, EVIDENCE_LABELS, EVIDENCE_BADGE_CLASS } from './data/categories.js';
 import { CAT_I18N_KEYS } from './data/translations.js';
-import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js';
-import { AppState } from './state.js';
+import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js?v=2';
+import { AppState } from './state.js?v=2';
 import { getRecent, getFavorites, isFavorite, addToRecent, toggleFavorite } from './storage.js';
 
 // Shorthand using current language — avoids threading lang everywhere in templates
@@ -55,6 +55,7 @@ export function renderCategories() {
 export function showList(catId) {
   pushNav();
   const cat = CATEGORIES.find(c => c.id === catId);
+  AppState.compoundList = cat?.peptides || [];
   document.getElementById('catView').style.display = 'none';
   const lv = document.getElementById('listView');
   lv.style.display = 'block';
@@ -185,9 +186,20 @@ export function openCompare() {
 }
 
 // ─── Browse: compound detail view ────────────────────────
+export function swipeNextCompound() {
+  const idx = AppState.compoundList.indexOf(AppState.currentDetailName);
+  if (idx >= 0 && idx < AppState.compoundList.length - 1) showDetail(AppState.compoundList[idx + 1]);
+}
+
+export function swipePrevCompound() {
+  const idx = AppState.compoundList.indexOf(AppState.currentDetailName);
+  if (idx > 0) showDetail(AppState.compoundList[idx - 1]);
+}
+
 export function showDetail(name) {
   const p = getPeptideData(name, AppState.lang);
   if (!p) return;
+  AppState.currentDetailName = name;
   addToRecent(name);
   renderRecentFav();
   document.getElementById('catView').style.display = 'none';
@@ -223,6 +235,17 @@ export function showDetail(name) {
       <button id="compareToggleBtn" data-name="${name.replace(/'/g,"\\'")}" onclick="toggleCompare('${name.replace(/'/g,"\\'")}');" style="margin-top:8px;width:100%;background:${_compareList.includes(name)?'var(--teal)':'transparent'};color:${_compareList.includes(name)?'#fff':'var(--blue)'};border:1.5px solid ${_compareList.includes(name)?'var(--teal)':'var(--mid-border)'};border-radius:6px;padding:7px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:all 0.15s;">
         ${_compareList.includes(name) ? '✓ In Compare' : '＋ Add to Compare'}
       </button>
+      ${(() => {
+        const listIdx = AppState.compoundList.indexOf(name);
+        if (listIdx < 0 || AppState.compoundList.length < 2) return '';
+        const prev = listIdx > 0 ? AppState.compoundList[listIdx - 1] : null;
+        const next = listIdx < AppState.compoundList.length - 1 ? AppState.compoundList[listIdx + 1] : null;
+        const btnStyle = 'flex:1;background:transparent;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;text-align:';
+        return `<div style="display:flex;gap:6px;margin-top:8px;">
+          ${prev ? `<button onclick="showDetail('${prev.replace(/'/g,"\\'")}');" style="${btnStyle}left;">← ${prev}</button>` : `<div style="flex:1;"></div>`}
+          ${next ? `<button onclick="showDetail('${next.replace(/'/g,"\\'")}');" style="${btnStyle}right;">${next} →</button>` : `<div style="flex:1;"></div>`}
+        </div>`;
+      })()}
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">

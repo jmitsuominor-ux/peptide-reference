@@ -443,7 +443,11 @@ async function renderProtocols() {
     protocols.forEach(p => {
       if (!p) return;
       const day = daysBetween(p.start_date);
-      const total = (p.cycle_weeks || 12) * 7;
+      const totalWeeks = p.cycle_weeks || 12;
+      const totalDays = totalWeeks * 7;
+      const pct = Math.min(Math.max((day / totalDays) * 100, 0), 100);
+      const isComplete = day > totalDays;
+      const currentWeek = day <= 0 ? 0 : isComplete ? totalWeeks : Math.ceil(day / 7);
       const compounds = Array.isArray(p.schedule_entries)
         ? p.schedule_entries.filter(e => e && e.is_active).map(e => e.compound_name).join(', ')
         : '';
@@ -451,18 +455,36 @@ async function renderProtocols() {
       const stack = STACKS.find(s => s && s.name === p.stack_name);
       const emoji = stack?.emoji || '💉';
       const safeName = (p.name || 'Unnamed').replace(/'/g, "\\'");
+      const progressLabel = isComplete ? 'Cycle complete ✓'
+        : day <= 0 ? 'Starting today'
+        : `Week ${currentWeek} of ${totalWeeks}`;
+      const segHtml = Array.from({length: totalWeeks}, (_, i) => {
+        const w = i + 1;
+        if (w < currentWeek || isComplete)
+          return `<div style="flex:1;height:6px;border-radius:2px;background:var(--accent);"></div>`;
+        if (w === currentWeek)
+          return `<div style="flex:1;height:6px;border-radius:2px;background:var(--border);position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background:var(--accent);opacity:0.4;"></div></div>`;
+        return `<div style="flex:1;height:6px;border-radius:2px;background:var(--border);"></div>`;
+      }).join('');
       html += `
         <div class="sched-proto-card">
           <div class="sched-proto-hdr">
             <span class="sched-proto-emoji">${emoji}</span>
             <div style="flex:1;min-width:0;">
               <div class="sched-proto-name">${p.name || 'Unnamed'}</div>
-              <div class="sched-proto-meta">Day ${day} of ${total} · ${tierLabel}</div>
+              <div class="sched-proto-meta">Day ${day} of ${totalDays} · ${tierLabel}</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
               <button class="sched-proto-end-btn" style="background:var(--blue-light);border-color:var(--blue);color:var(--blue);" onclick="openEditProtoModal('${p.id}','${safeName}')">Edit</button>
               <button class="sched-proto-end-btn" onclick="confirmEndProtocol('${p.id}','${safeName}')">End</button>
               <button class="sched-proto-end-btn" style="background:var(--red-light);border-color:var(--hi-border);color:var(--red);" onclick="confirmDeleteProtocol('${p.id}','${safeName}')">Delete</button>
+            </div>
+          </div>
+          <div style="margin:4px 0 10px;">
+            <div style="display:flex;gap:2px;margin-bottom:5px;">${segHtml}</div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);">${progressLabel}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);">${Math.round(pct)}%</span>
             </div>
           </div>
           <div class="sched-proto-compounds">${compounds}</div>

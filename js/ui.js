@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════
 import { CATEGORIES, CAT_COLORS, CAT_BG, EVIDENCE_LABELS, EVIDENCE_BADGE_CLASS } from './data/categories.js';
 import { CAT_I18N_KEYS } from './data/translations.js';
-import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize } from './utils.js';
+import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js';
 import { AppState } from './state.js';
 import { getRecent, getFavorites, isFavorite, addToRecent, toggleFavorite } from './storage.js';
 
@@ -286,6 +286,25 @@ export function showStackDetail(idx, skipHistory = false) {
   const cycleHTML = stack.cycle
     ? '<div style="background:var(--card2);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">&#9201;</span><div><div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;">Cycle Length</div><div style="font-size:13px;font-weight:500;color:var(--text1);margin-top:2px;">'+stack.cycle+'</div></div></div>'
     : '';
+  const stackWarnings = getInteractionWarnings(stack.peptides.map(p => p.name));
+  const warningsHTML = stackWarnings.length ? `
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSec(this)">
+        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Interaction Notes</div></div>
+        <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        ${stackWarnings.map(w => `
+          <div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--amber);flex-shrink:0;">⚠</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);">${w.a} + ${w.b}</div>
+              ${w.reason ? `<div style="font-size:11px;color:var(--text3);margin-top:2px;">${w.reason}</div>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
   const peptideSections = stack.peptides.map(p => `
     <div class="sp-row">
       <div class="sp-name" onclick="goToProfile('${p.name.replace(/'/g,"\\'")}',true)">${p.name} <span style="font-size:11px;font-weight:400;opacity:0.6;">${tr('profile_link')}</span></div>
@@ -339,6 +358,7 @@ export function showStackDetail(idx, skipHistory = false) {
         <div class="stack-note" style="margin:12px 0 0;"><strong>⚠ Important:</strong> ${stack.note}</div>
       </div>
     </div>
+    ${warningsHTML}
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Watch Out For</div></div>

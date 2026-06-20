@@ -96,6 +96,30 @@ export function getCommonVialSize(name) {
   return sizes[name] || '5';
 }
 
+// ─── Compound interaction checker ────────────────────────
+// Returns [{a, b, reason}] for every avoid-conflict pair in the list.
+export function getInteractionWarnings(compoundNames) {
+  const warnings = [];
+  const active = compoundNames.filter(n => n && PEPTIDES[n]);
+  const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  for (let i = 0; i < active.length; i++) {
+    for (const avoidStr of (PEPTIDES[active[i]]?.avoid || [])) {
+      const avoidName = avoidStr.split('(')[0].trim();
+      for (let j = 0; j < active.length; j++) {
+        if (i === j) continue;
+        const cn = norm(active[j]), an = norm(avoidName);
+        if (cn === an || cn.startsWith(an) || an.startsWith(cn)) {
+          if (!warnings.some(w => (w.a === active[j] && w.b === active[i]) || (w.a === active[i] && w.b === active[j]))) {
+            const m = avoidStr.match(/\((.+)\)/);
+            warnings.push({ a: active[i], b: active[j], reason: m ? m[1] : '' });
+          }
+        }
+      }
+    }
+  }
+  return warnings;
+}
+
 // ─── Shared vial count calculator ────────────────────────
 // Used by the Vial Count tab, Stack Detail planner, and Stack Planner.
 export function computeVialCount({ doseMg, injectionsPerDay, daysPerWeek, weeks, vialSizeMg }) {

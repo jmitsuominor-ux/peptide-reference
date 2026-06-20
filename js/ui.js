@@ -79,6 +79,111 @@ export function showList(catId) {
   }).join('');
 }
 
+// ─── Compound Compare ─────────────────────────────────────
+const _compareList = [];
+
+function _updateCompareBar() {
+  const bar = document.getElementById('compareBar');
+  if (!bar) return;
+  if (_compareList.length === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('compareBarChips').innerHTML = _compareList.map(n =>
+    `<div style="background:rgba(255,255,255,0.1);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px;">${n}</div>`
+  ).join('');
+  const btn = document.getElementById('compareBarBtn');
+  if (btn) {
+    btn.textContent = `Compare (${_compareList.length})`;
+    btn.disabled = _compareList.length < 2;
+    btn.style.opacity = _compareList.length < 2 ? '0.5' : '1';
+  }
+}
+
+export function toggleCompare(name) {
+  const idx = _compareList.indexOf(name);
+  if (idx === -1) {
+    if (_compareList.length >= 5) { alert('Maximum 5 compounds for comparison.'); return; }
+    _compareList.push(name);
+  } else {
+    _compareList.splice(idx, 1);
+  }
+  _updateCompareBar();
+  const btn = document.getElementById('compareToggleBtn');
+  if (btn && btn.dataset.name === name) _applyCompareBtn(btn, name);
+}
+
+function _applyCompareBtn(btn, name) {
+  const inList = _compareList.includes(name);
+  btn.textContent = inList ? '✓ In Compare' : '＋ Add to Compare';
+  btn.style.background = inList ? 'var(--teal)' : 'transparent';
+  btn.style.color = inList ? '#fff' : 'var(--blue)';
+  btn.style.borderColor = inList ? 'var(--teal)' : 'var(--mid-border)';
+}
+
+export function clearCompare() {
+  _compareList.length = 0;
+  _updateCompareBar();
+  closeCompare();
+  const btn = document.getElementById('compareToggleBtn');
+  if (btn) _applyCompareBtn(btn, btn.dataset.name || '');
+}
+
+export function closeCompare() {
+  const ov = document.getElementById('compareOverlay');
+  if (ov) ov.style.display = 'none';
+}
+
+export function openCompare() {
+  if (_compareList.length < 2) return;
+  const wrap = document.getElementById('compareTableWrap');
+  const ov   = document.getElementById('compareOverlay');
+  if (!wrap || !ov) return;
+
+  const compounds = _compareList.map(n => ({ name: n, p: getPeptideData(n, AppState.lang) })).filter(c => c.p);
+  const rows = [
+    { label: 'Category',     fn: c => c.p.category || '—' },
+    { label: 'Evidence',     fn: c => `${'★'.repeat(c.p.evidence)}${'☆'.repeat(5-c.p.evidence)}<br><span style="font-size:10px;color:var(--text3);">${EVIDENCE_LABELS[c.p.evidence]||''}</span>` },
+    { label: 'Schedule',     fn: c => c.p.schedule || '—' },
+    { label: 'Cycle',        fn: c => c.p.cycle || '—' },
+    { label: 'Low Dose',     fn: c => c.p.lo || '—' },
+    { label: 'Std Dose',     fn: c => c.p.mid || '—' },
+    { label: 'High Dose',    fn: c => c.p.hi || '—' },
+    { label: 'Benefits',     fn: c => (c.p.benefits||[]).slice(0,3).map(b=>`<div style="margin-bottom:4px;font-size:11px;">• ${b}</div>`).join('') || '—' },
+    { label: 'Side Effects', fn: c => (c.p.sideEffects||[]).slice(0,3).map(se=>`<div style="margin-bottom:4px;font-size:11px;"><span style="font-size:9px;font-weight:700;text-transform:uppercase;color:${se.severity==='high'?'var(--red)':se.severity==='med'?'var(--amber)':'var(--teal)'};">${se.severity}</span> ${se.text}</div>`).join('') || '—' },
+    { label: 'Pairs With',   fn: c => (c.p.pairsWith||[]).slice(0,3).join(', ') || '—' },
+    { label: 'Avoid',        fn: c => (c.p.avoid||[]).slice(0,2).map(a=>a.split('(')[0].trim()).join(', ') || '—' },
+  ];
+
+  const colW = '155px';
+  const labelW = '88px';
+  wrap.innerHTML = `
+    <table style="border-collapse:collapse;width:max-content;min-width:100%;font-size:12px;">
+      <thead>
+        <tr>
+          <th style="position:sticky;left:0;z-index:3;background:var(--white);padding:10px 10px;min-width:${labelW};max-width:${labelW};border-bottom:2px solid var(--border);"></th>
+          ${compounds.map(c => `
+            <th style="min-width:${colW};max-width:${colW};padding:10px 12px;border-bottom:2px solid var(--border);background:var(--white);text-align:left;vertical-align:top;position:relative;">
+              <div style="font-size:12px;font-weight:700;color:var(--text);padding-right:20px;">${c.name}</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px;">${c.p.category}</div>
+              <button onclick="toggleCompare('${c.name.replace(/'/g,"\\'")}');openCompare();" style="position:absolute;top:8px;right:6px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:2px;line-height:1;">✕</button>
+            </th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((row, ri) => {
+          const bg = ri % 2 === 0 ? 'var(--bg)' : 'var(--white)';
+          return `<tr>
+            <td style="position:sticky;left:0;z-index:2;background:${bg};padding:10px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);min-width:${labelW};max-width:${labelW};vertical-align:top;line-height:1.3;">${row.label}</td>
+            ${compounds.map(c => `<td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text);background:${bg};min-width:${colW};max-width:${colW};line-height:1.4;">${row.fn(c)}</td>`).join('')}
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+
+  ov.style.display = 'flex';
+  ov.style.flexDirection = 'column';
+  window.scrollTo(0, 0);
+}
+
 // ─── Browse: compound detail view ────────────────────────
 export function showDetail(name) {
   const p = getPeptideData(name, AppState.lang);
@@ -115,6 +220,9 @@ export function showDetail(name) {
         <span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span>
         <button onclick="openAddToProtoSheet('${name.replace(/'/g,"\\'")}','${(p.mid||'').replace(/'/g,"\\'")}','${(p.schedule||'').replace(/'/g,"\\'")}')" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.03em;">＋ Add to Protocol</button>
       </div>
+      <button id="compareToggleBtn" data-name="${name.replace(/'/g,"\\'")}" onclick="toggleCompare('${name.replace(/'/g,"\\'")}');" style="margin-top:8px;width:100%;background:${_compareList.includes(name)?'var(--teal)':'transparent'};color:${_compareList.includes(name)?'#fff':'var(--blue)'};border:1.5px solid ${_compareList.includes(name)?'var(--teal)':'var(--mid-border)'};border-radius:6px;padding:7px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:all 0.15s;">
+        ${_compareList.includes(name) ? '✓ In Compare' : '＋ Add to Compare'}
+      </button>
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">

@@ -728,7 +728,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
 </div>
 
-<script type="module" src="js/app.js?v=12"></script>
+<script type="module" src="js/app.js?v=13"></script>
 
 <!-- BACK BUTTON: shows persistent "← Market" button when arriving from a PSW storefront -->
 <script>
@@ -805,5 +805,22 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="atpBody" style="padding:12px 18px 8px;"></div>
   <div id="atpFooter" style="display:none;"></div>
 </div>
+<!-- COMPARE BAR -->
+<div id="compareBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--navy);border-top:1px solid rgba(255,255,255,0.08);padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));align-items:center;gap:8px;">
+  <div id="compareBarChips" style="flex:1;display:flex;gap:4px;overflow:hidden;min-width:0;"></div>
+  <button id="compareBarBtn" onclick="openCompare()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;letter-spacing:0.02em;">Compare</button>
+  <button onclick="clearCompare()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:2px 4px;line-height:1;flex-shrink:0;">✕</button>
+</div>
+
+<!-- COMPARE OVERLAY -->
+<div id="compareOverlay" style="display:none;position:fixed;inset:0;z-index:350;background:var(--bg);flex-direction:column;">
+  <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--white);flex-shrink:0;position:sticky;top:0;z-index:2;">
+    <button onclick="closeCompare()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px;line-height:1;">←</button>
+    <div style="flex:1;font-size:15px;font-weight:700;color:var(--text);">Compare</div>
+    <button onclick="clearCompare()" style="background:none;border:none;color:var(--red);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border:1px solid var(--red);border-radius:6px;">Clear All</button>
+  </div>
+  <div id="compareTableWrap" style="overflow:auto;flex:1;-webkit-overflow-scrolling:touch;padding-bottom:max(16px,env(safe-area-inset-bottom));"></div>
+</div>
+
 </body>
 </html>

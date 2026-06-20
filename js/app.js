@@ -12,6 +12,7 @@ import {
   activatePage, goToProfile, switchToStack,
   navBack, navForward, navToDetail, captureNavState, restoreNavState,
   renderRecentFav,
+  toggleCompare, clearCompare, openCompare, closeCompare,
 } from './ui.js';
 import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
@@ -38,6 +39,7 @@ window.tapFavorite = function(name, btn) {
 Object.assign(window, {
   showList, showDetail, navToDetail, toggleSec, showStackDetail,
   goToProfile, switchToStack, activatePage,
+  toggleCompare, clearCompare, openCompare, closeCompare,
   calculateRecon, calculateVials, showCalcError,
   reconAutoCalc, vialsAutoCalc, presetPeptide, switchVialMode, toggleCalcSection,
   vialsCopy, reconCopy, plannerCopy,

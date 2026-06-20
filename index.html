@@ -16,22 +16,22 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#f7f9fc;--white:#ffffff;--navy:#0a1628;--navy2:#162040;
+  --bg:#f7f9fc;--white:#ffffff;--navy:#0a1628;--navy2:#162040;--accent:#1756a9;
   --blue:#1756a9;--blue-light:#e8f0fb;--blue-mid:rgba(23,86,169,0.08);
   --teal:#0d7377;--teal-light:#e6f5f5;--red:#c0392b;--red-light:#fdf0ee;
   --amber:#d4812b;--amber-light:#fdf5e8;--border:#dde3ec;--border2:#c8d3e0;
-  --text:#0a1628;--text2:#3a4a5c;--text3:#7a8fa8;--grid:#e8edf4;
+  --text:#0a1628;--text1:#0a1628;--text2:#3a4a5c;--text3:#7a8fa8;--grid:#e8edf4;
   --lo:#0d7377;--lo-bg:#e6f5f5;--lo-border:rgba(13,115,119,0.2);
   --mid:#1756a9;--mid-bg:#e8f0fb;--mid-border:rgba(23,86,169,0.2);
   --hi:#c0392b;--hi-bg:#fdf0ee;--hi-border:rgba(192,57,43,0.2);
   --warn:#d4812b;--warn-bg:#fdf5e8;
 }
 .dark{
-  --bg:#0d1117;--white:#161b22;--navy:#e6edf3;--navy2:#c9d1d9;
+  --bg:#0d1117;--white:#161b22;--navy:#e6edf3;--navy2:#c9d1d9;--accent:#58a6ff;
   --blue:#58a6ff;--blue-light:#1c2128;--blue-mid:rgba(88,166,255,0.08);
   --teal:#3fb950;--teal-light:#1c2128;--red:#f85149;--red-light:#1c2128;
   --amber:#d29922;--amber-light:#1c2128;--border:#30363d;--border2:#484f58;
-  --text:#e6edf3;--text2:#8b949e;--text3:#484f58;--grid:#1c2128;
+  --text:#e6edf3;--text1:#ffffff;--text2:#8b949e;--text3:#484f58;--grid:#1c2128;
   --lo:#3fb950;--lo-bg:rgba(63,185,80,0.08);--lo-border:rgba(63,185,80,0.2);
   --mid:#58a6ff;--mid-bg:rgba(88,166,255,0.08);--mid-border:rgba(88,166,255,0.2);
   --hi:#f85149;--hi-bg:rgba(248,81,73,0.08);--hi-border:rgba(248,81,73,0.2);
@@ -76,6 +76,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .ch-sub{font-size:12px;color:var(--text3);margin-top:2px;}
 .ch-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--teal-light);color:var(--teal);border:1px solid var(--lo-border);border-radius:4px;padding:3px 8px;white-space:nowrap;font-weight:500;}
 .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+.browse-section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin:14px 0 7px;}
+.browse-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:4px;}
+.browse-chips::-webkit-scrollbar{display:none;}
+.browse-chip{flex-shrink:0;background:var(--white);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:500;color:var(--text1);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.browse-chip:active{transform:scale(0.95);}
+.browse-chip.fav{border-color:var(--accent);color:var(--accent);}
+.fav-btn{background:none;border:none;font-size:22px;cursor:pointer;line-height:1;padding:10px;margin:-10px -10px 0 0;opacity:0.6;transition:opacity 0.15s;-webkit-tap-highlight-color:transparent;position:relative;z-index:2;}
+.fav-btn.active{opacity:1;}
 .cat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:13px 13px 13px 16px;cursor:pointer;transition:all 0.15s;position:relative;}
 .cat-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cat-color,var(--blue));border-radius:8px 0 0 8px;}
 .cat-card:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,0.06);}
@@ -102,7 +110,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .pc-arrow{color:var(--text3);font-size:18px;flex-shrink:0;margin-top:-2px;}
 .detail-hero{background:var(--navy);border-radius:8px;padding:18px;margin-bottom:10px;position:relative;overflow:hidden;}
 .dark .detail-hero{background:#161b22;border:1px solid var(--border);}
-.detail-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(23,86,169,0.25) 0%,transparent 70%);}
+.detail-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(23,86,169,0.25) 0%,transparent 70%);pointer-events:none;}
 .dh-cat{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#7a94b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
 .dh-name{font-size:22px;font-weight:600;color:#fff;margin-bottom:5px;line-height:1.2;position:relative;z-index:1;}
 .dh-tagline{font-size:13px;color:#a8c0d8;line-height:1.5;position:relative;z-index:1;}
@@ -305,7 +313,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .sched-proto-emoji{font-size:20px;flex-shrink:0;margin-top:1px;}
 .sched-proto-name{font-size:14px;font-weight:600;}
 .sched-proto-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
-.sched-proto-compounds{font-size:12px;color:var(--text2);line-height:1.5;}
+.sched-proto-compounds{font-size:12px;color:var(--text);line-height:1.5;}
 .sched-proto-end-btn{margin-left:auto;background:var(--red-light);border:1px solid var(--hi-border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--red);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:600;flex-shrink:0;transition:all 0.15s;}
 .sched-add-btn{width:100%;background:var(--blue-light);border:2px dashed var(--mid-border);border-radius:8px;padding:14px;font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-top:4px;font-family:'IBM Plex Sans',sans-serif;}
 .sched-add-btn:active{transform:scale(0.98);}
@@ -331,7 +339,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .modal-switch-link{text-align:center;margin-top:14px;font-size:13px;color:var(--text3);}
 .proto-step-header{font-size:10px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
 .proto-compound-row{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
-.proto-compound-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.proto-compound-name{font-size:13px;font-weight:600;color:var(--text1);margin-bottom:3px;}
 .proto-compound-dose{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:9px;}
 .proto-time-row{display:flex;align-items:center;gap:8px;}
 .proto-time-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;}
@@ -378,6 +386,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="clin-header">
       <div><div class="ch-title" data-i18n="browse_title">Peptide Compound Library</div><div class="ch-sub">125 compounds · 19 therapeutic stacks · Research reference only</div></div>
       <div class="ch-badge">REF v2.2</div>
+    </div>
+    <div id="favSection" style="display:none">
+      <div class="browse-section-label">⭐ Favorites</div>
+      <div class="browse-chips" id="favChips"></div>
+    </div>
+    <div id="recentSection" style="display:none">
+      <div class="browse-section-label">🕐 Recently Viewed</div>
+      <div class="browse-chips" id="recentChips"></div>
     </div>
     <div class="cat-grid" id="catGrid"></div>
     <div class="disclaimer" data-i18n="disclaimer"><strong>Research Reference Only.</strong> All information is for educational purposes. These compounds are not approved for most uses listed. Consult a qualified healthcare provider before use. Not medical advice. <strong>Dosing note:</strong> For compounds without FDA approval or human RCTs, doses reflect published clinical trial protocols, telehealth prescribing norms, and community consensus — not established standards. When sources conflict, we default to the more conservative range. Always start low.</div>
@@ -712,15 +728,15 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
 </div>
 
-<script type="module" src="js/app.js"></script>
+<script type="module" src="js/app.js?v=14"></script>
 
 <!-- BACK BUTTON: shows persistent "← Market" button when arriving from a PSW storefront -->
 <script>
 (function(){
   var markets={
-    cerritos:{label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html'},
-    sandiego:{label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html'},
-    tijuana: {label:'← Back to Store', url:'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html'}
+    cerritos:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/mexico/'},
+    sandiego:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/'},
+    tijuana: {label:'← Back to Store', url:'https://peptidesupplywarehouse.com/tijuana/'}
   };
   var from=new URLSearchParams(window.location.search).get('from');
   if(from&&markets[from])sessionStorage.setItem('psw_from',from);
@@ -778,5 +794,33 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   tryClick();
 })();
 </script>
+
+<!-- ADD TO EXISTING PROTOCOL SHEET -->
+<div id="atpOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;" onclick="closeAddToProtoSheet()"></div>
+<div id="atpSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-radius:16px 16px 0 0;z-index:1001;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:max(env(safe-area-inset-bottom,0px),100px);">
+  <div style="position:sticky;top:0;background:var(--white);z-index:2;display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;border-bottom:1px solid var(--border);">
+    <div style="font-size:15px;font-weight:600;color:var(--text1);" id="atpTitle">Add to Protocol</div>
+    <button onclick="closeAddToProtoSheet()" style="background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;">✕</button>
+  </div>
+  <div id="atpBody" style="padding:12px 18px 8px;"></div>
+  <div id="atpFooter" style="display:none;"></div>
+</div>
+<!-- COMPARE BAR -->
+<div id="compareBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--navy);border-top:1px solid rgba(255,255,255,0.08);padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));align-items:center;gap:8px;">
+  <div id="compareBarChips" style="flex:1;display:flex;gap:4px;overflow:hidden;min-width:0;"></div>
+  <button id="compareBarBtn" onclick="openCompare()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;letter-spacing:0.02em;">Compare</button>
+  <button onclick="clearCompare()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:2px 4px;line-height:1;flex-shrink:0;">✕</button>
+</div>
+
+<!-- COMPARE OVERLAY -->
+<div id="compareOverlay" style="display:none;position:fixed;inset:0;z-index:350;background:var(--bg);flex-direction:column;">
+  <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--white);flex-shrink:0;position:sticky;top:0;z-index:2;">
+    <button onclick="closeCompare()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px;line-height:1;">←</button>
+    <div style="flex:1;font-size:15px;font-weight:700;color:var(--text);">Compare</div>
+    <button onclick="clearCompare()" style="background:none;border:none;color:var(--red);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border:1px solid var(--red);border-radius:6px;">Clear All</button>
+  </div>
+  <div id="compareTableWrap" style="overflow:auto;flex:1;-webkit-overflow-scrolling:touch;padding-bottom:max(16px,env(safe-area-inset-bottom));"></div>
+</div>
+
 </body>
 </html>

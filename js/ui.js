@@ -3,11 +3,41 @@
 // ═══════════════════════════════════════════════════════
 import { CATEGORIES, CAT_COLORS, CAT_BG, EVIDENCE_LABELS, EVIDENCE_BADGE_CLASS } from './data/categories.js';
 import { CAT_I18N_KEYS } from './data/translations.js';
-import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize } from './utils.js';
+import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js';
 import { AppState } from './state.js';
+import { getRecent, getFavorites, isFavorite, addToRecent, toggleFavorite } from './storage.js';
 
 // Shorthand using current language — avoids threading lang everywhere in templates
 function tr(key) { return t(key, AppState.lang); }
+
+// ─── Browse: recently viewed & favourites ─────────────────
+export function renderRecentFav() {
+  const favs   = getFavorites();
+  const recent = getRecent();
+
+  const favSec = document.getElementById('favSection');
+  const recSec = document.getElementById('recentSection');
+  if (!favSec || !recSec) return;
+
+  if (favs.length) {
+    favSec.style.display = 'block';
+    document.getElementById('favChips').innerHTML = favs.map(n =>
+      `<div class="browse-chip fav" onclick="navToDetail('${n.replace(/'/g,"\\'")}')">⭐ ${n}</div>`
+    ).join('');
+  } else {
+    favSec.style.display = 'none';
+  }
+
+  const filteredRecent = recent.filter(n => !favs.includes(n));
+  if (filteredRecent.length) {
+    recSec.style.display = 'block';
+    document.getElementById('recentChips').innerHTML = filteredRecent.map(n =>
+      `<div class="browse-chip" onclick="navToDetail('${n.replace(/'/g,"\\'")}')">🕐 ${n}</div>`
+    ).join('');
+  } else {
+    recSec.style.display = 'none';
+  }
+}
 
 // ─── Browse: categories ──────────────────────────────────
 export function renderCategories() {
@@ -23,7 +53,9 @@ export function renderCategories() {
 
 // ─── Browse: peptide list ─────────────────────────────────
 export function showList(catId) {
+  pushNav();
   const cat = CATEGORIES.find(c => c.id === catId);
+  AppState.compoundList = cat?.peptides || [];
   document.getElementById('catView').style.display = 'none';
   const lv = document.getElementById('listView');
   lv.style.display = 'block';
@@ -33,7 +65,7 @@ export function showList(catId) {
   const evLabels = ['', 'Anecdotal', 'Preclinical', 'Early Human', 'Phase 3', 'FDA Approved'];
   document.getElementById('peptideList').innerHTML = cat.peptides.map((name, i) => {
     const p = getPeptideData(name, AppState.lang);
-    return `<div class="peptide-card" style="animation-delay:${i*0.04}s" onclick="showDetail('${name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
+    return `<div class="peptide-card" style="animation-delay:${i*0.04}s" onclick="navToDetail('${name.replace(/'/g,"\\'").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}')">
       <div class="pc-idx">${String(i+1).padStart(2,'0')}</div>
       <div class="pc-content">
         <div class="pc-name">${name}</div>
@@ -48,10 +80,128 @@ export function showList(catId) {
   }).join('');
 }
 
+// ─── Compound Compare ─────────────────────────────────────
+const _compareList = [];
+
+function _updateCompareBar() {
+  const bar = document.getElementById('compareBar');
+  if (!bar) return;
+  if (_compareList.length === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('compareBarChips').innerHTML = _compareList.map(n =>
+    `<div style="background:rgba(255,255,255,0.1);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px;">${n}</div>`
+  ).join('');
+  const btn = document.getElementById('compareBarBtn');
+  if (btn) {
+    btn.textContent = `Compare (${_compareList.length})`;
+    btn.disabled = _compareList.length < 2;
+    btn.style.opacity = _compareList.length < 2 ? '0.5' : '1';
+  }
+}
+
+export function toggleCompare(name) {
+  const idx = _compareList.indexOf(name);
+  if (idx === -1) {
+    if (_compareList.length >= 5) { alert('Maximum 5 compounds for comparison.'); return; }
+    _compareList.push(name);
+  } else {
+    _compareList.splice(idx, 1);
+  }
+  _updateCompareBar();
+  const btn = document.getElementById('compareToggleBtn');
+  if (btn && btn.dataset.name === name) _applyCompareBtn(btn, name);
+}
+
+function _applyCompareBtn(btn, name) {
+  const inList = _compareList.includes(name);
+  btn.textContent = inList ? '✓ In Compare' : '＋ Add to Compare';
+  btn.style.background = inList ? 'var(--teal)' : 'transparent';
+  btn.style.color = inList ? '#fff' : 'var(--blue)';
+  btn.style.borderColor = inList ? 'var(--teal)' : 'var(--mid-border)';
+}
+
+export function clearCompare() {
+  _compareList.length = 0;
+  _updateCompareBar();
+  closeCompare();
+  const btn = document.getElementById('compareToggleBtn');
+  if (btn) _applyCompareBtn(btn, btn.dataset.name || '');
+}
+
+export function closeCompare() {
+  const ov = document.getElementById('compareOverlay');
+  if (ov) ov.style.display = 'none';
+}
+
+export function openCompare() {
+  if (_compareList.length < 2) return;
+  const wrap = document.getElementById('compareTableWrap');
+  const ov   = document.getElementById('compareOverlay');
+  if (!wrap || !ov) return;
+
+  const compounds = _compareList.map(n => ({ name: n, p: getPeptideData(n, AppState.lang) })).filter(c => c.p);
+  const rows = [
+    { label: 'Category',     fn: c => c.p.category || '—' },
+    { label: 'Evidence',     fn: c => `${'★'.repeat(c.p.evidence)}${'☆'.repeat(5-c.p.evidence)}<br><span style="font-size:10px;color:var(--text3);">${EVIDENCE_LABELS[c.p.evidence]||''}</span>` },
+    { label: 'Schedule',     fn: c => c.p.schedule || '—' },
+    { label: 'Cycle',        fn: c => c.p.cycle || '—' },
+    { label: 'Low Dose',     fn: c => c.p.lo || '—' },
+    { label: 'Std Dose',     fn: c => c.p.mid || '—' },
+    { label: 'High Dose',    fn: c => c.p.hi || '—' },
+    { label: 'Benefits',     fn: c => (c.p.benefits||[]).slice(0,3).map(b=>`<div style="margin-bottom:4px;font-size:11px;">• ${b}</div>`).join('') || '—' },
+    { label: 'Side Effects', fn: c => (c.p.sideEffects||[]).slice(0,3).map(se=>`<div style="margin-bottom:4px;font-size:11px;"><span style="font-size:9px;font-weight:700;text-transform:uppercase;color:${se.severity==='high'?'var(--red)':se.severity==='med'?'var(--amber)':'var(--teal)'};">${se.severity}</span> ${se.text}</div>`).join('') || '—' },
+    { label: 'Pairs With',   fn: c => (c.p.pairsWith||[]).slice(0,3).join(', ') || '—' },
+    { label: 'Avoid',        fn: c => (c.p.avoid||[]).slice(0,2).map(a=>a.split('(')[0].trim()).join(', ') || '—' },
+  ];
+
+  const colW = '155px';
+  const labelW = '88px';
+  wrap.innerHTML = `
+    <table style="border-collapse:collapse;width:max-content;min-width:100%;font-size:12px;">
+      <thead>
+        <tr>
+          <th style="position:sticky;left:0;z-index:3;background:var(--white);padding:10px 10px;min-width:${labelW};max-width:${labelW};border-bottom:2px solid var(--border);"></th>
+          ${compounds.map(c => `
+            <th style="min-width:${colW};max-width:${colW};padding:10px 12px;border-bottom:2px solid var(--border);background:var(--white);text-align:left;vertical-align:top;position:relative;">
+              <div style="font-size:12px;font-weight:700;color:var(--text);padding-right:20px;">${c.name}</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:2px;">${c.p.category}</div>
+              <button onclick="toggleCompare('${c.name.replace(/'/g,"\\'")}');openCompare();" style="position:absolute;top:8px;right:6px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:2px;line-height:1;">✕</button>
+            </th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((row, ri) => {
+          const bg = ri % 2 === 0 ? 'var(--bg)' : 'var(--white)';
+          return `<tr>
+            <td style="position:sticky;left:0;z-index:2;background:${bg};padding:10px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);min-width:${labelW};max-width:${labelW};vertical-align:top;line-height:1.3;">${row.label}</td>
+            ${compounds.map(c => `<td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text);background:${bg};min-width:${colW};max-width:${colW};line-height:1.4;">${row.fn(c)}</td>`).join('')}
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+
+  ov.style.display = 'flex';
+  ov.style.flexDirection = 'column';
+  window.scrollTo(0, 0);
+}
+
 // ─── Browse: compound detail view ────────────────────────
+export function swipeNextCompound() {
+  const idx = AppState.compoundList.indexOf(AppState.currentDetailName);
+  if (idx >= 0 && idx < AppState.compoundList.length - 1) showDetail(AppState.compoundList[idx + 1]);
+}
+
+export function swipePrevCompound() {
+  const idx = AppState.compoundList.indexOf(AppState.currentDetailName);
+  if (idx > 0) showDetail(AppState.compoundList[idx - 1]);
+}
+
 export function showDetail(name) {
   const p = getPeptideData(name, AppState.lang);
   if (!p) return;
+  AppState.currentDetailName = name;
+  addToRecent(name);
+  renderRecentFav();
   document.getElementById('catView').style.display = 'none';
   document.getElementById('listView').style.display = 'none';
   const dv = document.getElementById('detailView');
@@ -70,10 +220,32 @@ export function showDetail(name) {
 
   document.getElementById('detailContent').innerHTML = `
     <div class="detail-hero">
-      <div class="dh-cat">${p.category}</div>
-      <div class="dh-name">${name}</div>
-      <div class="dh-tagline">${p.tagline}</div>
-      <div class="dh-badges"><span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div>
+          <div class="dh-cat">${p.category}</div>
+          <div class="dh-name">${name}</div>
+          <div class="dh-tagline">${p.tagline}</div>
+        </div>
+        <button class="fav-btn${isFavorite(name) ? ' active' : ''}" onclick="tapFavorite('${name.replace(/'/g,"\\'")}',this)" title="Favourite">${isFavorite(name) ? '⭐' : '☆'}</button>
+      </div>
+      <div class="dh-badges" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span class="dh-badge ${EVIDENCE_BADGE_CLASS[p.evidence]}">${'★'.repeat(p.evidence)}${'☆'.repeat(5-p.evidence)} ${EVIDENCE_LABELS[p.evidence]}</span>
+        <button onclick="openAddToProtoSheet('${name.replace(/'/g,"\\'")}','${(p.mid||'').replace(/'/g,"\\'")}','${(p.schedule||'').replace(/'/g,"\\'")}')" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.03em;">＋ Add to Protocol</button>
+      </div>
+      <button id="compareToggleBtn" data-name="${name.replace(/'/g,"\\'")}" onclick="toggleCompare('${name.replace(/'/g,"\\'")}');" style="margin-top:8px;width:100%;background:${_compareList.includes(name)?'var(--teal)':'transparent'};color:${_compareList.includes(name)?'#fff':'var(--blue)'};border:1.5px solid ${_compareList.includes(name)?'var(--teal)':'var(--mid-border)'};border-radius:6px;padding:7px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:all 0.15s;">
+        ${_compareList.includes(name) ? '✓ In Compare' : '＋ Add to Compare'}
+      </button>
+      ${(() => {
+        const listIdx = AppState.compoundList.indexOf(name);
+        if (listIdx < 0 || AppState.compoundList.length < 2) return '';
+        const prev = listIdx > 0 ? AppState.compoundList[listIdx - 1] : null;
+        const next = listIdx < AppState.compoundList.length - 1 ? AppState.compoundList[listIdx + 1] : null;
+        const btnStyle = 'flex:1;background:transparent;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;text-align:';
+        return `<div style="display:flex;gap:6px;margin-top:8px;">
+          ${prev ? `<button onclick="showDetail('${prev.replace(/'/g,"\\'")}');" style="${btnStyle}left;">← ${prev}</button>` : `<div style="flex:1;"></div>`}
+          ${next ? `<button onclick="showDetail('${next.replace(/'/g,"\\'")}');" style="${btnStyle}right;">${next} →</button>` : `<div style="flex:1;"></div>`}
+        </div>`;
+      })()}
     </div>
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
@@ -137,7 +309,7 @@ export function showDetail(name) {
         <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
       <div class="section-body">
-        ${p.pairsWith.map(pair => `<div class="compat-row"><div class="compat-ind ok">✓</div>${pair}</div>`).join('')}
+        ${p.pairsWith.map(pair => `<div class="compat-row"><div class="compat-ind ok">✓</div>${PEPTIDES[pair] ? `<span onclick="goToProfile('${pair.replace(/'/g, "\\'")}')" style="color:var(--accent);text-decoration:underline;text-decoration-style:dotted;cursor:pointer;">${pair}</span>` : pair}</div>`).join('')}
         ${p.avoid.map(av => `<div class="compat-row"><div class="compat-ind no">✗</div>${av}</div>`).join('')}
       </div>
     </div>
@@ -234,7 +406,8 @@ export function renderStacks() {
 }
 
 // ─── Stacks: detail view ─────────────────────────────────
-export function showStackDetail(idx) {
+export function showStackDetail(idx, skipHistory = false) {
+  if (!skipHistory) pushNav();
   AppState.originStackIdx = idx;
   const stack = getStackData(idx, AppState.lang);
   document.getElementById('stacksListView').style.display = 'none';
@@ -244,6 +417,25 @@ export function showStackDetail(idx) {
   const cycleHTML = stack.cycle
     ? '<div style="background:var(--card2);border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">&#9201;</span><div><div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;">Cycle Length</div><div style="font-size:13px;font-weight:500;color:var(--text1);margin-top:2px;">'+stack.cycle+'</div></div></div>'
     : '';
+  const stackWarnings = getInteractionWarnings(stack.peptides.map(p => p.name));
+  const warningsHTML = stackWarnings.length ? `
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSec(this)">
+        <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Interaction Notes</div></div>
+        <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        ${stackWarnings.map(w => `
+          <div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--amber);flex-shrink:0;">⚠</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);">${w.a} + ${w.b}</div>
+              ${w.reason ? `<div style="font-size:11px;color:var(--text3);margin-top:2px;">${w.reason}</div>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
   const peptideSections = stack.peptides.map(p => `
     <div class="sp-row">
       <div class="sp-name" onclick="goToProfile('${p.name.replace(/'/g,"\\'")}',true)">${p.name} <span style="font-size:11px;font-weight:400;opacity:0.6;">${tr('profile_link')}</span></div>
@@ -297,6 +489,7 @@ export function showStackDetail(idx) {
         <div class="stack-note" style="margin:12px 0 0;"><strong>⚠ Important:</strong> ${stack.note}</div>
       </div>
     </div>
+    ${warningsHTML}
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon amber">⚠</div><div class="sh-title">Watch Out For</div></div>
@@ -379,6 +572,76 @@ export function showStackDetail(idx) {
 }
 
 
+// ─── Navigation history engine ────────────────────────────
+
+export function captureNavState() {
+  const page = document.querySelector('.nav-tab.active')?.dataset.page || 'browse';
+  if (page === 'stacks') {
+    return document.getElementById('stackDetailView')?.style.display !== 'none'
+      ? { page: 'stacks', view: 'stackDetail' }
+      : { page: 'stacks', view: 'stacksList' };
+  }
+  if (page === 'browse') {
+    if (document.getElementById('detailView')?.style.display !== 'none')
+      return { page: 'browse', view: 'detail', name: document.getElementById('detailTitle')?.textContent };
+    if (document.getElementById('listView')?.style.display !== 'none')
+      return { page: 'browse', view: 'list', catId: document.getElementById('listView').dataset.catId };
+    return { page: 'browse', view: 'cat' };
+  }
+  return { page };
+}
+
+export function restoreNavState(state) {
+  const page = state.page || 'browse';
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.querySelector(`[data-page="${page}"]`);
+  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  const pg = document.getElementById(`page-${page}`);
+  if (pg) { pg.classList.add('active'); pg.style.display = 'block'; }
+
+  if (page === 'stacks') {
+    const isList = state.view === 'stacksList';
+    document.getElementById('stacksListView').style.display = isList ? 'block' : 'none';
+    document.getElementById('stackDetailView').style.display = isList ? 'none' : 'block';
+  } else if (page === 'browse') {
+    document.getElementById('catView').style.display = 'none';
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('detailView').style.display = 'none';
+    if (state.view === 'detail') {
+      document.getElementById('detailView').style.display = 'block';
+      showDetail(state.name);
+    } else if (state.view === 'list') {
+      document.getElementById('listView').style.display = 'block';
+    } else {
+      document.getElementById('catView').style.display = 'block';
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+function pushNav() {
+  AppState.navHistory.push(captureNavState());
+  AppState.navForward = [];
+}
+
+export function navBack() {
+  if (!AppState.navHistory.length) return;
+  AppState.navForward.push(captureNavState());
+  restoreNavState(AppState.navHistory.pop());
+}
+
+export function navForward() {
+  if (!AppState.navForward.length) return;
+  AppState.navHistory.push(captureNavState());
+  restoreNavState(AppState.navForward.pop());
+}
+
+export function navToDetail(name) {
+  pushNav();
+  showDetail(name);
+}
+
 // ─── Navigation helpers ───────────────────────────────────
 export function activatePage(pageId) {
   document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -396,8 +659,8 @@ export function activatePage(pageId) {
   }
 }
 
-export function goToProfile(name, fromStack) {
-  AppState.profileOrigin = fromStack ? 'stack' : null;
+export function goToProfile(name) {
+  pushNav();
   document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
   document.querySelector('[data-page="browse"]').classList.add('active');
   document.querySelectorAll('.page').forEach(p => {

@@ -132,7 +132,7 @@ async function createCustomProtocol(name, compounds) {
 }
 
 async function loadTodayData() {
-  const [entriesRes, logsRes] = await Promise.all([
+  const [entriesRes, logsRes, protosRes] = await Promise.all([
     supabase
       .from('schedule_entries')
       .select('*, schedules!inner(name, stack_name, start_date, is_active)')
@@ -144,10 +144,17 @@ async function loadTodayData() {
       .select('entry_id, slot')
       .eq('user_id', currentUser.id)
       .eq('scheduled_for', todayStr()),
+    supabase
+      .from('schedules')
+      .select('id, name, stack_name, start_date, cycle_weeks')
+      .eq('user_id', currentUser.id)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false }),
   ]);
   const entries = (entriesRes.data || []).filter(isDueToday);
   const loggedIds = new Set((logsRes.data || []).map(l => `${l.entry_id}:${l.slot ?? 1}`));
-  return { entries, loggedIds };
+  const protocols = protosRes.data || [];
+  return { entries, loggedIds, protocols };
 }
 
 async function loadProtocols() {
@@ -343,7 +350,7 @@ async function renderToday() {
   if (!el) return;
   el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Loading...</div>`;
   try {
-    const { entries, loggedIds } = await loadTodayData();
+    const { entries, loggedIds, protocols } = await loadTodayData();
     if (entries.length === 0) {
       el.innerHTML = `
         <div class="sched-section">
@@ -385,12 +392,42 @@ async function renderToday() {
       return labels[h] || `🕐 ${fmt12(t)}`;
     };
 
+    const protocolChips = protocols.map(p => {
+      const totalWeeks = p.cycle_weeks || 12;
+      const day = daysBetween(p.start_date);
+      const pct = Math.min(Math.max((day / (totalWeeks * 7)) * 100, 0), 100);
+      const isComplete = day > totalWeeks * 7;
+      const currentWeek = day <= 0 ? 0 : isComplete ? totalWeeks : Math.ceil(day / 7);
+      const stack = STACKS.find(s => s && s.name === p.stack_name);
+      const emoji = stack?.emoji || '💉';
+      const name = p.name || 'Protocol';
+      const segs = Array.from({length: totalWeeks}, (_, i) => {
+        const w = i + 1;
+        if (w < currentWeek || isComplete)
+          return `<div style="flex:1;height:4px;border-radius:1px;background:var(--accent);"></div>`;
+        if (w === currentWeek)
+          return `<div style="flex:1;height:4px;border-radius:1px;overflow:hidden;background:var(--border);position:relative;"><div style="position:absolute;inset:0;background:var(--accent);opacity:0.4;"></div></div>`;
+        return `<div style="flex:1;height:4px;border-radius:1px;background:var(--border);"></div>`;
+      }).join('');
+      const label = isComplete ? 'Complete ✓' : day <= 0 ? 'Starting' : `Wk ${currentWeek}/${totalWeeks}`;
+      return `
+        <div style="flex:0 0 calc(50% - 4px);background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 12px;box-sizing:border-box;">
+          <div style="font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:7px;">${emoji} ${name}</div>
+          <div style="display:flex;gap:2px;margin-bottom:5px;">${segs}</div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);">${label}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);">${Math.round(pct)}%</span>
+          </div>
+        </div>`;
+    }).join('');
+
     let html = `
       <div class="sched-section">
         <div class="sched-section-hdr">
           <div class="sched-section-title">Today · ${todayLabel()}</div>
           <div class="sched-progress">${doneCount} / ${allCards.length} done</div>
-        </div>`;
+        </div>
+        ${protocols.length ? `<div style="display:flex;gap:8px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">${protocolChips}</div>` : ''}`;
 
     sortedTimes.forEach(t => {
       html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${fmt12(t)}</div>`;

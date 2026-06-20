@@ -735,6 +735,8 @@ function initSwipeBack() {
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
     if (dy > VERTICAL_LIMIT || Math.abs(dx) < SWIPE_THRESHOLD) return;
+    const isCompareOpen = document.getElementById('compareOverlay')?.style.display === 'flex';
+    if (isCompareOpen) return;
     const isDetailOpen = document.getElementById('detailView')?.style.display === 'block';
     const inCenter = touchStartX >= CENTER_ZONE_START && touchStartX <= window.innerWidth - CENTER_ZONE_END_OFFSET;
     if (isDetailOpen && inCenter && AppState.compoundList.length > 1) {

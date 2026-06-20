@@ -1280,8 +1280,6 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
     <div style="position:sticky;bottom:0;background:var(--white);padding:12px 0 env(safe-area-inset-bottom,16px);">
       <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
         style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;">Add to Protocol</button>
-      <button onclick="openAddToProtoSheet('${compoundName.replace(/'/g,"\\'")}','${defaultDose.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
-        style="width:100%;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;margin-top:6px;padding:4px;">← Back</button>
     </div>
   `;
 };

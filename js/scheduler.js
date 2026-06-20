@@ -662,6 +662,23 @@ export function removeCustomCompound(idx) {
   _renderCustomListInPlace();
 }
 
+export function customNameChanged(i) {
+  if (_customCompounds[i]) _customCompounds[i].name = document.getElementById(`cf-name-${i}`)?.value?.trim() || '';
+  const allWarnings = getInteractionWarnings(_customCompounds.map(c => c.name).filter(Boolean));
+  _customCompounds.forEach((c, j) => {
+    const div = document.getElementById(`cf-warn-${j}`);
+    if (!div) return;
+    const mine = allWarnings.filter(w => w.a === c.name || w.b === c.name);
+    div.innerHTML = mine.map(w => {
+      const other = w.a === c.name ? w.b : w.a;
+      return `<div style="display:flex;gap:6px;align-items:flex-start;background:var(--amber-light);border:1px solid rgba(212,129,43,0.35);border-radius:6px;padding:5px 9px;font-size:11px;margin-bottom:6px;">
+        <span style="color:var(--amber);flex-shrink:0;">⚠</span>
+        <span style="color:var(--text);"><strong>Conflicts with ${other}</strong>${w.reason ? ' — ' + w.reason : ''}</span>
+      </div>`;
+    }).join('');
+  });
+}
+
 export function customFreqChanged(idx) {
   const freq = document.getElementById(`cf-freq-${idx}`)?.value;
   const daysRow = document.getElementById(`cf-days-row-${idx}`);
@@ -680,25 +697,16 @@ function _renderCustomList() {
   if (_customCompounds.length === 0) {
     return datalist + '<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">No compounds added yet.</div>';
   }
-  const allWarnings = getInteractionWarnings(_customCompounds.map(c => c.name).filter(Boolean));
   return datalist + _customCompounds.map((c, i) => {
     const isScheduled = c.freq !== 'daily' && c.freq !== 'as_needed';
     const defDays = c.days || DEFAULT_DAYS[c.freq] || [1];
-    const myWarnings = allWarnings.filter(w => w.a === c.name || w.b === c.name);
-    const warningBadge = myWarnings.map(w => {
-      const other = w.a === c.name ? w.b : w.a;
-      return `<div style="display:flex;gap:6px;align-items:flex-start;background:var(--amber-light);border:1px solid rgba(212,129,43,0.35);border-radius:6px;padding:5px 9px;font-size:11px;margin-bottom:6px;">
-        <span style="color:var(--amber);flex-shrink:0;">⚠</span>
-        <span style="color:var(--text);"><strong>Conflicts with ${other}</strong>${w.reason ? ' — ' + w.reason : ''}</span>
-      </div>`;
-    }).join('');
     return `<div class="proto-compound-row" style="margin-bottom:8px;">
-      ${warningBadge}
+      <div id="cf-warn-${i}"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <input type="text" class="calc-input" placeholder="Compound name" value="${c.name}"
           list="peptide-names"
           style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;"
-          id="cf-name-${i}">
+          id="cf-name-${i}" oninput="customNameChanged(${i})">
         <button type="button" onclick="removeCustomCompound(${i})"
           style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px;line-height:1;flex-shrink:0;">✕</button>
       </div>

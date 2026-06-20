@@ -20,11 +20,11 @@ import {
   openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
   openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
-  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
+  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, customNameChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
-} from './scheduler.js?v=10';
+} from './scheduler.js?v=11';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 // tapFavorite: toggles, updates the star button inline, refreshes the chips
@@ -48,7 +48,7 @@ Object.assign(window, {
   openAuthModal, closeAuthModal, closeAuthModalDirect, toggleAuthMode, submitAuth, schedSignOut,
   openAddProtoModal, closeAddProtoModal, closeAddProtoModalDirect,
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
-  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
+  addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, customNameChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,

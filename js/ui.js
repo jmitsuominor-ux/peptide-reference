@@ -409,6 +409,14 @@ function _renderPlainEnglish(text) {
   if (!text) return '';
   return text.split('\n\n').map(block => {
     if (block === '---') return '<hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">';
+    if (block.startsWith('|') && block.includes('|---|')) {
+      const rows = block.split('\n').filter(r => !r.match(/^\|[-|\s]+\|$/));
+      return `<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;">${rows.map((row, i) => {
+        const cells = row.split('|').filter((_, idx) => idx > 0 && idx < row.split('|').length - 1);
+        const tag = i === 0 ? 'th' : 'td';
+        return `<tr>${cells.map(c => `<${tag} style="padding:5px 8px;border:1px solid var(--border);${i===0?'font-weight:700;background:var(--card2);':''}text-align:left;">${c.trim()}</${tag}>`).join('')}</tr>`;
+      }).join('')}</table>`;
+    }
     const isRoleHeader = block.startsWith('**') && block.includes(' — ') && block.indexOf('**', 2) < 70;
     if (isRoleHeader) {
       const bold = block.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');

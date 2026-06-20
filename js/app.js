@@ -22,7 +22,7 @@ import {
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
   addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
-  openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry,
+  openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
 } from './scheduler.js';
 
@@ -50,7 +50,7 @@ Object.assign(window, {
   addProtoStackChanged, addProtoSetTier, addProtoNext, addProtoBack, addProtoSave,
   addProtoSwitchMode, addCustomCompound, removeCustomCompound, customFreqChanged, addProtoSaveCustom,
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
-  openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry,
+  openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
   toggleAuthPw,
 });

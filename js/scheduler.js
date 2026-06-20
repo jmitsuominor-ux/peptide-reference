@@ -1037,15 +1037,26 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
   _editEntries = data || [];
 
   const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const DEF_DAYS = { twice_weekly:[1,4], three_weekly:[1,3,5], weekly:[1] };
   const rows = _editEntries.map((e, i) => {
     const isScheduled = e.frequency !== 'daily' && e.frequency !== 'as_needed';
-    const days = e.days_of_week || [];
+    const days = e.days_of_week?.length ? e.days_of_week : (DEF_DAYS[e.frequency] || []);
     return `
       <div style="border-bottom:1px solid var(--border2);padding:14px 0;" id="edit-row-${i}">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div style="font-weight:600;font-size:14px;color:var(--text1);">${e.compound_name}</div>
           <button type="button" onclick="deleteEditEntry(${i})"
             style="font-size:11px;color:var(--red,#e05);background:none;border:none;cursor:pointer;padding:2px 6px;">Remove</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;">
+          <select class="calc-select" id="edit-freq-${i}" style="flex:1;font-size:13px;padding:7px 10px;"
+            onchange="editFreqChanged(${i})">
+            <option value="daily"         ${e.frequency==='daily'?'selected':''}>Daily</option>
+            <option value="twice_weekly"  ${e.frequency==='twice_weekly'?'selected':''}>2x / week</option>
+            <option value="three_weekly"  ${e.frequency==='three_weekly'?'selected':''}>3x / week</option>
+            <option value="weekly"        ${e.frequency==='weekly'?'selected':''}>Once / week</option>
+            <option value="as_needed"     ${e.frequency==='as_needed'?'selected':''}>As needed</option>
+          </select>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:8px;">
           <input type="text" class="calc-input" id="edit-dose-${i}" value="${e.dose||''}"
@@ -1056,19 +1067,18 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
           <input type="time" class="calc-input" id="edit-time-${i}" value="${e.reminder_time||'20:00'}"
             style="flex:1;font-size:13px;padding:7px 10px;">
         </div>
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:${isScheduled ? '8' : '4'}px;">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;">
           <span class="proto-time-label" style="flex-shrink:0;">Reminder 2:</span>
           <input type="time" class="calc-input" id="edit-time2-${i}" value="${e.reminder_time_2||''}"
             style="flex:1;font-size:13px;padding:7px 10px;">
           <span style="font-size:11px;color:var(--text3);flex-shrink:0;">optional</span>
         </div>
-        ${isScheduled ? `
-        <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+        <div id="edit-days-row-${i}" style="display:${isScheduled ? 'flex' : 'none'};gap:4px;flex-wrap:wrap;align-items:center;">
           <span class="proto-time-label" style="flex-shrink:0;">Days:</span>
           <div id="edit-days-${i}" style="display:flex;gap:4px;flex-wrap:wrap;">
             ${DAY_LABELS.map((d, di) => `<button type="button" class="day-pill${days.includes(di)?' active':''}" data-day="${di}" onclick="this.classList.toggle('active')">${d}</button>`).join('')}
           </div>
-        </div>` : ''}
+        </div>
       </div>`;
   }).join('');
 
@@ -1096,6 +1106,12 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
     </div>`;
   document.body.appendChild(modal);
   setTimeout(() => modal.classList.add('open'), 10);
+}
+
+export function editFreqChanged(i) {
+  const freq = document.getElementById(`edit-freq-${i}`)?.value;
+  const row = document.getElementById(`edit-days-row-${i}`);
+  if (row) row.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
 }
 
 export async function deleteEditEntry(index) {
@@ -1133,16 +1149,15 @@ export async function saveEditProto() {
       const entry = _editEntries[i];
       if (!entry) continue;
       const dose = document.getElementById(`edit-dose-${i}`)?.value || entry.dose;
+      const freq = document.getElementById(`edit-freq-${i}`)?.value || entry.frequency;
       const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
       const time2 = document.getElementById(`edit-time2-${i}`)?.value || null;
-      const isScheduled = entry.frequency !== 'daily' && entry.frequency !== 'as_needed';
-      let days = entry.days_of_week;
-      if (isScheduled) {
-        const container = document.getElementById(`edit-days-${i}`);
-        if (container) days = Array.from(container.querySelectorAll('.day-pill.active')).map(el => parseInt(el.dataset.day));
-      }
+      const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+      let days = isScheduled
+        ? Array.from(document.querySelectorAll(`#edit-days-${i} .day-pill.active`)).map(el => parseInt(el.dataset.day))
+        : null;
       const { error: updErr } = await supabase.from('schedule_entries')
-        .update({ dose, reminder_time: time, reminder_time_2: time2, days_of_week: days })
+        .update({ dose, frequency: freq, schedule_text: freq, reminder_time: time, reminder_time_2: time2, days_of_week: days })
         .eq('id', entry.id)
         .eq('user_id', currentUser.id);
       if (updErr) throw updErr;

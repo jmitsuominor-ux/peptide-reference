@@ -1,4 +1,4 @@
-const CACHE = 'peptideref-v14';
+const CACHE = 'peptideref-v15';
 
 self.addEventListener('install', e => {
   self.skipWaiting();

@@ -478,14 +478,6 @@ export function showStackDetail(idx, skipHistory = false) {
         <span class="dh-badge fda">${tr('stack_research_badge')}</span>
       </div>
     </div>
-    ${stack.plainEnglish ? `
-    <div class="section-card">
-      <div class="section-header" onclick="toggleSec(this)">
-        <div class="sh-left"><div class="sh-icon teal">💬</div><div class="sh-title">Plain English</div></div>
-        <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-      </div>
-      <div class="section-body open">${_renderPlainEnglish(stack.plainEnglish)}</div>
-    </div>` : ''}
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">${tr('stack_benefits_title')}</div></div>
@@ -493,6 +485,11 @@ export function showStackDetail(idx, skipHistory = false) {
       </div>
       <div class="section-body open">
         ${(stack.benefits||[]).map(b => `<div class="benefit-row"><div class="benefit-check">✓</div>${b}</div>`).join('')}
+        ${stack.plainEnglish ? `
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">Think of it this way</div>
+          ${_renderPlainEnglish(stack.plainEnglish)}
+        </div>` : ''}
       </div>
     </div>
     <div class="section-card">

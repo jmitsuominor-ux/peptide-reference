@@ -405,6 +405,20 @@ export function renderStacks() {
   }).join('');
 }
 
+function _renderPlainEnglish(text) {
+  if (!text) return '';
+  return text.split('\n\n').map(block => {
+    if (block === '---') return '<hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">';
+    const isRoleHeader = block.startsWith('**') && block.includes(' — ') && block.indexOf('**', 2) < 70;
+    if (isRoleHeader) {
+      const bold = block.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      return `<div style="margin:14px 0 4px;font-size:13px;font-weight:700;color:var(--text);">${bold}</div>`;
+    }
+    const html = block.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return `<p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 2px;">${html}</p>`;
+  }).join('');
+}
+
 // ─── Stacks: detail view ─────────────────────────────────
 export function showStackDetail(idx, skipHistory = false) {
   if (!skipHistory) pushNav();
@@ -464,6 +478,14 @@ export function showStackDetail(idx, skipHistory = false) {
         <span class="dh-badge fda">${tr('stack_research_badge')}</span>
       </div>
     </div>
+    ${stack.plainEnglish ? `
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSec(this)">
+        <div class="sh-left"><div class="sh-icon teal">💬</div><div class="sh-title">Plain English</div></div>
+        <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body open">${_renderPlainEnglish(stack.plainEnglish)}</div>
+    </div>` : ''}
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">${tr('stack_benefits_title')}</div></div>

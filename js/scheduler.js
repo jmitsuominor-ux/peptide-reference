@@ -1177,15 +1177,15 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
   const safeDose     = defaultDose.replace(/'/g,"\\'");
   const safeSchedule = scheduleText.replace(/'/g,"\\'");
 
-  const newProtoBtn = `
-    <div onclick="closeAddToProtoSheet();openAddProtoModal();"
-      style="display:flex;align-items:center;gap:10px;padding:13px 0;cursor:pointer;">
-      <div style="width:32px;height:32px;border-radius:50%;border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue);font-size:18px;line-height:1;">＋</div>
-      <div style="font-size:13px;font-weight:600;color:var(--blue);">Start new protocol</div>
-    </div>`;
+  const newProtoFooter = `
+    <button onclick="closeAddToProtoSheet();openAddProtoModal();"
+      style="width:100%;background:none;border:1.5px dashed var(--border2);border-radius:8px;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;padding:12px;">
+      ＋ Start new protocol
+    </button>`;
 
   if (error || !schedules?.length) {
-    body.innerHTML = `<div style="color:var(--text3);font-size:13px;padding:12px 0 4px;">No active protocols yet.</div>${newProtoBtn}`;
+    body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:12px 0 4px;">No active protocols yet.</div>';
+    document.getElementById('atpFooter').innerHTML = newProtoFooter;
     return;
   }
 
@@ -1199,8 +1199,8 @@ export async function openAddToProtoSheet(compoundName, defaultDose, scheduleTex
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </div>`).join('');
 
-  body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}${newProtoBtn}`;
-  document.getElementById('atpFooter').innerHTML = '';
+  body.innerHTML = `<div style="font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Choose a protocol</div>${listHTML}`;
+  document.getElementById('atpFooter').innerHTML = newProtoFooter;
 }
 
 window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose, scheduleText) {

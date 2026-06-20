@@ -250,9 +250,9 @@ export function showDetail(name) {
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">${tr('sec_dosing')}</div></div>
-        <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="section-body open">
+      <div class="section-body">
         <div class="dose-legend">
           <div class="dl-item"><span class="dl-label lo">${tr('dose_low')}</span><div class="dl-desc">${tr('dose_legend_lo_desc')}</div></div>
           <div class="dl-item"><span class="dl-label mid">${tr('dose_mid')}</span><div class="dl-desc">${tr('dose_legend_mid_desc')}</div></div>
@@ -489,9 +489,9 @@ export function showStackDetail(idx, skipHistory = false) {
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon teal">✓</div><div class="sh-title">${tr('stack_benefits_title')}</div></div>
-        <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="section-body open">
+      <div class="section-body">
         ${(stack.benefits||[]).map(b => `<div class="benefit-row"><div class="benefit-check">✓</div>${b}</div>`).join('')}
         ${stack.plainEnglish ? `
         <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
@@ -503,9 +503,9 @@ export function showStackDetail(idx, skipHistory = false) {
     <div class="section-card">
       <div class="section-header" onclick="toggleSec(this)">
         <div class="sh-left"><div class="sh-icon blue">💊</div><div class="sh-title">${tr('stack_dosing_title')}</div></div>
-        <svg class="sh-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <svg class="sh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="section-body open">
+      <div class="section-body">
         ${cycleHTML}
         <div class="dose-legend" style="margin-bottom:12px;">
           <div class="dl-item"><span class="dl-label lo">LOW</span><div class="dl-desc">Conservative</div></div>

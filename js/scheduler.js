@@ -394,7 +394,11 @@ async function renderToday() {
 
     sortedTimes.forEach(t => {
       html += `<div class="sched-time-group"><div class="sched-time-label">${timeLabel(t)} · ${fmt12(t)}</div>`;
-      groups[t].forEach(e => {
+      groups[t].sort((a, b) => {
+        const na = a.schedules?.name || a.schedule_id || '';
+        const nb = b.schedules?.name || b.schedule_id || '';
+        return na.localeCompare(nb) || (a.compound_name || '').localeCompare(b.compound_name || '');
+      }).forEach(e => {
         const done = loggedIds.has(`${e.id}:${e._slot}`);
         const stackName = e.schedules?.name || '';
         const cardId = e._slot === 2 ? `${e.id}-2` : e.id;

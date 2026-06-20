@@ -85,7 +85,7 @@ export const TRANSLATIONS = {
     // Stack detail
     stack_peptides_badge: 'Peptides',
     stack_research_badge: 'Research Protocol',
-    stack_benefits_title: "What You'll Get",
+    stack_benefits_title: "What It Does",
     stack_dosing_title: 'Your Dose Plan',
     stack_note_prefix: '⚠ Important:',
     // Profile link

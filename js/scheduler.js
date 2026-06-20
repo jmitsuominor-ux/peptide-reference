@@ -1221,7 +1221,7 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
   const defDays = defaultDays(defFreq) || [1, 4];
 
   body.innerHTML = `
-    <div class="proto-compound-row" style="margin-bottom:8px;">
+    <div class="proto-compound-row" style="margin-bottom:12px;background:var(--white);">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <input type="text" class="calc-input" value="${compoundName}" readonly
           style="flex:1;font-size:13px;padding:7px 10px;margin-right:8px;background:var(--surface);color:var(--text1);">
@@ -1274,11 +1274,9 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
         <button type="button" onclick="document.getElementById('atpTime2Row').style.display='flex';document.getElementById('atpTime2Add').style.display='none'"
           style="background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;padding:0;">＋ Add 2nd reminder time</button>
       </div>
-      <div style="border-top:1px solid var(--border);margin:12px -12px 0;padding:12px 12px 0;">
-        <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
-          style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;">Add to Protocol</button>
-      </div>
     </div>
+    <button id="atpSaveBtn" onclick="atpSave('${schedId}','${compoundName.replace(/'/g,"\\'")}','${scheduleText.replace(/'/g,"\\'")}')"
+      style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;">Add to Protocol</button>
   `;
 };
 

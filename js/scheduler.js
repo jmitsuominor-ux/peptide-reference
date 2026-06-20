@@ -1024,17 +1024,22 @@ export function confirmEndProtocol(id, name) {
 let _editScheduleId = null;
 let _editScheduleName = '';
 let _editEntries = [];
+let _editCycleWeeks = 12;
+let _editCurrentWeek = 1;
 
 export async function openEditProtoModal(scheduleId, scheduleName = '') {
   _editScheduleId = scheduleId;
   _editScheduleName = scheduleName;
-  const { data } = await supabase
-    .from('schedule_entries')
-    .select('id, compound_name, dose, frequency, reminder_time, reminder_time_2, days_of_week')
-    .eq('schedule_id', scheduleId)
-    .eq('is_active', true)
-    .order('compound_name');
-  _editEntries = data || [];
+  const [entriesRes, schedRes] = await Promise.all([
+    supabase.from('schedule_entries')
+      .select('id, compound_name, dose, frequency, reminder_time, reminder_time_2, days_of_week')
+      .eq('schedule_id', scheduleId).eq('is_active', true).order('compound_name'),
+    supabase.from('schedules').select('start_date, cycle_weeks').eq('id', scheduleId).single()
+  ]);
+  _editEntries = entriesRes.data || [];
+  _editCycleWeeks = schedRes.data?.cycle_weeks || 12;
+  const day = daysBetween(schedRes.data?.start_date);
+  _editCurrentWeek = Math.max(1, Math.min(Math.ceil(day / 7), _editCycleWeeks));
 
   const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   const DEF_DAYS = { twice_weekly:[1,4], three_weekly:[1,3,5], weekly:[1] };
@@ -1044,7 +1049,7 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
     return `
       <div style="border-bottom:1px solid var(--border2);padding:14px 0;" id="edit-row-${i}">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-          <div style="font-weight:600;font-size:14px;color:var(--text1);">${e.compound_name}</div>
+          <div style="font-weight:600;font-size:14px;color:var(--text);">${e.compound_name}</div>
           <button type="button" onclick="deleteEditEntry(${i})"
             style="font-size:11px;color:var(--red,#e05);background:none;border:none;cursor:pointer;padding:2px 6px;">Remove</button>
         </div>
@@ -1089,16 +1094,28 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
   modal.className = 'modal-overlay';
   modal.style.cssText = 'display:flex;align-items:flex-end;';
   modal.innerHTML = `
-    <div class="modal-box" style="max-height:80vh;overflow-y:auto;border-radius:20px 20px 0 0;">
-      <div class="modal-header">
+    <div style="background:var(--white);width:100%;max-height:80vh;overflow-y:auto;border-radius:20px 20px 0 0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1;">
         <div class="modal-title">Edit Protocol</div>
         <button class="modal-close" onclick="closeEditProtoModal()">✕</button>
       </div>
       <div style="padding:0 20px 24px;">
-        <div style="margin-bottom:16px;">
+        <div style="margin-bottom:12px;">
           <label style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;display:block;">Protocol Name</label>
           <input type="text" class="calc-input" id="edit-proto-name" value="${_editScheduleName}"
             placeholder="Protocol name" style="width:100%;font-size:13px;padding:7px 10px;box-sizing:border-box;">
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;">
+          <div style="flex:1;">
+            <label style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;display:block;">Current Week</label>
+            <input type="number" class="calc-input" id="edit-current-week" value="${_editCurrentWeek}" min="1" max="52"
+              style="width:100%;font-size:13px;padding:7px 10px;box-sizing:border-box;">
+          </div>
+          <div style="flex:1;">
+            <label style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;display:block;">Cycle Length (wks)</label>
+            <input type="number" class="calc-input" id="edit-cycle-weeks" value="${_editCycleWeeks}" min="1" max="52"
+              style="width:100%;font-size:13px;padding:7px 10px;box-sizing:border-box;">
+          </div>
         </div>
         ${rows || '<div style="padding:16px;color:var(--text3);text-align:center;">No compounds found.</div>'}
         <button class="calc-btn" style="width:100%;margin-top:16px;" onclick="saveEditProto()">Save Changes</button>
@@ -1138,13 +1155,16 @@ export async function saveEditProto() {
   const btn = document.querySelector('#editProtoModal .calc-btn');
   if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
   try {
-    const newName = document.getElementById('edit-proto-name')?.value?.trim();
-    if (newName) {
-      await supabase.from('schedules')
-        .update({ name: newName })
-        .eq('id', _editScheduleId)
-        .eq('user_id', currentUser.id);
-    }
+    const newName = document.getElementById('edit-proto-name')?.value?.trim() || _editScheduleName;
+    const newCurrentWeek = Math.max(1, parseInt(document.getElementById('edit-current-week')?.value) || _editCurrentWeek);
+    const newCycleWeeks = Math.max(1, parseInt(document.getElementById('edit-cycle-weeks')?.value) || _editCycleWeeks);
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - (newCurrentWeek - 1) * 7);
+    const newStartStr = startDate.toISOString().split('T')[0];
+    await supabase.from('schedules')
+      .update({ name: newName, start_date: newStartStr, cycle_weeks: newCycleWeeks })
+      .eq('id', _editScheduleId)
+      .eq('user_id', currentUser.id);
     for (let i = 0; i < _editEntries.length; i++) {
       const entry = _editEntries[i];
       if (!entry) continue;

@@ -24,7 +24,7 @@ import {
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
-} from './scheduler.js';
+} from './scheduler.js?v=9';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 // tapFavorite: toggles, updates the star button inline, refreshes the chips

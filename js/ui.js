@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════════════════
 import { CATEGORIES, CAT_COLORS, CAT_BG, EVIDENCE_LABELS, EVIDENCE_BADGE_CLASS } from './data/categories.js';
 import { CAT_I18N_KEYS } from './data/translations.js';
-import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js';
-import { AppState } from './state.js';
+import { PEPTIDES, STACKS, t, getPeptideData, getStackData, getCommonVialSize, getInteractionWarnings } from './utils.js?v=2';
+import { AppState } from './state.js?v=2';
 import { getRecent, getFavorites, isFavorite, addToRecent, toggleFavorite } from './storage.js';
 
 // Shorthand using current language — avoids threading lang everywhere in templates

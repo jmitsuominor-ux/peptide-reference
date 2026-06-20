@@ -2,7 +2,7 @@
 // APP — event handlers, calculators, init
 // Entry point: imported as <script type="module" src="js/app.js">
 // ═══════════════════════════════════════════════════════
-import { AppState } from './state.js';
+import { AppState } from './state.js?v=2';
 import { TRANSLATIONS } from './data/translations.js';
 import { STACKS } from './utils.js';
 import { t, parseDoseToMgPerWeek, getCommonVialSize, computeVialCount, getStackData, PEPTIDES } from './utils.js';
@@ -14,7 +14,7 @@ import {
   renderRecentFav,
   toggleCompare, clearCompare, openCompare, closeCompare,
   swipeNextCompound, swipePrevCompound,
-} from './ui.js';
+} from './ui.js?v=2';
 import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
 import {

@@ -797,13 +797,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <!-- ADD TO EXISTING PROTOCOL SHEET -->
 <div id="atpOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;" onclick="closeAddToProtoSheet()"></div>
-<div id="atpSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-radius:16px 16px 0 0;z-index:1001;max-height:80vh;display:flex;flex-direction:column;">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;flex-shrink:0;">
+<div id="atpSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-radius:16px 16px 0 0;z-index:1001;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="position:sticky;top:0;background:var(--white);z-index:2;display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;border-bottom:1px solid var(--border);">
     <div style="font-size:15px;font-weight:600;color:var(--text1);" id="atpTitle">Add to Protocol</div>
     <button onclick="closeAddToProtoSheet()" style="background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;">✕</button>
   </div>
-  <div id="atpBody" style="padding:0 18px 8px;overflow-y:auto;flex:1;"></div>
-  <div id="atpFooter" style="padding:8px 18px env(safe-area-inset-bottom,16px);flex-shrink:0;border-top:1px solid var(--border);"></div>
+  <div id="atpBody" style="padding:0 18px 12px;"></div>
 </div>
 </body>
 </html>

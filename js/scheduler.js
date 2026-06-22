@@ -31,6 +31,12 @@ function parseReminderTime(txt) {
 function isDueToday(entry) {
   if (entry.frequency === 'as_needed') return false;
   if (entry.frequency === 'daily') return true;
+  if (entry.frequency === 'every_4_days') {
+    const start = entry.schedules?.start_date;
+    if (!start) return true;
+    const day = daysBetween(start);
+    return (day - 1) % 4 === 0;
+  }
   const dow = new Date().getDay();
   return (entry.days_of_week || []).includes(dow);
 }
@@ -55,6 +61,7 @@ function todayLabel() {
 function freqLabel(freq, days) {
   if (freq === 'daily') return 'Daily';
   if (freq === 'as_needed') return 'As needed';
+  if (freq === 'every_4_days') return 'Every 4 days';
   const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const d = (days || []).map(i => dayNames[i]).join(', ');
   return d || freq;
@@ -121,7 +128,7 @@ async function createCustomProtocol(name, compounds) {
     dose: `${c.dose} ${c.unit}`,
     schedule_text: c.freq,
     frequency: c.freq,
-    days_of_week: (c.freq !== 'daily' && c.freq !== 'as_needed') ? c.days : null,
+    days_of_week: (c.freq !== 'daily' && c.freq !== 'as_needed' && c.freq !== 'every_4_days') ? c.days : null,
     reminder_time: c.reminderTime || '20:00',
     reminder_time_2: c.reminderTime2 || null,
   }));
@@ -682,7 +689,7 @@ export function customNameChanged(i) {
 export function customFreqChanged(idx) {
   const freq = document.getElementById(`cf-freq-${idx}`)?.value;
   const daysRow = document.getElementById(`cf-days-row-${idx}`);
-  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
+  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed' || freq === 'every_4_days') ? 'none' : 'flex';
 }
 
 function _renderCustomListInPlace() {
@@ -698,7 +705,7 @@ function _renderCustomList() {
     return datalist + '<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">No compounds added yet.</div>';
   }
   return datalist + _customCompounds.map((c, i) => {
-    const isScheduled = c.freq !== 'daily' && c.freq !== 'as_needed';
+    const isScheduled = c.freq !== 'daily' && c.freq !== 'as_needed' && c.freq !== 'every_4_days';
     const defDays = c.days || DEFAULT_DAYS[c.freq] || [1];
     return `<div class="proto-compound-row" style="margin-bottom:8px;">
       <div id="cf-warn-${i}"></div>
@@ -729,6 +736,7 @@ function _renderCustomList() {
           <option value="twice_weekly" ${c.freq==='twice_weekly'?'selected':''}>2x / week</option>
           <option value="three_weekly" ${c.freq==='three_weekly'?'selected':''}>3x / week</option>
           <option value="weekly" ${c.freq==='weekly'?'selected':''}>Once / week</option>
+          <option value="every_4_days" ${c.freq==='every_4_days'?'selected':''}>Every 4 days</option>
           <option value="as_needed" ${c.freq==='as_needed'?'selected':''}>As needed</option>
         </select>
       </div>
@@ -1099,7 +1107,7 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
   const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
   const DEF_DAYS = { twice_weekly:[1,4], three_weekly:[1,3,5], weekly:[1] };
   const rows = _editEntries.map((e, i) => {
-    const isScheduled = e.frequency !== 'daily' && e.frequency !== 'as_needed';
+    const isScheduled = e.frequency !== 'daily' && e.frequency !== 'as_needed' && e.frequency !== 'every_4_days';
     const days = e.days_of_week?.length ? e.days_of_week : (DEF_DAYS[e.frequency] || []);
     return `
       <div style="border-bottom:1px solid var(--border2);padding:14px 0;" id="edit-row-${i}">
@@ -1115,6 +1123,7 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
             <option value="twice_weekly"  ${e.frequency==='twice_weekly'?'selected':''}>2x / week</option>
             <option value="three_weekly"  ${e.frequency==='three_weekly'?'selected':''}>3x / week</option>
             <option value="weekly"        ${e.frequency==='weekly'?'selected':''}>Once / week</option>
+            <option value="every_4_days"  ${e.frequency==='every_4_days'?'selected':''}>Every 4 days</option>
             <option value="as_needed"     ${e.frequency==='as_needed'?'selected':''}>As needed</option>
           </select>
         </div>
@@ -1183,7 +1192,7 @@ export async function openEditProtoModal(scheduleId, scheduleName = '') {
 export function editFreqChanged(i) {
   const freq = document.getElementById(`edit-freq-${i}`)?.value;
   const row = document.getElementById(`edit-days-row-${i}`);
-  if (row) row.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
+  if (row) row.style.display = (freq === 'daily' || freq === 'as_needed' || freq === 'every_4_days') ? 'none' : 'flex';
 }
 
 export async function deleteEditEntry(index) {
@@ -1362,6 +1371,7 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
           <option value="twice_weekly"  ${defFreq==='twice_weekly'?'selected':''}>2x / week</option>
           <option value="three_weekly"  ${defFreq==='three_weekly'?'selected':''}>3x / week</option>
           <option value="weekly"        ${defFreq==='weekly'?'selected':''}>Once / week</option>
+          <option value="every_4_days"  ${defFreq==='every_4_days'?'selected':''}>Every 4 days</option>
           <option value="as_needed"     ${defFreq==='as_needed'?'selected':''}>As needed</option>
         </select>
       </div>
@@ -1399,7 +1409,7 @@ window.atpPickProtocol = function(schedId, schedName, compoundName, defaultDose,
 window.atpFreqChanged = function() {
   const freq = document.getElementById('atpFreq')?.value;
   const daysRow = document.getElementById('atpDaysRow');
-  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed') ? 'none' : 'flex';
+  if (daysRow) daysRow.style.display = (freq === 'daily' || freq === 'as_needed' || freq === 'every_4_days') ? 'none' : 'flex';
 };
 
 window.atpSave = async function(schedId, compoundName, scheduleText) {
@@ -1413,7 +1423,7 @@ window.atpSave = async function(schedId, compoundName, scheduleText) {
   if (!currentUser) { alert('Not signed in.'); return; }
 
   const dose = `${doseNum} ${unit}`;
-  const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+  const isScheduled = freq !== 'daily' && freq !== 'as_needed' && freq !== 'every_4_days';
   const days = isScheduled
     ? Array.from(document.querySelectorAll('#atpDays .day-pill.active')).map(el => parseInt(el.dataset.day))
     : null;

@@ -103,7 +103,7 @@ export const STACKS_ES = [
     note:'SE REQUIEREN ANÁLISIS DE SANGRE. Obtener T total, T libre, LH, FSH, estradiol e IGF-1 basales antes de comenzar. Revisar a las 6 semanas. Este no es un stack para principiantes — consultar con Defy Medical o Marek Health para protocolo supervisado.',
   },
   {
-    name:'LIMITLESS STACK',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',
+    name:'LIMITLESS STACK (Russian Stack)',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',
     goal:'Enfoque · Memoria · Neuroprotección · Reducción de ansiedad · BDNF',
     description:'El protocolo de optimización cognitiva más dirigido. Semax eleva BDNF para enfoque y neuroprotección. Selank proporciona calma ansiolítica limpia sin sedación. NAD+ potencia las mitocondrias cerebrales. Tres vías distintas para una mejora cognitiva integral.',
     rationale:'Semax actúa vía ACTH(4-7) para regular al alza BDNF y modular dopamina/serotonina — mejorando el enfoque, la consolidación de memoria y la neuroplasticidad. Selank modula GABA-A y reduce la ansiedad sin sedación — creando el estado calmado y enfocado donde Semax es más efectivo. NAD+ asegura que la energía mitocondrial no sea el cuello de botella para el rendimiento cerebral.',
@@ -304,7 +304,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'LIMITLESS STACK',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',color:'#1565C0',
+    name:'LIMITLESS STACK (Russian Stack)',cycle:'6 weeks on / 2 weeks off for Semax and Selank. NAD+ can run ongoing.',emoji:'🧠',goal:'Focus · Memory · Neuroprotection · Anxiety reduction · BDNF',color:'#1565C0',
     description:'The most targeted cognitive optimization protocol. Semax elevates BDNF for focus and neuroprotection. Selank provides clean anxiolytic calm without sedation. NAD+ powers brain mitochondria. Three distinct pathways for comprehensive cognitive enhancement.',
     rationale:'Semax acts via ACTH(4-7) to upregulate BDNF and modulate dopamine/serotonin — enhancing focus, memory consolidation, and neuroplasticity. Selank modulates GABA-A and reduces anxiety without sedation — creating the calm, focused state where Semax is most effective. NAD+ ensures mitochondrial energy is not the bottleneck for brain performance. These work synergistically rather than redundantly.',
     benefits:['Enhanced focus and cognitive clarity (Semax BDNF effect)','Anxiety-free calm state for peak performance (Selank)','Brain mitochondrial energy optimization (NAD+)','Memory consolidation and neuroplasticity','Neuroprotection from oxidative stress','No sedation or dependency risk'],

@@ -13,7 +13,7 @@ export const STACKS_ES = [
     note:'Inyectar cada uno por separado — nunca mezclar en la misma jeringa. BPC-157 cerca del sitio de lesión; TB-500 en cualquier lugar SubQ.',
   },
   {
-    name:'YOUTH STACK',cycle:'12 weeks on / 4 weeks off',
+    name:'YOUTH STACK (Glow)',cycle:'12 weeks on / 4 weeks off',
     goal:'Antienvejecimiento · Piel y colágeno · Regeneración integral',
     description:'El stack de antienvejecimiento y optimización de piel. GHK-Cu impulsa la síntesis de colágeno mientras los péptidos de sanación proporcionan soporte regenerativo sistémico.',
     rationale:'GHK-Cu activa genes de síntesis de colágeno y restablece la expresión genética hacia patrones más juveniles. BPC-157 y TB-500 proporcionan la base de reparación de tejidos y antiinflamación. Los tres trabajan en aspectos diferentes pero complementarios de la regeneración de piel y tejidos.',
@@ -22,7 +22,7 @@ export const STACKS_ES = [
     note:'GHK-Cu también puede aplicarse tópicamente en cara/piel además de SubQ. Inyectar BPC-157 y TB-500 por separado.',
   },
   {
-    name:'RESET STACK',cycle:'12 weeks on / 4 weeks off',
+    name:'RESET STACK (Klow)',cycle:'12 weeks on / 4 weeks off',
     goal:'Sanación máxima · Inmunomodulación · Reparación intestinal · Inflamación crónica',
     description:'El stack de sanación y antiinflamación más integral disponible. KPV añade potente inhibición de NF-kB y sanación mucosa — especialmente poderoso para problemas intestinales, EII y inflamación crónica.',
     rationale:'KPV inhibe específicamente NF-kB en superficies mucosas donde BPC-157 también actúa. La combinación proporciona sanación local + sistémica (BPC-157 + TB-500), regeneración de piel/colágeno (GHK-Cu), Y modulación antiinflamatoria de NF-kB (KPV) en todos los tipos de tejido.',
@@ -231,7 +231,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'YOUTH STACK',cycle:'12 weeks on / 4 weeks off',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
+    name:'YOUTH STACK (Glow)',cycle:'12 weeks on / 4 weeks off',emoji:'✨',goal:'Anti-aging · Skin & collagen · Comprehensive regeneration',color:'#5B2D8E',
     description:'The anti-aging and skin optimization stack. GHK-Cu drives collagen synthesis while the healing peptides provide systemic regeneration.',
     rationale:'GHK-Cu activates collagen synthesis genes and resets gene expression toward youthful patterns. BPC-157 and TB-500 provide the underlying tissue repair and anti-inflammatory foundation. All three work on different but complementary aspects of skin and tissue regeneration.',
     benefits:['Skin tightening and wrinkle reduction','Systemic anti-aging via gene expression reset','Collagen and elastin production','Inflammation reduction','Improved flexibility'],
@@ -334,7 +334,7 @@ export const STACKS = [
     ]
   },
   {
-    name:'RESET STACK',cycle:'12 weeks on / 4 weeks off',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
+    name:'RESET STACK (Klow)',cycle:'12 weeks on / 4 weeks off',emoji:'💎',goal:'Ultimate healing · Immune modulation · Gut repair · Chronic inflammation',color:'#004D40',
     description:'The most comprehensive healing and anti-inflammatory stack. KPV adds potent NF-kB inhibition and mucosal healing — particularly powerful for gut issues, IBD, and chronic inflammation.',
     rationale:'KPV specifically inhibits NF-kB at mucosal surfaces where BPC-157 also works. The combination provides local + systemic healing (BPC-157 + TB-500), skin/collagen regeneration (GHK-Cu), AND NF-kB anti-inflammatory modulation (KPV) across all tissue types.',
     benefits:['Most comprehensive healing protocol','GI inflammation and IBD support (KPV + BPC-157)','Skin and systemic tissue regeneration','Immune modulation without immunosuppression','Leaky gut and mucosal barrier repair'],

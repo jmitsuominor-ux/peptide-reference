@@ -781,6 +781,18 @@ export function openAddProtoModal() {
   setTimeout(() => modal.classList.add('open'), 10);
 }
 
+export function openStackPlanner(stackIdx) {
+  _addStep = 1;
+  _addStackIdx = String(stackIdx);
+  _addTier = 'mid';
+  _addMode = 'stack';
+  _customCompounds = [];
+  renderAddProtoStep();
+  const modal = document.getElementById('addProtoModal');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('open'), 10);
+}
+
 export function closeAddProtoModal(e) {
   if (e && e.target !== document.getElementById('addProtoModal')) return;
   _closeAddProto();

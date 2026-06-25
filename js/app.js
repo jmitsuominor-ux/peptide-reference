@@ -14,7 +14,7 @@ import {
   renderRecentFav,
   toggleCompare, clearCompare, openCompare, closeCompare,
   swipeNextCompound, swipePrevCompound,
-} from './ui.js?v=2';
+} from './ui.js?v=3';
 import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
 import {
@@ -26,7 +26,8 @@ import {
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
-} from './scheduler.js?v=11';
+  openStackPlanner,
+} from './scheduler.js?v=12';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
 // tapFavorite: toggles, updates the star button inline, refreshes the chips
@@ -56,6 +57,7 @@ Object.assign(window, {
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
+  openStackPlanner,
   toggleAuthPw,
 });
 

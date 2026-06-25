@@ -547,9 +547,9 @@ export function showStackDetail(idx, skipHistory = false) {
       <div class="section-body">${studiesHTML}</div>
     </div>
     <div class="calc-section" style="margin-top:8px;">
-      <div class="calc-section-title" style="margin-bottom:12px;"><div class="sh-icon amber">📅</div>Stack Planner</div>
-      <div style="color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:16px;">Build a personalized injection schedule for this stack. Choose your dose tier, review each compound, and track it in the Schedule tab.</div>
-      <button class="calc-btn" style="padding:13px;font-size:15px;" onclick="openStackPlanner(${idx})">📅 Plan This Stack →</button>
+      <div class="calc-section-title" style="margin-bottom:12px;"><div class="sh-icon amber">📋</div>Stack Supply Planner</div>
+      <div style="color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:16px;">See how many vials of each peptide you need for your full cycle. Opens the Stack Planner with this stack pre-loaded.</div>
+      <button class="calc-btn" style="padding:13px;font-size:15px;" onclick="goToStackPlanner(${idx})">📋 Calculate Supply →</button>
     </div>
     <div class="disclaimer">${tr('stack_research_note')}</div>
   `;

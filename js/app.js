@@ -14,7 +14,7 @@ import {
   renderRecentFav,
   toggleCompare, clearCompare, openCompare, closeCompare,
   swipeNextCompound, swipePrevCompound,
-} from './ui.js?v=3';
+} from './ui.js?v=4';
 import { toggleFavorite } from './storage.js';
 import { initAuth, signOut } from './auth.js';
 import {
@@ -26,7 +26,6 @@ import {
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
-  openStackPlanner,
 } from './scheduler.js?v=12';
 
 // ─── Expose UI fns for inline onclick= handlers in generated HTML ─
@@ -57,7 +56,7 @@ Object.assign(window, {
   toggleInjectionLog, confirmEndProtocol, confirmDeleteProtocol, enableReminders,
   openEditProtoModal, closeEditProtoModal, saveEditProto, deleteEditEntry, editFreqChanged,
   openAddToProtoSheet, closeAddToProtoSheet,
-  openStackPlanner,
+  goToStackPlanner,
   toggleAuthPw,
 });
 
@@ -612,6 +611,23 @@ function plannerCalculate() {
     ${rows}
   `;
   resultEl.classList.add('visible');
+}
+
+function goToStackPlanner(stackIdx) {
+  activatePage('calc');
+  const plannerBody = document.getElementById('plannerBody');
+  if (plannerBody && plannerBody.classList.contains('collapsed')) {
+    toggleCalcSection('planner');
+  }
+  const sel = document.getElementById('plannerStackSelect');
+  if (sel) {
+    sel.value = String(stackIdx);
+    plannerLoadStack();
+  }
+  setTimeout(() => {
+    const plannerEl = document.getElementById('calc-planner');
+    if (plannerEl) plannerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
 }
 
 async function plannerCopy() {

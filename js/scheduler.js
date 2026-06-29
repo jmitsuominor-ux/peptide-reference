@@ -1248,7 +1248,7 @@ export async function saveEditProto() {
       const freq = document.getElementById(`edit-freq-${i}`)?.value || entry.frequency;
       const time = document.getElementById(`edit-time-${i}`)?.value || entry.reminder_time;
       const time2 = document.getElementById(`edit-time2-${i}`)?.value || null;
-      const isScheduled = freq !== 'daily' && freq !== 'as_needed';
+      const isScheduled = freq !== 'daily' && freq !== 'as_needed' && freq !== 'every_4_days';
       let days = isScheduled
         ? Array.from(document.querySelectorAll(`#edit-days-${i} .day-pill.active`)).map(el => parseInt(el.dataset.day))
         : null;

@@ -33,7 +33,7 @@ function isDueToday(entry) {
   if (entry.frequency === 'daily') return true;
   if (entry.frequency === 'every_4_days') {
     const start = entry.schedules?.start_date;
-    if (!start) return true;
+    if (!start) return false;
     const day = daysBetween(start);
     return (day - 1) % 4 === 0;
   }
@@ -42,7 +42,10 @@ function isDueToday(entry) {
 }
 
 function daysBetween(dateStr) {
-  const start = new Date(dateStr);
+  // Parse as local date — "YYYY-MM-DD" without a time is treated as UTC midnight
+  // by the Date constructor, which shifts the date backward in UTC- timezones.
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const start = new Date(y, m - 1, d);
   const today = new Date();
   start.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);

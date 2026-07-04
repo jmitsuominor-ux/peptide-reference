@@ -1239,11 +1239,13 @@ export async function saveEditProto() {
     const newCycleWeeks = Math.max(1, parseInt(document.getElementById('edit-cycle-weeks')?.value) || _editCycleWeeks);
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - (newCurrentWeek - 1) * 7);
-    const newStartStr = startDate.toISOString().split('T')[0];
-    await supabase.from('schedules')
+    // Use local date parts — toISOString() returns UTC which can be a day ahead in US timezones at night
+    const newStartStr = `${startDate.getFullYear()}-${String(startDate.getMonth()+1).padStart(2,'0')}-${String(startDate.getDate()).padStart(2,'0')}`;
+    const { error: schedErr } = await supabase.from('schedules')
       .update({ name: newName, start_date: newStartStr, cycle_weeks: newCycleWeeks })
       .eq('id', _editScheduleId)
       .eq('user_id', currentUser.id);
+    if (schedErr) throw schedErr;
     for (let i = 0; i < _editEntries.length; i++) {
       const entry = _editEntries[i];
       if (!entry) continue;

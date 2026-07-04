@@ -1244,10 +1244,9 @@ export async function saveEditProto() {
     const { data: updatedRows, error: schedErr } = await supabase.from('schedules')
       .update({ name: newName, start_date: newStartStr, cycle_weeks: newCycleWeeks })
       .eq('id', _editScheduleId)
-      .eq('user_id', currentUser.id)
       .select('start_date');
     if (schedErr) throw schedErr;
-    if (!updatedRows?.length) throw new Error('Protocol not saved — try signing out and back in.');
+    if (!updatedRows?.length) throw new Error('Protocol not saved — schedule not found.');
     for (let i = 0; i < _editEntries.length; i++) {
       const entry = _editEntries[i];
       if (!entry) continue;

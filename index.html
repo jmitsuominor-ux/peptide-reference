@@ -548,8 +548,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="calc-tool-body collapsed" id="vialsBody">
     <div class="vial-mode-toggle">
-      <div class="vial-mode-btn active" id="vialModeNeedBtn" onclick="switchVialMode('need')">&#x1F6D2; How many do I need?</div>
-      <div class="vial-mode-btn" id="vialModeLastBtn" onclick="switchVialMode('last')">&#x23F1; How long will they last?</div>
+      <div class="vial-mode-btn active" id="vialModeNeedBtn" onclick="switchVialMode('need')">🛒 How many do I need?</div>
+      <div class="vial-mode-btn" id="vialModeLastBtn" onclick="switchVialMode('last')">⏱ How long will they last?</div>
     </div>
     <div class="calc-section">
       <div class="calc-section-title"><div class="sh-icon amber">📦</div><span id="vialSectionTitle">Vials Needed for Cycle</span></div>
@@ -689,7 +689,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="modal-card">
     <div class="modal-hdr">
       <div class="modal-title" id="authModalTitle">Create Account</div>
-      <button class="modal-close" onclick="closeAuthModalDirect()">&#x2715;</button>
+      <button class="modal-close" onclick="closeAuthModalDirect()">✕</button>
     </div>
     <div class="modal-body">
       <div class="calc-field">
@@ -718,7 +718,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="modal-card">
     <div class="modal-hdr">
       <div class="modal-title">Add Protocol</div>
-      <button class="modal-close" onclick="closeAddProtoModalDirect()">&#x2715;</button>
+      <button class="modal-close" onclick="closeAddProtoModalDirect()">✕</button>
     </div>
     <div class="modal-body" id="addProtoBody"></div>
   </div>
@@ -734,9 +734,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <script>
 (function(){
   var markets={
-    cerritos:{label:'← Back to Cerritos Store', url:'https://peptidesupplywarehouse.com/'},
-    mexico:  {label:'← Back to Mexico Store',   url:'https://peptidesupplywarehouse.com/mexico/'},
-    tijuana: {label:'← Back to TJ Store',        url:'https://peptidesupplywarehouse.com/tijuana/'}
+    cerritos:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/'},
+    mexico:  {label:'← Back to Store',   url:'https://peptidesupplywarehouse.com/mexico/'},
+    tijuana: {label:'← Back to Store',        url:'https://peptidesupplywarehouse.com/tijuana/'}
   };
   var from=new URLSearchParams(window.location.search).get('from');
   if(from&&markets[from])sessionStorage.setItem('psw_from',from);
@@ -800,7 +800,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div id="atpSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-radius:16px 16px 0 0;z-index:1001;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:max(env(safe-area-inset-bottom,0px),100px);">
   <div style="position:sticky;top:0;background:var(--white);z-index:2;display:flex;align-items:center;justify-content:space-between;padding:18px 18px 12px;border-bottom:1px solid var(--border);">
     <div style="font-size:15px;font-weight:600;color:var(--text1);" id="atpTitle">Add to Protocol</div>
-    <button onclick="closeAddToProtoSheet()" style="background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;">&#x2715;</button>
+    <button onclick="closeAddToProtoSheet()" style="background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;">✕</button>
   </div>
   <div id="atpBody" style="padding:12px 18px 8px;"></div>
   <div id="atpFooter" style="display:none;"></div>
@@ -809,7 +809,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div id="compareBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--navy);border-top:1px solid rgba(255,255,255,0.08);padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));align-items:center;gap:8px;">
   <div id="compareBarChips" style="flex:1;display:flex;gap:4px;overflow:hidden;min-width:0;"></div>
   <button id="compareBarBtn" onclick="openCompare()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;letter-spacing:0.02em;">Compare</button>
-  <button onclick="clearCompare()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:2px 4px;line-height:1;flex-shrink:0;">&#x2715;</button>
+  <button onclick="clearCompare()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:2px 4px;line-height:1;flex-shrink:0;">✕</button>
 </div>
 
 <!-- COMPARE OVERLAY -->

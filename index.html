@@ -734,9 +734,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <script>
 (function(){
   var markets={
-    cerritos:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/mexico/'},
-    sandiego:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/'},
-    tijuana: {label:'← Back to Store', url:'https://peptidesupplywarehouse.com/tijuana/'}
+    cerritos:{label:'← Back to Store', url:'https://peptidesupplywarehouse.com/'},
+    mexico:  {label:'← Back to Store',   url:'https://peptidesupplywarehouse.com/mexico/'},
+    tijuana: {label:'← Back to Store',        url:'https://peptidesupplywarehouse.com/tijuana/'}
   };
   var from=new URLSearchParams(window.location.search).get('from');
   if(from&&markets[from])sessionStorage.setItem('psw_from',from);

@@ -681,7 +681,15 @@ function initEventListeners() {
 
   document.getElementById('backToStacks').addEventListener('click', navBack);
   document.getElementById('backToCat').addEventListener('click', navBack);
-  document.getElementById('backToList').addEventListener('click', navBack);
+  document.getElementById('backToList').addEventListener('click', () => {
+    if (AppState.navHistory && AppState.navHistory.length) {
+      navBack();
+    } else {
+      document.getElementById('detailView').style.display = 'none';
+      document.getElementById('catView').style.display = '';
+      renderCategories();
+    }
+  });
 
 
   // Debounced global search
@@ -771,11 +779,12 @@ function initSwipeBack() {
 // ─── Store Back Button ────────────────────────────────────
 function initStoreBack() {
   const STORES = {
-    cerritos: { label: 'Cerritos', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/cerritos.html' },
-    sd:       { label: 'San Diego', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html' },
-    sandiego: { label: 'San Diego', url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/sandiego.html' },
-    tj:       { label: 'Tijuana',   url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html' },
-    tijuana:  { label: 'Tijuana',   url: 'https://jmitsuominor-ux.github.io/Peptide-Supply-Warehouse-/tijuana.html' },
+    cerritos: { url: 'https://peptidesupplywarehouse.com/' },
+    sd:       { url: 'https://peptidesupplywarehouse.com/' },
+    sandiego: { url: 'https://peptidesupplywarehouse.com/' },
+    tj:       { url: 'https://peptidesupplywarehouse.com/tijuana/' },
+    tijuana:  { url: 'https://peptidesupplywarehouse.com/tijuana/' },
+    mexico:   { url: 'https://peptidesupplywarehouse.com/mexico/' },
   };
   const param = new URLSearchParams(window.location.search).get('store');
   if (param) {
@@ -787,7 +796,7 @@ function initStoreBack() {
     const store = JSON.parse(stored);
     const btn = document.getElementById('storeBackBtn');
     const lbl = document.getElementById('storeBackLabel');
-    if (btn && lbl) { btn.href = store.url; lbl.textContent = '← Back to ' + store.label + ' Store'; btn.classList.add('visible'); }
+    if (btn && lbl) { btn.href = store.url; lbl.textContent = '← Back to Store'; btn.classList.add('visible'); }
   }
 }
 

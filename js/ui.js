@@ -279,11 +279,6 @@ export function showDetail(name) {
       </div>
       <div class="section-body">
         ${p.benefits.map(b => `<div class="benefit-row"><div class="benefit-check">✓</div>${b}</div>`).join('')}
-        ${p.plainEnglish ? `
-        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-          <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.07em;">Think of it this way</div>
-          ${_renderPlainEnglish(p.plainEnglish)}
-        </div>` : ''}
         ${p.timeline ? '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin:12px 0 4px;">'+tr('sec_timeline')+'</div><div class="timeline">'+p.timeline.map(tl=>'<div class="tl-row"><div class="tl-time">'+tl.time+'</div><div class="tl-text">'+tl.text+'</div></div>').join('')+'</div>' : ''}
       </div>
     </div>

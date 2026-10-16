@@ -471,6 +471,12 @@ export const PEPTIDE_ES = {
     schedule: 'Agregar 2ml al vial luego diluir con agua BAC',
     cycle: 'N/A',
   },
+  'FLGR-242': {
+    tagline: 'Análogo de folistatina modificado — inhibidor de miostatina de larga acción con dominio de unión a albúmina',
+    mechanism: 'Folistatina truncada modificada con un dominio de unión a albúmina. Se une a la miostatina y activina, bloqueando sus receptores ActRIIA/ActRIIB y suprimiendo la vía Smad2/3. El dominio de unión a albúmina extiende la vida media circulante. Vida media reclamada de ~19 días por inyección (sin confirmar en literatura revisada por pares).',
+    schedule: 'SubQ cada 10–14 días',
+    cycle: '8–12 semanas con lavado prolongado',
+  }
 };
 
 // Function to get peptide data in current language
@@ -1512,4 +1518,15 @@ The important follow-up step: acetic acid water is used only for the initial dis
 | Acetic Acid Water | Low-pH dissolution solvent — required for pH-sensitive peptides like IGF-1 LR3 that won't dissolve in neutral water; always dilute with BAC water before injecting |
 
 It's a preparation tool, not an injection medium. Dissolve with it, dilute before use.`,studies:[]},
+  'FLGR-242':{category:'Muscle Growth',tagline:'Modified follistatin analog — long-acting myostatin inhibitor with albumin-binding domain',mechanism:'Truncated follistatin engineered with an albumin-binding domain. Binds myostatin and activin, blocking their ActRIIA/ActRIIB receptors and suppressing the Smad2/3 pathway that limits muscle protein synthesis. The albumin-binding domain extends circulating half-life compared to native follistatin (which clears in minutes) — vendors claim ~19 days per injection, though this is unconfirmed in peer-reviewed literature. Primary use is myostatin suppression to allow muscle growth beyond genetic setpoints, with interest in GLP-1 lean mass preservation protocols.',benefits:['Myostatin inhibition allowing muscle growth beyond genetic ceiling','Extended dosing interval due to long claimed half-life (~19 days)','Lean mass preservation during caloric deficit or GLP-1 protocols','Muscle recovery support'],sideEffects:[{text:'No published human clinical trial data',severity:'high'},{text:'Theoretical oncologic risk (myostatin/activin pathway inhibition)',severity:'high'},{text:'Unknown long-term effects',severity:'high'},{text:'Extended half-life means effects cannot be quickly reversed',severity:'high'}],timeline:[{time:'Wk 2–4',text:'Muscle fullness and recovery improvement'},{time:'Wk 4–8',text:'Lean mass gains if training and nutrition support'}],schedule:'SubQ injection every 10–14 days',cycle:'8–12 weeks with extended washout',lo:'1 mg SubQ every 14 days',mid:'1.5–2 mg SubQ every 10–14 days',hi:'2.5 mg SubQ every 10 days — no human RCT data. Theoretical cancer risk. Medical supervision mandatory.',pairsWith:['IGF-1 LR3','HGH 191AA','Semaglutide','Tirzepatide','BPC-157'],avoid:['Cancer history or active cancer','Long continuous cycles without washout'],evidence:1,evidenceNote:'Vendor-described compound with mechanism extrapolated from follistatin biology. No published human clinical trials. Half-life claims unconfirmed in peer-reviewed literature.',plainEnglish:`Every construction crew has a site supervisor who sets a cap on how tall the building can go — that's myostatin. Follistatin compounds bind to that supervisor and block the permit. FLGR-242 does the same thing as Follistatin 344: it neutralizes myostatin so the crew can build past the genetic ceiling. The difference is how long it stays on the job.
+
+Native follistatin clears in minutes. FLGR-242 is engineered with an albumin-binding domain — it attaches to serum albumin, which circulates continuously and is spared from normal clearance. This is a known pharmaceutical engineering technique for extending a molecule's working life. Vendors claim roughly 19 days of active myostatin suppression per injection, compared to hours for standard follistatin — though that figure hasn't been confirmed in peer-reviewed data.
+
+The risk profile mirrors Follistatin 344: no human clinical trial data, theoretical concerns about long-term myostatin and activin pathway inhibition, and no established safe dose in humans. The extended half-life adds one specific consideration: if a problem arises, you can't simply stop dosing and wait for it to clear quickly.
+
+| Compound | Role |
+|---|---|
+| FLGR-242 | Long-duration myostatin permit block — same mechanism as Follistatin 344 but engineered to stay active for weeks rather than minutes, via an albumin-binding domain |
+
+Same permit block. Much longer lease — and the same unknowns, extended across that timeframe.`,studies:[]}
 };

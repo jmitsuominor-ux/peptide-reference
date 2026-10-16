@@ -306,11 +306,19 @@ async function refreshScheduleMain() {
     <div id="schedTodaySection"></div>
     <div id="schedProtosSection"></div>
     <button class="sched-add-btn" onclick="openAddProtoModal()">＋ Add Protocol</button>
+    <div class="sched-section" style="margin-top:16px;">
+      <div class="sched-section-hdr">
+        <div class="sched-section-title">📅 Dose History</div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);">PAST 30 DAYS</span>
+      </div>
+      <div id="schedHistorySection"></div>
+    </div>
     <div class="disclaimer" style="margin-top:12px;">
       <strong>Reminders:</strong> ${notifHtml}
     </div>
   `;
   await Promise.all([renderToday(), renderProtocols()]);
+  renderHistory();
 }
 
 export async function enableReminders() {
@@ -541,6 +549,58 @@ async function renderProtocols() {
     el.innerHTML = html;
   } catch (err) {
     el.innerHTML = `<div style="color:var(--red);font-size:12px;padding:10px;">Protocol load error: ${err.message || err}</div>`;
+  }
+}
+
+// ─── History ─────────────────────────────────────────────
+async function loadHistory(days = 30) {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+  const sinceStr = since.toISOString().slice(0, 10);
+  const { data, error } = await supabase
+    .from('injection_log')
+    .select('compound_name, dose, scheduled_for, slot')
+    .eq('user_id', currentUser.id)
+    .lt('scheduled_for', todayStr())
+    .gte('scheduled_for', sinceStr)
+    .order('scheduled_for', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+async function renderHistory() {
+  const el = document.getElementById('schedHistorySection');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--text3);font-size:12px;padding:4px 0;">Loading…</div>';
+  try {
+    const logs = await loadHistory(30);
+    if (!logs.length) {
+      el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:4px 0;">No logged doses in the past 30 days.</div>';
+      return;
+    }
+    const byDate = {};
+    logs.forEach(l => {
+      if (!byDate[l.scheduled_for]) byDate[l.scheduled_for] = [];
+      byDate[l.scheduled_for].push(l);
+    });
+    const dates = Object.keys(byDate).sort().reverse();
+    const fmt = d => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    el.innerHTML = dates.map(d => {
+      const items = byDate[d];
+      const count = items.length;
+      return `
+        <div class="sched-hist-day" onclick="this.classList.toggle('open')">
+          <div class="sched-hist-hdr">
+            <span class="sched-hist-date">${fmt(d)}</span>
+            <span class="sched-hist-count">${count} dose${count !== 1 ? 's' : ''} <span class="sched-hist-arrow">▸</span></span>
+          </div>
+          <div class="sched-hist-body">
+            ${items.map(i => `<div class="sched-hist-item"><span class="sched-hist-name">${i.compound_name}</span><span class="sched-hist-dose">${i.dose}</span></div>`).join('')}
+          </div>
+        </div>`;
+    }).join('');
+  } catch {
+    el.innerHTML = '<div style="color:var(--red);font-size:12px;padding:4px 0;">Error loading history</div>';
   }
 }
 

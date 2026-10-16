@@ -846,6 +846,11 @@ function init() {
     };
     setTimeout(tryOpen, 300);
   }
+  // Deep-link: ?tab=schedule (from push notifications)
+  if (new URLSearchParams(window.location.search).get('tab') === 'schedule') {
+    activatePage('schedule');
+  }
+
   // Deep-link: ?stack=FAT+STACK
   const stackParam = new URLSearchParams(window.location.search).get('stack');
   if (stackParam) {

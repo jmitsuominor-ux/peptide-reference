@@ -1,4 +1,4 @@
-const CACHE = 'peptideref-v55';
+const CACHE = 'peptideref-v56';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
@@ -55,10 +55,12 @@ self.addEventListener('push', e => {
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
+  const target = '/peptide-reference/?tab=schedule';
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
       const c = cs.find(w => w.url.includes('peptide-reference'));
-      return c ? c.focus() : clients.openWindow('/peptide-reference/');
+      if (c) return c.focus().then(() => c.navigate(target));
+      return clients.openWindow(target);
     })
   );
 });
